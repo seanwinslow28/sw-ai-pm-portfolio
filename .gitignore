@@ -38,6 +38,15 @@ sw-portfolio-animation-2026/loop-1/
 sw-portfolio-animation-2026/loop-2/
 sw-portfolio-animation-2026/FULL CLEAN/
 sw-portfolio-animation-2026/FULL CLEAN.zip
+sw-portfolio-animation-2026/Portfolio-BG-removal/
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude Code local state (skills live globally in ~/.claude/skills/)
+.claude/settings.local.json
+.claude/skills/
 
 # Generic heavy media (uncomment if you want to keep everything raster out of git)
 # *.mp4
