@@ -14,7 +14,7 @@
 
 | What | Path |
 |---|---|
-| Animation working dir | `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/` |
+| Animation working dir | `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/` |
 | Raw loop-1 frames | `…/loop-1/loop-1-raw/` (146 frames, excluding `EXTRA FRAMES/`) |
 | Raw loop-2 frames | `…/loop-2/loop-2-raw/` (127 frames, excluding `EXTRA FRAMES/`) |
 | Cleaned loop-1 output | `…/loop-1/loop-1-cleaned/` (created in Task 1) |
@@ -60,10 +60,10 @@
 
 Run:
 ```bash
-mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned
-mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned
-mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts
-touch    /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/cleanup-log.txt
+mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned
+mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned
+mkdir -p /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts
+touch    /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/cleanup-log.txt
 ```
 Expected: no output, no errors.
 
@@ -71,15 +71,15 @@ Expected: no output, no errors.
 
 Run:
 ```bash
-test -f /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/.env && \
-  grep -c '^GEMINI_API_KEY=' /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/.env
+test -f /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/.env && \
+  grep -c '^GEMINI_API_KEY=' /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/.env
 ```
 Expected: prints `1` if `.env` exists with the key.
 
 If it prints `0` or the file is missing: STOP and ask Sean for the key. Add it with:
 ```bash
-echo 'GEMINI_API_KEY=YOUR_KEY_HERE' > /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/.env
-chmod 600 /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/.env
+echo 'GEMINI_API_KEY=YOUR_KEY_HERE' > /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/.env
+chmod 600 /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/.env
 ```
 
 - [ ] **Step 3: Verify the `google-genai` Python package is installed**
@@ -237,7 +237,7 @@ set -euo pipefail
 RAW="${1:?usage: clean-frame.sh <raw_frame_path> <output_path>}"
 OUT="${2:?usage: clean-frame.sh <raw_frame_path> <output_path>}"
 
-ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026"
+ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026"
 SCRIPT="/Users/seanwinslow/Code-Brain/BMAD/.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py"
 PROMPT_FILE="${ANIM_DIR}/scripts/cleanup-prompt.txt"
 ENV_FILE="${ANIM_DIR}/.env"
@@ -265,7 +265,7 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] DONE  $OUT" | tee -a "$LOG"
 
 Then mark executable:
 ```bash
-chmod +x /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame.sh
+chmod +x /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame.sh
 ```
 
 - [ ] **Step 3: Write the batch wrapper script**
@@ -285,7 +285,7 @@ OUT_DIR="${2:?usage: clean-batch.sh <raw_dir> <out_dir> <start_num> <end_num>}"
 START="${3:?usage: clean-batch.sh <raw_dir> <out_dir> <start_num> <end_num>}"
 END="${4:?usage: clean-batch.sh <raw_dir> <out_dir> <start_num> <end_num>}"
 
-ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026"
+ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026"
 CLEAN="${ANIM_DIR}/scripts/clean-frame.sh"
 LOG="${ANIM_DIR}/cleanup-log.txt"
 
@@ -314,15 +314,15 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] BATCH DONE processed=$processed skipped=$sk
 
 Then mark executable:
 ```bash
-chmod +x /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh
+chmod +x /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh
 ```
 
 - [ ] **Step 4: Smoke-test the wrapper with `--help` of the underlying script (no API call)**
 
 Run:
 ```bash
-bash -n /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame.sh
-bash -n /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh
+bash -n /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame.sh
+bash -n /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh
 ```
 Expected: no output (syntax-OK).
 
@@ -345,9 +345,9 @@ Calibration set — three frames chosen to span the priority zone's challenges:
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0092.png \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0092.png
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0092.png \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0092.png
 ```
 Expected: prints `Saved: …/frame_0092.png` and `DONE`. File appears at the output path.
 
@@ -355,9 +355,9 @@ Expected: prints `Saved: …/frame_0092.png` and `DONE`. File appears at the out
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0125.png \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0125.png
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0125.png \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0125.png
 ```
 Expected: same — file written.
 
@@ -365,9 +365,9 @@ Expected: same — file written.
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0166.png \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0166.png
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw/frame_0166.png \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/frame_0166.png
 ```
 Expected: file written.
 
@@ -416,9 +416,9 @@ For each of the 3 cleaned calibration frames, ask:
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   92 113
 ```
 Expected: `BATCH DONE processed=<N> skipped=<M>` where N+M equals the count of raw frames in range 92–113. (The frame 0092 from calibration will be skipped because the output already exists.)
@@ -441,9 +441,9 @@ Same 5-question checklist as Task 4 Step 1. If any frame fails identity lock or 
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   114 139
 ```
 Expected: `BATCH DONE` with frame 0125 skipped (calibration).
@@ -464,9 +464,9 @@ Same 5-question checklist. ⚠️ Block Task 7 on approval.
 
 Run:
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   140 166
 ```
 Expected: `BATCH DONE` with frame 0166 skipped (calibration).
@@ -492,9 +492,9 @@ Plus an extra check at this gate: pull `…/loop-1/loop-1-cleaned/frame_0166.png
 - [ ] **Step 1: Run**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   1 22
 ```
 
@@ -511,9 +511,9 @@ Plus an extra check at this gate: pull `…/loop-1/loop-1-cleaned/frame_0166.png
 - [ ] **Step 1: Run**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   23 45
 ```
 
@@ -532,9 +532,9 @@ Combined chunk this time (~45 frames, but it's familiar territory by now — Sea
 - [ ] **Step 1: Run chunk F (46–68)**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   46 68
 ```
 
@@ -547,9 +547,9 @@ If `frame_0064`-style frames are rendering ambiguously, edit the prompt's "MORPH
 - [ ] **Step 3: Run chunk G (69–91)**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned \
   69 91
 ```
 
@@ -557,8 +557,8 @@ If `frame_0064`-style frames are rendering ambiguously, edit the prompt's "MORPH
 
 Final loop-1 check: confirm count.
 ```bash
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-raw/*.png 2>/dev/null | wc -l
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-raw/*.png 2>/dev/null | wc -l
 ```
 Expected: both equal 146. Block Task 11 on approval.
 
@@ -573,9 +573,9 @@ Loop-2 raw range: frame_0001 through ~frame_0166 with gaps (127 frames total). F
 - [ ] **Step 1: Run**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
   1 35
 ```
 
@@ -594,9 +594,9 @@ Plus an extra check at this gate: confirm `…/loop-2/loop-2-cleaned/frame_0001.
 - [ ] **Step 1: Run chunk I (36–70)**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
   36 70
 ```
 
@@ -605,9 +605,9 @@ Plus an extra check at this gate: confirm `…/loop-2/loop-2-cleaned/frame_0001.
 - [ ] **Step 3: Run chunk J (71–105)**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
   71 105
 ```
 
@@ -622,9 +622,9 @@ Plus an extra check at this gate: confirm `…/loop-2/loop-2-cleaned/frame_0001.
 - [ ] **Step 1: Run**
 
 ```bash
-/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-batch.sh \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw \
-  /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
+/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-batch.sh \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw \
+  /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned \
   106 999
 ```
 
@@ -636,8 +636,8 @@ Plus an extra check: the LAST loop-2 frame (highest numbered) must transition cl
 
 Final loop-2 count check:
 ```bash
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw/*.png 2>/dev/null | wc -l
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw/*.png 2>/dev/null | wc -l
 ```
 Expected: both equal 127. Block Task 14 on approval.
 
@@ -650,7 +650,7 @@ Expected: both equal 127. Block Task 14 on approval.
 - [ ] **Step 1: Verify total counts**
 
 ```bash
-echo "anchor-1 + loop-1 + anchor-2 + loop-2 = $(echo "1 + $(ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l) + 1 + $(ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l)" | bc) frames in full loop"
+echo "anchor-1 + loop-1 + anchor-2 + loop-2 = $(echo "1 + $(ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l) + 1 + $(ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l)" | bc) frames in full loop"
 ```
 Expected: prints `1 + 146 + 1 + 127 = 275 frames in full loop` (the wraparound back to anchor-1 isn't double-counted — it's the same file as the start).
 

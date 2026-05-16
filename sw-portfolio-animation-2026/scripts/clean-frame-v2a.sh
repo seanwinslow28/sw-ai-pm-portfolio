@@ -7,7 +7,7 @@ set -euo pipefail
 RAW="${1:?usage: clean-frame-v2a.sh <raw_frame_path> <output_path>}"
 OUT="${2:?usage: clean-frame-v2a.sh <raw_frame_path> <output_path>}"
 
-ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026"
+ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026"
 SCRIPT="/Users/seanwinslow/Code-Brain/BMAD/.claude/skills/gemini-pencil-animation-image-gen/scripts/generate_image.py"
 PROMPT_FILE="${ANIM_DIR}/scripts/cleanup-prompt-v2a.txt"
 ENV_FILE="${ANIM_DIR}/.env"

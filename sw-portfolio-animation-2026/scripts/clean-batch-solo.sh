@@ -10,7 +10,7 @@ OUT_DIR="${2:?usage: clean-batch-solo.sh <raw_dir> <out_dir> <start_num> <end_nu
 START="${3:?usage: clean-batch-solo.sh <raw_dir> <out_dir> <start_num> <end_num>}"
 END="${4:?usage: clean-batch-solo.sh <raw_dir> <out_dir> <start_num> <end_num>}"
 
-ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026"
+ANIM_DIR="/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026"
 CLEAN="${ANIM_DIR}/scripts/clean-frame-solo.sh"
 LOG="${ANIM_DIR}/cleanup-log.txt"
 

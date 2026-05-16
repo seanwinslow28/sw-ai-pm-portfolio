@@ -2,7 +2,7 @@
 
 > **Created:** 2026-05-14
 > **Owner:** Sean Winslow
-> **Status:** Living document. The canonical plan for the `sw-portfolio-3` build.
+> **Status:** Living document. The canonical plan for the `sw-ai-pm-portfolio` build.
 > **Purpose:** Captures everything decided in the 2026-05-14 product-discovery session — design philosophy, the brainstorm, copy decisions, the hero and projects specs, what remains, and the build sequence. Future Claude sessions read this + `CLAUDE.md` first.
 > **How to use this doc:** This is the strategic layer. The per-section build specs (`hero-spec-v1.md`, `projects-section-spec-v1.md`) are the tactical layer. This doc points to them; it doesn't duplicate them.
 

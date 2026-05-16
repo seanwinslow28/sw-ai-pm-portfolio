@@ -1,4 +1,4 @@
-# CLAUDE.md — sw-portfolio-3
+# CLAUDE.md — sw-ai-pm-portfolio
 
 Sean Winslow's PM portfolio — third build. This file orients every Claude session. Read it first, then `docs/PORTFOLIO-MASTER-PLAN.md`.
 
@@ -56,7 +56,7 @@ Be a thinking partner, not an executor — challenge while exploring, amplify on
 ## File map
 
 ```
-sw-portfolio-3/
+sw-ai-pm-portfolio/
 ├── CLAUDE.md                          ← you are here
 ├── docs/
 │   ├── PORTFOLIO-MASTER-PLAN.md       ← the strategic plan — read second

@@ -325,7 +325,7 @@ When all 10 are green, projects v1 is locked and we move to the About page.
 ## Appendix A — File map (additions to hero spec's file map)
 
 ```
-sw-portfolio-3/
+sw-ai-pm-portfolio/
 ├── src/
 │   ├── pages/
 │   │   ├── index.astro              ← hero + projects section live here
@@ -391,5 +391,5 @@ The home-page projects grid does a single Astro content collection query, sorts 
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/`. Read `hero-spec-v1.md` and `projects-section-spec-v1.md` end-to-end. The hero is presumed built per its own spec. Build the projects section components per the file map in Appendix A. Create the 5 MDX content files in `src/content/work/` with placeholder body content (just the frontmatter is enough for v1 of the projects section — bodies get filled in for the case-study spec). Wire `/work/[slug].astro` as a dynamic route reading from the content collection. Implement the View Transition by adding `view-transition-name` to both the tile media and the case-study hero media. Use real media assets if available; placeholder colored rectangles otherwise. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md` and `projects-section-spec-v1.md` end-to-end. The hero is presumed built per its own spec. Build the projects section components per the file map in Appendix A. Create the 5 MDX content files in `src/content/work/` with placeholder body content (just the frontmatter is enough for v1 of the projects section — bodies get filled in for the case-study spec). Wire `/work/[slug].astro` as a dynamic route reading from the content collection. Implement the View Transition by adding `view-transition-name` to both the tile media and the case-study hero media. Use real media assets if available; placeholder colored rectangles otherwise. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 

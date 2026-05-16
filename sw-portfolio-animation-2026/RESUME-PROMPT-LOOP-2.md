@@ -7,8 +7,8 @@ Paste the section between the `---` markers below into a new Claude Code session
 You are starting the loop-2 cleanup of Sean Winslow's portfolio animation. Loop-1 is fully complete (146/146 cleaned, gate-approved). The pipeline, prompt, and wrappers are LOCKED — your job is to apply them to loop-2.
 
 ## Read first (in order)
-1. `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/CLAUDE.md` — project orientation
-2. `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/docs/superpowers/plans/2026-05-14-animation-frame-cleanup.md` — original plan (older — the v2a wrapper below supersedes the multi-reference approach in the plan)
+1. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/CLAUDE.md` — project orientation
+2. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/superpowers/plans/2026-05-14-animation-frame-cleanup.md` — original plan (older — the v2a wrapper below supersedes the multi-reference approach in the plan)
 3. This file
 
 ## Current state
@@ -26,7 +26,7 @@ Through loop-1 we ruled out three approaches before locking v2a:
 |---|---|
 | Prompt (one sentence) | `scripts/cleanup-prompt-v2a.txt` |
 | Per-frame wrapper | `scripts/clean-frame-v2a.sh` (single reference: raw frame) |
-| Working dir | `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/` |
+| Working dir | `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/` |
 | Loop-2 raw frames | `loop-2/loop-2-raw/` (127 frames, ignore `EXTRA FRAMES/` if present) |
 | Loop-2 output | `loop-2/loop-2-cleaned/` (currently empty) |
 | Anchor 1 (Sean solo) | `anchor-1.png` |
@@ -57,17 +57,17 @@ Through loop-1 we ruled out three approaches before locking v2a:
 1. Read the orientation files above.
 2. Run quick state check:
    ```bash
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw/ | wc -l
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/ 2>/dev/null | wc -l
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_*.png | awk -F'frame_|\\.png' '{print $2}' | sort -n | head -5
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_*.png | awk -F'frame_|\\.png' '{print $2}' | sort -n | tail -5
+   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw/ | wc -l
+   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/ 2>/dev/null | wc -l
+   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_*.png | awk -F'frame_|\\.png' '{print $2}' | sort -n | head -5
+   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_*.png | awk -F'frame_|\\.png' '{print $2}' | sort -n | tail -5
    ```
 3. Confirm understanding back to Sean in ≤120 words.
 4. **Calibration first — run frame 0001 alone and gate it against the anchor-2 transition.** Loop-2 starts at the midpoint, so the first frame's continuity from `anchor-2.png` is the critical test:
    ```bash
-   /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/scripts/clean-frame-v2a.sh \
-     /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_0001.png \
-     /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/frame_0001.png
+   /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/scripts/clean-frame-v2a.sh \
+     /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-raw/frame_0001.png \
+     /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/frame_0001.png
    ```
    Then Read `anchor-2.png` + cleaned `frame_0001.png` + raw `frame_0001.png` and walk Sean through the 5-Q. **Block on his approval.**
 5. After anchor-2 transition is approved, proceed in chunks of ~23 parallel frames. Suggested chunking (adjust to actual frame ranges):
@@ -82,8 +82,8 @@ Through loop-1 we ruled out three approaches before locking v2a:
 ## Sequence completion
 When all 127 loop-2 frames are gate-approved:
 ```bash
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l   # expect 146
-ls /Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l   # expect 127
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/*.png | wc -l   # expect 146
+ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/*.png | wc -l   # expect 127
 ```
 Full sequence is then `anchor-1 → loop-1 (146) → anchor-2 → loop-2 (127) → anchor-1` (wraparound).
 

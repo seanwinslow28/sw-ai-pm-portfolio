@@ -136,7 +136,7 @@ Trigger: `DOMContentLoaded`. Total entrance window: 1800ms.
 
 ## 7. Character animation
 
-**Source:** The pencil-test character at `sw-portfolio-3/reference-images/2D-Character-Sketch-Sean-v1.png` is the **idle pose**. Generate the walk cycle and idle breathing as separate frames using the `gemini-pencil-animation-image-gen` skill, anchored to this style.
+**Source:** The pencil-test character at `sw-ai-pm-portfolio/reference-images/2D-Character-Sketch-Sean-v1.png` is the **idle pose**. Generate the walk cycle and idle breathing as separate frames using the `gemini-pencil-animation-image-gen` skill, anchored to this style.
 
 **Frames needed:**
 
@@ -307,7 +307,7 @@ When all 8 are green, hero v1 is locked and we move to the projects section.
 ## Appendix A — File map
 
 ```
-sw-portfolio-3/
+sw-ai-pm-portfolio/
 ├── src/
 │   ├── pages/
 │   │   └── index.astro           ← hero lives here
@@ -332,5 +332,5 @@ sw-portfolio-3/
 
 ## Appendix B — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-portfolio-3/`. Read this spec end-to-end. Scaffold an Astro 5 project with Tailwind 4. Build the Hero, Dateline, Badge, and TornPaperEdge components as Astro components. Build Character and Cursor as React islands with `client:load`. Hardcode the dateline JSON for now (`fleet_pulse` pattern, today's date, current vault indexer numbers). Implement the page-load motion timeline exactly as specified in §6. Use Newsreader + JetBrains Mono from Google Fonts via `astro-google-fonts-optimizer`. Do not introduce any other dependencies. Stop when the 8 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read this spec end-to-end. Scaffold an Astro 5 project with Tailwind 4. Build the Hero, Dateline, Badge, and TornPaperEdge components as Astro components. Build Character and Cursor as React islands with `client:load`. Hardcode the dateline JSON for now (`fleet_pulse` pattern, today's date, current vault indexer numbers). Implement the page-load motion timeline exactly as specified in §6. Use Newsreader + JetBrains Mono from Google Fonts via `astro-google-fonts-optimizer`. Do not introduce any other dependencies. Stop when the 8 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
