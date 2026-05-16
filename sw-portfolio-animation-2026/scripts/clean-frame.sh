@@ -13,8 +13,8 @@ PROMPT_FILE="${ANIM_DIR}/scripts/cleanup-prompt.txt"
 ENV_FILE="${ANIM_DIR}/.env"
 LOG="${ANIM_DIR}/cleanup-log.txt"
 
-ANCHOR_1="${ANIM_DIR}/anchor-1.png"
-TURNAROUND="${ANIM_DIR}/ai-companion-turnaround-anchor.png"
+ANCHOR_1="${ANIM_DIR}/anchor-images/anchor-1.png"
+TURNAROUND="${ANIM_DIR}/anchor-images/ai-companion-turnaround-anchor.png"
 
 PROMPT="$(cat "$PROMPT_FILE")"
 

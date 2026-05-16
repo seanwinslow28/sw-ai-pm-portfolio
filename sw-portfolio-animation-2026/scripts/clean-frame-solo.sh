@@ -14,7 +14,7 @@ PROMPT_FILE="${ANIM_DIR}/scripts/cleanup-prompt-solo.txt"
 ENV_FILE="${ANIM_DIR}/.env"
 LOG="${ANIM_DIR}/cleanup-log.txt"
 
-ANCHOR_1="${ANIM_DIR}/anchor-1.png"
+ANCHOR_1="${ANIM_DIR}/anchor-images/anchor-1.png"
 
 PROMPT="$(cat "$PROMPT_FILE")"
 

@@ -14,7 +14,7 @@ PROMPT_FILE="${ANIM_DIR}/scripts/cleanup-prompt-v2b.txt"
 ENV_FILE="${ANIM_DIR}/.env"
 LOG="${ANIM_DIR}/cleanup-log.txt"
 
-SEAN_TURNAROUND="${ANIM_DIR}/sean-character-turnaround-A-3.png"
+SEAN_TURNAROUND="${ANIM_DIR}/anchor-images/sean-character-turnaround-A-3.png"
 
 PROMPT="$(cat "$PROMPT_FILE")"
 
