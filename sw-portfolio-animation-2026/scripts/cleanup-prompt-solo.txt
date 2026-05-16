@@ -1,0 +1,113 @@
+[TASK]
+You are receiving TWO reference images and a goal. The FIRST reference is the
+raw frame whose composition you MUST preserve exactly. The SECOND reference is
+an IDENTITY reference for Sean only — use it to lock his anatomy, costume, and
+overall character design. Do NOT copy any pose, expression, or framing from
+Reference 2.
+
+Redraw Reference 1 (the raw frame) exactly as it is composed — same character
+placement, same body pose, same camera framing, same scale, same hand position,
+same head turn, same gaze direction, same facial expression — but with clean,
+anchor-grade pencil-test rendering and Sean's identity locked.
+
+In this frame Sean is ALONE. There is no other character. Render ONLY Sean.
+Do NOT add any orange creature, stuffed animal, mascot, sidekick, pet, or
+companion of any kind. Do NOT invent any second character. The output contains
+EXACTLY ONE character: Sean.
+
+[REFERENCES]
+- Reference 1 (RAW FRAME — composition target): THE pose, expression, framing,
+  and layout target. Preserve every element of pose, expression, character
+  positioning, camera framing, and frame layout from THIS image exactly. The
+  "A-7" label in a hand-drawn circle, the warm cream paper, the hole-punch
+  marks at the bottom — all visible in this reference — are also the target
+  paper aesthetic and label placement. ONLY change the rendering quality: fix
+  grain over Sean's body, fix face drift, fix any morphing or ambiguity
+  artifacts. Do not change WHAT is happening in the frame.
+- Reference 2 (anchor-1, SEAN IDENTITY ONLY): Sean's locked character design —
+  solo, standing, three-quarter view. This is THE identity of the human
+  character. His face ANATOMY (eye shape and spacing, nose shape, ear position,
+  jaw and chin structure, beard density and shape, hairline, hair color and
+  volume, head shape), body build, navy t-shirt, gray jeans, and gray sneakers
+  must match THIS reference in every output. DO NOT copy his pose, expression,
+  or framing from this reference. Use it for IDENTITY only.
+
+[WHAT TO FIX]
+1. SEAN'S FACE IDENTITY (anatomy lock, NOT expression lock) — Across the loop
+   Sean's underlying facial anatomy has been subtly drifting (asymmetric
+   features, off-center eyes, inconsistent jaw, "morphing" between frames).
+   Lock the ANATOMY to Reference 2: same eye shape and spacing, same nose
+   shape, same ear position, same jaw/chin structure, same beard density and
+   shape, same hairline, same hair color and volume, same head shape. He is
+   the same PERSON Reference 2 shows.
+
+   However, his EXPRESSION (mouth shape, eyebrow position, gaze direction,
+   eyelid position) follows Reference 1 — if the raw frame shows him laughing,
+   draw him laughing; if it shows him with his mouth open, draw it open. The
+   anatomy is locked; the performance is not.
+
+2. DIRT / GRAIN ARTIFACTS — Remove any pencil-grain noise, gritty texture,
+   smudges, or speckles that overlay Sean's body, face, hair, or clothing.
+   Paper texture (subtle, behind the drawing) is OK and expected. Grain ON
+   Sean is NOT OK. Render Sean as cleanly inked-and-colored pencil lines on
+   cream paper — no overlay grit on skin, hair, or fabric.
+
+3. SOLO COMPOSITION — This is a Sean-alone frame. Render exactly ONE character
+   in the output: Sean himself. Do not add any orange creature, companion,
+   stuffed animal, mascot, pet, sidekick, or any second character of any kind,
+   even if mid-action poses might suggest one. If Reference 1 shows Sean
+   holding a pencil, gesturing, laughing, or moving expressively, those are
+   HIS actions alone — there is no other character to add. Sean is by himself
+   in this frame.
+
+4. MORPHING SHAPES — If Reference 1 contains an in-between morph/blur shape
+   (e.g., a half-formed object between Sean's hands), render it as a clean,
+   intentional pencil sketch of the same object — confident lines, no blur,
+   no anatomical ambiguity. If the shape is a pencil, draw a pencil. If it's
+   an arc of motion, draw motion lines. Do NOT interpret an ambiguous shape
+   as a creature, companion, or other character. The shape is an object or
+   motion line, never a second character.
+
+[WHAT TO PRESERVE — from Reference 1]
+- The exact body pose and limb positions.
+- Sean's exact facial expression (mouth, eyes, eyebrows, gaze direction).
+- The exact camera framing and character scale.
+- The position of Sean in the frame (left/center/right).
+- The 16:9 horizontal layout matching Reference 1's framing.
+- The "A-7" label in a hand-drawn circle in the TOP-LEFT corner — same screen
+  position and approximate size as in Reference 1.
+- The character count: EXACTLY ONE character (Sean) and no others.
+
+[STYLE — PENCIL ANIMATION]
+- Traditional animation pencil test drawing on warm cream animation paper (#FAF5E8 approx).
+- Lines are warm gray graphite (NOT solid black, NOT ink). Slight stroke-weight
+  variation: contour ~2-3px, interior ~1px.
+- Visible construction-line ghosts beneath the final drawing — barely there,
+  but present.
+- Subtle cross-hatching on shaded clothing folds, under the chin, and shadow areas.
+- Limited, desaturated flat color fills OVER the pencil work: navy t-shirt,
+  cool gray jeans, warm skin tones, muted sandy blonde hair.
+- Subtle paper grain texture in the background paper only.
+- Three small hole-punch marks at the bottom edge of the paper.
+- Hand-drawn "A-7" label inside a hand-drawn circle in the TOP-LEFT corner of
+  the paper, matching the label visible in Reference 1.
+
+[NEGATIVES — STRICT]
+- NO vector-clean lines. NO solid black outlines. NO ink-look. NO cel shading. NO anime style.
+- NO saturated colors. NO digital painting / airbrush gradients.
+- NO grain, noise, or dirt overlay ON Sean's body, face, hair, or clothing.
+  (Paper texture in background only.)
+- NO drift in Sean's facial ANATOMY — match Reference 2 anatomy precisely.
+- NO change to Sean's EXPRESSION — match Reference 1's expression precisely.
+- NO change to the pose, composition, or framing of Reference 1.
+- NO repositioning, resizing, or re-lettering of the "A-7" label.
+- NO orange creature, NO companion, NO stuffed animal, NO mascot, NO sidekick,
+  NO pet, NO second character. ONLY Sean. There must be EXACTLY ONE character
+  in the output. Adding any second character is a hard failure.
+- NO interpreting ambiguous shapes (pencils, motion arcs, hand gestures,
+  in-between blurs) as creatures, characters, or any kind of being.
+
+[OUTPUT]
+A single 16:9 image — the cleaned version of Reference 1, with Sean alone,
+rendered at anchor-grade pencil-test quality. ONE character only. No companion,
+no creature, no second figure of any kind.

@@ -1,0 +1,109 @@
+[TASK]
+You are receiving FOUR reference images and a goal. Redraw the FOURTH reference
+image (the raw frame) exactly as it is composed — same character placement,
+same body pose, same camera framing, same scale, same hand position, same head
+turn, same gaze direction, same facial expression — but with the clean,
+anchor-grade pencil-test rendering shown in references 1, 2, and 3.
+
+References 1, 2, and 3 are IDENTITY references only — use them to lock who
+the characters ARE (anatomy, proportions, colors, costume, paper aesthetic).
+Use Reference 4 for everything about how the scene is COMPOSED in this specific
+frame (pose, expression, position, framing).
+
+[REFERENCES]
+- Reference 1 (anchor-1): Sean's locked character design — solo, standing,
+  three-quarter view. This is THE identity of the human character. His face
+  ANATOMY (eye shape and spacing, nose shape, ear position, jaw and chin
+  structure, beard density and shape, hairline, hair color and volume, head
+  shape), body build, navy t-shirt, gray jeans, and gray sneakers must match
+  THIS reference in every output. The hand-drawn "A-2" label in a circle in
+  the top-left corner shows the production label style and pencil weight.
+  DO NOT copy his pose, expression, or framing from this reference.
+- Reference 2 (anchor-2): Sean with the orange companion character perched on
+  his shoulder. This is the midpoint composition of the loop. Use it as the
+  locked rendering of Sean + companion together — how the two characters
+  relate visually when co-present. The "A-7" label in a circle and warm cream
+  paper texture in this image is the target paper aesthetic and label style
+  for every output frame. DO NOT copy its pose or framing.
+- Reference 3 (companion turnaround): Five-view turnaround sheet of the orange
+  companion character (front, 3/4 front, side, 3/4 back, back). This is THE
+  identity of the orange creature — soft cube-shaped body with rounded edges,
+  small rounded stubby limbs, warm terra-cotta orange color, simple dot eyes,
+  gentle expression. The companion in your output MUST match the proportions,
+  silhouette, and color of this turnaround, regardless of which view angle
+  the raw frame requires you to draw it from.
+- Reference 4 (raw frame): The COMPOSITION target. Preserve every element of
+  the pose, expression, character positioning, and frame layout from this
+  image exactly. ONLY change the rendering quality — fix grain, fix face drift,
+  fix any morphing artifacts. Do not change WHAT is happening in the frame.
+
+[WHAT TO FIX]
+1. SEAN'S FACE IDENTITY (anatomy lock, NOT expression lock) — Across the loop
+   Sean's underlying facial anatomy has been subtly drifting (asymmetric features,
+   off-center eyes, inconsistent jaw, "morphing" between frames). Lock the
+   ANATOMY to Reference 1: same eye shape and spacing, same nose shape, same
+   ear position, same jaw/chin structure, same beard density and shape, same
+   hairline, same hair color and volume, same head shape. He is the same
+   PERSON Reference 1 shows.
+
+   However, his EXPRESSION (mouth shape, eyebrow position, gaze direction,
+   eyelid position) follows Reference 4 — if the raw frame shows him laughing,
+   draw him laughing; if it shows him with his mouth open, draw it open. The
+   anatomy is locked; the performance is not.
+
+2. DIRT / GRAIN ARTIFACTS — Remove any pencil-grain noise, gritty texture,
+   smudges, or speckles that overlay the characters' bodies, faces, clothing,
+   or the companion. Paper texture (subtle, behind the drawing) is OK and
+   expected. Grain ON the drawn characters is NOT OK. Both characters should
+   render as cleanly inked-and-colored pencil lines on cream paper — no
+   overlay grit on skin, hair, fabric, or the companion's body.
+
+3. COMPANION CONSISTENCY — If the orange companion is in the frame, render it
+   with the proportions, color, and silhouette from Reference 3 (turnaround)
+   and Reference 2 (mounted on shoulder). No drift in companion shape or color.
+
+4. MORPHING SHAPES — If the raw frame contains an in-between morph/blur shape
+   (e.g., a half-formed object between Sean's hands), render it as a clean,
+   intentional pencil sketch of the same object — confident lines, no blur,
+   no anatomical ambiguity. The shape should read as "an animator drew this
+   on purpose," not "AI generated a soft blob."
+
+[WHAT TO PRESERVE — from Reference 4]
+- The exact body pose and limb positions.
+- Sean's exact facial expression (mouth, eyes, eyebrows, gaze direction).
+- The exact camera framing and character scale.
+- The position of Sean in the frame (left/center/right).
+- The position of the companion relative to Sean (if present).
+- The 16:9 horizontal layout matching Reference 4's framing.
+
+[STYLE — PENCIL ANIMATION]
+- Traditional animation pencil test drawing on warm cream animation paper (#FAF5E8 approx).
+- Lines are warm gray graphite (NOT solid black, NOT ink). Slight stroke-weight
+  variation: contour ~2-3px, interior ~1px.
+- Visible construction-line ghosts beneath the final drawing — barely there,
+  but present.
+- Subtle cross-hatching on shaded clothing folds, under the chin, and shadow areas.
+- Limited, desaturated flat color fills OVER the pencil work: navy t-shirt,
+  cool gray jeans, warm skin tones, muted sandy blonde hair, warm terra-cotta
+  orange for the companion.
+- Subtle paper grain texture in the background paper only.
+- Three small hole-punch marks at the bottom edge of the paper.
+- Hand-drawn "A-7" label inside a hand-drawn circle in the TOP-LEFT corner of
+  the paper. The label must be in the same screen position, same approximate
+  size, and same hand-drawn circle weight as the label in Reference 2. This
+  label is identical across every frame — do not re-letter it or move it.
+
+[NEGATIVES — STRICT]
+- NO vector-clean lines. NO solid black outlines. NO ink-look. NO cel shading. NO anime style.
+- NO saturated colors. NO digital painting / airbrush gradients.
+- NO grain, noise, or dirt overlay ON the character bodies, faces, hair, clothing,
+  or the companion. (Paper texture in background only.)
+- NO drift in Sean's facial ANATOMY — match Reference 1 anatomy precisely.
+- NO change to Sean's EXPRESSION — match Reference 4's expression precisely.
+- NO drift in companion proportions or color — match Reference 3 precisely.
+- NO change to the pose, composition, or framing of Reference 4.
+- NO repositioning, resizing, or re-lettering of the "A-7" label.
+
+[OUTPUT]
+A single 16:9 image — the cleaned version of Reference 4, with Sean and (if
+present) the orange companion rendered at anchor-grade pencil-test quality.

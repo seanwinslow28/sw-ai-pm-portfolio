@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+.next/
+out/
+.cache/
+
+# Logs
+*.log
+
+# Large animation source/output (sync via iCloud/Drive instead)
+sw-portfolio-animation-2026/loop-1/
+sw-portfolio-animation-2026/loop-2/
+sw-portfolio-animation-2026/FULL CLEAN/
+sw-portfolio-animation-2026/FULL CLEAN.zip
+
+# Generic heavy media (uncomment if you want to keep everything raster out of git)
+# *.mp4
+# *.mov
+# *.zip
