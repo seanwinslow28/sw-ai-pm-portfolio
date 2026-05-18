@@ -132,10 +132,10 @@
     .name {
       margin: 0;
       font-family: "Newsreader", Georgia, serif;
-      font-size: 85px;
+      font-size: clamp(56px, 7.2vw, 130px);
       font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.6px;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
       color: var(--teal);
     }
 
@@ -170,11 +170,11 @@
 
     /* Role */
     .role {
-      margin-top: 8px;
+      margin-top: 12px;
       font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 400;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.8px;
       color: var(--secondary);
       text-transform: uppercase;
       opacity: 0;
@@ -192,15 +192,15 @@
     /* ===== Body (tagline + character) ===== */
     .hero__body {
       position: relative;
-      margin-top: 80px;
+      margin-top: 56px;
       min-height: 480px;
     }
 
     .tagline {
       margin: 0;
-      max-width: 760px;
+      max-width: 600px;
       font-family: "Newsreader", Georgia, serif;
-      font-size: 45px;
+      font-size: clamp(26px, 3.2vw, 56px);
       font-weight: 300;
       line-height: 1.22;
       letter-spacing: -0.3px;
@@ -222,52 +222,35 @@
       }
     }
 
-    /* ===== Character ===== */
+    /* ===== Character (video loop) ===== */
     .character {
       position: absolute;
-      right: 0;
-      bottom: -60px;
-      width: 340px;
-      height: 480px;
+      right: -180px;
+      /* push past the viewport edge — clips the source's right empty space
+         so the painted character sits visually flush with the right edge */
+      bottom: 80px;
+      width: 1024px;
+      height: 576px;
       pointer-events: auto;
       opacity: 0;
-      transform: translateX(120%);
-      animation: walkIn 800ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: characterFadeIn 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    @keyframes walkIn {
+    @keyframes characterFadeIn {
       to {
         opacity: 1;
-        transform: translateX(0);
       }
     }
 
-    .character__breath {
+    .character__video {
       width: 100%;
       height: 100%;
-      animation: breathe 4s ease-in-out infinite;
-      transform-origin: center bottom;
-    }
-
-    @keyframes breathe {
-
-      0%,
-      100% {
-        transform: translateY(0) scaleY(1);
-      }
-
-      50% {
-        transform: translateY(-3px) scaleY(1.005);
-      }
-    }
-
-    .character__img {
-      width: 100%;
-      height: 100%;
+      display: block;
       object-fit: contain;
       object-position: bottom right;
       user-select: none;
       -webkit-user-drag: none;
+      background: transparent;
     }
 
     /* ===== Badge ===== */
@@ -429,9 +412,12 @@
       }
 
       .character {
-        width: 180px;
+        width: 100%;
+        max-width: 420px;
         height: 240px;
-        bottom: -20px;
+        right: -24px;
+        /* counteracts hero padding-right on mobile */
+        bottom: -10px;
       }
     }
   </style>
@@ -464,7 +450,8 @@
     const NAME = "Sean Winslow";
     const ROLE = "/ AI PRODUCT MANAGER";
     const TAGLINE = "Raised by Saturday morning cartoons and Vercel deployment logs.";
-    const CHARACTER_SRC = "../reference-images/2D-Character-Sketch-Sean-v1.png";
+    const CHARACTER_VIDEO_SRC = "./hero-loop.webm";
+    const CHARACTER_POSTER_SRC = "../sw-portfolio-animation-2026/loop-3-hero-shoulder/loop-3-frames-bg-removed/frame_0001.png";
 
     function useReducedMotion() {
       const [reduced, setReduced] = useState(false);
@@ -591,11 +578,27 @@
     }
 
     function Character({ start = 1300 }) {
+      const reduced = useReducedMotion();
       return (
-        <div className="character" style={{ animationDelay: `${start}ms` }}>
-          <div className="character__breath">
-            <img src={CHARACTER_SRC} alt="Sean, standing, holding a pencil." className="character__img" />
-          </div>
+        <div className="character" style={{ animationDelay: `${start}ms` }} aria-hidden="true">
+          {reduced ? (
+            <img
+              src={CHARACTER_POSTER_SRC}
+              alt=""
+              className="character__video"
+            />
+          ) : (
+            <video
+              src={CHARACTER_VIDEO_SRC}
+              poster={CHARACTER_POSTER_SRC}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="character__video"
+            />
+          )}
         </div>
       );
     }
@@ -651,7 +654,6 @@
           const t = e.target;
           if (!(t instanceof Element)) return;
           if (t.closest(".name")) setHoverState("name");
-          else if (t.closest(".badge")) setHoverState("badge");
           else if (t.closest(".character")) setHoverState("character");
           else setHoverState("default");
         };
@@ -674,7 +676,6 @@
                   <Name start={400} />
                   <RoleTag start={700} />
                 </div>
-                <Badge start={1200} />
               </div>
               <div className="hero__body">
                 <Tagline start={900} />

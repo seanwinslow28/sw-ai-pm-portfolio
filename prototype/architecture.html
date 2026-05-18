@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — /architecture/ v1 prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --border-faint: rgba(10, 62, 66, 0.10);
+      --row-hover: rgba(10, 62, 66, 0.04);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body { cursor: none; }
+    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
+    @media (hover: none) { body { cursor: auto; } }
+
+    /* ===== Page shell ===== */
+    .page {
+      position: relative;
+      background: var(--paper);
+      padding: 60px 52px 80px;
+    }
+    .page__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .page__essay {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Preview divider */
+    .preview-divider {
+      max-width: 1120px;
+      margin: 80px auto;
+      padding: 24px 52px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .preview-divider span { color: var(--amber); }
+
+    /* Torn paper edges (top + bottom) */
+    .torn-top, .torn-bottom {
+      position: absolute;
+      left: 0; right: 0;
+      width: 100%;
+      height: 32px;
+      pointer-events: none;
+    }
+    .torn-top    { top: -16px; }
+    .torn-bottom { bottom: -16px; transform: scaleY(-1); }
+
+    /* ===== Dateline ===== */
+    .dateline {
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .dateline__line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      line-height: 1.4;
+    }
+    .dateline__main {
+      flex: 1;
+    }
+    .dateline__stamp { color: var(--stamp); font-weight: 500; }
+    .dateline__body  { color: var(--secondary); }
+    .dateline__time  { color: var(--stamp); font-weight: 500; letter-spacing: 1.6px; }
+    .dateline__rule {
+      height: 0.5px;
+      background: var(--border);
+      margin-top: 12px;
+    }
+
+    /* ===== Index — title block ===== */
+    .title-block { margin-top: 40px; }
+    .h1 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(56px, 6vw, 96px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.6px;
+      color: var(--teal);
+      margin: 0 0 24px;
+    }
+    .hook {
+      font-family: "Newsreader", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 32px);
+      font-weight: 300;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      max-width: 780px;
+      margin: 0 0 16px;
+    }
+    .subhead {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--secondary);
+      max-width: 620px;
+      margin: 0 0 24px;
+    }
+    .meta-strip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+    .meta-strip .meta-strip__rss {
+      color: var(--teal);
+      text-decoration: none;
+      margin-left: 6px;
+    }
+    .meta-strip .meta-strip__rss:hover { text-decoration: underline; }
+
+    /* ===== Writeup rows ===== */
+    .writeups {
+      margin-top: 56px;
+      list-style: none;
+      padding: 0;
+    }
+    .writeup-row {
+      display: grid;
+      grid-template-columns: 120px 96px 1fr 200px;
+      gap: 32px;
+      align-items: center;
+      padding: 22px 12px;
+      border-bottom: 0.5px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background-color 200ms ease;
+      min-height: 140px;
+    }
+    .writeup-row:first-child { border-top: 0.5px solid var(--border); }
+    .writeup-row:hover { background: var(--row-hover); }
+    .writeup-row:hover .writeup-row__title::after { transform: scaleX(1); }
+
+    .writeup-row__date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+    }
+    .writeup-row__date-month { color: var(--stamp); font-weight: 500; }
+    .writeup-row__date-year  { color: var(--secondary); }
+
+    .pill-status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid currentColor;
+      line-height: 1.2;
+      justify-self: start;
+    }
+    .pill-status--shipped { color: var(--teal-success); }
+    .pill-status--draft   { color: var(--secondary); }
+
+    .writeup-row__body { min-width: 0; }
+    .writeup-row__title {
+      position: relative;
+      display: inline-block;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+    .writeup-row__title::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: var(--teal);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .writeup-row__lead {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.45;
+      color: var(--secondary);
+      letter-spacing: -0.1px;
+      margin: 0;
+      max-width: 560px;
+    }
+
+    .writeup-row__diagram {
+      justify-self: end;
+      width: 200px;
+      height: 90px;
+      background: rgba(10, 62, 66, 0.03);
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    /* ===== Footer fold ===== */
+    .footer-fold {
+      margin-top: 80px;
+      padding-top: 28px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-fold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .footer-fold a:hover { text-decoration: underline; }
+
+    /* ===========================================
+     * DEEP-DIVE PAGE
+     * =========================================== */
+    .surface-pills {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 16px 0 16px;
+    }
+    .surface-pill {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .case-title {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      color: var(--teal);
+      margin: 0 0 16px;
+      max-width: 900px;
+    }
+    .tags {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+      margin-bottom: 48px;
+    }
+
+    /* Thesis pullquote */
+    .pullquote {
+      max-width: 760px;
+      margin: 0 auto 64px;
+      padding: 32px 8px;
+      border-top: 0.5px solid var(--teal);
+      border-bottom: 0.5px solid var(--teal);
+      font-family: "Newsreader", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: -0.3px;
+      color: var(--teal);
+    }
+    .pullquote::before { content: open-quote; color: var(--amber); margin-right: 0.1em; }
+    .pullquote::after  { content: close-quote; color: var(--amber); }
+
+    /* Essay body */
+    .essay {
+      max-width: 680px;
+      margin: 0 auto 64px;
+    }
+    .essay p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      margin: 0 0 24px;
+    }
+    .essay h2 {
+      position: relative;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(28px, 3.2vw, 40px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.4px;
+      color: var(--teal);
+      margin: 56px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .essay h2::after {
+      content: "#";
+      position: absolute;
+      right: 0;
+      top: 4px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+    .essay h2:hover::after { opacity: 1; }
+
+    .essay a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 2px;
+    }
+    .essay a:hover { text-decoration-color: var(--teal); }
+
+    /* Code block */
+    .code {
+      background: rgba(10, 62, 66, 0.04);
+      border: 0.5px solid var(--border);
+      padding: 16px 18px;
+      margin: 20px 0;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .code .c-key  { color: var(--teal); font-weight: 500; }
+    .code .c-str  { color: var(--teal-success); }
+    .code .c-com  { color: var(--secondary); font-style: italic; }
+    .code .c-num  { color: var(--stamp); }
+
+    /* HONEST NOTE callout */
+    .honest-note {
+      margin: 32px 0;
+      padding: 20px 24px;
+      border-left: 1px solid var(--secondary);
+      background: var(--paper);
+    }
+    .honest-note__prefix {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--stamp);
+      margin-bottom: 8px;
+    }
+    .honest-note__body {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.4px;
+      color: var(--secondary);
+      margin: 0;
+    }
+
+    /* ER Diagram */
+    .er-diagram {
+      max-width: 880px;
+      margin: 48px auto;
+      padding: 32px;
+      background: var(--paper);
+      border: 0.5px solid var(--border);
+      overflow-x: auto;
+    }
+    .er-diagram svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .er-caption {
+      margin-top: 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      color: var(--secondary);
+      text-align: center;
+    }
+
+    /* Scoreboard */
+    .scoreboard-wrap {
+      max-width: 880px;
+      margin: 56px auto;
+    }
+    .scoreboard-heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2.4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .scoreboard-heading::before, .scoreboard-heading::after {
+      content: "";
+      height: 0.5px;
+      background: var(--border);
+      flex: 1;
+    }
+    .scoreboard {
+      width: 100%;
+      border-collapse: collapse;
+      border: 0.5px solid var(--border);
+      font-family: "JetBrains Mono", monospace;
+    }
+    .scoreboard th,
+    .scoreboard td {
+      padding: 14px 18px;
+      border: 0.5px solid var(--border-faint);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .scoreboard th {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(10, 62, 66, 0.03);
+    }
+    .scoreboard th:first-child,
+    .scoreboard td:first-child {
+      text-align: left;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .scoreboard td:first-child { font-weight: 500; }
+    .scoreboard .score-svg {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+    }
+    .score-legend {
+      margin-top: 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--secondary);
+      text-align: center;
+    }
+    .score-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 10px;
+    }
+
+    /* Try It Yourself callout */
+    .try-it {
+      max-width: 760px;
+      margin: 64px auto;
+      padding: 24px 28px;
+      border-left: 1px solid var(--teal);
+      background: rgba(10, 62, 66, 0.04);
+    }
+    .try-it__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--stamp);
+      margin: 0 0 12px;
+    }
+    .try-it__body {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .try-it__code {
+      background: rgba(10, 62, 66, 0.06);
+      border: 0.5px solid var(--border);
+      padding: 14px 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .try-it__link {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .try-it__link:hover { text-decoration: underline; }
+
+    /* Block heading (Methods / Explanation / Related) */
+    .block { margin: 80px 0; max-width: 880px; margin-left: auto; margin-right: auto; }
+    .block__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2.4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .block__heading::before, .block__heading::after {
+      content: "";
+      height: 0.5px;
+      background: var(--border);
+      flex: 1;
+    }
+
+    /* Methods strip */
+    .methods-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .methods-table th, .methods-table td {
+      text-align: left;
+      padding: 14px 18px;
+      border-bottom: 0.5px solid var(--border);
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      vertical-align: top;
+    }
+    .methods-table th {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .methods-table td:first-child { color: var(--ink); font-weight: 500; }
+    .methods-table td:nth-child(2),
+    .methods-table td:nth-child(3) { color: var(--secondary); }
+    .methods-table a { color: var(--teal); text-decoration: none; border-bottom: 1px solid var(--teal); }
+    .methods-table a:hover { background: rgba(10, 62, 66, 0.04); }
+
+    /* 4Q block */
+    .fourq__q { margin-bottom: 32px; }
+    .fourq__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 14px;
+      display: flex;
+      gap: 18px;
+      align-items: baseline;
+    }
+    .fourq__qnum { color: var(--amber); }
+    .fourq__qtitle {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 22px;
+      letter-spacing: -0.2px;
+      font-weight: 400;
+      color: var(--teal);
+      text-transform: none;
+    }
+    .fourq__body {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      margin: 0;
+    }
+    .fourq__body--q1 { font-size: 22px; }
+    .canonical-links {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .canonical-links a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .canonical-links a:hover { text-decoration: underline; }
+
+    /* Related */
+    .related-row {
+      display: flex;
+      gap: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      align-items: baseline;
+    }
+    .related-row__label {
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      flex-shrink: 0;
+      min-width: 180px;
+    }
+    .related-row__body a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .related-row__body a:hover { text-decoration: underline; }
+
+    /* Next / prev */
+    .navfold {
+      max-width: 880px;
+      margin: 64px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 0.5px solid var(--border);
+    }
+    .navfold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--teal);
+      text-decoration: none;
+      display: block;
+    }
+    .navfold a:hover { text-decoration: underline; }
+    .navfold__hint {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      color: var(--secondary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .navfold__next { text-align: right; }
+    .navfold__none {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--secondary);
+      opacity: 0.6;
+    }
+
+    /* Registration mark */
+    .reg-mark {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      width: 28px;
+      height: 28px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* Cursor */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      pointer-events: none;
+      z-index: 800;
+      mix-blend-mode: difference;
+      transition: width 200ms, height 200ms, background 200ms;
+      will-change: transform;
+    }
+    .cursor--link { width: 36px; height: 36px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
+    .cursor--row  { width: 24px; height: 24px; background: var(--amber); mix-blend-mode: normal; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .writeup-row { grid-template-columns: 100px 96px 1fr; }
+      .writeup-row__diagram { display: none; }
+    }
+    @media (max-width: 768px) {
+      .page { padding: 40px 24px 60px; }
+      .preview-divider { margin: 60px auto; padding: 20px 24px; }
+      .writeup-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 8px; min-height: 0; }
+      .h1 { font-size: 44px; }
+      .hook { font-size: 20px; }
+      .pullquote { padding: 24px 8px; font-size: 19px; }
+      .essay h2 { font-size: 24px; }
+      .navfold { grid-template-columns: 1fr; }
+      .navfold__next { text-align: left; }
+      .related-row { flex-direction: column; }
+      .scoreboard { font-size: 11px; }
+      .scoreboard th, .scoreboard td { padding: 10px 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .writeup-row, .writeup-row__title::after, .essay h2::after { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    const TOKENS = {
+      paper:    "#FFF9F0",
+      ink:      "#1A1A1E",
+      teal:     "#0A3E42",
+      success:  "#0F6E56",
+      secondary:"#546E71",
+      stamp:    "#7C2D12",
+      amber:    "#FAC775",
+      border:   "rgba(10,62,66,0.15)",
+      anno:     "rgba(10,62,66,0.7)",
+    };
+
+    /* ===== Shared score symbols ===== */
+    function ScoreSymbol({ value }) {
+      const props = { className: "score-svg", viewBox: "0 0 18 18", "aria-hidden": true };
+      if (value === "✓✓") {
+        return (
+          <svg {...props} aria-label="exceeds">
+            <polyline points="2,10 6,14 12,4" fill="none" stroke={TOKENS.success} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+            <polyline points="7,11 9,13 15,5" fill="none" stroke={TOKENS.success} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
+          </svg>
+        );
+      }
+      if (value === "✓") {
+        return (
+          <svg {...props} aria-label="passes">
+            <polyline points="3,9 7,13 15,5" fill="none" stroke={TOKENS.success} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        );
+      }
+      if (value === "⚠") {
+        return (
+          <svg {...props} aria-label="partial">
+            <polygon points="9,2 16,15 2,15" fill="none" stroke={TOKENS.stamp} strokeWidth="1.6" strokeLinejoin="round" />
+            <line x1="9" y1="7" x2="9" y2="11" stroke={TOKENS.stamp} strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="9" cy="13.2" r="0.9" fill={TOKENS.stamp} />
+          </svg>
+        );
+      }
+      if (value === "✗") {
+        return (
+          <svg {...props} aria-label="fails">
+            <line x1="3" y1="3" x2="15" y2="15" stroke={TOKENS.secondary} strokeWidth="1.6" strokeLinecap="round" />
+            <line x1="15" y1="3" x2="3" y2="15" stroke={TOKENS.secondary} strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        );
+      }
+      return null;
+    }
+
+    function TornEdge({ variant }) {
+      const cls = variant === "top" ? "torn-top" : "torn-bottom";
+      return (
+        <svg className={cls} viewBox="0 0 1440 32" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M0,16 Q24,8 48,14 T96,16 T144,12 T192,18 T240,14 T288,20 T336,12 T384,16 T432,10 T480,18 T528,14 T576,20 T624,12 T672,16 T720,8 T768,18 T816,14 T864,20 T912,12 T960,16 T1008,10 T1056,18 T1104,14 T1152,20 T1200,12 T1248,16 T1296,8 T1344,18 T1392,14 T1440,16 L1440,0 L0,0 Z"
+            fill={TOKENS.paper}
+          />
+        </svg>
+      );
+    }
+
+    function Dateline({ stamp, body, readingTime }) {
+      return (
+        <div className="dateline">
+          <div className="dateline__line">
+            <div className="dateline__main">
+              <span className="dateline__stamp">{stamp}</span>
+              <span className="dateline__body">{body}</span>
+            </div>
+            {readingTime && <div className="dateline__time">{readingTime} MIN READ</div>}
+          </div>
+          <div className="dateline__rule" />
+        </div>
+      );
+    }
+
+    /* ===== ER Diagram thumbnail (used on index rows) ===== */
+    function ErThumb() {
+      return (
+        <svg viewBox="0 0 200 90" width="100%" height="100%" aria-hidden="true">
+          <rect x="10" y="32" width="64" height="26" fill="none" stroke={TOKENS.teal} strokeWidth="0.8" />
+          <text x="42" y="48" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="8" fill={TOKENS.teal}>concept</text>
+          <rect x="126" y="14" width="64" height="20" fill="none" stroke={TOKENS.teal} strokeWidth="0.8" />
+          <text x="158" y="27" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="7" fill={TOKENS.teal}>supports</text>
+          <rect x="126" y="40" width="64" height="20" fill="none" stroke={TOKENS.teal} strokeWidth="0.8" />
+          <text x="158" y="53" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="7" fill={TOKENS.teal}>contradicts</text>
+          <rect x="126" y="66" width="64" height="20" fill="none" stroke={TOKENS.teal} strokeWidth="0.8" />
+          <text x="158" y="79" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="7" fill={TOKENS.teal}>evolved</text>
+          <line x1="74" y1="40" x2="126" y2="24" stroke={TOKENS.secondary} strokeWidth="0.6" />
+          <line x1="74" y1="45" x2="126" y2="50" stroke={TOKENS.secondary} strokeWidth="0.6" />
+          <line x1="74" y1="50" x2="126" y2="76" stroke={TOKENS.secondary} strokeWidth="0.6" />
+        </svg>
+      );
+    }
+
+    /* ===== ER Diagram full (used in essay body) ===== */
+    function ErDiagramFull() {
+      const relations = [
+        { y: 30,  label: "supports",     dy: -90 },
+        { y: 80,  label: "contradicts",  dy: -40 },
+        { y: 130, label: "evolved_into", dy: 10 },
+        { y: 180, label: "supersedes",   dy: 60 },
+        { y: 230, label: "depends_on",   dy: 110 },
+        { y: 280, label: "related_to",   dy: 160 },
+      ];
+      return (
+        <svg viewBox="0 0 800 340" width="100%" height="auto" aria-label="concept_edges schema">
+          {/* central entity */}
+          <rect x="60" y="130" width="200" height="80" fill="none" stroke={TOKENS.teal} strokeWidth="1.4" />
+          <text x="160" y="158" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="14" fill={TOKENS.teal} fontWeight="500">concept</text>
+          <line x1="60" y1="172" x2="260" y2="172" stroke={TOKENS.teal} strokeWidth="0.8" />
+          <text x="76" y="190" fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.secondary}>id        PK</text>
+          <text x="76" y="204" fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.secondary}>chunk_hash</text>
+
+          {/* relations */}
+          {relations.map((r, i) => (
+            <g key={i}>
+              <rect x="460" y={r.y - 14} width="260" height="32" fill="none" stroke={TOKENS.teal} strokeWidth="0.9" />
+              <text x="476" y={r.y + 6} fontFamily="JetBrains Mono" fontSize="12" fill={TOKENS.teal}>{r.label}</text>
+              <text x="640" y={r.y + 6} fontFamily="JetBrains Mono" fontSize="10" fill={TOKENS.secondary}>relation_t #{i+1}</text>
+              <line x1="260" y1="170" x2="460" y2={r.y + 2} stroke={TOKENS.secondary} strokeWidth="0.7" />
+              <circle cx="460" cy={r.y + 2} r="2.5" fill={TOKENS.secondary} />
+            </g>
+          ))}
+
+          {/* legend */}
+          <text x="60" y="320" fontFamily="JetBrains Mono" fontSize="10" fill={TOKENS.secondary}>
+            concept_edges · 6 relation types · validated against 47 production edges
+          </text>
+        </svg>
+      );
+    }
+
+    /* ===== INDEX ===== */
+    const WRITEUPS = [
+      {
+        slug: "vault-scorecard",
+        date: "JUN 03", year: "2026", status: "SHIPPED",
+        title: "Vault as Agent Infrastructure",
+        lead: "A 5-test scoreboard over Notion, default Obsidian, Linear, and Sean's vault. Two failures, three passes — and the failures are the roadmap.",
+      },
+      {
+        slug: "vault-knowledge-mcp",
+        date: "JUN 04", year: "2026", status: "SHIPPED",
+        title: "Vault Knowledge MCP — Design",
+        lead: "The MCP wrapping the only public PM vault that passes all five tests. Closes the ownership + permissions gap by exposing the vault as a typed RBAC surface.",
+      },
+    ];
+
+    function IndexHeader() {
+      return (
+        <div className="title-block">
+          <h1 className="h1">Architecture</h1>
+          <p className="hook">Most people see Obsidian as content. I treat my vault as agent infrastructure.</p>
+          <p className="subhead">Architectural arguments where the proof is the code, linked.</p>
+          <p className="meta-strip">
+            <span>{WRITEUPS.length} WRITEUPS · UPDATED 2026-06-04 · </span>
+            <a className="meta-strip__rss" href="/architecture/rss.xml" onClick={e=>e.preventDefault()}>RSS →</a>
+          </p>
+        </div>
+      );
+    }
+
+    function WriteupRow({ w }) {
+      return (
+        <a className="writeup-row"
+           href={`/architecture/${w.slug}/`}
+           onClick={e=>e.preventDefault()}
+           aria-label={`Read architectural argument: ${w.title}`}
+           data-cursor-row>
+          <span className="writeup-row__date">
+            <span className="writeup-row__date-month">{w.date}, </span>
+            <span className="writeup-row__date-year">{w.year}</span>
+          </span>
+          <span className={`pill-status pill-status--${w.status.toLowerCase()}`}>{w.status}</span>
+          <div className="writeup-row__body">
+            <div className="writeup-row__title">{w.title}</div>
+            <p className="writeup-row__lead">{w.lead}</p>
+          </div>
+          <div className="writeup-row__diagram" aria-hidden="true">
+            <ErThumb />
+          </div>
+        </a>
+      );
+    }
+
+    function FooterFold() {
+      return (
+        <div className="footer-fold">
+          <a href="/architecture/rss.xml" onClick={e=>e.preventDefault()}>→ subscribe via RSS</a>
+          <a href="/work" onClick={e=>e.preventDefault()}>→ view the fleet ↗</a>
+        </div>
+      );
+    }
+
+    function IndexPage() {
+      return (
+        <section className="page" aria-label="Architecture index">
+          <TornEdge variant="top" />
+          <div className="page__inner">
+            <Dateline
+              stamp="BOSTON, JUNE 3, 2026 — "
+              body="vault scorecard shipped. 1 writeup."
+            />
+            <IndexHeader />
+            <ul className="writeups">
+              {WRITEUPS.map(w => <li key={w.slug} style={{listStyle: 'none'}}><WriteupRow w={w} /></li>)}
+            </ul>
+            <FooterFold />
+          </div>
+        </section>
+      );
+    }
+
+    /* ===== DEEP DIVE ===== */
+
+    function HonestNote({ children }) {
+      return (
+        <aside className="honest-note">
+          <div className="honest-note__prefix">HONEST NOTE —</div>
+          <p className="honest-note__body">{children}</p>
+        </aside>
+      );
+    }
+
+    const SCOREBOARD = {
+      columns: ["STATE", "VERBS", "OWN", "PERM", "AUDIT"],
+      rows: [
+        { label: "Notion",             scores: ["✗", "✗", "✓",  "✓",  "⚠"] },
+        { label: "Obsidian (default)", scores: ["⚠", "⚠", "✗",  "✗",  "✗"] },
+        { label: "Linear",             scores: ["✓", "✓", "✓✓", "✓✓", "✓"] },
+        { label: "Sean's vault",       scores: ["✓✓","✓✓","⚠",  "⚠",  "✓✓"] },
+      ],
+    };
+
+    function Scoreboard() {
+      return (
+        <div className="scoreboard-wrap">
+          <h2 className="scoreboard-heading">Scoreboard</h2>
+          <table className="scoreboard">
+            <caption className="sr-only">Five-test comparison: persistent state, defined verbs, ownership, permissions, queryable audit.</caption>
+            <thead>
+              <tr>
+                <th>System</th>
+                {SCOREBOARD.columns.map(c => <th key={c}>{c}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {SCOREBOARD.rows.map(r => (
+                <tr key={r.label}>
+                  <td>{r.label}</td>
+                  {r.scores.map((s, i) => (
+                    <td key={i}><ScoreSymbol value={s} /></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="score-legend">
+            <span><ScoreSymbol value="✓✓" /> exceeds</span>
+            <span><ScoreSymbol value="✓" /> passes</span>
+            <span><ScoreSymbol value="⚠" /> partial</span>
+            <span><ScoreSymbol value="✗" /> fails</span>
+          </div>
+        </div>
+      );
+    }
+
+    function MethodsStrip({ methods }) {
+      return (
+        <table className="methods-table">
+          <thead>
+            <tr><th>Task</th><th>Agent / Tool</th><th>Model / Cost</th></tr>
+          </thead>
+          <tbody>
+            {methods.map((m, i) => (
+              <tr key={i}>
+                <td>{m.task}</td>
+                <td>{m.link
+                      ? <a href={m.link} onClick={e=>e.preventDefault()} data-cursor-link>{m.tool}</a>
+                      : m.tool}</td>
+                <td>{m.cost}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+
+    const VAULT = {
+      dateline: { stamp: "BOSTON, JUNE 3, 2026 — ", body: "vault as agent infrastructure, scored.", readingTime: 8 },
+      surface: "ARCHITECTURE",
+      status:  "SHIPPED",
+      title:   "Vault as Agent Infrastructure",
+      tags:    "agent-infrastructure · sqlite · obsidian · linear",
+      lead:    "Three passes, two failures, and the failures are where vault-knowledge-mcp and the Judge Layer are going next.",
+      methods: [
+        { task: "persistent state", tool: "SQLite + git + JSONL",                cost: "local / $0",                  link: null },
+        { task: "typed edges",      tool: "Claude Code Superuser Pack (concept_edges)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "er diagram gen",   tool: "scripts/generate_schema.py",          cost: "stdlib / $0",                 link: null },
+        { task: "fixture author",   tool: "Sean + LLM seed",                     cost: "~$0.10",                      link: null },
+      ],
+      fourq: {
+        what:  "A 5-test diagnostic from Nate B. Jones' agent-infrastructure framework, applied to four candidates: Notion, default Obsidian, Linear, and Sean's instrumented vault. The output is a scoreboard with linked permalinks for every passing test and an honest note for every failure.",
+        why:   "Three options: (1) a manifesto arguing the vault is infrastructure (low-credibility — no evidence). (2) a benchmark suite (high-credibility, but reads as ego). (3) a thesis-shaped writeup whose claims are anchored to permalinks in the actual vault. Picked (3). The scoring isn't an opinion — it's a citation graph.",
+        break: "Three failure modes. (1) Vault sprawl — if the chunk_hash drifts, the SQLite typed-edge layer reports false contradictions; detection: weekly knowledge-lint job. (2) The scoring rubric is calibrated to one moment in time; new tests (e.g., \"queryable causality\") will eventually expose new failures. (3) Linear's RBAC really is better; closing that gap is vault-knowledge-mcp's job.",
+        learn: "Comparison is the cheapest credibility instrument that exists. The discipline that makes it land is showing the failures with the same flat treatment as the passes — equality of presentation IS the honesty signal.",
+      },
+      explanationUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md",
+      essaySourceUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md",
+      navfold: {
+        prev: null,
+        next: { date: "JUN 04", title: "VAULT KNOWLEDGE MCP", slug: "/architecture/vault-knowledge-mcp" },
+      },
+    };
+
+    function DeepDive() {
+      const d = VAULT;
+      return (
+        <section className="page" aria-label="Vault Scorecard architecture writeup">
+          <TornEdge variant="top" />
+          <div className="page__inner" style={{ position: "relative" }}>
+            <Dateline {...d.dateline} />
+
+            <div className="surface-pills">
+              <span className="surface-pill">{d.surface}</span>
+              <span className="pill-status pill-status--shipped">{d.status}</span>
+            </div>
+
+            <h1 className="case-title">{d.title}</h1>
+            <div className="tags">{d.tags}</div>
+
+            <blockquote className="pullquote">{d.lead}</blockquote>
+
+            {/* Essay body */}
+            <div className="essay">
+              <p>
+                In Nate B. Jones' framework, <em>agent infrastructure</em> is a tool that can hold persistent
+                state across sessions, expose defined verbs an agent can call, name ownership for every artifact,
+                enforce permissions on those artifacts, and answer queries about its own audit history. Notion holds
+                state, but the verbs are buried in a UI a model can't see. Default Obsidian gives you flat files
+                and almost nothing else.
+              </p>
+              <p>
+                Sean's vault — Obsidian, plus an SQLite typed-edge layer, plus git, plus the Daily Driver agent,
+                plus a JSONL transactions log — passes three of the five tests, fails two, and the failures are
+                where <code>vault-knowledge-mcp</code> and the Judge Layer are going. This is that scorecard.
+              </p>
+
+              <h2 id="persistent-state">Persistent State</h2>
+              <p>
+                <strong>Diagnostic.</strong> Can the system hold what an agent learned last Thursday so the agent
+                doesn't relearn it on Friday? The vault stores every connection article the synthesizer writes back
+                to the typed-edge graph as a side effect — 47 production edges as of this writing, all queryable from
+                a 30ms SQL call.
+              </p>
+              <div className="code">
+{`SELECT source, target, relation, confidence
+FROM concept_edges
+WHERE relation = `}<span className="c-str">'contradicts'</span>{`
+ORDER BY confidence DESC;
+`}<span className="c-com">-- 30ms over 47 edges. No LLM in the loop.</span>
+              </div>
+
+              <h2 id="defined-verbs">Defined Verbs</h2>
+              <p>
+                <strong>Diagnostic.</strong> Are the operations an agent can perform named, typed, and discoverable?
+                The vault exposes six relation types — <code>supports</code>, <code>contradicts</code>,{" "}
+                <code>evolved_into</code>, <code>supersedes</code>, <code>depends_on</code>,{" "}
+                <code>related_to</code> — each defined by a CHECK constraint at the SQLite layer. The agent doesn't
+                need a wrapper to discover them; it can introspect the schema directly.
+              </p>
+
+              <h2 id="ownership">Ownership</h2>
+              <p>
+                <strong>Diagnostic.</strong> Who created this? Who can change it? Can an agent verify provenance
+                before acting on the data? Sean's vault answers the first two via git history and filesystem
+                attribution. The third — verifying provenance with cryptographic surety — is where Linear pulls
+                ahead.
+              </p>
+              <HonestNote>
+                Linear is genuinely better here. That gap is exactly why <code>vault-knowledge-mcp</code> matters —
+                it's the first step toward giving the vault Linear-grade ownership semantics on the axes that
+                matter for agent control.
+              </HonestNote>
+
+              <h2 id="permissions">Permissions</h2>
+              <p>
+                <strong>Diagnostic.</strong> Can the system reject a write or read based on role? The vault has POSIX
+                filesystem permissions plus git remote access. That's enough for a single-author vault, not enough
+                for a multi-agent fleet writing concurrently against the same SQLite file.
+              </p>
+              <HonestNote>
+                Filesystem permissions only. POSIX read/write + git remotes. Linear's RBAC is the upgrade path —
+                and the second motivating reason for vault-knowledge-mcp.
+              </HonestNote>
+
+              <h2 id="queryable-audit">Queryable Audit History</h2>
+              <p>
+                <strong>Diagnostic.</strong> Can an agent ask "what changed and why" and get a structured answer
+                without grepping log files? The vault's transactions ledger is a JSONL file with every artifact
+                ship, every edge insert, every Daily Driver run timestamped and tagged. Two passes worth — and the
+                only test where Sean's vault clearly exceeds Linear, because the ledger predates the writeup.
+              </p>
+            </div>
+
+            {/* ER Diagram */}
+            <div className="er-diagram">
+              <ErDiagramFull />
+              <div className="er-caption">concept_edges schema — 6 relation types, validated against 47 production edges</div>
+            </div>
+
+            {/* Scoreboard */}
+            <Scoreboard />
+
+            {/* Closing essay section */}
+            <div className="essay">
+              <h2 id="losses-roadmap">Where the vault loses, and why those losses are the roadmap</h2>
+              <p>
+                Two failures: ownership (partial) and permissions (partial). Both lose to Linear by the same axis —
+                RBAC and verified provenance. That's not a defect of the vault thesis; it's the next sprint.
+              </p>
+              <p>
+                <strong>vault-knowledge-mcp</strong> (Task 10, ships ~6/4) is the wrapper that turns the vault into
+                a typed RBAC surface for any agent that speaks MCP. <strong>The Judge Layer</strong> (Task 12)
+                is the read-side companion — a gate-b reviewer that vets every agent write against the vault before
+                it lands. Together they close the two failing axes without breaking the three that pass.
+              </p>
+            </div>
+
+            {/* Try It Yourself */}
+            <div className="try-it">
+              <div className="try-it__heading">Try it yourself —</div>
+              <div className="try-it__body">
+                The synthetic public vault fixture is reproducible. Clone, copy, query:
+              </div>
+              <div className="try-it__code">{`git clone https://github.com/seanwinslow/claude-code-superuser-pack
+cp -r claude-code-superuser-pack/examples/public_vault_fixture /tmp/test_vault
+AGENT_VAULT_PATH=/tmp/test_vault python3 ./agents-sdk/scripts/query.py \\
+  "what brewing methods compete with espresso?"`}</div>
+              <a className="try-it__link" href="https://github.com/seanwinslow/claude-code-superuser-pack/tree/main/examples/public_vault_fixture" onClick={e=>e.preventDefault()}>
+                → examples/public_vault_fixture/ on github ↗
+              </a>
+            </div>
+
+            {/* Methods */}
+            <div className="block">
+              <h2 className="block__heading">Methods</h2>
+              <MethodsStrip methods={d.methods} />
+            </div>
+
+            {/* 4Q */}
+            <div className="block">
+              <h2 className="block__heading">Explanation · 4Q</h2>
+              <div className="fourq">
+                <div className="fourq__q">
+                  <h3 className="fourq__heading">
+                    <span className="fourq__qnum">Q1</span>
+                    <span className="fourq__qtitle">What is this?</span>
+                  </h3>
+                  <p className="fourq__body fourq__body--q1">{d.fourq.what}</p>
+                </div>
+                <div className="fourq__q">
+                  <h3 className="fourq__heading">
+                    <span className="fourq__qnum">Q2</span>
+                    <span className="fourq__qtitle">Why this approach?</span>
+                  </h3>
+                  <p className="fourq__body">{d.fourq.why}</p>
+                </div>
+                <div className="fourq__q">
+                  <h3 className="fourq__heading">
+                    <span className="fourq__qnum">Q3</span>
+                    <span className="fourq__qtitle">What would break?</span>
+                  </h3>
+                  <p className="fourq__body">{d.fourq.break}</p>
+                </div>
+                <div className="fourq__q">
+                  <h3 className="fourq__heading">
+                    <span className="fourq__qnum">Q4</span>
+                    <span className="fourq__qtitle">What did I learn?</span>
+                  </h3>
+                  <p className="fourq__body">{d.fourq.learn}</p>
+                </div>
+
+                <div className="canonical-links">
+                  <a href={d.explanationUrl} onClick={e=>e.preventDefault()} target="_blank">
+                    → read the canonical EXPLANATION.md on github ⓘ
+                  </a>
+                  <a href={d.essaySourceUrl} onClick={e=>e.preventDefault()} target="_blank">
+                    → view the long-form source on github ⓘ
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Related */}
+            <div className="block">
+              <h2 className="block__heading">Related</h2>
+              <div className="related-row">
+                <span className="related-row__label">→ ledger row:</span>
+                <span className="related-row__body">
+                  <a href="/transactions/vault-scorecard" onClick={e=>e.preventDefault()}>/transactions/vault-scorecard/</a>
+                </span>
+              </div>
+              <div className="related-row">
+                <span className="related-row__label">→ companion case study:</span>
+                <span className="related-row__body">
+                  <a href="/work/superuser-pack" onClick={e=>e.preventDefault()}>Claude Code Superuser Pack</a>
+                </span>
+              </div>
+              <div className="related-row">
+                <span className="related-row__label">→ sibling writeup:</span>
+                <span className="related-row__body">
+                  <a href="/architecture/vault-knowledge-mcp" onClick={e=>e.preventDefault()}>Vault Knowledge MCP — Design</a>
+                </span>
+              </div>
+            </div>
+
+            {/* Next / Prev */}
+            <div className="navfold">
+              <div>
+                {d.navfold.prev
+                  ? <a href={d.navfold.prev.slug} onClick={e=>e.preventDefault()}>
+                      <span className="navfold__hint">← {d.navfold.prev.date}</span>
+                      {d.navfold.prev.title}
+                    </a>
+                  : <div className="navfold__none">← (no previous writeup)</div>}
+              </div>
+              <a className="navfold__next" href={d.navfold.next.slug} onClick={e=>e.preventDefault()}>
+                <span className="navfold__hint">{d.navfold.next.date} →</span>
+                {d.navfold.next.title}
+              </a>
+            </div>
+
+            <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+              <line x1="14" y1="2"  x2="14" y2="26" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="2"  y1="14" x2="26" y2="14" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="6"  y1="6"  x2="9"  y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="22" y1="6"  x2="19" y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="6"  y1="22" x2="9"  y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="22" y1="22" x2="19" y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+            </svg>
+          </div>
+        </section>
+      );
+    }
+
+    /* ===== Cursor ===== */
+    function useReducedMotion() {
+      const [r, setR] = useState(false);
+      useEffect(() => {
+        const mq = matchMedia("(prefers-reduced-motion: reduce)");
+        setR(mq.matches);
+        const h = e => setR(e.matches);
+        mq.addEventListener?.("change", h);
+        return () => mq.removeEventListener?.("change", h);
+      }, []);
+      return r;
+    }
+    function Cursor() {
+      const ref = useRef(null);
+      const reduced = useReducedMotion();
+      const [mode, setMode] = useState("default");
+      useEffect(() => {
+        if (reduced) return;
+        const el = ref.current; if (!el) return;
+        let mx = innerWidth/2, my = innerHeight/2;
+        let cx = mx, cy = my, raf;
+        const move = e => { mx = e.clientX; my = e.clientY; };
+        const loop = () => {
+          cx += (mx - cx) * 0.18;
+          cy += (my - cy) * 0.18;
+          el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+          raf = requestAnimationFrame(loop);
+        };
+        addEventListener("mousemove", move); loop();
+        return () => { removeEventListener("mousemove", move); cancelAnimationFrame(raf); };
+      }, [reduced]);
+      useEffect(() => {
+        if (reduced) return;
+        const over = e => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          if (t.closest("[data-cursor-row]")) setMode("row");
+          else if (t.closest("a")) setMode("link");
+          else setMode("default");
+        };
+        document.addEventListener("mouseover", over);
+        return () => document.removeEventListener("mouseover", over);
+      }, [reduced]);
+      if (reduced) return null;
+      return <div ref={ref} className={`cursor cursor--${mode}`} aria-hidden="true" />;
+    }
+
+    function App() {
+      return (
+        <>
+          <IndexPage />
+          <div className="preview-divider">
+            ↓ PROTOTYPE-ONLY DIVIDER · DEEP-DIVE PAGE PREVIEW BELOW (<span>/architecture/vault-scorecard/</span>) ↓
+          </div>
+          <DeepDive />
+          <Cursor />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

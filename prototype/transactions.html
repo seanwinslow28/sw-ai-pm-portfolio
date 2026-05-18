@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — /transactions/ v1 prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --row-hover: rgba(10, 62, 66, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body { cursor: none; }
+    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
+    @media (hover: none) { body { cursor: auto; } }
+
+    /* ===== Page sections ===== */
+    .page {
+      position: relative;
+      background: var(--paper);
+      padding: 60px 52px 80px;
+    }
+    .page__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Prototype-only divider between index and deep-dive previews */
+    .preview-divider {
+      max-width: 1120px;
+      margin: 80px auto;
+      padding: 24px 52px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .preview-divider span { color: var(--amber); }
+
+    /* ===== Dateline ===== */
+    .dateline {
+      margin-bottom: 24px;
+    }
+    .dateline__line {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      line-height: 1.4;
+    }
+    .dateline__stamp { color: var(--stamp); font-weight: 500; }
+    .dateline__body  { color: var(--secondary); }
+    .dateline__rule {
+      height: 0.5px;
+      background: var(--border);
+      margin-top: 12px;
+    }
+
+    /* ===== Index — title block ===== */
+    .title-block { margin-top: 40px; }
+
+    .h1 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(56px, 6vw, 96px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.6px;
+      color: var(--teal);
+      margin: 0;
+    }
+    .subhead {
+      margin: 16px 0 24px;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 580px;
+    }
+    .meta-strip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+    .meta-strip .meta-strip__rss {
+      color: var(--teal);
+      text-decoration: none;
+      margin-left: 6px;
+    }
+    .meta-strip .meta-strip__rss:hover { text-decoration: underline; }
+
+    /* ===== Filter pills ===== */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 24px;
+      margin: 48px 0 32px;
+      padding-bottom: 16px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .filter-pill {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1.4px;
+      font-weight: 400;
+      color: var(--secondary);
+      text-transform: lowercase;
+      text-decoration: none;
+      padding: 6px 0 8px;
+      border-bottom: 1px solid transparent;
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .filter-pill:hover { color: var(--ink); }
+    .filter-pill--active {
+      color: var(--teal);
+      font-weight: 500;
+      border-bottom-color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    /* ===== Ledger rows ===== */
+    .ledger {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ledger__row {
+      display: grid;
+      grid-template-columns: 120px 80px 96px 1fr 24px;
+      gap: 24px;
+      align-items: center;
+      padding: 14px 12px;
+      border-bottom: 0.5px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background-color 200ms ease;
+      min-height: 60px;
+    }
+    .ledger__row:first-child { border-top: 0.5px solid var(--border); }
+    .ledger__row:hover { background: var(--row-hover); }
+    .ledger__row:hover .ledger__title::after { transform: scaleX(1); }
+    .ledger__row:hover .ledger__glyph { transform: translateX(4px); }
+
+    .ledger__date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      font-weight: 400;
+    }
+    .ledger__date-month { color: var(--stamp); font-weight: 500; }
+    .ledger__date-year  { color: var(--secondary); }
+
+    .ledger__surface {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      padding: 3px 8px;
+      justify-self: start;
+      line-height: 1.2;
+    }
+
+    .pill-status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      justify-self: start;
+      line-height: 1.2;
+      border: 1px solid currentColor;
+    }
+    .pill-status--shipped  { color: var(--teal-success); }
+    .pill-status--active   { color: var(--stamp); }
+    .pill-status--paused   { color: var(--secondary); }
+    .pill-status--archived { color: var(--secondary); opacity: 0.7; }
+
+    .ledger__body { min-width: 0; }
+    .ledger__title {
+      position: relative;
+      display: inline;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--ink);
+      letter-spacing: -0.2px;
+      margin: 0;
+    }
+    .ledger__title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: var(--teal);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .ledger__valueprop {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      line-height: 1.4;
+      color: var(--secondary);
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ledger__glyph {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 16px;
+      color: var(--teal);
+      justify-self: end;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* ===== Footer fold ===== */
+    .footer-fold {
+      margin-top: 80px;
+      padding-top: 28px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-fold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .footer-fold a:hover { text-decoration: underline; }
+
+    /* ===========================================
+     * DEEP-DIVE PAGE
+     * =========================================== */
+    .deep__pill-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 40px 0 12px;
+    }
+    .deep__pill-row .ledger__surface,
+    .deep__pill-row .pill-status { font-size: 11px; padding: 4px 10px; }
+
+    .deep__title {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+      margin: 0 0 16px;
+      max-width: 900px;
+    }
+    .deep__tags {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+      margin-bottom: 48px;
+    }
+
+    .pullquote {
+      max-width: 760px;
+      margin: 0 auto 64px;
+      padding: 32px 8px;
+      border-top: 0.5px solid var(--teal);
+      border-bottom: 0.5px solid var(--teal);
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: -0.2px;
+      color: var(--teal);
+      text-align: left;
+    }
+    .pullquote::before { content: open-quote; color: var(--amber); margin-right: 0.1em; }
+    .pullquote::after  { content: close-quote; color: var(--amber); }
+
+    .loom {
+      max-width: 880px;
+      margin: 0 auto 80px;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #142528 0%, #0a3e42 100%);
+      border: 0.5px solid var(--border);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .loom__poster-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,249,240,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,249,240,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.5;
+    }
+    .loom__play {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,249,240,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      transition: transform 200ms ease;
+    }
+    .loom__play:hover { transform: scale(1.05); }
+    .loom__play::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 14px 0 14px 22px;
+      border-color: transparent transparent transparent var(--teal);
+      margin-left: 6px;
+    }
+    .loom__caption {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: rgba(255,249,240,0.7);
+    }
+
+    /* ===== Block heading ===== */
+    .block { margin-bottom: 64px; }
+    .block__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2.4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .block__heading::before { content: "─ "; opacity: 0.6; }
+    .block__heading::after  { content: " ─"; opacity: 0.6; }
+
+    /* ===== Methods strip ===== */
+    .methods {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .methods th, .methods td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 0.5px solid var(--border);
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      vertical-align: top;
+    }
+    .methods th {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+      padding-bottom: 14px;
+    }
+    .methods td { color: var(--secondary); }
+    .methods td:first-child { color: var(--ink); font-weight: 500; }
+    .methods a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .methods a:hover { text-decoration: underline; }
+
+    /* ===== 4Q block ===== */
+    .fourq h3 {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--stamp);
+      margin: 32px 0 12px;
+    }
+    .fourq h3:first-child { margin-top: 0; }
+    .fourq p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--ink);
+      margin: 0 0 16px;
+      max-width: 760px;
+    }
+    .fourq__canonical {
+      display: inline-block;
+      margin-top: 24px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .fourq__canonical:hover { text-decoration: underline; }
+
+    /* ===== Limitations ===== */
+    .limitations {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .limitations li {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      line-height: 1.6;
+      color: var(--secondary);
+      padding-left: 20px;
+      position: relative;
+      margin-bottom: 12px;
+      max-width: 760px;
+    }
+    .limitations li::before {
+      content: "·";
+      position: absolute;
+      left: 4px;
+      color: var(--stamp);
+      font-weight: 500;
+    }
+
+    /* ===== Related ===== */
+    .related-row {
+      display: flex;
+      gap: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      align-items: baseline;
+    }
+    .related-row__label {
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      flex-shrink: 0;
+      min-width: 140px;
+    }
+    .related-row__body { color: var(--teal); }
+    .related-row__body a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .related-row__body a:hover { text-decoration: underline; }
+
+    /* ===== Next / Prev ===== */
+    .navfold {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 0.5px solid var(--border);
+    }
+    .navfold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--teal);
+      text-decoration: none;
+      display: block;
+    }
+    .navfold a:hover { text-decoration: underline; }
+    .navfold__prev .navfold__hint,
+    .navfold__next .navfold__hint {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      color: var(--secondary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .navfold__next { text-align: right; }
+
+    .reg-mark {
+      position: absolute;
+      bottom: 32px;
+      right: 32px;
+      width: 28px;
+      height: 28px;
+      opacity: 0.7;
+    }
+
+    /* ===== Cursor ===== */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      pointer-events: none;
+      z-index: 800;
+      mix-blend-mode: difference;
+      transition: width 200ms, height 200ms, background 200ms;
+      will-change: transform;
+    }
+    .cursor--link { width: 36px; height: 36px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
+    .cursor--row  { width: 24px; height: 24px; background: var(--amber); mix-blend-mode: normal; }
+
+    /* ===== Tablet / Mobile ===== */
+    @media (max-width: 768px) {
+      .page { padding: 40px 24px 60px; }
+      .preview-divider { margin: 60px auto; padding: 20px 24px; }
+
+      .ledger__row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 16px 8px;
+        min-height: 0;
+      }
+      .ledger__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .ledger__glyph { display: none; }
+      .ledger__valueprop { white-space: normal; overflow: visible; text-overflow: clip; }
+
+      .h1 { font-size: 40px; }
+      .filters { gap: 4px 16px; }
+      .pullquote { padding: 24px 8px; font-size: 18px; }
+      .related-row { flex-direction: column; }
+      .navfold { grid-template-columns: 1fr; }
+      .navfold__next { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ledger__row, .ledger__title::after, .ledger__glyph, .loom__play, .filter-pill {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    const TOKENS = {
+      paper: "#FFF9F0",
+      ink: "#1A1A1E",
+      teal: "#0A3E42",
+      amber: "#FAC775",
+      secondary: "#546E71",
+      stamp: "#7C2D12",
+      anno: "rgba(10,62,66,0.7)",
+    };
+
+    const SURFACES = ["fleet", "pipeline", "product", "writing", "infra"];
+    const ACTIVE_SURFACE = "ALL";
+
+    const LEDGER = [
+      { date: "MAY 13",  year: "2026", surface: "FLEET",    status: "SHIPPED",  slug: "phase-d-typed-edges",       title: "Phase D — Typed Reasoning Edges",                  valueProp: "SQLite typed-edge layer; six relation types turn weekly knowledge-lint contradiction detection into a SQL query." },
+      { date: "MAY 12",  year: "2026", surface: "PRODUCT",  status: "SHIPPED",  slug: "intent-engineering-mcp",    title: "Intent Engineering MCP",                            valueProp: "npm + MCP registry; DNS-verified namespace; live 13 days ahead of locked launch." },
+      { date: "MAY 06",  year: "2026", surface: "FLEET",    status: "SHIPPED",  slug: "substack-drafter",          title: "Substack Drafter (gate-b-drafts)",                  valueProp: "Weekly Thursday drafter; HybridRouter qwen-coder; ships through gate b for review." },
+      { date: "APR 23",  year: "2026", surface: "PIPELINE", status: "SHIPPED",  slug: "vault-synthesizer-eval",    title: "Vault Synthesizer Eval Suite",                      valueProp: "10-case eval harness; Sonnet judge over weekly synthesis runs; replaces vibes with numbers." },
+      { date: "APR 18",  year: "2026", surface: "INFRA",    status: "SHIPPED",  slug: "mcp-registry-namespace",    title: "DNS-Verified MCP Registry Namespace",               valueProp: "com.seanwinslow/* namespace claimed via DNS TXT; first single-author cert on the registry." },
+      { date: "APR 11",  year: "2026", surface: "FLEET",    status: "SHIPPED",  slug: "daily-driver-dateline",     title: "Daily Driver Dateline Writer",                       valueProp: "Morning 08:45 agent writes dateline.json + next-piece.json from filesystem signals." },
+      { date: "APR 04",  year: "2026", surface: "PIPELINE", status: "SHIPPED",  slug: "seedream-frame-interp",     title: "Seedream Frame Interpolation Path",                 valueProp: "8fps pencil-test pass + Seedream 2.0 in-betweens; brings the loop from 12 frames to 36." },
+      { date: "MAR 28",  year: "2026", surface: "WRITING",  status: "ACTIVE",   slug: "comprehension-thesis-draft", title: "\"Comprehension over Code\" essay draft",            valueProp: "Manifesto draft sitting at 4,200 words; gate-c review with Sonnet; not yet shipped to Substack." },
+      { date: "MAR 21",  year: "2026", surface: "FLEET",    status: "ACTIVE",   slug: "judge-layer",                title: "Judge Layer (gate-b-judge)",                         valueProp: "Sonnet 4.6 review pass over every gate-b drafter output; flags hedges, vague nouns, off-voice paragraphs." },
+      { date: "MAR 14",  year: "2026", surface: "INFRA",    status: "SHIPPED",  slug: "vault-sqlite-migration",     title: "Vault SQLite Migration",                             valueProp: "20k markdown chunks moved from filesystem grep to SQLite FTS5; queries from 1.4s to 30ms." },
+      { date: "MAR 07",  year: "2026", surface: "FLEET",    status: "SHIPPED",  slug: "knowledge-loop-phase-6",     title: "Knowledge Loop — Phase 6",                           valueProp: "Connection-article synthesizer landed; first run produced 47 chunks overnight; output reviewed by Sean." },
+      { date: "FEB 28",  year: "2026", surface: "PIPELINE", status: "PAUSED",   slug: "animation-reconciliation",   title: "Animation Reconciliation Tool",                      valueProp: "Frame-by-frame diff between two takes; paused until hero loop ships. Returns in June." },
+      { date: "FEB 14",  year: "2026", surface: "PRODUCT",  status: "ARCHIVED", slug: "v3-portfolio",                title: "v3 Portfolio (the previous one)",                    valueProp: "Astro + Tailwind; shipped Q1 2026; sundowned in favor of the current redesign. Reference-only." },
+    ];
+
+    /* Single deep-dive page, modeled on the Phase D row */
+    const DEEP = {
+      dateline: { stamp: "BOSTON, MAY 13, 2026 — ", body: "phase d typed reasoning edges, shipped." },
+      surface: "FLEET",
+      status: "SHIPPED",
+      title: "Phase D — Typed Reasoning Edges",
+      tags: "agentic-engineering · sqlite · synthesizer",
+      valueProp: "A typed-edge SQLite layer the nightly synthesizer writes to as a side effect of connection articles. Six relation types turn weekly knowledge-lint contradiction detection into a SQL query instead of an LLM scan.",
+      loomCaption: "00:90 — install + nightly synth walkthrough",
+      methods: [
+        { task: "edge insertion",      tool: "Claude Code Superuser Pack (synthesizer)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "sql query",            tool: "sqlite3",                                   cost: "local / $0",                  link: null },
+        { task: "schema enforcement",   tool: "SQLite CHECK constraints",                  cost: "local / $0",                  link: null },
+        { task: "contradiction scan",   tool: "weekly knowledge-lint agent",               cost: "Haiku 4.5 / ~$0.04",          link: "/transactions/judge-layer" },
+      ],
+      explanation: {
+        whatIs:    "A six-relation typed-edge graph stored in SQLite, written to by the nightly synthesizer when it lands a new connection article. Each edge declares: source chunk, target chunk, relation type, and confidence. The graph is queryable from any agent in the fleet via a thin sqlite3 wrapper.",
+        why:       "Before Phase D, contradiction detection was an LLM pass over the full vault — 4 minutes, ~$0.30, brittle to prompt drift. After Phase D, contradiction detection is a `SELECT * FROM edges WHERE relation = 'contradicts'` — 30ms, $0, deterministic. The synthesizer already had the relation type in context when writing the connection article; persisting it cost nothing.",
+        break:     "The synthesizer can write a wrong relation type and there's no review step yet — Phase E (auto-review by Judge Layer) is the planned mitigation. The CHECK constraints catch bad enum values but not bad semantic mappings.",
+        learned:   "The cheapest reasoning edge is the one the agent already labeled while doing something else. Write the graph as a side effect of the artifact you're already producing — don't run a second LLM pass to extract it." },
+      canonicalUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/agents-sdk/lib/concept_edges/EXPLANATION.md",
+      limitations: [
+        "Contradiction detection is still rigid; it flags syntactic differences as logical conflicts.",
+        "Nightly synthesize takes 4 minutes because it queries the entire graph each run.",
+        "No visualization yet — the graph is queryable but not browsable from a UI.",
+      ],
+      related: {
+        partOf:       { label: "part of",       slug: "/work/superuser-pack",                 title: "Claude Code Superuser Pack (case study)" },
+        sisterShips:  [
+          { slug: "/transactions/knowledge-loop-phase-6",      title: "Knowledge Loop — Phase 6" },
+          { slug: "/transactions/vault-synthesizer-eval",      title: "Vault Synthesizer Eval Suite" },
+        ],
+        supersedes:   null,
+      },
+      navfold: {
+        prev: { date: "MAY 12", title: "Intent Engineering MCP",  slug: "/transactions/intent-engineering-mcp" },
+        next: { date: "APR 23", title: "Eval Suite",              slug: "/transactions/vault-synthesizer-eval" },
+      },
+    };
+
+    /* ===== Components ===== */
+
+    function Dateline({ stamp, body }) {
+      return (
+        <div className="dateline">
+          <div className="dateline__line">
+            <span className="dateline__stamp">{stamp}</span>
+            <span className="dateline__body">{body}</span>
+          </div>
+          <div className="dateline__rule" />
+        </div>
+      );
+    }
+
+    function PillStatus({ status }) {
+      const cls = `pill-status pill-status--${status.toLowerCase()}`;
+      return <span className={cls}>{status}</span>;
+    }
+
+    function IndexHeader() {
+      return (
+        <div className="title-block">
+          <h1 className="h1">Transactions</h1>
+          <p className="subhead">Every shipped artifact, dated, with the explanation attached.</p>
+          <p className="meta-strip">
+            <span>{LEDGER.length} ARTIFACTS · UPDATED 2026-05-18 · </span>
+            <a className="meta-strip__rss" href="/transactions/rss.xml" onClick={e=>e.preventDefault()}>RSS →</a>
+          </p>
+        </div>
+      );
+    }
+
+    function FilterPills() {
+      return (
+        <nav className="filters" aria-label="Filter by surface">
+          <a className={`filter-pill ${ACTIVE_SURFACE === "ALL" ? "filter-pill--active" : ""}`}
+             href="/transactions/" onClick={e=>e.preventDefault()} aria-current={ACTIVE_SURFACE === "ALL" ? "page" : undefined}>
+            [ALL]
+          </a>
+          {SURFACES.map(s => (
+            <a key={s}
+               className={`filter-pill ${ACTIVE_SURFACE === s.toUpperCase() ? "filter-pill--active" : ""}`}
+               href={`/transactions/${s}/`}
+               onClick={e=>e.preventDefault()}
+               aria-current={ACTIVE_SURFACE === s.toUpperCase() ? "page" : undefined}>
+              {s}
+            </a>
+          ))}
+        </nav>
+      );
+    }
+
+    function LedgerRow({ row }) {
+      return (
+        <a className="ledger__row"
+           href={`/transactions/${row.slug}/`}
+           onClick={e=>e.preventDefault()}
+           aria-label={`View transaction: ${row.title}, shipped ${row.date} ${row.year}`}
+           data-cursor-row>
+          <span className="ledger__date">
+            <span className="ledger__date-month">{row.date}, </span>
+            <span className="ledger__date-year">{row.year}</span>
+          </span>
+          <span className="ledger__surface" aria-hidden="true">{row.surface}</span>
+          <PillStatus status={row.status} />
+          <div className="ledger__body">
+            <span className="ledger__title">{row.title}</span>
+            <span className="ledger__valueprop">{row.valueProp}</span>
+          </div>
+          <span className="ledger__glyph" aria-hidden="true">→</span>
+        </a>
+      );
+    }
+
+    function Ledger() {
+      return (
+        <div className="ledger" role="list">
+          {LEDGER.map(row => <LedgerRow key={row.slug} row={row} />)}
+        </div>
+      );
+    }
+
+    function FooterFold() {
+      return (
+        <div className="footer-fold">
+          <a href="/transactions/rss.xml" onClick={e=>e.preventDefault()}>→ subscribe via RSS</a>
+          <a href="/work" onClick={e=>e.preventDefault()}>→ view the fleet ↗</a>
+        </div>
+      );
+    }
+
+    function IndexPage() {
+      return (
+        <section className="page" aria-label="Transactions index">
+          <div className="page__inner">
+            <Dateline
+              stamp="BOSTON, MAY 18, 2026 — "
+              body="12 artifacts this month. 9 from the fleet."
+            />
+            <IndexHeader />
+            <FilterPills />
+            <Ledger />
+            <FooterFold />
+          </div>
+        </section>
+      );
+    }
+
+    /* ===========================================
+     * DEEP-DIVE PAGE
+     * =========================================== */
+
+    function DeepDive() {
+      const d = DEEP;
+      return (
+        <section className="page" aria-label="Transaction deep-dive">
+          <div className="page__inner" style={{ position: "relative" }}>
+            <Dateline stamp={d.dateline.stamp} body={d.dateline.body} />
+
+            <div className="deep__pill-row">
+              <span className="ledger__surface">{d.surface}</span>
+              <PillStatus status={d.status} />
+            </div>
+
+            <h1 className="deep__title">{d.title}</h1>
+            <div className="deep__tags">{d.tags}</div>
+
+            <blockquote className="pullquote">{d.valueProp}</blockquote>
+
+            <div className="loom" data-cursor-row aria-label="Play Loom walkthrough">
+              <div className="loom__poster-bg" />
+              <button className="loom__play" type="button" aria-label="Play"></button>
+              <div className="loom__caption">{d.loomCaption}</div>
+            </div>
+
+            <div className="block">
+              <h2 className="block__heading">Methods</h2>
+              <table className="methods">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Agent / Tool</th>
+                    <th>Model / Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {d.methods.map((m, i) => (
+                    <tr key={i}>
+                      <td>{m.task}</td>
+                      <td>{m.link
+                            ? <a href={m.link} onClick={e=>e.preventDefault()}>→ {m.tool}</a>
+                            : m.tool}</td>
+                      <td>{m.cost}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="block">
+              <h2 className="block__heading">Explanation</h2>
+              <div className="fourq">
+                <h3>What is this?</h3>
+                <p>{d.explanation.whatIs}</p>
+                <h3>Why this approach?</h3>
+                <p>{d.explanation.why}</p>
+                <h3>What would break?</h3>
+                <p>{d.explanation.break}</p>
+                <h3>What did I learn?</h3>
+                <p>{d.explanation.learned}</p>
+                <a className="fourq__canonical"
+                   href={d.canonicalUrl}
+                   onClick={e=>e.preventDefault()}
+                   target="_blank">
+                  → read the canonical EXPLANATION.md on github ⓘ
+                </a>
+              </div>
+            </div>
+
+            <div className="block">
+              <h2 className="block__heading">What this doesn't yet do</h2>
+              <ul className="limitations">
+                {d.limitations.map((lim, i) => <li key={i}>{lim}</li>)}
+              </ul>
+            </div>
+
+            <div className="block">
+              <h2 className="block__heading">Related</h2>
+              {d.related.partOf && (
+                <div className="related-row">
+                  <span className="related-row__label">→ part of:</span>
+                  <span className="related-row__body">
+                    <a href={d.related.partOf.slug} onClick={e=>e.preventDefault()}>{d.related.partOf.title}</a>
+                  </span>
+                </div>
+              )}
+              {d.related.sisterShips && d.related.sisterShips.length > 0 && (
+                <div className="related-row">
+                  <span className="related-row__label">→ sister ships:</span>
+                  <span className="related-row__body">
+                    {d.related.sisterShips.map((s, i) => (
+                      <React.Fragment key={s.slug}>
+                        <a href={s.slug} onClick={e=>e.preventDefault()}>{s.title}</a>
+                        {i < d.related.sisterShips.length - 1 && " · "}
+                      </React.Fragment>
+                    ))}
+                  </span>
+                </div>
+              )}
+              {!d.related.supersedes && (
+                <div className="related-row">
+                  <span className="related-row__label">→ supersedes:</span>
+                  <span className="related-row__body" style={{ color: "var(--secondary)", opacity: 0.7 }}>(none)</span>
+                </div>
+              )}
+            </div>
+
+            <div className="navfold">
+              <a className="navfold__prev" href={d.navfold.prev.slug} onClick={e=>e.preventDefault()}>
+                <span className="navfold__hint">← {d.navfold.prev.date}</span>
+                {d.navfold.prev.title}
+              </a>
+              <a className="navfold__next" href={d.navfold.next.slug} onClick={e=>e.preventDefault()}>
+                <span className="navfold__hint">{d.navfold.next.date} →</span>
+                {d.navfold.next.title}
+              </a>
+            </div>
+
+            <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+              <line x1="14" y1="2"  x2="14" y2="26" stroke={TOKENS.anno} strokeWidth="1.2" />
+              <line x1="2"  y1="14" x2="26" y2="14" stroke={TOKENS.anno} strokeWidth="1.2" />
+              <line x1="6"  y1="6"  x2="9"  y2="6"  stroke={TOKENS.anno} strokeWidth="1.2" />
+              <line x1="22" y1="6"  x2="19" y2="6"  stroke={TOKENS.anno} strokeWidth="1.2" />
+              <line x1="6"  y1="22" x2="9"  y2="22" stroke={TOKENS.anno} strokeWidth="1.2" />
+              <line x1="22" y1="22" x2="19" y2="22" stroke={TOKENS.anno} strokeWidth="1.2" />
+            </svg>
+          </div>
+        </section>
+      );
+    }
+
+    function useReducedMotion() {
+      const [r, setR] = useState(false);
+      useEffect(() => {
+        const mq = matchMedia("(prefers-reduced-motion: reduce)");
+        setR(mq.matches);
+        const h = e => setR(e.matches);
+        mq.addEventListener?.("change", h);
+        return () => mq.removeEventListener?.("change", h);
+      }, []);
+      return r;
+    }
+
+    function Cursor() {
+      const ref = useRef(null);
+      const reduced = useReducedMotion();
+      const [mode, setMode] = useState("default");
+      useEffect(() => {
+        if (reduced) return;
+        const el = ref.current; if (!el) return;
+        let mx = innerWidth/2, my = innerHeight/2;
+        let cx = mx, cy = my, raf;
+        const move = e => { mx = e.clientX; my = e.clientY; };
+        const loop = () => {
+          cx += (mx - cx) * 0.18;
+          cy += (my - cy) * 0.18;
+          el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+          raf = requestAnimationFrame(loop);
+        };
+        addEventListener("mousemove", move); loop();
+        return () => { removeEventListener("mousemove", move); cancelAnimationFrame(raf); };
+      }, [reduced]);
+      useEffect(() => {
+        if (reduced) return;
+        const over = e => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          if (t.closest("[data-cursor-row]")) setMode("row");
+          else if (t.closest("a")) setMode("link");
+          else setMode("default");
+        };
+        document.addEventListener("mouseover", over);
+        return () => document.removeEventListener("mouseover", over);
+      }, [reduced]);
+      if (reduced) return null;
+      return <div ref={ref} className={`cursor cursor--${mode}`} aria-hidden="true" />;
+    }
+
+    function App() {
+      return (
+        <>
+          <IndexPage />
+          <div className="preview-divider">
+            ↓ PROTOTYPE-ONLY DIVIDER · DEEP-DIVE PAGE PREVIEW BELOW (<span>/transactions/phase-d-typed-edges/</span>) ↓
+          </div>
+          <DeepDive />
+          <Cursor />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+
+</html>

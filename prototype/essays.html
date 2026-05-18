@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — /essays/ v1 prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --border-faint: rgba(10, 62, 66, 0.10);
+      --row-hover: rgba(10, 62, 66, 0.04);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body { cursor: none; }
+    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
+    @media (hover: none) { body { cursor: auto; } }
+
+    /* ===== Page shell ===== */
+    .page {
+      position: relative;
+      background: var(--paper);
+      padding: 60px 52px 80px;
+    }
+    .page__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .preview-divider {
+      max-width: 1120px;
+      margin: 80px auto;
+      padding: 24px 52px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .preview-divider span { color: var(--amber); }
+
+    /* Torn paper edges */
+    .torn-top, .torn-bottom {
+      position: absolute;
+      left: 0; right: 0;
+      width: 100%;
+      height: 32px;
+      pointer-events: none;
+    }
+    .torn-top    { top: -16px; }
+    .torn-bottom { bottom: -16px; transform: scaleY(-1); }
+
+    /* ===== Dateline ===== */
+    .dateline { margin-bottom: 32px; }
+    .dateline__line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      line-height: 1.4;
+    }
+    .dateline__main { flex: 1; }
+    .dateline__stamp { color: var(--stamp); font-weight: 500; }
+    .dateline__body  { color: var(--secondary); }
+    .dateline__time  { color: var(--stamp); font-weight: 500; letter-spacing: 1.6px; }
+    .dateline__rule {
+      height: 0.5px;
+      background: var(--border);
+      margin-top: 12px;
+    }
+
+    /* ===== Index title block ===== */
+    .title-block { margin-top: 40px; }
+    .h1 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(56px, 6vw, 96px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.6px;
+      color: var(--teal);
+      margin: 0 0 24px;
+    }
+    .hook {
+      font-family: "Newsreader", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 32px);
+      font-weight: 300;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      max-width: 780px;
+      margin: 0 0 16px;
+    }
+    .subhead {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--secondary);
+      max-width: 620px;
+      margin: 0 0 24px;
+    }
+    .meta-strip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+    .meta-strip__rss {
+      color: var(--teal);
+      text-decoration: none;
+      margin-left: 6px;
+    }
+    .meta-strip__rss:hover { text-decoration: underline; }
+
+    /* ===== Essay rows ===== */
+    .essays {
+      margin-top: 56px;
+      list-style: none;
+      padding: 0;
+    }
+    .essay-row {
+      display: grid;
+      grid-template-columns: 120px 110px 1fr 200px;
+      gap: 32px;
+      align-items: center;
+      padding: 28px 12px;
+      border-bottom: 0.5px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background-color 200ms ease;
+      min-height: 150px;
+    }
+    .essay-row:first-child { border-top: 0.5px solid var(--border); }
+    .essay-row:hover { background: var(--row-hover); }
+    .essay-row:hover .essay-row__title::after { transform: scaleX(1); }
+
+    .essay-row__date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+    }
+    .essay-row__date-month { color: var(--stamp); font-weight: 500; }
+    .essay-row__date-year  { color: var(--secondary); }
+
+    .pill-status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid currentColor;
+      line-height: 1.2;
+      justify-self: start;
+    }
+    .pill-status--published { color: var(--teal-success); }
+    .pill-status--draft     { color: var(--secondary); }
+
+    .essay-row__body { min-width: 0; }
+    .essay-row__title {
+      position: relative;
+      display: inline-block;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      margin: 0 0 10px;
+    }
+    .essay-row__title::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: var(--teal);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .essay-row__excerpt {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--secondary);
+      letter-spacing: -0.1px;
+      margin: 0;
+      max-width: 560px;
+    }
+    .essay-row__diagram {
+      justify-self: end;
+      width: 200px;
+      height: 110px;
+      background: rgba(10, 62, 66, 0.03);
+      border: 0.5px solid var(--border);
+      padding: 6px;
+    }
+
+    /* ===== Footer fold ===== */
+    .footer-fold {
+      margin-top: 80px;
+      padding-top: 28px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-fold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .footer-fold a:hover { text-decoration: underline; }
+
+    /* ===========================================
+     * DEEP DIVE
+     * =========================================== */
+    .surface-pills {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 16px 0 16px;
+    }
+    .surface-pill {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .essay-title {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      color: var(--teal);
+      margin: 0 0 8px;
+      max-width: 900px;
+    }
+    .essay-subtitle {
+      font-family: "Newsreader", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+      color: var(--secondary);
+      margin: 0 0 16px;
+      max-width: 760px;
+    }
+    .tags {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+      margin-bottom: 16px;
+    }
+    .published-strip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+    .published-strip__pub { color: var(--stamp); }
+    .published-strip__rev { color: var(--secondary); margin-left: 12px; }
+
+    .pullquote {
+      max-width: 760px;
+      margin: 0 auto 64px;
+      padding: 32px 8px;
+      border-top: 0.5px solid var(--teal);
+      border-bottom: 0.5px solid var(--teal);
+      font-family: "Newsreader", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: -0.3px;
+      color: var(--teal);
+    }
+    .pullquote::before { content: open-quote; color: var(--amber); margin-right: 0.1em; }
+    .pullquote::after  { content: close-quote; color: var(--amber); }
+
+    /* ===== Essay body ===== */
+    .essay {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .essay p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      margin: 0 0 24px;
+    }
+    .essay h2 {
+      position: relative;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(28px, 3.2vw, 40px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.4px;
+      color: var(--teal);
+      margin: 56px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .essay h2::after {
+      content: "#";
+      position: absolute;
+      right: 0;
+      top: 4px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+    .essay h2:hover::after { opacity: 1; }
+
+    .essay blockquote {
+      margin: 28px 0;
+      padding-left: 24px;
+      border-left: 1px solid var(--secondary);
+    }
+    .essay blockquote p {
+      font-style: italic;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+    .essay blockquote cite {
+      font-family: "JetBrains Mono", monospace;
+      font-style: normal;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--stamp);
+      font-weight: 500;
+    }
+
+    .essay code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.86em;
+      padding: 1px 6px;
+      background: rgba(10, 62, 66, 0.06);
+      border-radius: 3px;
+    }
+
+    /* ===== Quadrant chart ===== */
+    .quadrant-wrap {
+      max-width: 880px;
+      margin: 56px auto 32px;
+    }
+    .quadrant-chart {
+      width: 100%;
+      background: var(--paper);
+      border: 0.5px solid var(--border);
+      padding: 28px;
+    }
+    .quadrant-chart svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .quadrant-caption {
+      margin-top: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      color: var(--secondary);
+      text-align: center;
+    }
+
+    /* ===== Quadrant legend ===== */
+    .quadrant-legend {
+      max-width: 880px;
+      margin: 0 auto 64px;
+      padding: 18px 24px;
+      background: rgba(10, 62, 66, 0.02);
+      border: 0.5px solid var(--border);
+    }
+    .quadrant-legend table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .quadrant-legend td {
+      padding: 6px 4px;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      vertical-align: top;
+      color: var(--ink);
+    }
+    .quadrant-legend td:first-child {
+      color: var(--stamp);
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      text-transform: lowercase;
+      width: 90px;
+    }
+    .quadrant-legend a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .quadrant-legend a:hover { border-bottom-color: var(--teal); }
+    .quadrant-legend td.muted { color: var(--secondary); }
+
+    /* ===== Role map ===== */
+    .rolemap-wrap {
+      max-width: 880px;
+      margin: 40px auto 0;
+    }
+    .rolemap {
+      width: 100%;
+      border-collapse: collapse;
+      border: 0.5px solid var(--border);
+      font-family: "JetBrains Mono", monospace;
+    }
+    .rolemap th, .rolemap td {
+      padding: 14px 18px;
+      border: 0.5px solid var(--border-faint);
+      text-align: left;
+      vertical-align: middle;
+    }
+    .rolemap th {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(10, 62, 66, 0.03);
+    }
+    .rolemap td {
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      color: var(--ink);
+    }
+    .rolemap td:nth-child(3) { color: var(--secondary); font-style: italic; }
+    .rolemap td:last-child { text-align: center; width: 80px; }
+    .rolemap a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .rolemap a:hover { text-decoration: underline; }
+    .rolemap-validated {
+      margin-top: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+    }
+
+    /* ===== Section heading (block, outside .essay) ===== */
+    .block { margin: 80px auto; max-width: 880px; }
+    .block__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2.4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .block__heading::before, .block__heading::after {
+      content: "";
+      height: 0.5px;
+      background: var(--border);
+      flex: 1;
+    }
+
+    /* ===== Plotted artifacts ===== */
+    .plotted {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .plotted li {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.6px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+    .plotted li::before {
+      content: "→ ";
+      color: var(--amber);
+      margin-right: 6px;
+    }
+    .plotted a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .plotted a:hover { text-decoration: underline; }
+    .plotted .sep { color: var(--secondary); margin: 0 8px; opacity: 0.6; }
+
+    /* ===== 4Q ===== */
+    .fourq__q { margin-bottom: 32px; }
+    .fourq__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 14px;
+      display: flex;
+      gap: 18px;
+      align-items: baseline;
+    }
+    .fourq__qnum { color: var(--amber); }
+    .fourq__qtitle {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 22px;
+      letter-spacing: -0.2px;
+      font-weight: 400;
+      color: var(--teal);
+      text-transform: none;
+    }
+    .fourq__body {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      margin: 0;
+    }
+    .fourq__body--q1 { font-size: 22px; }
+
+    /* ===== Foot links (3 links) ===== */
+    .foot-links {
+      max-width: 880px;
+      margin: 32px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .foot-links a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .foot-links a:hover { text-decoration: underline; }
+
+    /* ===== Related ===== */
+    .related-row {
+      display: flex;
+      gap: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      align-items: baseline;
+    }
+    .related-row__label {
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      flex-shrink: 0;
+      min-width: 220px;
+    }
+    .related-row__body a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .related-row__body a:hover { text-decoration: underline; }
+
+    /* ===== Next/prev ===== */
+    .navfold {
+      max-width: 880px;
+      margin: 64px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 0.5px solid var(--border);
+    }
+    .navfold__none {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--secondary);
+      opacity: 0.6;
+    }
+    .navfold__next { text-align: right; }
+
+    .reg-mark {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      width: 28px;
+      height: 28px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* Cursor */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      pointer-events: none;
+      z-index: 800;
+      mix-blend-mode: difference;
+      transition: width 200ms, height 200ms, background 200ms;
+      will-change: transform;
+    }
+    .cursor--link { width: 36px; height: 36px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
+    .cursor--row  { width: 24px; height: 24px; background: var(--amber); mix-blend-mode: normal; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .essay-row { grid-template-columns: 100px 110px 1fr; }
+      .essay-row__diagram { display: none; }
+    }
+    @media (max-width: 768px) {
+      .page { padding: 40px 24px 60px; }
+      .preview-divider { margin: 60px auto; padding: 20px 24px; }
+      .essay-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 8px; min-height: 0; }
+      .h1 { font-size: 44px; }
+      .hook { font-size: 20px; }
+      .pullquote { padding: 24px 8px; font-size: 19px; }
+      .essay h2 { font-size: 24px; }
+      .quadrant-wrap, .rolemap-wrap, .quadrant-legend, .block { padding-left: 0; padding-right: 0; }
+      .rolemap { font-size: 11px; }
+      .rolemap th, .rolemap td { padding: 10px 8px; }
+      .related-row { flex-direction: column; }
+      .navfold { grid-template-columns: 1fr; }
+      .navfold__next { text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .essay-row, .essay-row__title::after, .essay h2::after { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    const TOKENS = {
+      paper:    "#FFF9F0",
+      ink:      "#1A1A1E",
+      teal:     "#0A3E42",
+      success:  "#0F6E56",
+      secondary:"#546E71",
+      stamp:    "#7C2D12",
+      amber:    "#FAC775",
+      border:   "rgba(10,62,66,0.15)",
+    };
+
+    function TornEdge({ variant }) {
+      const cls = variant === "top" ? "torn-top" : "torn-bottom";
+      return (
+        <svg className={cls} viewBox="0 0 1440 32" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M0,16 Q24,8 48,14 T96,16 T144,12 T192,18 T240,14 T288,20 T336,12 T384,16 T432,10 T480,18 T528,14 T576,20 T624,12 T672,16 T720,8 T768,18 T816,14 T864,20 T912,12 T960,16 T1008,10 T1056,18 T1104,14 T1152,20 T1200,12 T1248,16 T1296,8 T1344,18 T1392,14 T1440,16 L1440,0 L0,0 Z"
+            fill={TOKENS.paper}
+          />
+        </svg>
+      );
+    }
+
+    function Dateline({ stamp, body, readingTime }) {
+      return (
+        <div className="dateline">
+          <div className="dateline__line">
+            <div className="dateline__main">
+              <span className="dateline__stamp">{stamp}</span>
+              <span className="dateline__body">{body}</span>
+            </div>
+            {readingTime && <div className="dateline__time">{readingTime} MIN READ</div>}
+          </div>
+          <div className="dateline__rule" />
+        </div>
+      );
+    }
+
+    /* ===== Quadrant chart (Mermaid stand-in) ===== */
+    function QuadrantChart({ thumb }) {
+      // size & coords
+      const W = thumb ? 200 : 720;
+      const H = thumb ? 110 : 480;
+      const m = thumb ? 8 : 56;
+      const x = (v) => m + (v) * (W - 2*m);
+      const y = (v) => H - m - (v) * (H - 2*m);
+      const points = [
+        { k: "iemcp",   xv: 0.85, yv: 0.78, c: TOKENS.teal },
+        { k: "vkmcp",   xv: 0.82, yv: 0.85, c: TOKENS.teal },
+        { k: "ce",      xv: 0.78, yv: 0.88, c: TOKENS.teal },
+        { k: "judge",   xv: 0.85, yv: 0.32, c: TOKENS.teal },
+        { k: "cost",    xv: 0.72, yv: 0.28, c: TOKENS.teal },
+        { k: "browser", xv: 0.18, yv: 0.22, c: TOKENS.stamp },
+        { k: "http",    xv: 0.25, yv: 0.78, c: TOKENS.stamp },
+      ];
+      const labelFs = thumb ? 7 : 12;
+      const dotR    = thumb ? 3 : 6;
+      return (
+        <svg viewBox={`0 0 ${W} ${H}`} aria-label="Access vs Meaning × Infrastructure vs Workflow">
+          {/* outer frame */}
+          <rect x={m} y={m} width={W - 2*m} height={H - 2*m} fill={TOKENS.paper} stroke={TOKENS.teal} strokeWidth="0.8" />
+          {/* mid lines */}
+          <line x1={W/2} y1={m} x2={W/2} y2={H-m} stroke={TOKENS.secondary} strokeWidth="0.5" strokeDasharray="3,3" />
+          <line x1={m}   y1={H/2} x2={W-m} y2={H/2} stroke={TOKENS.secondary} strokeWidth="0.5" strokeDasharray="3,3" />
+
+          {/* quadrant labels */}
+          {!thumb && (
+            <>
+              <text x={W/2 + 16} y={m + 18} fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.2" fill={TOKENS.teal}>MEANING + INFRA</text>
+              <text x={m + 16}   y={m + 18} fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.2" fill={TOKENS.secondary}>ACCESS + INFRA</text>
+              <text x={m + 16}   y={H - m - 8} fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.2" fill={TOKENS.secondary}>ACCESS + WORKFLOW</text>
+              <text x={W/2 + 16} y={H - m - 8} fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.2" fill={TOKENS.teal}>MEANING + WORKFLOW</text>
+
+              {/* axis labels */}
+              <text x={W - m + 6} y={H/2 + 4} fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.ink}>Meaning →</text>
+              <text x={m - 6}     y={H/2 - 6} fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.ink} textAnchor="end">← Access</text>
+              <text x={W/2}       y={m - 14}  fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.ink} textAnchor="middle">↑ Infrastructure</text>
+              <text x={W/2}       y={H - m + 22} fontFamily="JetBrains Mono" fontSize="11" fill={TOKENS.ink} textAnchor="middle">Workflow ↓</text>
+            </>
+          )}
+
+          {/* points */}
+          {points.map(p => (
+            <g key={p.k}>
+              <circle cx={x(p.xv)} cy={y(p.yv)} r={dotR} fill={p.c} opacity={p.c === TOKENS.stamp ? 0.7 : 1} />
+              {!thumb && (
+                <text x={x(p.xv) + 10} y={y(p.yv) + 4}
+                      fontFamily="JetBrains Mono" fontSize={labelFs}
+                      fill={p.c}>{p.k}</text>
+              )}
+            </g>
+          ))}
+        </svg>
+      );
+    }
+
+    /* ===== Quadrant Legend ===== */
+    const LEGEND = [
+      { key: "iemcp",   label: "intent-engineering MCP",                 artifact: { href: "/transactions/intent-engineering-mcp", text: "/transactions/intent-engineering-mcp/" } },
+      { key: "vkmcp",   label: "vault-knowledge-mcp",                    artifact: { href: "/architecture/vault-knowledge-mcp",    text: "/architecture/vault-knowledge-mcp/" } },
+      { key: "ce",      label: "concept_edges (memory primitive)",       artifact: { href: "/transactions/phase-d-typed-edges",    text: "/transactions/phase-d-typed-edges/" } },
+      { key: "judge",   label: "judge layer (review primitive)",         artifact: { href: "/transactions/judge-layer",            text: "/transactions/judge-layer/" } },
+      { key: "cost",    label: "cost caps (authority primitive)",        artifact: { href: "/transactions/control-architecture",   text: "/transactions/control-architecture/" } },
+      { key: "browser", label: "browser-use / computer-use agents",      artifact: null, note: "(negative-space — no portfolio artifact)" },
+      { key: "http",    label: "MCP HTTP transports / SaaS connectors",  artifact: null, note: "(negative-space — no portfolio artifact)" },
+    ];
+
+    function QuadrantLegend() {
+      return (
+        <div className="quadrant-legend">
+          <table>
+            <tbody>
+              {LEGEND.map(l => (
+                <tr key={l.key}>
+                  <td>{l.key}</td>
+                  <td className={l.artifact ? "" : "muted"}>
+                    {l.label}
+                    {l.artifact && <> — <a href={l.artifact.href} onClick={e=>e.preventDefault()}>{l.artifact.text}</a></>}
+                    {l.note && <> &nbsp;<span style={{ opacity: 0.7 }}>{l.note}</span></>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+
+    /* ===== Role Map ===== */
+    const ROLEMAP = {
+      lastValidated: "2026-06-19",
+      rows: [
+        { buyer: "Anthropic FDE Boston",    position: "meaning + workflow",   tell: '"control architectures around production agent deployments"', jdUrl: "https://anthropic.com/jobs/fde-boston" },
+        { buyer: "Glean",                    position: "meaning + infrastructure", tell: '"knowledge governance," "action primitives"',          jdUrl: "https://glean.com/jobs/agent-governance" },
+        { buyer: "Sierra / Decagon",         position: "meaning + workflow",   tell: '"agent PM loops," "structured action surfaces"',           jdUrl: "https://sierra.ai/careers/agent-pm" },
+        { buyer: "Cursor / Cognition",       position: "mixed",                 tell: '"developer workflow primitives"',                          jdUrl: "https://cursor.com/careers" },
+        { buyer: "Manus / Adept / browser-use", position: "access + workflow", tell: '"computer-use," "browser automation"',                     jdUrl: "https://browser-use.com/careers" },
+      ],
+    };
+
+    function RoleMap() {
+      return (
+        <div className="rolemap-wrap">
+          <table className="rolemap">
+            <thead>
+              <tr><th>Buyer</th><th>Position</th><th>Vocabulary tell</th><th>JD</th></tr>
+            </thead>
+            <tbody>
+              {ROLEMAP.rows.map((r, i) => (
+                <tr key={i}>
+                  <td>{r.buyer}</td>
+                  <td>{r.position}</td>
+                  <td>{r.tell}</td>
+                  <td><a href={r.jdUrl} onClick={e=>e.preventDefault()}>↗</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="rolemap-validated">last validated {ROLEMAP.lastValidated}</div>
+        </div>
+      );
+    }
+
+    /* ===== INDEX ===== */
+    const ESSAYS = [
+      {
+        slug: "meaning-over-access",
+        date: "JUN 19", year: "2026", status: "PUBLISHED",
+        title: "Access vs Meaning",
+        excerpt: "I bet the durable enterprise value is the semantic layer, not browser-clicking agents. Here are the five artifacts that back the bet, the seven plotted points, and the five buyers whose JDs already speak this vocabulary.",
+      },
+    ];
+
+    function IndexPage() {
+      return (
+        <section className="page" aria-label="Essays index">
+          <TornEdge variant="top" />
+          <div className="page__inner">
+            <Dateline
+              stamp="BOSTON, JUNE 19, 2026 — "
+              body="manifesto published. 1 essay."
+            />
+            <div className="title-block">
+              <h1 className="h1">Essays</h1>
+              <p className="hook">I bet on meaning, not access.</p>
+              <p className="subhead">Thesis-shaped writing where the artifacts back the claim.</p>
+              <p className="meta-strip">
+                <span>{ESSAYS.length} ESSAY · LAST PUBLISHED 2026-06-19 · </span>
+                <a className="meta-strip__rss" href="/essays/rss.xml" onClick={e=>e.preventDefault()}>RSS →</a>
+              </p>
+            </div>
+
+            <ul className="essays">
+              {ESSAYS.map(e => (
+                <li key={e.slug} style={{ listStyle: 'none' }}>
+                  <a className="essay-row"
+                     href={`/essays/${e.slug}/`}
+                     onClick={ev => ev.preventDefault()}
+                     data-cursor-row>
+                    <span className="essay-row__date">
+                      <span className="essay-row__date-month">{e.date}, </span>
+                      <span className="essay-row__date-year">{e.year}</span>
+                    </span>
+                    <span className={`pill-status pill-status--${e.status.toLowerCase()}`}>{e.status}</span>
+                    <div className="essay-row__body">
+                      <div className="essay-row__title">{e.title}</div>
+                      <p className="essay-row__excerpt">{e.excerpt}</p>
+                    </div>
+                    <div className="essay-row__diagram" aria-hidden="true">
+                      <QuadrantChart thumb />
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="footer-fold">
+              <a href="/essays/rss.xml"            onClick={e=>e.preventDefault()}>→ subscribe via RSS</a>
+              <a href="https://sean.substack.com"  onClick={e=>e.preventDefault()}>→ read on Substack ↗</a>
+              <a href="/work"                       onClick={e=>e.preventDefault()}>→ view the fleet ↗</a>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ===== DEEP DIVE ===== */
+    function FourQ() {
+      const qs = [
+        { n: "Q1", title: "What is this?", body: "A 1,500-word thesis that plots five named portfolio artifacts on a 2×2 quadrant of access-vs-meaning by infrastructure-vs-workflow, alongside two negative-space callouts (browser-use, MCP HTTP transports). Closes with a five-row role map of buyers whose JDs already speak this vocabulary." },
+        { n: "Q2", title: "Why this approach?", body: "Three options: (1) a generic \"agents in 2026\" think-piece; (2) a comparison piece against one named competitor; (3) a thesis-shaped essay that maps Sean's own artifacts onto a public spectrum and names the buyers who already buy on that axis. Picked (3). The artifacts ARE the argument; the buyers prove the market exists." },
+        { n: "Q3", title: "What would break?", body: "Three failure modes. (1) The semantic vs access frame collapses if the buyers stop using these vocabulary tells in their JDs — the role map is calibrated to 2026-06; refresh quarterly. (2) A new artifact lands on the access side and isn't mentioned — the thesis frays. (3) The plottedArtifacts list freezes at publish; new artifacts go in a v2 essay, not a silent expansion." },
+        { n: "Q4", title: "What did I learn?", body: "The fastest way to test a positioning thesis is to find the JDs that already match it. If five companies are hiring for what you claim to do — and you can name the vocabulary tells — the bet is already made. The essay just connects the dots." },
+      ];
+      return qs.map((q, i) => (
+        <div key={i} className="fourq__q">
+          <h3 className="fourq__heading">
+            <span className="fourq__qnum">{q.n}</span>
+            <span className="fourq__qtitle">{q.title}</span>
+          </h3>
+          <p className={`fourq__body ${i === 0 ? "fourq__body--q1" : ""}`}>{q.body}</p>
+        </div>
+      ));
+    }
+
+    function DeepDive() {
+      return (
+        <section className="page" aria-label="Access vs Meaning manifesto">
+          <TornEdge variant="top" />
+          <div className="page__inner" style={{ position: "relative" }}>
+            <Dateline
+              stamp="BOSTON, JUNE 19, 2026 — "
+              body="access vs meaning, published."
+              readingTime={6}
+            />
+
+            <div className="surface-pills">
+              <span className="surface-pill">ESSAYS</span>
+              <span className="pill-status pill-status--published">PUBLISHED</span>
+            </div>
+
+            <h1 className="essay-title">Access vs Meaning</h1>
+            <p className="essay-subtitle">A bet on the semantic layer.</p>
+            <div className="tags">meaning-layer · agents · pm-thesis</div>
+            <div className="published-strip">
+              <span className="published-strip__pub">PUBLISHED 2026-06-19</span>
+              {/* No LAST REVISED — only renders when ≠ published */}
+            </div>
+
+            <blockquote className="pullquote">
+              I don't think the durable enterprise value is agents clicking around UIs. I think it's the semantic layer:
+              typed work objects, authorization, memory provenance, reviewable decisions.
+            </blockquote>
+
+            {/* ============ ESSAY BODY ============ */}
+            <div className="essay">
+
+              {/* ----- 1. Opening hook (personal, ~150w) ----- */}
+              <h2 id="the-bet">The bet</h2>
+              <p>
+                Tuesday morning, 8:45. The Daily Driver agent had finished its overnight pass and left me a brief.
+                One line near the bottom said the synthesizer had written 11 new connection articles, two of which
+                flagged a contradiction in something I'd typed about <em>access</em> back in March. I read the contradiction,
+                agreed with it, and edited the original note. The whole exchange took 90 seconds and didn't involve a single
+                browser tab.
+              </p>
+              <p>
+                That's the thing I'm betting on. Not the agent clicking around a UI on my behalf. The agent owning the
+                semantic layer — the typed objects, the memory provenance, the review step — and surfacing the one decision
+                I actually needed to make. The 90 seconds is the product.
+              </p>
+
+              {/* ----- 2. Artifact map (sober, ~400w + chart) ----- */}
+              <h2 id="artifact-map">Artifact map</h2>
+              <p>
+                There are two stories about agents in 2026, and most companies are quietly making the wrong bet. The first
+                story is <strong>access</strong>: agents that drive a mouse, click through SaaS UIs, navigate browsers,
+                automate work the way a contractor would automate work. The second story is <strong>meaning</strong>: agents
+                operating on typed work objects — entities the agent's host understands semantically — under authorization,
+                with memory provenance, and with reviewable decisions on the way out.
+              </p>
+              <p>
+                The disagreement is not about which is harder. The disagreement is about which is durable. Access is
+                easier to demo and harder to govern. Meaning is harder to demo and easier to govern. The five artifacts
+                below sit on the meaning side because that's where the bet is. The two negative-space callouts on the
+                access side aren't strawmen — they're well-funded companies — they're just the work I'm choosing not to
+                do.
+              </p>
+            </div>
+
+            <div className="quadrant-wrap">
+              <div className="quadrant-chart">
+                <QuadrantChart />
+              </div>
+              <div className="quadrant-caption">
+                fig 1 — five artifacts on the meaning side; two negative-space callouts on the access side.
+              </div>
+            </div>
+
+            <QuadrantLegend />
+
+            <div className="essay">
+              <p>
+                The vertical axis matters too: infrastructure work tends to compound, workflow work tends to delight. Both
+                are fine; the bet is just that the meaning-shaped versions of each are the ones that survive the next
+                category collapse. <code>intent-engineering-mcp</code> and <code>vault-knowledge-mcp</code> are
+                meaning-infrastructure; the judge layer and cost caps are meaning-workflow. <code>concept_edges</code> sits
+                near the corner because typed reasoning edges are the primitive both halves depend on.
+              </p>
+
+              {/* ----- 3. Role map (sober, ~400w + table) ----- */}
+              <h2 id="role-map">Role map</h2>
+              <p>
+                The market test for a positioning thesis is: which companies are already hiring for it, and what vocabulary
+                do they use when they post the JD? Five buyers, surveyed 2026-06, all of them describing the same axis in
+                their own words. The table below pulls the load-bearing phrase out of each posting.
+              </p>
+              <p>
+                The most useful column is the third one — <em>vocabulary tell</em>. Three of the five JDs (Anthropic FDE,
+                Sierra, Glean) name the semantic-layer concepts directly: <em>control architectures</em>,{" "}
+                <em>action primitives</em>, <em>agent PM loops</em>. The fifth (Manus/browser-use) gives the access frame
+                its honest name: <em>computer-use</em>. Cursor sits in the middle because their answer is "yes, both" —
+                which is fine for them, harder for me to position into.
+              </p>
+            </div>
+
+            <RoleMap />
+
+            <div className="essay">
+              <p style={{ marginTop: 48 }}>
+                That's the play. The role map isn't a recruiter funnel; it's a calibration instrument. If three of the five
+                vocabulary tells move in the next quarter, the thesis frays and the essay deserves a revision. If they hold,
+                the bet stays placed.
+              </p>
+
+              {/* ----- 4. Anti-thesis (sober, ~250w) ----- */}
+              <h2 id="why-not-browser-first">Why not browser-first</h2>
+              <p>
+                The strongest version of the browser-first argument: the world is already shaped for human use, so agents
+                that can use the world the way humans do reach the largest possible total addressable market. That's a real
+                argument, and the companies building it (Manus, Adept, browser-use, OpenAI's Operator) are not wrong about
+                the surface area.
+              </p>
+              <p>
+                Where the argument gets thin is governance. A browser-clicking agent has no inherent reason to know what
+                the work object is — it's just pixels and selectors. When a finance team asks <em>which agent moved that
+                approval, on whose authority, against what budget, and can we replay the decision</em>, the access frame
+                has no good answer. The meaning frame answers all four by construction.
+              </p>
+              <p>
+                One concrete failure mode: a competitor of mine running browser-use against a vendor portal automated 80%
+                of a renewal flow last quarter. Two of the renewals went through at the wrong price tier because the agent
+                couldn't tell the difference between two visually identical buttons on a partially-rendered page. The
+                replay tooling didn't exist. The decision had to be reconstructed from screen recordings, which is the
+                opposite of governance. That's not a bug in the agent; it's a structural limit of the frame.
+              </p>
+
+              {/* ----- 5. Closing kicker (personal, ~150w) ----- */}
+              <h2 id="the-bet-restated">The bet, restated</h2>
+              <p>
+                The next ten years of agent work will be a long slow argument about whether the durable layer is access
+                or meaning. I think the answer is meaning, and I'm betting my career on it — building the artifacts,
+                naming the buyers, writing the spec that survives the third meeting where someone asks how the system
+                handles authorization.
+              </p>
+              <p>
+                If you're reading this in an email signature: I'm available. If you're hiring for any of the five roles
+                in the table above and the vocabulary tell matches what you actually mean, we should talk. I'll send my
+                agent fleet config before our second conversation.
+              </p>
+            </div>
+
+            {/* ============ Plotted artifacts ============ */}
+            <div className="block">
+              <h2 className="block__heading">Artifacts plotted on the chart</h2>
+              <ul className="plotted">
+                <li>
+                  intent-engineering MCP — <a href="/transactions/intent-engineering-mcp" onClick={e=>e.preventDefault()}>/transactions/intent-engineering-mcp/</a>
+                </li>
+                <li>
+                  vault-knowledge-mcp — <a href="/architecture/vault-knowledge-mcp" onClick={e=>e.preventDefault()}>/architecture/vault-knowledge-mcp/</a>
+                  <span className="sep">+</span>
+                  <a href="/transactions/vault-knowledge-mcp" onClick={e=>e.preventDefault()}>/transactions/vault-knowledge-mcp/</a>
+                </li>
+                <li>
+                  concept_edges (Phase D) — <a href="/transactions/phase-d-typed-edges" onClick={e=>e.preventDefault()}>/transactions/phase-d-typed-edges/</a>
+                </li>
+                <li>
+                  judge layer — <a href="/transactions/judge-layer" onClick={e=>e.preventDefault()}>/transactions/judge-layer/</a>
+                </li>
+                <li>
+                  cost caps as authority — <a href="/transactions/control-architecture" onClick={e=>e.preventDefault()}>/transactions/control-architecture/</a>
+                  <span className="sep">+</span>
+                  <a href="/architecture/control-architecture" onClick={e=>e.preventDefault()}>/architecture/control-architecture/</a>
+                </li>
+              </ul>
+            </div>
+
+            {/* ============ 4Q ============ */}
+            <div className="block">
+              <h2 className="block__heading">Explanation · 4Q</h2>
+              <div className="fourq">
+                <FourQ />
+              </div>
+              <div className="foot-links">
+                <a href="https://sean.substack.com/p/meaning-over-access" onClick={e=>e.preventDefault()} target="_blank">→ read on Substack ↗</a>
+                <a href="https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/MEANING_OVER_ACCESS.md" onClick={e=>e.preventDefault()} target="_blank">→ read the canonical source on github ⓘ</a>
+                <a href="https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/MEANING_OVER_ACCESS_EXPLANATION.md" onClick={e=>e.preventDefault()} target="_blank">→ read the canonical EXPLANATION.md on github ⓘ</a>
+              </div>
+            </div>
+
+            {/* ============ Related ============ */}
+            <div className="block">
+              <h2 className="block__heading">Related</h2>
+              <div className="related-row">
+                <span className="related-row__label">→ ledger row:</span>
+                <span className="related-row__body">
+                  <a href="/transactions/meaning-over-access" onClick={e=>e.preventDefault()}>/transactions/meaning-over-access/</a>
+                </span>
+              </div>
+              <div className="related-row">
+                <span className="related-row__label">→ companion architecture writeup:</span>
+                <span className="related-row__body">
+                  <a href="/architecture/vault-scorecard" onClick={e=>e.preventDefault()}>Vault as Agent Infrastructure</a>
+                </span>
+              </div>
+            </div>
+
+            {/* ============ Next / Prev ============ */}
+            <div className="navfold">
+              <div className="navfold__none">← (no previous essay)</div>
+              <div className="navfold__none navfold__next">(no next essay) →</div>
+            </div>
+
+            <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+              <line x1="14" y1="2"  x2="14" y2="26" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="2"  y1="14" x2="26" y2="14" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="6"  y1="6"  x2="9"  y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="22" y1="6"  x2="19" y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="6"  y1="22" x2="9"  y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+              <line x1="22" y1="22" x2="19" y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+            </svg>
+          </div>
+        </section>
+      );
+    }
+
+    /* ===== Cursor ===== */
+    function useReducedMotion() {
+      const [r, setR] = useState(false);
+      useEffect(() => {
+        const mq = matchMedia("(prefers-reduced-motion: reduce)");
+        setR(mq.matches);
+        const h = e => setR(e.matches);
+        mq.addEventListener?.("change", h);
+        return () => mq.removeEventListener?.("change", h);
+      }, []);
+      return r;
+    }
+    function Cursor() {
+      const ref = useRef(null);
+      const reduced = useReducedMotion();
+      const [mode, setMode] = useState("default");
+      useEffect(() => {
+        if (reduced) return;
+        const el = ref.current; if (!el) return;
+        let mx = innerWidth/2, my = innerHeight/2;
+        let cx = mx, cy = my, raf;
+        const move = e => { mx = e.clientX; my = e.clientY; };
+        const loop = () => {
+          cx += (mx - cx) * 0.18;
+          cy += (my - cy) * 0.18;
+          el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+          raf = requestAnimationFrame(loop);
+        };
+        addEventListener("mousemove", move); loop();
+        return () => { removeEventListener("mousemove", move); cancelAnimationFrame(raf); };
+      }, [reduced]);
+      useEffect(() => {
+        if (reduced) return;
+        const over = e => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          if (t.closest("[data-cursor-row]")) setMode("row");
+          else if (t.closest("a")) setMode("link");
+          else setMode("default");
+        };
+        document.addEventListener("mouseover", over);
+        return () => document.removeEventListener("mouseover", over);
+      }, [reduced]);
+      if (reduced) return null;
+      return <div ref={ref} className={`cursor cursor--${mode}`} aria-hidden="true" />;
+    }
+
+    function App() {
+      return (
+        <>
+          <IndexPage />
+          <div className="preview-divider">
+            ↓ PROTOTYPE-ONLY DIVIDER · DEEP-DIVE PAGE PREVIEW BELOW (<span>/essays/meaning-over-access/</span>) ↓
+          </div>
+          <DeepDive />
+          <Cursor />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

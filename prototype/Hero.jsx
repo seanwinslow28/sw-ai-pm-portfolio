@@ -18,7 +18,9 @@ const NAME = "Sean Winslow";
 const ROLE = "/ AI PRODUCT MANAGER";
 const TAGLINE = "Raised by Saturday morning cartoons and Vercel deployment logs.";
 
-const CHARACTER_SRC = "../reference-images/2D-Character-Sketch-Sean-v1.png";
+const CHARACTER_VIDEO_SRC = "./hero-loop.webm";
+const CHARACTER_POSTER_SRC =
+  "../sw-portfolio-animation-2026/loop-3-hero-shoulder/loop-3-frames-bg-removed/frame_0001.png";
 
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -156,15 +158,27 @@ function Badge({ start = 1200 }) {
 }
 
 function Character({ start = 1300 }) {
+  const reduced = useReducedMotion();
   return (
-    <div className="character" style={{ animationDelay: `${start}ms` }}>
-      <div className="character__breath">
-        <img
-          src={CHARACTER_SRC}
-          alt="Sean, standing, holding a pencil."
-          className="character__img"
+    <div
+      className="character"
+      style={{ animationDelay: `${start}ms` }}
+      aria-hidden="true"
+    >
+      {reduced ? (
+        <img src={CHARACTER_POSTER_SRC} alt="" className="character__video" />
+      ) : (
+        <video
+          src={CHARACTER_VIDEO_SRC}
+          poster={CHARACTER_POSTER_SRC}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="character__video"
         />
-      </div>
+      )}
     </div>
   );
 }
@@ -230,7 +244,6 @@ function Cursor() {
       const t = e.target;
       if (!(t instanceof Element)) return;
       if (t.closest(".name")) setHoverState("name");
-      else if (t.closest(".badge")) setHoverState("badge");
       else if (t.closest(".character")) setHoverState("character");
       else setHoverState("default");
     };
@@ -253,7 +266,6 @@ export default function Hero() {
               <Name start={400} />
               <RoleTag start={700} />
             </div>
-            <Badge start={1200} />
           </div>
           <div className="hero__body">
             <Tagline start={900} />

@@ -27,6 +27,23 @@ Sean is building his **third** attempt at a PM portfolio. The first two attempts
 
 ---
 
+## 0.5 Relationship to the Roadmap (NEW 2026-05-17)
+
+This redesign **supersedes** the V3-card portfolio currently in flight at `~/Code-Brain/sw-portfolio/`, which the [unified roadmap](2026-05-06-unified-roadmap%20copy.md) is actively deploying to `seanwinslow.com` on Mon 2026-05-19 (Council Gap-Fill 3, un-deferred 2026-05-16).
+
+**Why two efforts existed in parallel:** Sean built the V3 site first; the dissatisfaction with it (the "design-system-viewer template trap" diagnosed in §1.3) is what triggered this redesign. The roadmap kept executing against the V3 site in parallel because the job hunt needed a recruiter-readable surface *now* — couldn't wait for the redesign to finish.
+
+**What this means operationally:**
+
+- **The V3 site shipping Mon 5/19 is a tactical bridge.** It gives recruiters a `/transactions/` ledger they can read while the redesign builds out. Same domain (`seanwinslow.com`) — when the redesign goes live, it replaces V3 at the apex with no DNS churn.
+- **This redesign inherits five live ledger entries.** Sean already has `EXPLANATION.md` files committed for: intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, and Phase 6 knowledge loop. The redesign's `/transactions/` route reads from the same MDX content collection the V3 bridge established. **Nothing gets lost at the crossover.**
+- **Roadmap artifacts ship into the redesign automatically.** Every future Task ship (Judge Layer 6/4, Vault Scorecard 6/3, Access-vs-Meaning Manifesto 6/19, Control Architecture 6/10, vault-knowledge-mcp ~6/4, animation pipeline 6/11) writes its `EXPLANATION.md` into the content collection. The redesign just renders what's there.
+- **Three new IAs come from the roadmap (specced in §7):** `/transactions/` (the ledger), `/architecture/` (Vault Scorecard, Task 15), `/essays/` (Access-vs-Meaning Manifesto, Task 13). All locked, all expected to launch with the redesign.
+
+**The strategic punchline:** the redesign's job is to put the pencil-test personality + hand-drawn character + comedic-confident voice *around* a body of work that's already 80% built and 20% being framed. The roadmap is filling in the body. This plan is the frame. Both ship into the same domain.
+
+---
+
 ## 1. The Story — Why Portfolio 3
 
 ### 1.1 Context
@@ -120,6 +137,27 @@ Any future line (hero, About, case study, meta description) gets checked against
 - **Wire-service voice for technical/live surfaces.** The dateline strip, project tags, frame numbers, Methods strips — all JetBrains Mono, all wire-service register.
 - **Editorial voice for the human surfaces.** The hero tagline, About prose, case-study narrative — all Newsreader serif, all first-person-warm.
 
+### 3.3 Voice register by surface (NEW 2026-05-17)
+
+Adding a third row for the `/essays/` IA introduced by roadmap Task 13. Manifesto voice is **not** the same as hero/About voice — the manifesto genre doesn't suit pure Sedaris-mode comedy. The register changes by surface:
+
+| Surface | Register | Why |
+|---|---|---|
+| **Hero, About, case-study narrative** | Sedaris-tuned (first-person-warm, comedic-juxtaposition, specific nouns) | The personality surfaces. Comedic-confident voice is the load-bearing "this is not a template" signal. |
+| **`/essays/` (manifesto, thesis) — middle sections** | Sober/declarative, thesis-forward | Per Task 13: a manifesto is the recruiter-call cold-open ("theses get callbacks; tools get bookmarked"). Pure comedy undermines the analytical claim. |
+| **`/essays/` — opening hook + closing kicker** | Personal voice (Sedaris-coded OK) | Manifestos need a human anchor on the bookends. The middle stays sober. |
+| **Wire-service surfaces** (dateline, project tags, frame numbers, Methods strip) | JetBrains Mono, wire-service register | Editorial restraint. Real data, dated, no flourishes. |
+
+**The rule for any future copy:** if the surface is editorial-narrative, Sedaris; if it's thesis-analytical, sober-with-bookends; if it's machine-data, wire-service.
+
+### 3.4 Inherited STOP-DOING constraint (NEW 2026-05-17)
+
+From [unified roadmap](2026-05-06-unified-roadmap%20copy.md) Task 7 / Council Deprioritization 1 (Gemini Pro, chairman-endorsed):
+
+> **Never frame the HybridRouter as "Agent OS" or "runtime architecture" anywhere on the portfolio.**
+
+The HybridRouter is 100 lines of model-routing logic. Framing it as architecture invites senior engineers in technical screens to grill on concurrency / distributed caching / thread locking — fights Sean's beginner-to-intermediate coding level can't win. The one paragraph it earns lives inside the Control Architecture writeup (Task 14) under the "Authority" section — *"authority over which brain runs which task"* — and nowhere else. No standalone case-study tile, no dedicated essay, no hero callout. Sean's edge is **semantic product architecture** (specs, governance, routing, memory, authority, review) — stay there.
+
 ---
 
 ## 4. Locked Copy Decisions
@@ -127,10 +165,11 @@ Any future line (hero, About, case study, meta description) gets checked against
 | Surface | Copy | Status | Rationale |
 |---|---|---|---|
 | **Home hero tagline** | *"Raised by Saturday morning cartoons and Vercel deployment logs."* | LOCKED | Passes the parallel-lineage rule. Validated via 24-hour recall test — viewers recall "AI PM who animates" without studying. |
-| **About page lead** | *"I architect AI-native products, deploy agent fleets, ship to thousands — and on weekends, I draw my dog."* | LOCKED | Hard-cut deflation (epic register → mundane punchline). 18 words — too long for a hero, perfect as an About-page hook. |
+| **About page lead** | *"Trained by Looney Tunes and Vercel deployment logs. Ships AI-native products. Deploys agent fleets."* | LOCKED 2026-05-17 (revised) | Compressed-parallel credentials block. Three short sentences: sentence 1 rhymes deliberately with the home-hero tagline ("Raised by..." → "Trained by..."), creating cross-page lineage continuity; sentences 2-3 are factual ship-stamps in wire-service cadence. No comedic deflation. Harmonizes with home hero rather than competing with it. Replaces the dog-deflation framing (KILLED 2026-05-17 — see below). |
 | **Hero dateline (default pattern)** | e.g. *"BOSTON, MAY 13, 2026 — vault indexer wrote 47 chunks at 02:34. fleet green."* | LOCKED — pattern, not exact string | Wire-service "fleet pulse" pattern. Real data, rotates daily. See `hero-spec-v1.md` §8 for the 4 rotation patterns. |
 | **Killed line** | *"Ten years of cartoons, six months of PRDs..."* | KILLED | Violates the parallel-lineage rule. |
 | **Killed line** | *"Animator who became a product manager. Then taught the agents to draw."* | NOT USED | Strong line, but "became" implies the timeline. Held as a possible case-study or social pull-quote, never the hero. |
+| **Killed line** | *"I architect AI-native products, deploy agent fleets, ship to thousands — and on weekends, I draw my dog."* | KILLED 2026-05-17 | Originally locked as the About-page lead. Sean's review of the v1 About spec (2026-05-17) surfaced that the dog framing was forcing a personality artifact (the Polaroid gallery) that didn't earn itself — Sean picked the line because it made him laugh, not because it described his actual life. The hard-cut deflation was structurally sound but the punchline noun wasn't load-bearing. Replaced with the compressed-parallel credentials block above. The home-hero tagline ("Raised by Saturday morning cartoons and Vercel deployment logs") stays untouched. |
 | **Meta description / OG card / Substack tagline** | *"Raised by Saturday morning cartoons and Vercel deployment logs."* | CANDIDATE | The hero line doubles as the wire-service meta line — it's built like a dateline tagline. |
 
 ### 4.1 The hero treatment decision
@@ -213,7 +252,8 @@ The non-obvious calls:
 
 The non-obvious calls:
 - **Six grid cells:** 5 project tiles + 1 "next in production" card (dashed border, pulls the next deadline from a data source — the live-portfolio signal).
-- **The 5 projects (locked):** 2D Animation Pipeline (`ACTIVE`), Claude Code Superuser Pack (`ACTIVE`), Intent Engineering MCP (`COMING`), The Block — Campus + RevOps (`ARCHIVED`), 16BitFit Battle Mode (`PAUSED`).
+- **The 5 projects (locked):** 2D Animation Pipeline (`ACTIVE`), Claude Code Superuser Pack (`ACTIVE`), Intent Engineering MCP (`SHIPPED` — amended 2026-05-17, was `COMING`; npm + MCP registry live since 5/12), The Block — Campus + RevOps (`ARCHIVED`), 16BitFit Battle Mode (`PAUSED`).
+- **Tile count stays at 5; `/transactions/` is the overflow surface.** The roadmap has grown the artifact roster to 9+ flagship + 3 supporting (Judge Layer, Vault Scorecard, Manifesto, Control Architecture, vault-knowledge-mcp, Phase D EXPLANATION, Phase 6 EXPLANATION, eval suite, substack-drafter, Agent Fleet Dashboard, etc.). Only the 5 that warrant a narrative deep-dive get tiles here. The full ledger lives at `/transactions/` (specced in §7). Same MDX content collection feeds both surfaces.
 - **Status labels are weaponized:** exactly 5 strings (`ACTIVE` / `COMING` / `PAUSED` / `ARCHIVED` / `SHIPPED`), each with a locked color. The status is the second-strongest scan signal after the media.
 - **Tiles get titles** (against mynrd's media-only discipline) — because PM hiring managers scan project names. A thin metadata strip at the tile bottom: frame number + status + title + tags.
 - **Click-through:** full route per project (`/work/<slug>`), via Astro View Transitions — the tile media morphs into the case-study hero.
@@ -228,41 +268,51 @@ The non-obvious calls:
 
 | Spec | Covers | Priority | Notes |
 |---|---|---|---|
-| **Case-study page** (`/work/<slug>` body) | The investigation-board artifact thread (P4), Methods strip, 4Q block, next/prev nav | **Next after animation reconcile** | High editorial complexity. Once spec'd, all 5 MDX bodies can be drafted in one sitting. Shape is sketched in `projects-section-spec-v1.md` §11. |
+| **Case-study page** (`/work/<slug>` body) | The investigation-board artifact thread (P4), Methods strip, 4Q block (mirrors the canonical [`EXPLANATION-template.md`](../../../vault/40_knowledge/templates/EXPLANATION-template.md) — same What/Why/Break/Learn shape, not a parallel structure), next/prev nav | **Next after animation reconcile** | High editorial complexity. Once spec'd, all 5 MDX bodies can be drafted in one sitting. Shape is sketched in `projects-section-spec-v1.md` §11. |
 | **About page** | The character in its fullest form, the locked About lead line, the origin story, the parallel-lineage life narrative | High | Where D3 (pencil annotations) and the warm/origin-story half of the duality live most fully. |
-| **Footer + live agent feed** (E1) | The Cloudflare Worker reading `agent-run-history.csv`, the last-3-events display | Medium | Shares the data-source pattern with the hero dateline. |
+| **`/transactions/` ledger** (NEW 2026-05-17) | The reverse-chronological table of every shipped artifact. Columns: date / artifact / surface (pill) / 4Q link / repo. Sorted desc by `shipped`. RSS feed at `/transactions/rss.xml`. **Inherits the V3-bridge schema** (`surface`, `shipped`, `repoUrl`, `explanationUrl`) so the 5 existing ledger rows carry forward at the crossover. Every future Task ship writes its `EXPLANATION.md` and gets a row automatically. | **High** — this is the comprehensive artifact surface. The 5 case-study tiles are curated; the ledger is exhaustive. | Roadmap Gap-Fill 3 (Task 1 Step 3). The V3 bridge at `~/Code-Brain/sw-portfolio/` is the reference implementation — same schema, redesigned chrome. |
+| **`/architecture/` route** (NEW 2026-05-17) | First occupant: Vault Scorecard (Task 15, ships 6/3) — 5-test scoreboard table + ER diagram of `concept_edges` + `examples/public_vault_fixture/` link. Permanent IA for future architecture writeups (`vault-knowledge-mcp` follows here too). | **High** — Task 15 is the foundation doc for the Anthropic FDE Boston / Glean Agent Governance "agent-operable knowledge" interview answer. | Roadmap Task 15. Build-time `scripts/build_fetch_scorecard.mjs` curls `vault/SCORECARD.md` raw from the superuser-pack repo and renders it with V3 design tokens carried over into the new system. |
+| **`/essays/` route** (NEW 2026-05-17) | First occupant: Access-vs-Meaning Manifesto (Task 13, draft-lock 5/22, publish ~6/19). Long-form essay + Mermaid `quadrantChart` (access ↔ meaning × infrastructure ↔ workflow) + role-map table. **The URL in the email signature** — Sean's recruiter-call cold-open. Permanent IA for future thesis-shaped writing. | **High** — per Council Gap-Fill 2: "theses get callbacks; tools get bookmarked." | Roadmap Task 13. Voice register per §3.3 (sober middle + personal-voice bookends, NOT pure Sedaris). |
+| **Footer + dashboard link** (REVISED 2026-05-17) | Footer link out to `fleet.seanwinslow.com` — Task 11's Agent Fleet Observability Dashboard (v1 code-complete 2026-05-17 evening at `~/Code-Brain/agent-fleet-observability/`). Wire-service "view the fleet →" link + the latest dateline snapshot. No custom Cloudflare Worker. | **Low** — scope removed; the dashboard exists. | Was originally specced as a Cloudflare Worker reading `agent-run-history.csv` inline. Task 11 already shipped the richer surface; the portfolio just links to it. One click, not an embed. |
 | **Contact section** | The amber splash block, the "get in touch" rotating badge in its full-page form | Medium | Small surface; can fold into the About or footer spec. |
-| **MCP embed page** (E2) | `/work/intent-engineering-mcp` with a live read-only MCP tool call | Medium | Time it ~1 week before the May 25 `sw-mcp-intent-engineering` launch. |
+| **MCP embed page** (E2) | `/work/intent-engineering-mcp` with a live read-only MCP tool call | Medium | Status amended 2026-05-17: the MCP shipped 5/12 (13 days early). The embed is now retrospective ("here's the live server you can install") rather than launch-coupled. |
 | **Site-wide foundations** | Section-scoped splash-color custom properties, the torn-paper edge component, global cursor, dark-mode tokens | Before the build session | Mostly inherited from V3/V4 §2–§6; needs a consolidation pass. |
 
 ---
 
-## 8. The Character Animation (In Progress)
+## 8. The Character Animation
 
 **Working directory:** `sw-portfolio-animation-2026/`
 
-**Current contents (as of 2026-05-14):**
-- `anchor-1.png`, `anchor-2.png` — anchor frames for the character
-- `ai-companion-turnaround-anchor.png` — a turnaround sheet for an **AI companion character** (see flag below)
-- `loop-1/` — 166 raw frames (`loop-1-raw/`) + a Nano Banana 2 cleanup pass (`NB2_cleanup/`) + a 24fps contact sheet
-- `loop-2/` — 166 raw frames (`loop-2-raw/`) + an NB2 cleanup pass + a 24fps contact sheet
+**Contents (as of 2026-05-16):**
+- `anchor-images/` — `anchor-1.png`, `anchor-2.png`, `ai-companion-turnaround-anchor.png` (the Claude-mascot-inspired AI companion turnaround sheet), and `sean-character-turnaround-A-3.png`
+- `loop-1/` and `loop-2/` — raw + cleaned source frame sets (146 + 127 = 273 raw frames)
+- `Portfolio-BG-removal/BG-Removed/` — final 220-frame sequence + assembled `character.webm` (1.8MB, 9.2s @ 24fps, WebM VP9 with alpha)
+- `prompts/` — locked cleanup pipeline prompts (RESUME-PROMPT.md, RESUME-PROMPT-LOOP-2.md)
+- `scripts/` — locked v2a cleanup pipeline (cleanup-prompt-v2a.txt + clean-frame-v2a.sh)
 
-So: two ~7-second loops at 24fps, anchored to Sean's pencil-test character style, being cleaned up via Nano Banana 2.
+**Skills available for this work:** `.claude/skills/gemini-pencil-animation-image-gen`, `.claude/skills/gemini-image-gen`, and Seedream 2.0 (used to produce the original loop).
 
-**Skills available for this work:** `.claude/skills/gemini-pencil-animation-image-gen` (2D pencil-test style art, anchored to `reference-images/2D-Character-Sketch-Sean-v1.png`) and `.claude/skills/gemini-image-gen` (general image gen).
+### 8.1 RESOLVED 2026-05-16 — animation reconcile
 
-### 8.1 FLAG — reconcile with the hero spec
+**The original §7 of `hero-spec-v1.md`** (three small frame sets: 6-frame walk-in, 8-frame idle, 2-frame blink, single character) is **superseded**.
 
-`hero-spec-v1.md` §7 specs the character animation as **three small frame sets**: a 6-frame walk-in, an 8-frame idle breathing loop, a 2-frame blink. It assumes a single character (Sean).
+**Decision:** revise the hero to use a single seamless WebM loop of Sean + the AI companion at his shoulder. The companion is a pencil-test rendering of the Claude mascot (the chunky terra-cotta-orange mascot in `anchor-images/ai-companion-turnaround-anchor.png`). The hero spec has been edited end-to-end to match — see `hero-spec-v1.md` §1, §2, §3, §6, §7, §12, §13, §15, and Appendix A + B.
 
-The animation working directory shows something larger and possibly different: two 166-frame loops, plus an **AI companion character** that the hero spec does not account for.
+**The completed 9.2s loop** (`Portfolio-BG-removal/BG-Removed/character.webm`, 220 frames) is **not** for the hero — it's too long and would compete with the tagline. It **moves to the animation-pipeline case study** (`/work/animation-pipeline`) as that page's hero media, where the longer arrival-and-departure narrative beat is exactly the case-study artifact being presented.
 
-**This needs an explicit reconcile before the hero build.** Open questions:
-1. Are `loop-1` / `loop-2` the hero's walk-in + idle, or are they something else (a portfolio short? a different surface)?
-2. Does the AI companion character appear in the hero? If so, the hero spec's §7 and the composition wireframe (§2) both need revision — the companion is a second illustrated element competing for the right margin.
-3. If the companion is for a *different* surface (About page? a case study? the animation-pipeline project itself?), note that and leave the hero spec as-is.
+**The hero loop has been rendered.** What got built (`sw-portfolio-animation-2026/loop-3-hero-shoulder/loop-3-video/sean-typing-at-desk-hero-transparent.webm`):
+- 94 frames @ 24fps = 3.917s
+- 1280×720 landscape, VP9 with alpha channel (`alpha_mode=1`)
+- 378KB (well under the 800KB budget)
+- Composition: Sean seated at a desk typing at a keyboard; the AI companion (pencil-test rendered Claude mascot) floats beside him in the upper-right of the frame with a subtle vertical bob
+- Seamless: frame 1 matches frame 94
 
-Do not start the hero build session until this reconcile is resolved.
+The composition is **closer to a Sean-working-at-desk scene than the shoulder-hover concept** originally drafted. The asset was visually validated in the prototype on 2026-05-16 at the proportions: 1024×576 lane, `right: -180px` bleed (clips the source canvas's right empty band so the painted character sits visually flush with the right viewport edge), `bottom: 80px`. The rotating "get in touch" badge was removed in the same pass — character lane owns the right side; contact CTA moves to the footer per hero spec §10.
+
+**Narrative rationale:** the hero shows *working with* the AI companion (a permanent partnership in motion); the case study shows *how he met* it (the arrival-and-departure beat). The two surfaces tell the same story at different velocities.
+
+**About-page line stays as-is.** "I architect AI-native products, deploy agent fleets, ship to thousands — and on weekends, I draw my dog." The hero's AI companion (Claude mascot) and the About's dog are deliberately *parallel sides of Sean's life* — weekday AI partner / weekend dog. Not a contradiction; both real, both his.
 
 ---
 
@@ -270,16 +320,23 @@ Do not start the hero build session until this reconcile is resolved.
 
 ```
 PHASE 0 — RECONCILE & PREP   (now → before any build)
-  □ Reconcile the animation work (loop-1, loop-2, AI companion) with hero-spec-v1.md §7
-  □ Finalize character frame sets: walk-in, idle, blink (per hero spec, or revised)
+  ✅ Reconcile the animation work with hero-spec-v1.md §7 (resolved 2026-05-16; see §8.1)
+  ✅ Render the new hero loop (sean-typing-at-desk, 3.9s, WebM VP9 alpha, 378KB)
+  ✅ Prototype-validate the hero composition at 1024×576 / right:-180 / bottom:80
+  □ Copy/rename the hero loop into /public/assets/character/hero-loop.webm at scaffold time
+  □ Export a hero-loop-poster.webp from frame 1 (~30KB target)
+  □ Move the existing 9.2s loop (character.webm) to /work/animation-pipeline as its hero media
   □ Extend the Daily Driver agent to write /api/dateline.json each morning
   □ Add /api/next-piece.json (next deadline for the "next in production" card)
   □ Consolidation pass on site-wide foundations (color tokens, torn-paper edge, cursor)
 
 PHASE 1 — SPEC THE REMAINING SURFACES
-  □ Case-study page spec  (case-study-spec-v1.md)
-  □ About page spec       (about-spec-v1.md)
-  □ Footer + agent feed spec  (can fold into a site-chrome spec)
+  □ Case-study page spec       (case-study-spec-v1.md)
+  □ About page spec            (about-spec-v1.md)
+  □ /transactions/ ledger spec (transactions-spec-v1.md)  — NEW per §7
+  □ /architecture/ route spec  (architecture-spec-v1.md)  — NEW per §7
+  □ /essays/ route spec        (essays-spec-v1.md)        — NEW per §7
+  □ Site chrome + footer spec  (footer links to fleet.seanwinslow.com — no Worker)
 
 PHASE 2 — BUILD: HERO + PROJECTS
   □ Astro 5 scaffold + Tailwind 4 + Newsreader/JetBrains Mono
@@ -287,15 +344,19 @@ PHASE 2 — BUILD: HERO + PROJECTS
   □ Projects section (per projects-section-spec-v1.md — use Appendix C hand-off prompt)
   □ Re-run the 24-hour recall test on the live build (DoD item)
 
-PHASE 3 — BUILD: CASE STUDIES + ABOUT
-  □ 5 MDX case-study files
+PHASE 3 — BUILD: NARRATIVE + CATALOG SURFACES
+  □ 5 MDX case-study files (the curated narrative deep-dives)
   □ /work/[slug] dynamic route + View Transitions
   □ About page
+  □ /transactions/ ledger — index + [slug] deep-dive (inherits 5 existing EXPLANATION.md from V3 bridge)
+  □ /architecture/ — Vault Scorecard page (Task 15 ships 6/3; render its output)
+  □ /essays/ — Access-vs-Meaning Manifesto page (Task 13 draft-locks 5/22; render)
 
-PHASE 4 — BUILD: LIVE LAYER + LAUNCH
-  □ Footer live agent feed (Cloudflare Worker)
-  □ Deploy to Vercel
-  □ MCP embed page (timed ~1 week before May 25 sw-mcp-intent-engineering launch)
+PHASE 4 — LIVE LAYER + LAUNCH
+  □ Footer link to fleet.seanwinslow.com (Task 11 dashboard already live)
+  □ Deploy to Vercel at seanwinslow.com (replaces the V3 bridge at the same apex)
+  □ Cloudflare DNS — orange-cloud OFF for Vercel records (Vercel owns edge + SSL)
+  □ MCP embed page (post-ship; the MCP shipped 5/12, embed is retrospective)
 ```
 
 ### 9.1 Job-hunt anchors this serves
@@ -311,12 +372,15 @@ From `Sean-Winslow-Full-Personal-Context-v2.0.md` and the V4 sprint anchors:
 
 | # | Decision | Notes |
 |---|---|---|
-| 1 | **Animation reconcile** (see §8.1) | Blocks the hero build. Highest priority. |
-| 2 | **Domain name** | `seanwinslow.com` vs `seanwinslow.studio` vs other. Hero spec §13 flags it as TBD. |
+| 1 | ~~Animation reconcile~~ | **RESOLVED 2026-05-16.** See §8.1. Hero spec revised; 9.2s loop redirected to the animation-pipeline case study; new ~2.5s shoulder-hover loop in production via Seedream 2.0. |
+| 2 | ~~Domain name~~ | **RESOLVED 2026-05-17.** Locked to `seanwinslow.com` (Vercel + Cloudflare DNS-only / orange-cloud OFF). Inherited from roadmap Task 1 Step 3 — the V3 bridge already attached the domain Mon 5/19; the redesign replaces it at the same apex with no DNS churn. |
 | 3 | **Dark mode in V1?** | Hero spec ships light-mode only with a manual footer toggle. Time-of-day auto-switch (D5) is deferred. Confirm light-only is acceptable for launch. |
 | 4 | **The Block case study framing** | `ARCHIVED` status is locked. The case-study content must "frame the work, not the exit" — needs a careful first draft. Larry Cermak is the primary reference. |
 | 5 | **16BitFit case study** | `PAUSED` status is locked. The case study leans on the *pipeline*, not a finished game. Confirm there's enough shippable artifact material. |
 | 6 | **Three-folder nav (P3)** | Deferred from V1. Revisit if the standard Work/About/Contact nav feels too template once built. |
+| 7 | **Global nav shape (NEW 2026-05-17)** | With `/transactions/`, `/architecture/`, `/essays/` added (§7), the nav now has 5 candidates alongside `/about/`. **Default: all five as siblings** (`work`, `transactions`, `architecture`, `essays`, `about`) — they're distinct genres, conflating them dilutes each. **Switch only if** user-testing on the live build shows the nav reads as cluttered, in which case nest `architecture` and `essays` under a `writing` parent or surface them through `/transactions/` filtering. |
+| 8 | **Tile media for A-3 (NEW 2026-05-17)** | Intent Engineering MCP shipped 5/12; the "coming may 25" stamp is dead. **Default: 90-sec Loom poster** (terminal showing `npm install` resolving + Claude Desktop loading the server). Fallback: npm registry screenshot or MCP protocol diagram with `SHIPPED 2026-05-12` stamp. Pick at tile-build time based on which reads better at 400×500px. |
+| 9 | **Crossover sequencing (NEW 2026-05-17)** | The V3 bridge ships Mon 5/19; this redesign replaces it at the same domain on a date TBD. Two options: (a) hard cutover — V3 stays live until redesign's V1 DoD is green, then one deploy swaps it; (b) progressive — redesign launches with hero + projects + transactions, V3's `/transactions/` URLs stay valid through identical slugs, About + case studies fill in over weeks. **Default: hard cutover** — preserves the "first 5 seconds feel handmade" impression that progressive launch would dilute. **Switch only if** a hot recruiter loop in Week 4–5 needs a single new artifact surfaced before the full redesign is DoD-green. |
 
 ---
 
@@ -332,7 +396,10 @@ Everything a future session needs, in one place.
 | `docs/projects-section-spec-v1.md` | Projects section build spec (locked) |
 | `docs/Sean-Winslow-Full-Personal-Context-v2.0.md` | Sean's Tier-0 personal context — identity, values, career, goals |
 | `docs/sw-portfolio-idea-1.md` | The original portfolio idea note (design philosophy seed, color palette, the mynrd + Vercel inspirations) |
-| `docs/2026-05-06-unified-roadmap.md` | Prior roadmap (pre-this-session; partially superseded by §9 here) |
+| `docs/2026-05-06-unified-roadmap copy.md` | **The active job-hunt roadmap (last_updated 2026-05-17).** Source of truth for what artifacts ship when, the Council gap-fills (Tasks 12–15), the IA additions, and the V3-bridge crossover. This redesign absorbs everything that ships into the ledger. |
+| `~/Code-Brain/sw-portfolio/` (external) | **The V3 bridge site** shipping Mon 5/19 to `seanwinslow.com`. The redesign replaces it at the same apex. Useful as the live reference implementation of the `/transactions/` ledger schema (`surface`, `shipped`, `repoUrl`, `explanationUrl`, RSS). |
+| `~/Code-Brain/agent-fleet-observability/` (external) | **Task 11 dashboard** at `fleet.seanwinslow.com` (v1 code-complete 2026-05-17 evening). The redesign's footer links here; we don't reimplement live-data inline. |
+| Five live `EXPLANATION.md` files (external) | The crossover ledger inheritance: intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, Phase 6 knowledge loop. Carry forward at hard-cutover. |
 | `docs/previous-design-specs/DESIGN-SPEC-V3.md` | Prior attempt — the museum spec. Useful for foundations (§2–§6); the *direction* is superseded. |
 | `docs/previous-design-specs/DESIGN-SPEC-V4.md` | Prior attempt — V3 + Transactions wing. The 4Q block + Methods strip patterns carry forward; the two-velocity concept is deferred. |
 | `mynrd.co.uk-site-analysis/01-site-dna.md` | Full DNA teardown of the #1 inspiration anchor — page architecture, design tokens, motion, micro-interactions |
@@ -360,7 +427,8 @@ For future Claude sessions — the working mindset:
 6. **Brief and to the point.** No trailing summaries. Don't restate what a diff already shows. Calm, factual, zen tone.
 7. **Specs are tactical, this plan is strategic.** When a section gets locked, write a `*-spec-v1.md` for it and add a pointer here — don't bloat this file with build detail.
 8. **Update this doc when direction changes.** It's a living document. New locked decisions, killed ideas, resolved open questions — they land here.
+9. **The roadmap is the source of truth for what ships into the ledger; this plan is the source of truth for what it looks like (NEW 2026-05-17).** Every Task in `2026-05-06-unified-roadmap copy.md` that produces an `EXPLANATION.md` writes a row into the `/transactions/` content collection — automatically. The 5 case-study tiles only change when a flagship earns a narrative deep-dive. The ledger handles everything else with zero ceremony. If a new artifact emerges in the roadmap that doesn't fit the 5-tile slot, it's a ledger row, not a tile.
 
 ---
 
-*End of master plan. Last updated 2026-05-14.*
+*End of master plan. Last updated 2026-05-17.*
