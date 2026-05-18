@@ -36,9 +36,16 @@ out/
 # Large animation source/output (sync via iCloud/Drive instead)
 sw-portfolio-animation-2026/loop-1/
 sw-portfolio-animation-2026/loop-2/
+sw-portfolio-animation-2026/loop-3-hero-shoulder/
+sw-portfolio-animation-2026/hero-color-final-RAW-frames/
+sw-portfolio-animation-2026/hero-color-final-BG-removed-frames/
 sw-portfolio-animation-2026/FULL CLEAN/
 sw-portfolio-animation-2026/FULL CLEAN.zip
 sw-portfolio-animation-2026/Portfolio-BG-removal/
+
+# Symlinks into ignored animation folders (would break on remote)
+prototype/hero-loop.webm
+prototype/character-full-body.png
 
 # Python
 __pycache__/

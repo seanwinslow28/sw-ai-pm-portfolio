@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — Case-study v1 prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --anno: rgba(10, 62, 66, 0.7);
+      --strike: rgba(124, 45, 18, 0.8);
+      --margin-rule: rgba(10, 62, 66, 0.4);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body { cursor: none; }
+    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
+    @media (hover: none) { body { cursor: auto; } }
+
+    /* ===== Page shell ===== */
+    .page {
+      position: relative;
+      background: var(--paper);
+      padding: 60px 52px 80px;
+      overflow: hidden;
+    }
+    .page__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Right margin accent rule (desktop only) */
+    .page__inner::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -32px;
+      bottom: 0;
+      width: 1px;
+      background: var(--margin-rule);
+      pointer-events: none;
+    }
+    @media (max-width: 1024px) { .page__inner::after { display: none; } }
+
+    .page--archived .page__inner::after { opacity: 0.5; }
+
+    /* Torn paper edges */
+    .torn-top, .torn-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 32px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .torn-top    { top: -16px; }
+    .torn-bottom { bottom: -16px; transform: scaleY(-1); }
+
+    /* ===== Dateline ===== */
+    .dateline { margin-bottom: 24px; }
+    .dateline__line {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      line-height: 1.5;
+    }
+    .dateline__stamp { color: var(--stamp); font-weight: 500; }
+    .dateline__body  { color: var(--secondary); }
+    .dateline__rule {
+      height: 0.5px;
+      background: var(--border);
+      margin-top: 12px;
+    }
+
+    /* ===== Role / in-flight chrome ===== */
+    .chrome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 32px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+    .chrome__role {
+      color: var(--stamp);
+      font-weight: 500;
+    }
+    .chrome__range {
+      color: var(--secondary);
+    }
+
+    /* ===== Title block ===== */
+    .title-block {
+      position: relative;
+      margin-bottom: 48px;
+    }
+    .title-block__top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .frame {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 1.6px;
+      font-weight: 500;
+      color: var(--amber);
+    }
+    .pill-status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid currentColor;
+      line-height: 1.2;
+    }
+    .pill-status--active   { color: var(--stamp); }
+    .pill-status--shipped  { color: var(--teal-success); }
+    .pill-status--paused   { color: var(--secondary); }
+    .pill-status--archived { color: var(--secondary); opacity: 0.7; }
+    .pill-status--coming   { color: var(--stamp); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+    .case-title {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(48px, 5.6vw, 84px);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.6px;
+      color: var(--teal);
+      margin: 0 0 16px;
+      max-width: 920px;
+    }
+    .case-title--desat { color: var(--secondary); }
+
+    .title-block__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .tags {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+    }
+    .anchor {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 18px;
+      letter-spacing: 0.8px;
+      font-weight: 500;
+      color: var(--teal);
+    }
+    .anchor::before { content: "◐ "; color: var(--amber); }
+
+    /* SHIPPED stamp on title block */
+    .shipped-stamp {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 6px 14px;
+      border: 2px solid var(--stamp);
+      color: var(--stamp);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 3px;
+      font-weight: 500;
+      text-transform: uppercase;
+      transform: rotate(-3deg);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .shipped-stamp__sub {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 1.4px;
+      margin-top: 2px;
+      opacity: 0.7;
+    }
+
+    /* ===== Hero media ===== */
+    .hero-media {
+      max-width: 1120px;
+      margin: 0 auto 64px;
+      aspect-ratio: 16/9;
+      background: rgba(10, 62, 66, 0.06);
+      border: 0.5px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-media video,
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ===== ShippedNow live block (SHIPPED only) ===== */
+    .shipped-now {
+      margin: 0 0 48px;
+      padding: 18px 22px;
+      background: rgba(15, 110, 86, 0.06);
+      border-left: 3px solid var(--teal-success);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      line-height: 1.55;
+      color: var(--secondary);
+    }
+    .shipped-now__prefix {
+      color: var(--teal-success);
+      font-weight: 500;
+      letter-spacing: 1.6px;
+      margin-right: 8px;
+    }
+    .shipped-now__dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal-success);
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: livePulse 1.8s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.35; transform: scale(0.75); }
+    }
+    .shipped-now__updated {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      color: var(--secondary);
+      opacity: 0.7;
+    }
+
+    /* ===== Return condition callout (PAUSED only) ===== */
+    .return-condition {
+      margin: 0 0 48px;
+      padding: 20px 22px;
+      border: 0.5px solid var(--secondary);
+      background: rgba(84, 110, 113, 0.04);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      line-height: 1.6;
+      color: var(--secondary);
+      max-width: 760px;
+    }
+    .return-condition__heading {
+      color: var(--secondary);
+      font-weight: 500;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    /* ===== Frame-the-work preamble (ARCHIVED only) ===== */
+    .preamble {
+      margin: 0 0 48px;
+      max-width: 760px;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.45;
+      color: var(--secondary);
+      letter-spacing: -0.1px;
+      font-style: italic;
+    }
+
+    /* ===== Opener ===== */
+    .opener {
+      max-width: 680px;
+      margin: 0 0 96px;
+    }
+    .opener p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 24px;
+      line-height: 1.45;
+      font-weight: 300;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      margin: 0 0 24px;
+    }
+
+    /* ===== Section heading ===== */
+    .section { margin-bottom: 96px; position: relative; }
+    .section__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2.4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: rgba(10, 62, 66, 0.8);
+      margin: 0 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section__heading::before,
+    .section__heading::after {
+      content: "";
+      height: 0.5px;
+      background: var(--border);
+      flex: 1;
+    }
+
+    /* ===== Investigation board ===== */
+    .investigation {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+    .artifact {
+      display: grid;
+      grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+      gap: 48px;
+      align-items: start;
+      position: relative;
+    }
+
+    /* Artifact frame (Polaroid-style) */
+    .a-frame {
+      position: relative;
+      padding: 18px 18px 24px;
+      background: #ffffff;
+      border: 0.5px solid var(--amber);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+    .a-frame__tape {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 80px;
+      height: 18px;
+      background: rgba(250, 199, 117, 0.55);
+      border: 0.5px solid rgba(250, 199, 117, 0.7);
+    }
+    .a-frame__body {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      overflow: hidden;
+    }
+
+    /* Slack DM artifact */
+    .slack {
+      width: 100%;
+      padding: 18px;
+      background: #f6f5f3;
+      border: 0.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .slack__msg {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .slack__avatar {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background: var(--teal);
+      color: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .slack__avatar--alt { background: var(--stamp); }
+    .slack__bubble {
+      flex: 1;
+    }
+    .slack__author {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--ink);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .slack__time {
+      color: var(--secondary);
+      margin-left: 6px;
+      font-weight: 400;
+      font-size: 10px;
+    }
+    .slack__text {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    .slack__code {
+      display: inline-block;
+      padding: 1px 6px;
+      background: rgba(10, 62, 66, 0.08);
+      border-radius: 3px;
+      font-size: 11px;
+    }
+
+    /* Metric chart artifact */
+    .chart-wrap {
+      width: 100%;
+      padding: 12px;
+      background: #ffffff;
+    }
+    .chart-wrap text {
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    /* Board / PRD diff artifact */
+    .board {
+      width: 100%;
+      padding: 18px;
+      background: #fcfaf6;
+      border: 0.5px solid var(--border);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .board__line { display: block; }
+    .board__minus { color: var(--strike); text-decoration: line-through; }
+    .board__plus  { color: var(--teal-success); }
+    .board__meta  { color: var(--secondary); font-size: 11px; letter-spacing: 1.2px; }
+
+    /* Caption */
+    .caption {
+      padding-top: 10px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      line-height: 1.55;
+      color: var(--secondary);
+    }
+    .caption__stamp {
+      color: var(--stamp);
+      font-weight: 500;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .caption__stamp--killed { color: var(--strike); }
+
+    /* Cut artifact strikethrough */
+    .strike-x {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .strike-x svg { width: 100%; height: 100%; }
+
+    /* Pencil annotations */
+    .anno-arrow {
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .anno-arrow text {
+      font-family: "Caveat", cursive;
+      font-size: 18px;
+      fill: var(--anno);
+    }
+    .coffee-ring {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      opacity: 0.32;
+      z-index: 2;
+    }
+
+    /* ===== Methods strip ===== */
+    .methods-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .methods-table th, .methods-table td {
+      text-align: left;
+      padding: 14px 18px;
+      border-bottom: 0.5px solid var(--border);
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      vertical-align: top;
+    }
+    .methods-table th {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+      padding-bottom: 14px;
+    }
+    .methods-table td:first-child { color: var(--ink); font-weight: 500; }
+    .methods-table td:nth-child(2),
+    .methods-table td:nth-child(3) { color: var(--secondary); }
+    .methods-table a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid var(--teal);
+    }
+    .methods-table a:hover { background: rgba(10, 62, 66, 0.04); }
+
+    /* ===== 4Q block ===== */
+    .fourq { max-width: 760px; }
+    .fourq__q {
+      margin-bottom: 40px;
+    }
+    .fourq__heading {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 0 0 14px;
+      display: flex;
+      gap: 18px;
+      align-items: baseline;
+    }
+    .fourq__qnum {
+      color: var(--amber);
+      letter-spacing: 1.6px;
+    }
+    .fourq__qtitle {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 22px;
+      letter-spacing: -0.2px;
+      font-weight: 400;
+      color: var(--teal);
+      text-transform: none;
+    }
+    .fourq__body {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      margin: 0;
+    }
+    .fourq__body--q1 { font-size: 24px; }
+    .fourq__canonical {
+      display: inline-block;
+      margin-top: 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .fourq__canonical:hover { text-decoration: underline; }
+
+    /* ===== Next/prev nav ===== */
+    .navfold {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 0.5px solid var(--border);
+    }
+    .navfold a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+      transition: transform 200ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navfold a:hover .navfold__arrow--left  { transform: translateX(-4px); }
+    .navfold a:hover .navfold__arrow--right { transform: translateX(4px); }
+    .navfold__arrow {
+      font-size: 18px;
+      transition: transform 200ms ease;
+    }
+
+    /* Registration mark */
+    .reg-mark {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* ===== Status variants preview gallery ===== */
+    .gallery-divider {
+      max-width: 1120px;
+      margin: 80px auto;
+      padding: 24px 52px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .gallery-divider span { color: var(--amber); }
+
+    .variant-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 52px 80px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 64px;
+    }
+    .variant {
+      padding: 32px;
+      border: 0.5px solid var(--border);
+      background: rgba(10, 62, 66, 0.02);
+      position: relative;
+    }
+    .variant__label {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      padding: 4px 12px;
+      background: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      color: var(--stamp);
+      text-transform: uppercase;
+    }
+    .variant--archived { opacity: 0.85; }
+
+    /* ===== Custom cursor ===== */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      pointer-events: none;
+      z-index: 800;
+      mix-blend-mode: difference;
+      transition: width 200ms ease, height 200ms ease, background 200ms ease;
+      will-change: transform;
+    }
+    .cursor--link     { width: 36px; height: 36px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
+    .cursor--artifact { width: 28px; height: 28px; background: var(--amber); mix-blend-mode: normal; }
+
+    /* ===== Mobile / Tablet ===== */
+    @media (max-width: 1024px) {
+      .artifact { grid-template-columns: 1fr; gap: 16px; }
+      .anno-arrow, .coffee-ring { display: none; }
+    }
+    @media (max-width: 768px) {
+      .page { padding: 40px 24px 60px; }
+      .title-block__bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .navfold { flex-direction: column; gap: 24px; align-items: stretch; }
+      .navfold a:nth-child(2) { text-align: right; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pill-status--coming, .shipped-now__dot, .navfold__arrow {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    const TOKENS = {
+      paper:    "#FFF9F0",
+      ink:      "#1A1A1E",
+      teal:     "#0A3E42",
+      amber:    "#FAC775",
+      secondary:"#546E71",
+      stamp:    "#7C2D12",
+      success:  "#0F6E56",
+      anno:     "rgba(10,62,66,0.7)",
+      strike:   "rgba(124,45,18,0.8)",
+      border:   "rgba(10,62,66,0.15)",
+    };
+
+    /* ===== Shared components ===== */
+
+    function TornEdge({ variant }) {
+      const cls = variant === "top" ? "torn-top" : "torn-bottom";
+      return (
+        <svg className={cls} viewBox="0 0 1440 32" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M0,16 Q24,8 48,14 T96,16 T144,12 T192,18 T240,14 T288,20 T336,12 T384,16 T432,10 T480,18 T528,14 T576,20 T624,12 T672,16 T720,8 T768,18 T816,14 T864,20 T912,12 T960,16 T1008,10 T1056,18 T1104,14 T1152,20 T1200,12 T1248,16 T1296,8 T1344,18 T1392,14 T1440,16 L1440,0 L0,0 Z"
+            fill={TOKENS.paper}
+          />
+        </svg>
+      );
+    }
+
+    function Dateline({ stamp, body }) {
+      return (
+        <div className="dateline">
+          <div className="dateline__line">
+            <span className="dateline__stamp">{stamp}</span>
+            <span className="dateline__body">{body}</span>
+          </div>
+          <div className="dateline__rule" />
+        </div>
+      );
+    }
+
+    function Chrome({ role, range }) {
+      return (
+        <div className="chrome">
+          <span className="chrome__role">ROLE — {role}</span>
+          <span className="chrome__range">{range}</span>
+        </div>
+      );
+    }
+
+    function PillStatus({ status }) {
+      return <span className={`pill-status pill-status--${status.toLowerCase()}`}>{status}</span>;
+    }
+
+    function TitleBlock({ frame, status, title, tags, anchor, shippedAt, desat }) {
+      return (
+        <div className="title-block">
+          <div className="title-block__top">
+            <span className="frame">{frame} ·</span>
+            <PillStatus status={status} />
+          </div>
+          <h1 className={`case-title ${desat ? "case-title--desat" : ""}`}>{title}</h1>
+          <div className="title-block__bottom">
+            <span className="tags">{tags}</span>
+            {anchor && <span className="anchor">{anchor}</span>}
+          </div>
+          {status === "SHIPPED" && shippedAt && (
+            <div className="shipped-stamp" aria-hidden="true">
+              SHIPPED
+              <span className="shipped-stamp__sub">{shippedAt}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function HeroMedia({ src }) {
+      return (
+        <div className="hero-media" aria-hidden="true">
+          <video src={src} autoPlay muted loop playsInline preload="auto" />
+        </div>
+      );
+    }
+
+    function SectionHeading({ label }) {
+      return <h2 className="section__heading">{label}</h2>;
+    }
+
+    /* ===== Artifact components ===== */
+
+    function PolaroidArtifact({ stamp, label, scene, children }) {
+      return (
+        <div className="a-frame">
+          <div className="a-frame__tape" />
+          <div className="a-frame__body">
+            {children}
+          </div>
+        </div>
+      );
+    }
+
+    function CycleSVG({ frames }) {
+      return (
+        <svg viewBox="0 0 200 150" width="80%" height="80%" aria-hidden="true">
+          <rect x="6" y="6" width="188" height="138" fill="none" stroke={TOKENS.ink} strokeWidth="0.6" />
+          <path d="M70,110 Q60,80 80,75 Q100,72 110,90 L120,100 L122,114"
+                fill="none" stroke={TOKENS.ink} strokeWidth="1.1" />
+          <circle cx="92" cy="62" r="2" fill={TOKENS.ink} />
+          <path d="M80,75 Q88,55 95,52 L100,48 L96,58 Z"
+                fill="rgba(124,45,18,0.5)" stroke={TOKENS.ink} strokeWidth="0.8" />
+          <path d="M110,90 L128,82" stroke={TOKENS.ink} strokeWidth="0.8" fill="none" />
+          <text x="10" y="142" fontFamily="JetBrains Mono" fontSize="8" fill={TOKENS.secondary}>cycle_v2a — {frames} fr · 24fps</text>
+          <text x="148" y="142" fontFamily="JetBrains Mono" fontSize="8" fill={TOKENS.stamp}>● rec</text>
+        </svg>
+      );
+    }
+
+    function MetricChart() {
+      const v1 = [22, 23, 21, 22, 24, 22, 21, 23];
+      const v2a = [22, 18, 14, 10, 7, 5, 4, 4];
+      const max = 24;
+      const w = 360, h = 160, pad = 28;
+      const xStep = (w - pad*2) / (v1.length - 1);
+      const yFor = (v) => h - pad - (v / max) * (h - pad*2);
+      const path = (arr) => arr.map((v,i) => `${i === 0 ? "M" : "L"}${pad + i*xStep},${yFor(v)}`).join(" ");
+      return (
+        <div className="chart-wrap">
+          <svg viewBox={`0 0 ${w} ${h+30}`} width="100%" height="100%" aria-label="Render time per frame v1 to v2a">
+            <line x1={pad} y1={h-pad} x2={w-pad} y2={h-pad} stroke={TOKENS.border} strokeWidth="0.5" />
+            <line x1={pad} y1={pad}   x2={pad}   y2={h-pad} stroke={TOKENS.border} strokeWidth="0.5" />
+            <text x={pad-4} y={yFor(22)+4} textAnchor="end" fontSize="9" fill={TOKENS.secondary}>22s</text>
+            <text x={pad-4} y={yFor(4)+4}  textAnchor="end" fontSize="9" fill={TOKENS.secondary}>4s</text>
+            <path d={path(v1)}  stroke={TOKENS.secondary} strokeWidth="1.2" fill="none" strokeDasharray="3,3" />
+            <path d={path(v2a)} stroke={TOKENS.teal} strokeWidth="1.6" fill="none" />
+            {v2a.map((v,i) => <circle key={i} cx={pad + i*xStep} cy={yFor(v)} r="2.4" fill={TOKENS.teal} />)}
+            <text x={w-pad-6} y={yFor(v1[v1.length-1])-6} textAnchor="end" fontSize="9" fill={TOKENS.secondary}>v1 (22s)</text>
+            <text x={w-pad-6} y={yFor(v2a[v2a.length-1])+14} textAnchor="end" fontSize="9" fill={TOKENS.teal} fontWeight="500">v2a (4s)</text>
+            <text x={w/2}    y={h+18} textAnchor="middle" fontSize="9" fill={TOKENS.stamp} letterSpacing="1.6">RENDER TIME PER FRAME · APR–MAY 2026</text>
+          </svg>
+        </div>
+      );
+    }
+
+    function SlackDM() {
+      return (
+        <div className="slack">
+          <div className="slack__msg">
+            <div className="slack__avatar">EL</div>
+            <div className="slack__bubble">
+              <div className="slack__author">eng lead<span className="slack__time">apr 23, 4:11 pm</span></div>
+              <div className="slack__text">
+                the alpha channel is the rub. <span className="slack__code">h264</span> isn't carrying it cleanly — i think we need <span className="slack__code">vp9</span> with <span className="slack__code">alpha_mode=1</span>, not h264.
+              </div>
+            </div>
+          </div>
+          <div className="slack__msg">
+            <div className="slack__avatar slack__avatar--alt">SW</div>
+            <div className="slack__bubble">
+              <div className="slack__author">sw<span className="slack__time">apr 23, 4:14 pm</span></div>
+              <div className="slack__text">
+                that tracks. switching the pipeline tonight. expect a v2a tomorrow.
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function BoardDiff() {
+      return (
+        <div className="board">
+          <span className="board__meta">// PRD: animation-pipeline.md · diff @ rev3</span>
+          <span className="board__line"> </span>
+          <span className="board__line board__minus">- target loop length: 4.0s</span>
+          <span className="board__line board__plus">+ target loop length: 9.2s (case-study hero, not portfolio hero)</span>
+          <span className="board__line"> </span>
+          <span className="board__line board__minus">- frame budget: 96 fr</span>
+          <span className="board__line board__plus">+ frame budget: 220 fr</span>
+          <span className="board__line"> </span>
+          <span className="board__line board__minus">- bg: feathered transparent over teal</span>
+          <span className="board__line board__plus">+ bg: full alpha (page-agnostic)</span>
+        </div>
+      );
+    }
+
+    function KilledScript() {
+      return (
+        <div className="board" style={{ position: 'relative' }}>
+          <span className="board__meta">// clean-frame-v1.sh</span>
+          <span className="board__line">#!/bin/bash</span>
+          <span className="board__line">for f in raw/*.png; do</span>
+          <span className="board__line">  rembg i "$f" "clean/$(basename "$f")"</span>
+          <span className="board__line">  convert "clean/$(basename "$f")" \</span>
+          <span className="board__line">    -channel A -threshold 50% \</span>
+          <span className="board__line">    "clean/$(basename "$f")"</span>
+          <span className="board__line">done</span>
+          <div className="strike-x" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+              <line x1="4"  y1="4"  x2="96" y2="96" stroke={TOKENS.strike} strokeWidth="1.6" />
+              <line x1="96" y1="4"  x2="4"  y2="96" stroke={TOKENS.strike} strokeWidth="1.6" />
+            </svg>
+          </div>
+        </div>
+      );
+    }
+
+    function Caption({ stamp, body, killed }) {
+      return (
+        <div className="caption">
+          <span className={`caption__stamp ${killed ? "caption__stamp--killed" : ""}`}>{stamp}</span>
+          {body}
+        </div>
+      );
+    }
+
+    function AnnoArrow({ label, style }) {
+      return (
+        <svg className="anno-arrow" style={style} viewBox="0 0 200 80" aria-hidden="true">
+          <path d="M180,28 Q120,8 30,40" stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
+          <path d="M30,40 L42,32 M30,40 L40,48" stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
+          <text x="100" y="72" textAnchor="middle">{label}</text>
+        </svg>
+      );
+    }
+
+    function CoffeeRing({ style }) {
+      return (
+        <svg className="coffee-ring" style={style} viewBox="0 0 120 120" aria-hidden="true">
+          <ellipse cx="60" cy="60" rx="52" ry="48"
+            fill="none" stroke="rgba(124,45,18,0.65)" strokeWidth="3" strokeDasharray="180,40" />
+          <ellipse cx="60" cy="60" rx="44" ry="40"
+            fill="none" stroke="rgba(124,45,18,0.4)" strokeWidth="1" />
+          <ellipse cx="58" cy="62" rx="46" ry="42"
+            fill="rgba(124,45,18,0.06)" />
+        </svg>
+      );
+    }
+
+    function RegMark() {
+      return (
+        <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+          <line x1="14" y1="2"  x2="14" y2="26" stroke={TOKENS.amber} strokeWidth="1.2" />
+          <line x1="2"  y1="14" x2="26" y2="14" stroke={TOKENS.amber} strokeWidth="1.2" />
+          <line x1="6"  y1="6"  x2="9"  y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+          <line x1="22" y1="6"  x2="19" y2="6"  stroke={TOKENS.amber} strokeWidth="1.2" />
+          <line x1="6"  y1="22" x2="9"  y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+          <line x1="22" y1="22" x2="19" y2="22" stroke={TOKENS.amber} strokeWidth="1.2" />
+        </svg>
+      );
+    }
+
+    /* ===== Methods strip ===== */
+
+    function MethodsStrip({ methods }) {
+      return (
+        <table className="methods-table">
+          <thead>
+            <tr><th>Task</th><th>Agent / Tool</th><th>Model / Cost</th></tr>
+          </thead>
+          <tbody>
+            {methods.map((m, i) => (
+              <tr key={i}>
+                <td>{m.task}</td>
+                <td>{m.link
+                      ? <a href={m.link} onClick={e=>e.preventDefault()} data-cursor-link>{m.tool}</a>
+                      : m.tool}</td>
+                <td>{m.cost}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+
+    /* ===== 4Q ===== */
+
+    function FourQBlock({ frame, content, canonical }) {
+      const questions = [
+        { n: "Q1", title: "What is this?",      body: content.what,  highlight: true },
+        { n: "Q2", title: "Why this approach?", body: content.why },
+        { n: "Q3", title: "What would break?",  body: content.break },
+        { n: "Q4", title: "What did I learn?",  body: content.learn },
+      ];
+      return (
+        <div className="fourq">
+          {questions.map((q) => (
+            <div key={q.n} className="fourq__q">
+              <h3 className="fourq__heading">
+                <span className="fourq__qnum">{frame}.{q.n}</span>
+                <span className="fourq__qtitle">{q.title}</span>
+              </h3>
+              <p className={`fourq__body ${q.highlight ? "fourq__body--q1" : ""}`}>{q.body}</p>
+            </div>
+          ))}
+          {canonical && (
+            <a className="fourq__canonical" href={canonical} onClick={e=>e.preventDefault()} target="_blank">
+              → read the canonical EXPLANATION.md ⓘ
+            </a>
+          )}
+        </div>
+      );
+    }
+
+    /* ===== Next/prev ===== */
+
+    function NavFold({ prev, next }) {
+      return (
+        <div className="navfold">
+          <a href={prev.href} onClick={e=>e.preventDefault()} data-cursor-link>
+            <span className="navfold__arrow navfold__arrow--left">←</span>
+            <span>{prev.label}</span>
+          </a>
+          <a href={next.href} onClick={e=>e.preventDefault()} data-cursor-link>
+            <span>{next.label}</span>
+            <span className="navfold__arrow navfold__arrow--right">→</span>
+          </a>
+        </div>
+      );
+    }
+
+    /* ===== The full A-1 page ===== */
+
+    const A1 = {
+      dateline: {
+        stamp: "BOSTON, MAY 18, 2026 — ",
+        body: "animation pipeline, rev 3. last frame rendered 14 hours ago.",
+      },
+      chrome: { role: "pm + builder + operator", range: "IN FLIGHT 2026-03 → 2026-06" },
+      title: {
+        frame: "A-1", status: "ACTIVE",
+        title: "2D Animation Pipeline",
+        tags: "animation · agentic · pipeline",
+        anchor: "220 FRAMES",
+      },
+      methods: [
+        { task: "frame cleanup",   tool: "clean-frame-v2a.sh",          cost: "rembg / $0",                       link: null },
+        { task: "render",          tool: "ffmpeg + libvpx-vp9",         cost: "local / $0",                       link: null },
+        { task: "style anchor",    tool: "Seedream 2.0",                cost: "~$0.40 / run",                     link: null },
+        { task: "orchestration",   tool: "Claude Code Superuser Pack",  cost: "Claude Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "frame interp",    tool: "RIFE",                        cost: "local GPU / $0",                   link: null },
+      ],
+      fourq: {
+        what:  "A frame-by-frame pencil-test pipeline that takes Sean's hand-drawn keyframes, runs them through a rembg cleanup pass, applies Seedream 2.0 as a style-anchor for in-betweens, and outputs a transparent-alpha VP9 loop that drops directly into the site. Designed to render the home-hero loop nightly without a human in the cleanup loop.",
+        why:   "Three options: (1) full Procreate-by-hand — high authenticity, weeks per loop. (2) Midjourney/Flux end-to-end — instant, but the line doesn't read as Sean's hand. (3) Hand keyframes + agent in-betweens — slow start, fast tail, line stays Sean's. Picked (3). Trade-off accepted: the first loop took 6 weeks; the next will take 4 days.",
+        break: "Three failure modes. (1) Seedream style drift — the in-betweens stop reading as one character; detection: weekly visual diff against the anchor sheet. (2) Alpha-channel regression — h264 keeps creeping back in the ffmpeg flags; detection: the build script greps for h264 and fails loudly. (3) RIFE temporal jitter on slow scenes; detection: cycle-level perceptual hash; jitter > threshold flags the take for re-render.",
+        learn: "The pipeline IS the deliverable, not the loop. Once the pipeline holds, every loop after the first is a tax, not a project. The instinct to ship the loop first is wrong; ship the pipeline, the loops fall out.",
+      },
+      canonical: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/animation-pipeline/EXPLANATION.md",
+      navfold: {
+        prev: { href: "/work/16bitfit",       label: "A-5 16BITFIT BATTLE MODE" },
+        next: { href: "/work/superuser-pack", label: "A-2 SUPERUSER PACK" },
+      },
+    };
+
+    function CaseStudyA1() {
+      return (
+        <section className="page" aria-label="A-1 case study">
+          <TornEdge variant="top" />
+          <div className="page__inner">
+            <Dateline stamp={A1.dateline.stamp} body={A1.dateline.body} />
+            <Chrome role={A1.chrome.role} range={A1.chrome.range} />
+            <TitleBlock {...A1.title} />
+
+            <HeroMedia src="./hero-loop.webm" />
+
+            <div className="opener">
+              <p>I taught Seedream to draw me. Not in the "type a prompt, get a sticker" way — in the "load the turnaround sheet, lock the face geometry, feed it three keyframes of me carrying my coffee, and watch the in-betweens land in Sean's line, not Midjourney's." That's the difference between a hero loop you can show a recruiter and an AI sticker you have to apologize for.</p>
+              <p>The first cleaned cycle was 146 frames and 22 seconds per frame to render. The current pipeline is 220 frames at 4 seconds. The math worked because somebody finally told me the alpha channel was the rub. (Anonymized engineer, eternally vindicated.)</p>
+              <p>The point of this page is not the loop. The point is the pipeline that produces a loop on Sunday and another on the next Sunday and the one after, while I am writing PRDs.</p>
+            </div>
+
+            {/* ============ INVESTIGATION BOARD ============ */}
+            <section className="section">
+              <SectionHeading label="Investigation board" />
+              <div className="investigation">
+
+                {/* Artifact 1 — newest cycle */}
+                <div className="artifact" data-cursor-artifact>
+                  <PolaroidArtifact>
+                    <CycleSVG frames="220" />
+                  </PolaroidArtifact>
+                  <Caption
+                    stamp="MAY 15 — final 220-frame cycle"
+                    body="9.2s loop, 24fps, full alpha, vp9. The one we kept. Redirected from portfolio hero to /work/animation-pipeline hero per PMP §8.1."
+                  />
+                  <AnnoArrow label="↗ the one we kept" style={{ top: "-12px", right: "-12px", width: "180px", height: "70px" }} />
+                </div>
+
+                {/* Artifact 2 — metric chart */}
+                <div className="artifact" data-cursor-artifact>
+                  <div className="a-frame" style={{ borderColor: TOKENS.border }}>
+                    <MetricChart />
+                  </div>
+                  <Caption
+                    stamp="MAY 6 — render time per frame, v1 → v2a"
+                    body="22s → 4s per frame after switching the cleanup pipeline from imagemagick threshold to rembg + alpha_mode=1 vp9 encode. Build-time savings: 38 min per nightly render."
+                  />
+                </div>
+
+                {/* Artifact 3 — Slack DM */}
+                <div className="artifact" data-cursor-artifact style={{ position: "relative" }}>
+                  <SlackDM />
+                  <Caption
+                    stamp="APR 23 — anonymized DM (eng lead)"
+                    body="The hint that turned v1 into v2a. The alpha channel was the rub. h264 was dropping it; vp9 with alpha_mode=1 carries it cleanly."
+                  />
+                  <CoffeeRing style={{ left: "60%", top: "-20px" }} />
+                </div>
+
+                {/* Artifact 4 — first raw cycle */}
+                <div className="artifact" data-cursor-artifact>
+                  <PolaroidArtifact>
+                    <CycleSVG frames="146" />
+                  </PolaroidArtifact>
+                  <Caption
+                    stamp="APR 17 — first cleaned cycle"
+                    body="The v2a pipeline holds: 146→127 frames at 24fps, alpha clean. Proved the pipeline. Loop too short and the line too jittery — rev 3 supersedes."
+                  />
+                </div>
+
+                {/* Artifact 5 — killed v2 script */}
+                <div className="artifact" data-cursor-artifact>
+                  <div style={{ position: "relative" }}>
+                    <KilledScript />
+                  </div>
+                  <Caption
+                    killed
+                    stamp="KILLED — we tried this, rev 2 killed it"
+                    body="The original imagemagick + channel-A threshold approach. Looked clean on the preview, ate the alpha channel on encode. Replaced by rembg + vp9 alpha_mode=1."
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* ============ METHODS ============ */}
+            <section className="section">
+              <SectionHeading label="Methods" />
+              <MethodsStrip methods={A1.methods} />
+            </section>
+
+            {/* ============ 4Q ============ */}
+            <section className="section">
+              <SectionHeading label="Explanation · 4Q" />
+              <FourQBlock frame="A-1" content={A1.fourq} canonical={A1.canonical} />
+            </section>
+
+            <NavFold prev={A1.navfold.prev} next={A1.navfold.next} />
+
+            <RegMark />
+          </div>
+          <TornEdge variant="bottom" />
+        </section>
+      );
+    }
+
+    /* ===== Status variant cards ===== */
+
+    function VariantShipped() {
+      return (
+        <div className="variant">
+          <div className="variant__label">SHIPPED variant — Intent Engineering MCP</div>
+          <Dateline
+            stamp="BOSTON, MAY 12, 2026 — "
+            body="intent engineering mcp, shipped. 13 days early. live on the registry."
+          />
+          <TitleBlock
+            frame="A-3" status="SHIPPED"
+            title="Intent Engineering MCP"
+            tags="mcp · ai-pm · infrastructure"
+            anchor="0.1.0 · NPM + MCP REGISTRY"
+            shippedAt="2026-05-12"
+          />
+          <div className="shipped-now">
+            <span className="shipped-now__dot" />
+            <span className="shipped-now__prefix">LIVE —</span>
+            npm: 47 weekly downloads · mcp registry: 12 verified installs · github: 8 stars
+            <span className="shipped-now__updated">updated 2026-05-18 08:45 by daily driver</span>
+          </div>
+          <p style={{
+            fontFamily: "Newsreader, Georgia, serif",
+            fontSize: "20px",
+            lineHeight: "1.5",
+            fontWeight: 300,
+            color: TOKENS.ink,
+            maxWidth: "680px",
+            margin: 0,
+          }}>
+            It shipped on May 12, 13 days early. The design was right; nothing got cut at the wire.
+            It's installed by people Sean has never met. The case study reads back the build,
+            but the page itself reads as in-the-world — present tense for the install counts,
+            past tense for the build decisions.
+          </p>
+        </div>
+      );
+    }
+
+    function VariantPaused() {
+      return (
+        <div className="variant">
+          <div className="variant__label">PAUSED variant — 16BitFit Battle Mode</div>
+          <Dateline
+            stamp="BOSTON, MAY 18, 2026 — "
+            body="16bitfit, paused. waiting on the animation pipeline."
+          />
+          <TitleBlock
+            frame="A-5" status="PAUSED"
+            title="16BitFit Battle Mode"
+            tags="game · agentic · phaser"
+            anchor="PIPELINE: 47% · GAME: ON SHELF"
+          />
+          <div className="return-condition">
+            <div className="return-condition__heading">Return condition</div>
+            when the animation pipeline ships its first full short, the game inherits the pipeline.
+            ~2026-08. tracked in the daily driver's morning brief; the moment the pipeline lands,
+            this page un-pauses and the return-condition callout disappears.
+          </div>
+        </div>
+      );
+    }
+
+    function VariantArchived() {
+      return (
+        <div className="variant variant--archived page--archived">
+          <div className="variant__label">ARCHIVED variant — The Block — Campus + RevOps</div>
+          <Dateline
+            stamp="BOSTON, MAY 18, 2026 — "
+            body="the block — campus + revops. archived. reference-only."
+          />
+          <TitleBlock
+            frame="A-4" status="ARCHIVED"
+            title="The Block — Campus + RevOps"
+            tags="pm · b2b · crypto"
+            anchor="2024–2026 · TWO PRODUCTS · ONE FIRM"
+            desat
+          />
+          <p className="preamble">
+            Two years of B2B and infrastructure work for an institutional crypto research firm.
+            Campus (a B2B research platform) and the internal RevOps system that supported the
+            broader Block business.
+          </p>
+          <p style={{
+            fontFamily: "Newsreader, Georgia, serif",
+            fontSize: "18px",
+            lineHeight: "1.5",
+            fontWeight: 300,
+            color: TOKENS.secondary,
+            maxWidth: "680px",
+            margin: 0,
+            fontStyle: "italic",
+          }}>
+            The opener frames the work, never the exit. The right-margin accent drops to 50% opacity.
+            Investigation board runs forward-chronological — the arc is the story.
+          </p>
+        </div>
+      );
+    }
+
+    /* ===== Cursor ===== */
+
+    function useReducedMotion() {
+      const [r, setR] = useState(false);
+      useEffect(() => {
+        const mq = matchMedia("(prefers-reduced-motion: reduce)");
+        setR(mq.matches);
+        const h = e => setR(e.matches);
+        mq.addEventListener?.("change", h);
+        return () => mq.removeEventListener?.("change", h);
+      }, []);
+      return r;
+    }
+
+    function Cursor() {
+      const ref = useRef(null);
+      const reduced = useReducedMotion();
+      const [mode, setMode] = useState("default");
+      useEffect(() => {
+        if (reduced) return;
+        const el = ref.current; if (!el) return;
+        let mx = innerWidth/2, my = innerHeight/2;
+        let cx = mx, cy = my, raf;
+        const move = e => { mx = e.clientX; my = e.clientY; };
+        const loop = () => {
+          cx += (mx - cx) * 0.18;
+          cy += (my - cy) * 0.18;
+          el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+          raf = requestAnimationFrame(loop);
+        };
+        addEventListener("mousemove", move); loop();
+        return () => { removeEventListener("mousemove", move); cancelAnimationFrame(raf); };
+      }, [reduced]);
+      useEffect(() => {
+        if (reduced) return;
+        const over = e => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          if (t.closest("[data-cursor-link]") || t.closest("a")) setMode("link");
+          else if (t.closest("[data-cursor-artifact]")) setMode("artifact");
+          else setMode("default");
+        };
+        document.addEventListener("mouseover", over);
+        return () => document.removeEventListener("mouseover", over);
+      }, [reduced]);
+      if (reduced) return null;
+      return <div ref={ref} className={`cursor cursor--${mode}`} aria-hidden="true" />;
+    }
+
+    function App() {
+      return (
+        <>
+          <CaseStudyA1 />
+
+          <div className="gallery-divider">
+            ↓ PROTOTYPE-ONLY · STATUS-VARIANT GALLERY · the same template, three other <span>status</span> shapes ↓
+          </div>
+
+          <div className="variant-grid">
+            <VariantShipped />
+            <VariantPaused />
+            <VariantArchived />
+          </div>
+
+          <Cursor />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+
+</html>

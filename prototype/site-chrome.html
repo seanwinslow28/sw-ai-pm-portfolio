@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — Site chrome v1 prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <!-- FOUC-prevention pre-paint theme cookie read (per §8.3) -->
+  <script>
+    (function() {
+      var match = document.cookie.match(/sw-theme=(light|dark)/);
+      var theme = match ? match[1] : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <style>
+    /* ===== Theme tokens ===== */
+    :root[data-theme="light"] {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --border-faint: rgba(10, 62, 66, 0.10);
+      --footer-bg: #fff9f0;
+    }
+    :root[data-theme="dark"] {
+      --paper: #14191a;
+      --ink: #e8e4d8;
+      --teal: #5cc3b7;
+      --teal-success: #4fc4a3;
+      --secondary: #8a9a9c;
+      --stamp: #e89060;
+      --amber: #fac775;
+      --border: rgba(232, 228, 216, 0.18);
+      --border-faint: rgba(232, 228, 216, 0.10);
+      --footer-bg: #0f1314;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color 240ms ease, color 240ms ease;
+    }
+
+    /* ===== Skip link (sr-only until focused) ===== */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      padding: 8px 14px;
+      background: var(--stamp);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 1px;
+      font-weight: 500;
+      text-decoration: none;
+      z-index: 1000;
+    }
+    .skip-link:focus {
+      left: 16px;
+      top: 16px;
+    }
+
+    /* ===== Top nav ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 0.5px solid var(--border);
+      transition: background-color 240ms ease;
+    }
+    .nav__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 52px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav__wordmark {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .nav__tabs {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav__tab {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--secondary);
+      text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .nav__tab:hover { color: var(--teal); }
+    .nav__tab--active {
+      color: var(--teal);
+      border-bottom-color: var(--stamp);
+    }
+
+    /* ===== Main content area (the sub-page chrome demo) ===== */
+    main {
+      padding: 60px 52px;
+    }
+    .stage {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    /* Sample page content (so the nav sticks to something) */
+    .demo {
+      padding: 40px 0;
+      border-bottom: 0.5px dashed var(--border);
+    }
+    .demo__dateline {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      margin-bottom: 12px;
+    }
+    .demo__dateline-stamp { color: var(--stamp); font-weight: 500; }
+    .demo__dateline-body  { color: var(--secondary); }
+    .demo__rule {
+      height: 0.5px;
+      background: var(--border);
+      margin: 12px 0 32px;
+    }
+    .demo__h1 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.5px;
+      color: var(--teal);
+      margin: 0 0 16px;
+    }
+    .demo__body {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--secondary);
+      max-width: 620px;
+      margin: 0 0 32px;
+    }
+    .demo__filler {
+      height: 240px;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 31px,
+        var(--border-faint) 31px,
+        var(--border-faint) 32px
+      );
+      border: 0.5px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: var(--footer-bg);
+      border-top: 0.5px solid var(--border);
+      padding: 60px 52px;
+      transition: background-color 240ms ease;
+    }
+    .footer__inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .footer__columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-col h2 {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--stamp);
+      margin: 0 0 16px;
+    }
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-col li {
+      margin: 0 0 10px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      letter-spacing: 0.8px;
+      color: var(--secondary);
+    }
+    .footer-col li::before {
+      content: "→ ";
+      color: var(--amber);
+      margin-right: 4px;
+    }
+    .footer-col a {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .footer-col a:hover { text-decoration: underline; }
+    .footer-col .ext {
+      color: var(--secondary);
+      margin-left: 4px;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .footer__strip {
+      padding-top: 24px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .theme-toggle {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .theme-toggle button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--secondary);
+      font-weight: 400;
+      transition: color 200ms ease, transform 200ms ease;
+    }
+    .theme-toggle button:hover { transform: translateY(-1px); }
+    .theme-toggle button.active {
+      color: var(--teal);
+      font-weight: 500;
+    }
+    .theme-toggle__sep {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      color: var(--secondary);
+    }
+    .copyright {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      font-weight: 400;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin: 0;
+    }
+
+    /* ===== Preview dividers + variant pages ===== */
+    .preview-divider {
+      max-width: 1120px;
+      margin: 80px auto 0;
+      padding: 24px 52px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .preview-divider span { color: var(--amber); }
+
+    .torn-edge {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: block;
+      width: 100%;
+      height: 32px;
+    }
+
+    /* Minimal Contact page */
+    .contact-page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 60px 52px;
+      position: relative;
+      min-height: 600px;
+    }
+    .contact-page h1, .notfound-page h1 {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.4px;
+      color: var(--teal);
+      margin: 32px 0 24px;
+    }
+    .contact-page p {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      max-width: 680px;
+      margin: 0 0 32px;
+    }
+    .contact-page p a, .notfound-page a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 2px;
+    }
+    .contact-page p a:hover, .notfound-page a:hover { text-decoration-color: var(--teal); }
+
+    .contact-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .contact-links li {
+      margin-bottom: 12px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      color: var(--secondary);
+    }
+    .contact-links li::before {
+      content: "→ ";
+      color: var(--amber);
+    }
+    .contact-links a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .contact-links a:hover { text-decoration: underline; }
+    .contact-links .ext {
+      color: var(--secondary);
+      margin-left: 4px;
+      font-size: 12px;
+    }
+
+    /* 404 page */
+    .notfound-page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 60px 52px;
+      min-height: 400px;
+      position: relative;
+    }
+    .notfound-page .h-mono {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(36px, 4.5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -0.4px;
+      color: var(--teal);
+      margin: 32px 0 16px;
+    }
+    .notfound-page .body-line {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 32px;
+      letter-spacing: -0.1px;
+    }
+    .mono-link {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      letter-spacing: 1px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .mono-link:hover { text-decoration: underline; }
+
+    .dateline-strip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      color: var(--stamp);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .dateline-rule {
+      height: 0.5px;
+      background: var(--border);
+      margin: 12px 0 0;
+    }
+
+    /* Reg mark */
+    .reg-mark {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      width: 28px;
+      height: 28px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav__inner { padding: 0 24px; height: 48px; }
+      .nav__tabs { gap: 16px; }
+      .nav__tab { font-size: 11px; }
+      main { padding: 40px 24px; }
+      .footer { padding: 40px 24px; }
+      .footer__columns { grid-template-columns: 1fr; gap: 32px; }
+      .footer__strip { flex-direction: column; align-items: flex-start; }
+      .contact-page, .notfound-page { padding: 40px 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html, body, .nav, .footer, .theme-toggle button { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- ============ STICKY NAV (renders on sub-pages) ============ -->
+  <header>
+    <nav class="nav" aria-label="Primary navigation">
+      <div class="nav__inner">
+        <a class="nav__wordmark" href="/" aria-label="Sean Winslow — home">SW</a>
+        <div class="nav__tabs">
+          <a class="nav__tab" href="/work/" onclick="event.preventDefault()">WORK</a>
+          <a class="nav__tab nav__tab--active" href="/transactions/" aria-current="page" onclick="event.preventDefault()">TRANSACTIONS</a>
+          <a class="nav__tab" href="/architecture/" onclick="event.preventDefault()">ARCHITECTURE</a>
+          <a class="nav__tab" href="/essays/" onclick="event.preventDefault()">ESSAYS</a>
+          <a class="nav__tab" href="/about/" onclick="event.preventDefault()">ABOUT</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============ MAIN: simulated sub-page ============ -->
+  <main id="main-content">
+    <div class="stage">
+      <div class="demo">
+        <div class="demo__dateline">
+          <span class="demo__dateline-stamp">BOSTON, MAY 18, 2026 — </span>
+          <span class="demo__dateline-body">simulated sub-page · the nav above is sticky · scroll to test</span>
+        </div>
+        <div class="demo__rule"></div>
+        <h1 class="demo__h1">Sub-page demo</h1>
+        <p class="demo__body">
+          This panel exists so the sticky nav above has something to stick to. Click any of the 5 tabs to toggle the
+          active state. Scroll the window to confirm the nav stays pinned to the top of the viewport. Try the theme
+          toggle at the bottom of the page — it actually toggles light / dark via the <code>sw-theme</code> cookie.
+        </p>
+        <div class="demo__filler">CONTENT PLACEHOLDER · scroll-stage area for sticky-nav test</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ UNIVERSAL FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__columns">
+        <section class="footer-col" aria-labelledby="footer-contact-heading">
+          <h2 id="footer-contact-heading">Contact</h2>
+          <ul>
+            <li>email · <a href="mailto:sean@seanwinslow.com">sean@seanwinslow.com</a></li>
+            <li><a href="https://linkedin.com/in/seanwinslow">linkedin.com/in/seanwinslow</a> <span class="ext">↗</span></li>
+            <li><a href="https://github.com/seanwinslow">github.com/seanwinslow</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+
+        <section class="footer-col" aria-labelledby="footer-subscribe-heading">
+          <h2 id="footer-subscribe-heading">Subscribe</h2>
+          <ul>
+            <li><a href="/transactions/rss.xml">transactions / rss</a></li>
+            <li><a href="/architecture/rss.xml">architecture / rss</a></li>
+            <li><a href="/essays/rss.xml">essays / rss</a></li>
+            <li><a href="https://sean.substack.com">read on substack</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+
+        <section class="footer-col" aria-labelledby="footer-dashboard-heading">
+          <h2 id="footer-dashboard-heading">Dashboard</h2>
+          <ul>
+            <li><a href="https://fleet.seanwinslow.com">view the fleet</a> <span class="ext">↗</span></li>
+            <li><a href="https://github.com/seanwinslow/sw-portfolio">view the source</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="footer__strip">
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button type="button" data-theme="light" class="active">Light</button>
+          <span class="theme-toggle__sep">·</span>
+          <button type="button" data-theme="dark">Dark</button>
+        </div>
+        <p class="copyright">© 2026 Sean Winslow · Boston</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ DIVIDER ============ -->
+  <div class="preview-divider">
+    ↓ PROTOTYPE-ONLY · <span>/contact/</span> MINIMAL ROUTE PREVIEW BELOW ↓
+  </div>
+
+  <!-- ============ /CONTACT/ MINIMAL PAGE ============ -->
+  <header>
+    <nav class="nav" aria-label="Primary navigation (preview)">
+      <div class="nav__inner">
+        <a class="nav__wordmark" href="/" onclick="event.preventDefault()">SW</a>
+        <div class="nav__tabs">
+          <a class="nav__tab" href="/work/" onclick="event.preventDefault()">WORK</a>
+          <a class="nav__tab" href="/transactions/" onclick="event.preventDefault()">TRANSACTIONS</a>
+          <a class="nav__tab" href="/architecture/" onclick="event.preventDefault()">ARCHITECTURE</a>
+          <a class="nav__tab" href="/essays/" onclick="event.preventDefault()">ESSAYS</a>
+          <a class="nav__tab" href="/about/" onclick="event.preventDefault()">ABOUT</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <article class="contact-page">
+    <div class="dateline-strip">BOSTON · CONTACT</div>
+    <div class="dateline-rule"></div>
+    <h1>Contact</h1>
+    <p>Email me at <a href="mailto:sean@seanwinslow.com">sean@seanwinslow.com</a>.</p>
+    <ul class="contact-links">
+      <li>email · <a href="mailto:sean@seanwinslow.com">sean@seanwinslow.com</a></li>
+      <li><a href="https://linkedin.com/in/seanwinslow">linkedin.com/in/seanwinslow</a> <span class="ext">↗</span></li>
+      <li><a href="https://github.com/seanwinslow">github.com/seanwinslow</a> <span class="ext">↗</span></li>
+    </ul>
+    <svg class="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+      <line x1="14" y1="2"  x2="14" y2="26" stroke="var(--amber)" stroke-width="1.2" />
+      <line x1="2"  y1="14" x2="26" y2="14" stroke="var(--amber)" stroke-width="1.2" />
+      <line x1="6"  y1="6"  x2="9"  y2="6"  stroke="var(--amber)" stroke-width="1.2" />
+      <line x1="22" y1="6"  x2="19" y2="6"  stroke="var(--amber)" stroke-width="1.2" />
+      <line x1="6"  y1="22" x2="9"  y2="22" stroke="var(--amber)" stroke-width="1.2" />
+      <line x1="22" y1="22" x2="19" y2="22" stroke="var(--amber)" stroke-width="1.2" />
+    </svg>
+  </article>
+
+  <!-- ============ DIVIDER ============ -->
+  <div class="preview-divider">
+    ↓ PROTOTYPE-ONLY · <span>/404</span> PAGE PREVIEW BELOW ↓
+  </div>
+
+  <!-- ============ /404/ PAGE ============ -->
+  <header>
+    <nav class="nav" aria-label="Primary navigation (preview)">
+      <div class="nav__inner">
+        <a class="nav__wordmark" href="/" onclick="event.preventDefault()">SW</a>
+        <div class="nav__tabs">
+          <a class="nav__tab" href="/work/" onclick="event.preventDefault()">WORK</a>
+          <a class="nav__tab" href="/transactions/" onclick="event.preventDefault()">TRANSACTIONS</a>
+          <a class="nav__tab" href="/architecture/" onclick="event.preventDefault()">ARCHITECTURE</a>
+          <a class="nav__tab" href="/essays/" onclick="event.preventDefault()">ESSAYS</a>
+          <a class="nav__tab" href="/about/" onclick="event.preventDefault()">ABOUT</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <article class="notfound-page">
+    <div class="dateline-strip">BOSTON · 404</div>
+    <div class="dateline-rule"></div>
+    <h1 class="h-mono">PAGE NOT FOUND</h1>
+    <p class="body-line">Nothing at this URL.</p>
+    <p><a href="/" class="mono-link" onclick="event.preventDefault()">→ HOME</a></p>
+  </article>
+
+  <!-- ============ DIVIDER ============ -->
+  <div class="preview-divider">
+    ↑ above: <span>/404</span> · ↓ below: the universal footer that closes every page
+  </div>
+
+  <!-- Final footer copy (so the 3 page-variants all close cleanly) -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__columns">
+        <section class="footer-col" aria-labelledby="footer-contact-heading-2">
+          <h2 id="footer-contact-heading-2">Contact</h2>
+          <ul>
+            <li>email · <a href="mailto:sean@seanwinslow.com">sean@seanwinslow.com</a></li>
+            <li><a href="https://linkedin.com/in/seanwinslow">linkedin.com/in/seanwinslow</a> <span class="ext">↗</span></li>
+            <li><a href="https://github.com/seanwinslow">github.com/seanwinslow</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-labelledby="footer-subscribe-heading-2">
+          <h2 id="footer-subscribe-heading-2">Subscribe</h2>
+          <ul>
+            <li><a href="/transactions/rss.xml">transactions / rss</a></li>
+            <li><a href="/architecture/rss.xml">architecture / rss</a></li>
+            <li><a href="/essays/rss.xml">essays / rss</a></li>
+            <li><a href="https://sean.substack.com">read on substack</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-labelledby="footer-dashboard-heading-2">
+          <h2 id="footer-dashboard-heading-2">Dashboard</h2>
+          <ul>
+            <li><a href="https://fleet.seanwinslow.com">view the fleet</a> <span class="ext">↗</span></li>
+            <li><a href="https://github.com/seanwinslow/sw-portfolio">view the source</a> <span class="ext">↗</span></li>
+          </ul>
+        </section>
+      </div>
+      <div class="footer__strip">
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button type="button" data-theme="light" class="active">Light</button>
+          <span class="theme-toggle__sep">·</span>
+          <button type="button" data-theme="dark">Dark</button>
+        </div>
+        <p class="copyright">© 2026 Sean Winslow · Boston</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Theme toggle JS (per §8.4 — vanilla, no framework) ===== -->
+  <script>
+    (function() {
+      function applyActive(theme) {
+        document.querySelectorAll('.theme-toggle button').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+      }
+
+      // Sync UI to the current cookie state on load
+      var match = document.cookie.match(/sw-theme=(light|dark)/);
+      var theme = match ? match[1] : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      applyActive(theme);
+
+      // Click handler — delegated, so it works across both rendered toggles
+      document.addEventListener('click', function(e) {
+        var t = e.target;
+        if (!t || !t.dataset || !t.dataset.theme) return;
+        if (!t.closest('.theme-toggle')) return;
+        var newTheme = t.dataset.theme;
+        document.documentElement.setAttribute('data-theme', newTheme);
+        document.cookie = 'sw-theme=' + newTheme + '; path=/; max-age=31536000; SameSite=Lax';
+        applyActive(newTheme);
+      });
+
+      // Active-tab demo: clicking any nav tab updates the active style locally
+      document.addEventListener('click', function(e) {
+        var t = e.target.closest('.nav__tab');
+        if (!t) return;
+        var navInner = t.closest('.nav__tabs');
+        if (!navInner) return;
+        navInner.querySelectorAll('.nav__tab').forEach(function(a) { a.classList.remove('nav__tab--active'); a.removeAttribute('aria-current'); });
+        t.classList.add('nav__tab--active');
+        t.setAttribute('aria-current', 'page');
+      });
+    })();
+  </script>
+</body>
+</html>

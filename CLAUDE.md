@@ -27,20 +27,20 @@ Sean will invoke `pm-product-discovery:brainstorm` to put Claude in the multi-pe
 
 Be a thinking partner, not an executor — challenge while exploring, amplify once committed, cross-pollinate from animation/game-design/PM. Brief and to the point, calm and factual, no trailing summaries. (Full communication baseline: `docs/Sean-Winslow-Full-Personal-Context-v2.0.md` §Communication Baseline.)
 
-## Current status (2026-05-14)
+## Current status (2026-05-16)
 
 | Surface | Status |
 |---|---|
 | Design philosophy | Locked — "an animator's pencil test, mounted in a Vercel-grade frame" |
 | Voice rules | Locked — incl. the parallel-lineage rule (master plan §3.1) |
-| Home hero | Spec'd + validated (`docs/hero-spec-v1.md`) — recall test passed |
+| Home hero | Spec'd + validated (`docs/hero-spec-v1.md`) — recall test passed; animation reconcile applied 2026-05-16 |
 | Projects section | Spec'd (`docs/projects-section-spec-v1.md`) |
 | Hero tagline + About lead | Locked (master plan §4) |
-| Character animation | In progress — `sw-portfolio-animation-2026/` |
+| Character animation | 9.2s loop done (redirected to `/work/animation-pipeline`); new 3.9s "Sean at desk + AI companion" hero loop rendered + prototype-validated at 1024×576 |
 | Case-study page, About page, footer/agent feed, MCP embed | Not yet spec'd |
 | The build | Not started |
 
-**Immediate blocker:** the character animation work (two 166-frame loops + an AI companion character) must be reconciled with `hero-spec-v1.md` §7 before any hero build. See master plan §8.1.
+**Immediate next:** render the new ~2.5s hero loop, then either (a) spec the case-study page or (b) start the hero build. See master plan §8.1 + §9 PHASE 0.
 
 ## Locked decisions (quick reference)
 

@@ -65,9 +65,11 @@ Six tiles. Five are projects, the sixth is the "next in production" card. The da
 |---|---|---|---|---|---|
 | **A-1** | 2D Animation Pipeline | `ACTIVE` | 2D Animation Pipeline | animation · agentic · pipeline | `/work/animation-pipeline` |
 | **A-2** | Claude Code Superuser Pack | `ACTIVE` | Claude Code Superuser Pack | agents · mcp · ai-pm | `/work/superuser-pack` |
-| **A-3** | Intent Engineering MCP | `COMING` | Intent Engineering MCP | mcp · ai-pm · infrastructure | `/work/intent-engineering-mcp` |
+| **A-3** | Intent Engineering MCP | `SHIPPED` | Intent Engineering MCP | mcp · ai-pm · infrastructure | `/work/intent-engineering-mcp` |
 | **A-4** | The Block — Campus + RevOps | `ARCHIVED` | The Block — Campus + RevOps | pm · b2b · crypto | `/work/the-block` |
 | **A-5** | 16BitFit Battle Mode | `PAUSED` | 16BitFit Battle Mode | game · agentic · phaser | `/work/16bitfit` |
+
+> **A-3 status amended 2026-05-17:** Originally locked as `COMING` (anticipating the 2026-05-25 launch). Shipped 13 days early on 2026-05-12 — `@swins/intent-engineering-mcp@0.1.0` live on npm; `com.seanwinslow/intent-engineering@0.1.0` live on the MCP registry via DNS-verified domain namespace. Status flipped to `SHIPPED` accordingly.
 
 ### Status labels — single-word, mono, uppercase
 
@@ -87,7 +89,7 @@ Five statuses. No others. The status is the second-strongest signal on the tile 
 |---|---|---|
 | A-1 (animation) | Looping video of a pencil-test frame from the in-progress short (muted, autoplay, playsinline, loop) | A still frame with the animator's character mid-walk |
 | A-2 (superuser pack) | Looping video of an agent fleet event firing in the terminal | Architecture diagram (the 3-domain map) |
-| A-3 (mcp) | Static teaser image — MCP protocol diagram with a "coming may 25" stamp overlay | Plain teal card with `◜ coming may 25 ◞` typeset |
+| A-3 (mcp) | 90-sec Loom poster frame (terminal showing `npm install @swins/intent-engineering-mcp` resolving + Claude Desktop loading the server) | npm registry screenshot OR a still of the MCP protocol diagram with a `SHIPPED 2026-05-12` stamp overlay |
 | A-4 (the block) | Static product screenshot — Campus or RevOps surface, sanitized | A Jira board excerpt or roadmap snippet |
 | A-5 (16bitfit) | Looping gameplay GIF / video — battle mode sprite collision | Sprite sheet image |
 
@@ -114,7 +116,7 @@ All media: object-fit cover. Tile is 400×500px (4:5 portrait). Videos are <2MB 
 | Border-radius | 0 (sharp corners like the other tiles) |
 | Title | "next piece in production" — Newsreader 24px / weight 300 / line-height 1.2 / paper-color (#FFF9F0) |
 | Subtitle | "check back ~jun 11" — JetBrains Mono 12px / 1.4px tracking / stamp amber |
-| Date target | Pulls from the next anchor in `agents-sdk/config.toml` or a static `next-piece.json` |
+| Date target | Pulls from a static `next-piece.json` at `/public/api/next-piece.json`. **Pick rule:** earliest-upcoming-ship-date wins. The Daily Driver writes the file alongside `dateline.json`, reading from the roadmap's anchor list. As of 2026-05-17 the queue is: Vault Scorecard 6/3 → Judge Layer 6/4 → vault-knowledge-mcp ~6/4 → Control Architecture 6/10 → Animation Pipeline short 6/11. The card always surfaces whichever ship is closest; the JSON shape stays stable as ships happen and the queue rotates. |
 | Hover | The dashed border fills in solid + cursor shows a calendar icon, no click action |
 | Position | Bottom-right of the 6-cell grid (always the last cell at desktop; on mobile, always last in DOM order) |
 
@@ -317,6 +319,7 @@ When all 10 are green, projects v1 is locked and we move to the About page.
 - Tile filtering / tag-based browsing. V1 ships with no filter UI — the 5 tiles fit on one screen at desktop, no filtering needed yet.
 - Pagination. Not needed at 5 projects.
 - A separate `/work` index page. The home page's projects section IS the index for v1. A dedicated `/work` route can come in v2 if the project count grows past ~8.
+- **Note on the broader artifact catalog:** the 5 case-study tiles are deliberately *not* the full artifact list. As of 2026-05-17 the roadmap has 9+ flagship + 3 supporting artifacts; only the 5 that warrant a narrative deep-dive get tiles here. Everything else lives on the new `/transactions/` ledger route (specced separately in PMP §7) — the reverse-chronological table over all `EXPLANATION.md` files. The projects section is the curated five; `/transactions/` is the comprehensive ledger. Both surfaces feed off the same MDX content collection.
 - Project-level analytics (per-tile click tracking). Add post-launch with a single Plausible event.
 - Comments / reactions on projects. Not needed — this is a portfolio, not a blog.
 
