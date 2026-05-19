@@ -32,9 +32,9 @@ Newsroom dateline above an editorial headline, with Sean working at his desk and
 │  / AI PRODUCT MANAGER                          ╭──◾◾◾─────────┐ ─ ─ ─│
 │                                                │  ░░ companion ░░░ ░░│
 │                                                │ ░░░░ floats   ░░░░░░│
-│  Raised by Saturday morning                    │ ░░ here  ▭▭▭▭▭▭▭░░ ░│
-│  cartoons and Vercel deployment logs.          │ ░░░░  ┌─┴───┴─┐ ░░░░│
-│                                                │ ░░░░  │ desk  │ ░░ ░│
+│  Product Manager.                              │ ░░ here  ▭▭▭▭▭▭▭░░ ░│
+│  The agents handle the math.                   │ ░░░░  ┌─┴───┴─┐ ░░░░│
+│  I handle the taste.                           │ ░░░░  │ desk  │ ░░ ░│
 │                                                │ ░░  ┌─┘       └─┐ ░│
 │                                                │ ░░  │ Sean typing│░│
 │  ╲╱╲╱╲╱╲ torn-paper edge ╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲ │ ░░  └───────────┘ ░│
@@ -308,7 +308,7 @@ The hero is the clean cover of the sketchbook. The annotations live inside.
 | Animation | Native CSS + IntersectionObserver + a single RAF loop for the cursor | No GSAP, no Framer Motion, no Lenis |
 | Character video | Native HTML5 `<video>` element, WebM VP9 with alpha channel (`yuva420p`) | Carries transparency over the paper bg — MP4/h.264 can't. Universal browser support at this point. |
 | Dateline data | Static JSON file in `/public/api/dateline.json`, written by Daily Driver morning agent | Zero-cost edge serving from Vercel/Netlify/CF Pages |
-| Hosting | Vercel (free tier) | Aligns with the "Vercel deployment logs" tagline. Also free. |
+| Hosting | Vercel (free tier) | Aligns with the About-page lineage line ("Raised by Saturday morning cartoons and Vercel deployment logs"). Also free. |
 | Domain | `seanwinslow.com` | **LOCKED** 2026-05-17 per roadmap Task 1 Step 3 (Council Gap-Fill 3). Vercel-hosted; Cloudflare DNS with orange-cloud OFF for Vercel records (Vercel handles edge + SSL). |
 
 **Anti-stack — explicitly avoid:**

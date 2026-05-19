@@ -23,9 +23,12 @@
       --anno: rgba(10, 62, 66, 0.7);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       background: var(--paper);
@@ -35,9 +38,21 @@
       text-rendering: optimizeLegibility;
     }
 
-    body { cursor: none; }
-    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
-    @media (hover: none) { body { cursor: auto; } }
+    body {
+      cursor: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        cursor: auto;
+      }
+    }
+
+    @media (hover: none) {
+      body {
+        cursor: auto;
+      }
+    }
 
     /* ===== Page shell ===== */
     .about {
@@ -47,7 +62,12 @@
       opacity: 0;
       animation: fade 200ms linear forwards;
     }
-    @keyframes fade { to { opacity: 1; } }
+
+    @keyframes fade {
+      to {
+        opacity: 1;
+      }
+    }
 
     .about__inner {
       max-width: 1120px;
@@ -60,6 +80,7 @@
       position: relative;
       margin-bottom: 24px;
     }
+
     .dateline__line {
       font-family: "JetBrains Mono", ui-monospace, monospace;
       font-size: 12px;
@@ -67,9 +88,22 @@
       line-height: 1.4;
       font-weight: 400;
     }
-    .dateline__stamp { color: var(--stamp); font-weight: 500; }
-    .dateline__body  { color: var(--secondary); }
-    .dateline__suffix { color: var(--stamp); font-weight: 500; letter-spacing: 1.6px; }
+
+    .dateline__stamp {
+      color: var(--stamp);
+      font-weight: 500;
+    }
+
+    .dateline__body {
+      color: var(--secondary);
+    }
+
+    .dateline__suffix {
+      color: var(--stamp);
+      font-weight: 500;
+      letter-spacing: 1.6px;
+    }
+
     .dateline__rule {
       height: 0.5px;
       background: var(--border);
@@ -85,17 +119,31 @@
       height: 56px;
       pointer-events: none;
       opacity: 0;
-      animation: fadeIn 800ms 700ms cubic-bezier(0.16,1,0.3,1) forwards;
+      animation: fadeIn 800ms 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
     .anno-updated__bob {
       transform-origin: 20% 50%;
       animation: bob 4s ease-in-out infinite;
     }
+
     @keyframes bob {
-      0%, 100% { transform: rotate(-1.4deg); }
-      50%      { transform: rotate(1.4deg); }
+
+      0%,
+      100% {
+        transform: rotate(-1.4deg);
+      }
+
+      50% {
+        transform: rotate(1.4deg);
+      }
     }
-    @keyframes fadeIn { to { opacity: 1; } }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
 
     .anno-label-cursive {
       font-family: "Caveat", cursive;
@@ -116,6 +164,7 @@
     .lead {
       max-width: 540px;
     }
+
     .lead__line {
       margin: 0 0 18px;
       font-family: "Newsreader", Georgia, serif;
@@ -128,10 +177,25 @@
       transform: translateY(36px);
       animation: leadIn 900ms cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     }
-    .lead__line:nth-child(1) { animation-delay: 400ms; }
-    .lead__line:nth-child(2) { animation-delay: 600ms; }
-    .lead__line:nth-child(3) { animation-delay: 800ms; }
-    @keyframes leadIn { to { opacity: 1; transform: translateY(0); } }
+
+    .lead__line:nth-child(1) {
+      animation-delay: 400ms;
+    }
+
+    .lead__line:nth-child(2) {
+      animation-delay: 600ms;
+    }
+
+    .lead__line:nth-child(3) {
+      animation-delay: 800ms;
+    }
+
+    @keyframes leadIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     .character {
       position: relative;
@@ -141,12 +205,14 @@
       opacity: 0;
       animation: fadeIn 600ms 600ms linear forwards;
     }
+
     .character__img {
       width: 100%;
       height: auto;
       display: block;
       object-fit: contain;
     }
+
     .character__placeholder {
       width: 100%;
       aspect-ratio: 3/4;
@@ -172,17 +238,27 @@
       line-height: 1.7;
       color: var(--secondary);
       opacity: 0;
-      animation: pulseIn 400ms 1300ms cubic-bezier(0.16,1,0.3,1) forwards;
+      animation: pulseIn 400ms 1300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
     @keyframes pulseIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
     .pulse__prefix {
       color: var(--stamp);
       font-weight: 500;
       letter-spacing: 1.6px;
     }
+
     .pulse__live-dot {
       display: inline-block;
       width: 6px;
@@ -193,9 +269,19 @@
       vertical-align: middle;
       animation: livePulse 1.8s ease-in-out infinite;
     }
+
     @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: 0.35; transform: scale(0.75); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.35;
+        transform: scale(0.75);
+      }
     }
 
     /* ===== Section heading band ===== */
@@ -203,12 +289,14 @@
       margin-top: 120px;
       position: relative;
     }
+
     .band__heading {
       display: flex;
       align-items: baseline;
       gap: 16px;
       margin-bottom: 40px;
     }
+
     .band__frame {
       font-family: "JetBrains Mono", monospace;
       font-size: 14px;
@@ -216,6 +304,7 @@
       color: var(--amber);
       font-weight: 500;
     }
+
     .band__title {
       font-family: "Caveat", cursive;
       font-size: 48px;
@@ -224,8 +313,16 @@
       line-height: 1;
       margin: 0;
     }
-    .band__title::before { content: "// "; opacity: 0.4; }
-    .band__title::after  { content: " //"; opacity: 0.4; }
+
+    .band__title::before {
+      content: "// ";
+      opacity: 0.4;
+    }
+
+    .band__title::after {
+      content: " //";
+      opacity: 0.4;
+    }
 
     /* ===== B-1 Timeline ===== */
     .timeline {
@@ -234,6 +331,7 @@
       gap: 24px;
       position: relative;
     }
+
     .timeline__col-head {
       font-family: "JetBrains Mono", monospace;
       font-size: 11px;
@@ -243,12 +341,16 @@
       text-transform: uppercase;
       margin-bottom: 24px;
     }
-    .timeline__col-head--right { text-align: right; }
+
+    .timeline__col-head--right {
+      text-align: right;
+    }
 
     .timeline__gutter {
       position: relative;
       width: 64px;
     }
+
     .timeline__gutter-svg {
       position: absolute;
       top: 0;
@@ -261,12 +363,21 @@
     .row {
       display: contents;
     }
+
     .row__cell {
       padding: 18px 0;
       position: relative;
     }
-    .row__cell--left  { text-align: right; padding-right: 12px; }
-    .row__cell--right { text-align: left;  padding-left: 12px; }
+
+    .row__cell--left {
+      text-align: right;
+      padding-right: 12px;
+    }
+
+    .row__cell--right {
+      text-align: left;
+      padding-left: 12px;
+    }
 
     .row__age {
       font-family: "JetBrains Mono", monospace;
@@ -277,6 +388,7 @@
       display: block;
       margin-bottom: 4px;
     }
+
     .row__body {
       font-family: "Newsreader", Georgia, serif;
       font-size: 18px;
@@ -294,6 +406,7 @@
       left: 50%;
       transform: translateX(-50%);
     }
+
     .gutter-arrow text {
       font-family: "Caveat", cursive;
       font-size: 14px;
@@ -317,6 +430,7 @@
       margin: 0;
       position: relative;
     }
+
     .thesis p {
       font-family: "Newsreader", Georgia, serif;
       font-size: 22px;
@@ -344,16 +458,18 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 60px 40px;
     }
+
     .cel-wrap {
       display: flex;
       flex-direction: column;
     }
+
     .cel {
       width: 100%;
       aspect-ratio: 280/320;
       background: #ffffff;
       border: 0.5px solid var(--border);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -362,6 +478,7 @@
       padding: 28px 20px 18px;
       overflow: hidden;
     }
+
     .cel__pegs {
       position: absolute;
       top: 6px;
@@ -370,6 +487,7 @@
       width: 96px;
       height: 18px;
     }
+
     .cel__study {
       flex: 1;
       width: 100%;
@@ -378,6 +496,7 @@
       justify-content: center;
       margin-top: 8px;
     }
+
     .cel__name {
       position: absolute;
       bottom: 12px;
@@ -388,11 +507,13 @@
       font-weight: 500;
       color: var(--ink);
     }
+
     .cel__name-year {
       color: var(--secondary);
       font-weight: 400;
       margin-left: 4px;
     }
+
     .caption {
       margin-top: 14px;
       font-family: "JetBrains Mono", monospace;
@@ -401,6 +522,7 @@
       letter-spacing: 0.8px;
       color: var(--secondary);
     }
+
     .caption__noun {
       color: var(--stamp);
       font-weight: 500;
@@ -414,6 +536,7 @@
       width: 160px;
       height: 60px;
     }
+
     .rewire-arrow text {
       font-family: "Caveat", cursive;
       font-size: 17px;
@@ -436,6 +559,7 @@
       text-transform: uppercase;
       margin-bottom: 12px;
     }
+
     .availability__dot {
       width: 8px;
       height: 8px;
@@ -443,6 +567,7 @@
       background: var(--teal-success);
       animation: livePulse 1.8s ease-in-out infinite;
     }
+
     .availability__geo {
       font-family: "JetBrains Mono", monospace;
       font-size: 12px;
@@ -450,6 +575,7 @@
       color: var(--secondary);
       margin-bottom: 28px;
     }
+
     .going p {
       max-width: 680px;
       font-family: "Newsreader", Georgia, serif;
@@ -466,7 +592,12 @@
       padding: 0;
       margin: 0;
     }
-    .proof li { margin: 0 0 14px; position: relative; }
+
+    .proof li {
+      margin: 0 0 14px;
+      position: relative;
+    }
+
     .proof a {
       font-family: "JetBrains Mono", monospace;
       font-size: 15px;
@@ -476,8 +607,16 @@
       text-decoration: none;
       transition: text-decoration 150ms;
     }
-    .proof a::before { content: "→ "; color: var(--amber); margin-right: 4px; }
-    .proof a:hover { text-decoration: underline; }
+
+    .proof a::before {
+      content: "→ ";
+      color: var(--amber);
+      margin-right: 4px;
+    }
+
+    .proof a:hover {
+      text-decoration: underline;
+    }
 
     .rev-scribble {
       position: absolute;
@@ -486,6 +625,7 @@
       transform: rotate(-4deg);
       pointer-events: none;
     }
+
     .rev-scribble text {
       font-family: "Caveat", cursive;
       font-size: 18px;
@@ -507,6 +647,7 @@
       letter-spacing: -0.3px;
       color: var(--teal);
     }
+
     .pullquote::before {
       content: open-quote;
       font-size: 1.4em;
@@ -515,7 +656,11 @@
       margin-right: 0.04em;
       color: var(--amber);
     }
-    .pullquote::after { content: close-quote; color: var(--amber); }
+
+    .pullquote::after {
+      content: close-quote;
+      color: var(--amber);
+    }
 
     /* ===== Signature + closeout ===== */
     .closeout {
@@ -526,12 +671,14 @@
       padding-top: 60px;
       position: relative;
     }
+
     .signature {
       font-family: "Homemade Apple", "Caveat", cursive;
       font-size: 40px;
       color: var(--ink);
       line-height: 1;
     }
+
     .reg-mark {
       width: 28px;
       height: 28px;
@@ -569,36 +716,102 @@
       transition: width 200ms ease, height 200ms ease, background 200ms ease;
       will-change: transform;
     }
-    .cursor--link   { width: 36px; height: 36px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
-    .cursor--cel    { width: 24px; height: 24px; background: var(--amber); mix-blend-mode: normal; }
+
+    .cursor--link {
+      width: 36px;
+      height: 36px;
+      background: var(--teal);
+      mix-blend-mode: normal;
+      opacity: 0.85;
+    }
+
+    .cursor--cel {
+      width: 24px;
+      height: 24px;
+      background: var(--amber);
+      mix-blend-mode: normal;
+    }
 
     /* ===== Reduced motion ===== */
     @media (prefers-reduced-motion: reduce) {
-      .lead__line, .character, .pulse, .anno-updated {
+
+      .lead__line,
+      .character,
+      .pulse,
+      .anno-updated {
         animation: fadeIn 200ms linear forwards !important;
         transform: none !important;
       }
-      .anno-updated__bob, .pulse__live-dot, .availability__dot { animation: none !important; }
+
+      .anno-updated__bob,
+      .pulse__live-dot,
+      .availability__dot {
+        animation: none !important;
+      }
     }
 
     /* ===== Tablet ===== */
     @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; gap: 32px; min-height: 0; }
-      .character { max-width: 360px; margin: 0 auto; }
-      .canon { grid-template-columns: repeat(2, 1fr); }
-      .anno-updated, .kid-drawing, .rewire-arrow, .rev-scribble, .stamp { display: none; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        min-height: 0;
+      }
+
+      .character {
+        max-width: 360px;
+        margin: 0 auto;
+      }
+
+      .canon {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .anno-updated,
+      .kid-drawing,
+      .rewire-arrow,
+      .rev-scribble,
+      .stamp {
+        display: none;
+      }
     }
 
     /* ===== Mobile ===== */
     @media (max-width: 640px) {
-      .about { padding: 40px 24px 60px; }
-      .timeline { grid-template-columns: 1fr; }
-      .timeline__gutter { display: none; }
-      .timeline__col-head--right { text-align: left; }
-      .row__cell--left, .row__cell--right { text-align: left; padding: 0; }
-      .row__cell--right { padding-left: 24px; border-left: 1px solid var(--border); }
-      .canon { grid-template-columns: 1fr; }
-      .band__title { font-size: 36px; }
+      .about {
+        padding: 40px 24px 60px;
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline__gutter {
+        display: none;
+      }
+
+      .timeline__col-head--right {
+        text-align: left;
+      }
+
+      .row__cell--left,
+      .row__cell--right {
+        text-align: left;
+        padding: 0;
+      }
+
+      .row__cell--right {
+        padding-left: 24px;
+        border-left: 1px solid var(--border);
+      }
+
+      .canon {
+        grid-template-columns: 1fr;
+      }
+
+      .band__title {
+        font-size: 36px;
+      }
     }
   </style>
 </head>
@@ -625,9 +838,7 @@
     };
 
     const LEAD = [
-      "Trained by Looney Tunes and Vercel deployment logs.",
-      "Ships AI-native products.",
-      "Deploys agent fleets.",
+      "Raised by Saturday morning cartoons and Vercel deployment logs.",
     ];
 
     const DATELINE = {
@@ -645,14 +856,14 @@
     ];
 
     const TIMELINE_ROWS = [
-      { age: "age 8",  left: "drew first Saturday morning cartoon — a coyote, badly", right: "asked dad to deploy a webpage; it was on Geocities" },
-      { age: "age 14", left: "filled six sketchbooks; saved up for first Wacom",     right: "shipped the school-play site; learned what 'broken' meant" },
-      { age: "age 18", left: "RISD pencil tests; flipbook obsession",               right: "comp-sci 101; first stack trace; first deploy" },
-      { age: "age 22", left: "first short film; first festival rejection",           right: "first PM role; first PRD; first stakeholder loop" },
+      { age: "age 8", left: "drew first Saturday morning cartoon — a coyote, badly", right: "asked dad to deploy a webpage; it was on Geocities" },
+      { age: "age 14", left: "filled six sketchbooks; saved up for first Wacom", right: "shipped the school-play site; learned what 'broken' meant" },
+      { age: "age 18", left: "RISD pencil tests; flipbook obsession", right: "comp-sci 101; first stack trace; first deploy" },
+      { age: "age 22", left: "first short film; first festival rejection", right: "first PM role; first PRD; first stakeholder loop" },
       { age: "age 26", left: "moved to Procreate; lost the line and chased it back", right: "led platform team; learned to write specs that survive turnover" },
-      { age: "age 30", left: "started teaching kids to animate",                     right: "scaled comms infra to 50M MAU at Disqus" },
-      { age: "age 34", left: "back to traditional pencil — the line is everything",  right: "agent fleets; daily driver; ship the spec, not the code" },
-      { age: "age 36", left: "drawing my own character every week",                  right: "AI PM — 14 agents from a single config" },
+      { age: "age 30", left: "started teaching kids to animate", right: "scaled comms infra to 50M MAU at Disqus" },
+      { age: "age 34", left: "back to traditional pencil — the line is everything", right: "agent fleets; daily driver; ship the spec, not the code" },
+      { age: "age 36", left: "drawing my own character every week", right: "AI PM — 14 agents from a single config" },
     ];
 
     const GUTTER_ARROWS = [
@@ -662,12 +873,12 @@
     ];
 
     const CARTOONS = [
-      { order: 1, name: "WILE E. COYOTE",      year: "1949–",     noun: "ANTICIPATION TIMING", body: "the wind-up sells every gag. ship the wind-up before the deliverable.", icon: "coyote" },
-      { order: 2, name: "PINKY AND THE BRAIN", year: "1995–98",   noun: "CHARACTER VS SCHEME", body: "the team that owns the scheme is not always the team that lands it.", icon: "duo" },
-      { order: 3, name: "SPONGEBOB",           year: "1999–",     noun: "PACING",              body: "when in doubt, cut to the close-up. a slow scene needs a closer camera.", icon: "sponge" },
-      { order: 4, name: "LOONEY TUNES",        year: "1930–",     noun: "PHYSICAL COMEDY",     body: "the joke is in the timing, not the gag. agents need beats, not just plans.", icon: "bunny" },
-      { order: 5, name: "DEXTER'S LABORATORY", year: "1996–2003", noun: "SCOPE CREEP",         body: "the experiment that destroys the lab is the one you didn't pre-mortem.", icon: "flask" },
-      { order: 6, name: "HEY ARNOLD!",         year: "1996–2004", noun: "POV CHARACTER",       body: "the city is a character; so is the codebase. write from the place that holds them.", icon: "footy" },
+      { order: 1, name: "WILE E. COYOTE", year: "1949–", noun: "ANTICIPATION TIMING", body: "the wind-up sells every gag. ship the wind-up before the deliverable.", icon: "coyote" },
+      { order: 2, name: "PINKY AND THE BRAIN", year: "1995–98", noun: "CHARACTER VS SCHEME", body: "the team that owns the scheme is not always the team that lands it.", icon: "duo" },
+      { order: 3, name: "SPONGEBOB", year: "1999–", noun: "PACING", body: "when in doubt, cut to the close-up. a slow scene needs a closer camera.", icon: "sponge" },
+      { order: 4, name: "LOONEY TUNES", year: "1930–", noun: "PHYSICAL COMEDY", body: "the joke is in the timing, not the gag. agents need beats, not just plans.", icon: "bunny" },
+      { order: 5, name: "DEXTER'S LABORATORY", year: "1996–2003", noun: "SCOPE CREEP", body: "the experiment that destroys the lab is the one you didn't pre-mortem.", icon: "flask" },
+      { order: 6, name: "HEY ARNOLD!", year: "1996–2004", noun: "POV CHARACTER", body: "the city is a character; so is the codebase. write from the place that holds them.", icon: "footy" },
     ];
 
     const LOAD_BEARING_CEL = 4; // Looney Tunes — gets the "this one rewires you" arrow
@@ -781,9 +992,9 @@
             <svg viewBox="0 0 180 56" width="100%" height="100%">
               <g className="anno-updated__bob">
                 <path d="M10,40 Q44,12 92,18 Q124,22 142,28"
-                      stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                  stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
                 <path d="M142,28 L134,22 M142,28 L136,34"
-                      stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                  stroke={TOKENS.anno} strokeWidth="1.2" fill="none" strokeLinecap="round" />
                 <text x="22" y="54" className="anno-label-cursive">updated weekly</text>
               </g>
             </svg>
@@ -802,8 +1013,8 @@
           </div>
           <div className="character">
             <img className="character__img" src="./character-full-body.png"
-                 alt="A pencil-test rendering of Sean Winslow."
-                 onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.innerHTML = '<div class="character__placeholder">CHARACTER PNG · full-body</div>'; }} />
+              alt="A pencil-test rendering of Sean Winslow."
+              onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.innerHTML = '<div class="character__placeholder">CHARACTER PNG · full-body</div>'; }} />
           </div>
         </div>
       );
@@ -850,9 +1061,9 @@
                   {i === 0 && (
                     <svg className="timeline__gutter-svg" viewBox="0 0 32 100" preserveAspectRatio="none" aria-hidden="true">
                       <path d="M8,0 Q14,20 10,40 Q4,60 12,80 Q18,90 14,100"
-                            stroke={TOKENS.border} strokeWidth="0.6" fill="none" />
+                        stroke={TOKENS.border} strokeWidth="0.6" fill="none" />
                       <path d="M22,0 Q16,20 20,40 Q26,60 18,80 Q12,90 16,100"
-                            stroke={TOKENS.border} strokeWidth="0.6" fill="none" />
+                        stroke={TOKENS.border} strokeWidth="0.6" fill="none" />
                     </svg>
                   )}
                   {GUTTER_ARROWS.find(a => a.fromRow === i) && (
@@ -970,7 +1181,7 @@
     function PullQuote() {
       return (
         <blockquote className="pullquote">
-          Raised by Saturday morning cartoons and Vercel deployment logs.
+          Product Manager. The agents handle the math. I handle the taste.
         </blockquote>
       );
     }
@@ -980,11 +1191,11 @@
         <div className="closeout">
           <div className="signature">Sean</div>
           <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
-            <line x1="14" y1="2"  x2="14" y2="26" stroke={TOKENS.anno} strokeWidth="1.2" />
-            <line x1="2"  y1="14" x2="26" y2="14" stroke={TOKENS.anno} strokeWidth="1.2" />
-            <line x1="6"  y1="6"  x2="9"  y2="6"  stroke={TOKENS.anno} strokeWidth="1.2" />
-            <line x1="22" y1="6"  x2="19" y2="6"  stroke={TOKENS.anno} strokeWidth="1.2" />
-            <line x1="6"  y1="22" x2="9"  y2="22" stroke={TOKENS.anno} strokeWidth="1.2" />
+            <line x1="14" y1="2" x2="14" y2="26" stroke={TOKENS.anno} strokeWidth="1.2" />
+            <line x1="2" y1="14" x2="26" y2="14" stroke={TOKENS.anno} strokeWidth="1.2" />
+            <line x1="6" y1="6" x2="9" y2="6" stroke={TOKENS.anno} strokeWidth="1.2" />
+            <line x1="22" y1="6" x2="19" y2="6" stroke={TOKENS.anno} strokeWidth="1.2" />
+            <line x1="6" y1="22" x2="9" y2="22" stroke={TOKENS.anno} strokeWidth="1.2" />
             <line x1="22" y1="22" x2="19" y2="22" stroke={TOKENS.anno} strokeWidth="1.2" />
           </svg>
         </div>
@@ -994,9 +1205,9 @@
     function Stamps() {
       return (
         <>
-          <div className="stamp" style={{ top: '160px',  right: '-32px',  transform: 'rotate(4deg)' }}>FILED · BOSTON</div>
-          <div className="stamp" style={{ top: '1100px', left: '-44px',  transform: 'rotate(-5deg)' }}>REV 3 · 2026-05</div>
-          <div className="stamp" style={{ top: '2400px', right: '-28px', transform: 'rotate(2deg)'  }}>PROOF / NOT FOR PRESS</div>
+          <div className="stamp" style={{ top: '160px', right: '-32px', transform: 'rotate(4deg)' }}>FILED · BOSTON</div>
+          <div className="stamp" style={{ top: '1100px', left: '-44px', transform: 'rotate(-5deg)' }}>REV 3 · 2026-05</div>
+          <div className="stamp" style={{ top: '2400px', right: '-28px', transform: 'rotate(2deg)' }}>PROOF / NOT FOR PRESS</div>
         </>
       );
     }
@@ -1022,7 +1233,7 @@
         if (reduced) return;
         const el = ref.current;
         if (!el) return;
-        let mx = innerWidth/2, my = innerHeight/2;
+        let mx = innerWidth / 2, my = innerHeight / 2;
         let cx = mx, cy = my, raf;
         const move = e => { mx = e.clientX; my = e.clientY; };
         const loop = () => {

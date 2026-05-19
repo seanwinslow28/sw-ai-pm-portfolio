@@ -27,7 +27,7 @@ Sean will invoke `pm-product-discovery:brainstorm` to put Claude in the multi-pe
 
 Be a thinking partner, not an executor — challenge while exploring, amplify once committed, cross-pollinate from animation/game-design/PM. Brief and to the point, calm and factual, no trailing summaries. (Full communication baseline: `docs/Sean-Winslow-Full-Personal-Context-v2.0.md` §Communication Baseline.)
 
-## Current status (2026-05-16)
+## Current status (2026-05-18)
 
 | Surface | Status |
 |---|---|
@@ -44,8 +44,9 @@ Be a thinking partner, not an executor — challenge while exploring, amplify on
 
 ## Locked decisions (quick reference)
 
-- **Hero tagline:** "Raised by Saturday morning cartoons and Vercel deployment logs."
-- **About lead:** "I architect AI-native products, deploy agent fleets, ship to thousands — and on weekends, I draw my dog."
+- **Hero tagline:** "Product Manager. The agents handle the math. I handle the taste."
+- **About header:** "Raised by Saturday morning cartoons and Vercel deployment logs."
+- **Intent Engineering MCP tile + case-study hero:** "Drawing up agents to act with intent."
 - **Hero treatment:** the "duet" — newsroom dateline strip above the name, tagline below.
 - **Fonts:** Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). Only two. No Inter, no Sora.
 - **Color:** warm paper `#FFF9F0` + ink + teal `#0A3E42`; one splash color per section, never two.
@@ -58,6 +59,7 @@ Be a thinking partner, not an executor — challenge while exploring, amplify on
 ```
 sw-ai-pm-portfolio/
 ├── CLAUDE.md                          ← you are here
+├── CHANGELOG.md                       ← spec-change log (read before editing any spec)
 ├── docs/
 │   ├── PORTFOLIO-MASTER-PLAN.md       ← the strategic plan — read second
 │   ├── hero-spec-v1.md                ← hero build spec (locked, validated)
@@ -76,6 +78,7 @@ sw-ai-pm-portfolio/
 
 - New section locked → write a `docs/<section>-spec-v1.md`, add a pointer in the master plan §6 or §7.
 - Direction changed, decision made, idea killed, open question resolved → update `docs/PORTFOLIO-MASTER-PLAN.md`. It's a living document.
+- **Spec edited after initial draft** (revision, restructure, scope change, decision reversal) → log it in [`CHANGELOG.md`](CHANGELOG.md), not in the spec's body. The specs used to carry their own `## 1.1 Changelog` sections; those are now historical baselines and all new entries land in the root CHANGELOG.md. Read its "How to add an entry" header before writing.
 - Keep specs tactical and the master plan strategic — don't duplicate build detail into the plan.
 
 ## Skills in play

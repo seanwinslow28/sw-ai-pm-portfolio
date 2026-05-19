@@ -1,6 +1,6 @@
 # About Page v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Revised 2026-05-17 (dog framing → Saturday-morning-canon). Awaiting Sean's final lock.
+> **Status:** Drafted 2026-05-17. Revised 2026-05-17 (dog framing → Saturday-morning-canon). Revised 2026-05-18 (lead line: 3-sentence credentials block → single "Raised by..." header; home hero repositioned in lockstep). Revised 2026-05-18 (B-1 two-column timeline → single-column stacked beats with lane-tint; B-4 availability pill + job-hunt copy → "What I'm building toward" + frontmatter-gated recruiter note). Revised 2026-05-18 (three-layer chrome → paper → content substrate externalized to `texture-and-artifacts-spec-v1.md`; torn-paper edge height corrected from 32px to ~200px to reflect the real raster asset). Awaiting Sean's final lock.
 > **Scope:** The `/about/` page body. Inherits everything from `hero-spec-v1.md` (color, type, motion, cursor, character) and `projects-section-spec-v1.md` (status pill vocabulary, annotation conventions). Where the **character lives most fully** (hero §11) and where **pencil annotations hit their fullest expression** before propagating site-wide (case-study spec §11).
 > **Contact CTA is OUT OF SCOPE** for this spec. The Contact section is its own surface and folds into [`site-chrome-spec-v1.md`](#) (spec #6). The About page ends at the signature; the page-bottom torn-paper edge transitions into the site-chrome footer where Contact lives.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + `hero-spec-v1.md` + `case-study-spec-v1.md` open.
@@ -9,10 +9,13 @@
 
 ## 1. The About Page, in one sentence
 
-A two-column animator's-sketchbook page where Sean's animator-self and PM-self run forward in time in sync — separated by a torn-paper gutter, connected by hand-drawn arrows across it — landing in a mid-page "Saturday morning canon" cel-grid that earns the lead line literally by mapping six formative cartoons to six product/craft principles.
+A single-column animator's-sketchbook page where Sean's animator-self and PM-self run forward in time in sync — braided down a single column by a chromatic lane-tint rule (warm amber for animator beats, teal for PM beats, blended for braided ones) — landing in a mid-page "Saturday morning canon" cel-grid that earns the lead line literally by mapping six formative cartoons to six product/craft principles.
 
 ## 1.1 Changelog
 
+- **2026-05-18 (substrate externalized to texture-and-artifacts-spec-v1.md):** The site's three-layer model (full-bleed teal `#0A3E42` chrome → cream paper sheets → page content) was promoted from "implied" to a dedicated foundational spec at `texture-and-artifacts-spec-v1.md`. The about page now inherits its substrate from that spec rather than declaring its own. Two consequential edits land in this file: (a) the §2 anatomy diagram's torn-paper edge labels are updated to name the chrome explicitly (top edge "reveals teal chrome `#0A3E42`"; bottom edge "reveals teal chrome → site-chrome footer (Contact lives there)"); (b) the §3 vertical budget's torn-paper top + bottom rows correct from 32px (which assumed an SVG fake-tear) to ~200px visible / 80px overlap into the chrome above (which reflects the real raster torn-paper PNG defined in §4 of the texture spec). No other §2/§3 changes — the rest of the page anatomy is unaffected because the chrome substrate was already implicit. All cartoon-cel art assets + hand-drawn heading SVGs + pencil-margin annotation vocabulary are also now governed by the texture spec's §6 authoring pipeline; the about spec's §14 (pencil annotations) and §16 (build stack) stay authoritative for *which* artifacts land *where on the about page*, while *how* they get authored, sized, and optimized lives in the texture spec.
+- **2026-05-18 (B-1 geometry swap + B-4 evergreen rewrite):** Two structural edits after Sean's review. **B-1** abandons the two-column animator-vs-PM parallel-lineage timeline (with torn-paper gutter + cross-gutter SVG arrows) in favor of a **single-column stacked-beats** layout: 6-8 moments running top-to-bottom, each a Newsreader sentence + JetBrains Mono subline, with a thin left-margin rule that runs **warm amber `#FAC775` for animator-coded beats**, **teal `#0A3E42` for PM-coded beats**, and **blends between** when a beat braids both. The parallel-lineage rule (PMP §3.1) survives — it's now expressed as a chromatic gradient on a single column, not as side-by-side columns. The "back-and-forth" reading rhythm Sean found exhausting collapses into a single down-the-page scan. Mobile no longer needs the alternating-row collapse rule. §2 anatomy diagram, §3 vertical budget (B-1 collapses from ~1200-1800px to ~960-1280px), §4 type + voice register, §6 motion timeline (cross-gutter arrow logic retired), §9 fully rewritten, §14 annotations (cross-gutter arrows removed from the curved-arrow vocabulary list, registration-mark corners retained as "beat-column registration spine"), §16 build stack (`<TimelineGutter />` and `<GutterArrow />` retired; `<BeatRow />` + `<LaneRule />` added), §17 DoD items 5 + 6 rewritten, Appendix A file map updated. **B-4** replaces the job-hunt-coded `AVAILABLE 2026-05 · AI PM > TECH PM > CREATIVE PM` pill + "I'm looking for a seat..." copy with **direction-of-craft prose** ("What I'm building toward" — 2 paragraphs naming Sean's bet on AI-native PM, agent governance, and the spec layer). A tiny `CURRENTLY @ FREE AGENT` or `CURRENTLY @ <COMPANY>` mono stamp top-right of the section is the only employment-state surface — driven by frontmatter `current_company`. The agent-fleet-config beat is preserved but moved into a single italic call-out that renders **only when `available: true`** ("if you're hiring around this, my agent fleet config goes out on second conversation"). Net effect: when Sean gets hired, he flips `available: false` and updates `current_company` — zero prose edits required, the page reads cleanly either way. §2 anatomy, §4 type + voice register, §12 fully rewritten, §17 DoD item 8 rewritten, Appendix B frontmatter shape updated.
+- **2026-05-18 (lead-line + home-hero swap):** After drafting the About body, Sean preferred the single original line ("Raised by Saturday morning cartoons and Vercel deployment logs.") as the About header — the 3-sentence credentials block was retired. In lockstep, the home-hero tagline was repositioned to lead with the PM role explicitly ("Product Manager. The agents handle the math. I handle the taste.") — letting the home page declare the role and the About page do the biographical work. The cross-page rhyme architecture (home "Raised by..." → about "Trained by...") dissolves; the two pages now tell one story in two registers (declarative on home, biographical on About) without rhyming verbatim. PMP §4 updated in lockstep. The "Trained by Looney Tunes..." string is marked SUPERSEDED 2026-05-18 in PMP §4. The bottom-of-page pull quote is updated to echo the new home hero. §7.1 and §7.2 rewritten accordingly. The motion timeline collapses from per-sentence-stagger to a single-line reveal (one beat, not three).
 - **2026-05-17 (revision):** Lead-line + B-3 section revised after Sean's review of v1. The dog framing was killed (it forced an artifact that wasn't load-bearing to Sean's actual personality). The PMP §4 About-page lead row gets updated in lockstep — the locked string moves from the dog deflation to a **compressed-parallel credentials block** that harmonizes with the home-hero tagline ("Raised by..." → "Trained by..."). B-3 transitions from a dog-Polaroid gallery to **Saturday morning canon** — six hand-drawn pencil-test studies of cartoon characters Sean takes as formative, each captioned with the product/craft principle the cartoon taught. Animation-cel frame treatment (with hand-drawn registration pegs) replaces Polaroid framing to signal "cultural-craft reference rendered through Sean's hand" rather than "personal artifact." Five dog-related OPEN questions in §18 are removed; three cartoon-canon OPENs added.
 - **2026-05-17 (initial):** First draft. Honored hero §10's locked "About = paper, no splash" decision. Annotation density cap raised from ≤6 (case-study) to ≤12 (About).
 
@@ -21,7 +24,7 @@ A two-column animator's-sketchbook page where Sean's animator-self and PM-self r
 ## 2. Anatomy
 
 ```
-                    ╲╱╲╱╲╱╲╱╲ torn-paper edge (top, from prev surface) ╲╱╲╱╲╱╲╱╲
+                    ╲╱╲╱╲╱╲╱╲ torn-paper edge (top, reveals teal chrome #0A3E42) ╲╱╲╱╲╱╲╱╲
 ┌──────────────────────────────────────────────────────────────────────┐
 │                                                                      │
 │  BOSTON · ABOUT · UPDATED 2026-05-17 · 4 MIN                         │
@@ -33,14 +36,14 @@ A two-column animator's-sketchbook page where Sean's animator-self and PM-self r
 │                                                                      │
 │  ╭───────────────────────────────────╮  ┌──────────────────────────┐ │
 │  │                                   │  │   FULL-BODY CHARACTER    │ │
-│  │  Trained by Looney Tunes and      │  │   pencil-test PNG,       │ │
-│  │  Vercel deployment logs.          │  │   alpha channel,         │ │
-│  │  Ships AI-native products.        │  │   ~640px tall            │ │
-│  │  Deploys agent fleets.            │  │                          │ │
-│  │                                   │  │   (the same character    │ │
-│  │  Newsreader, clamp(36, 4vw, 64),  │  │    as cursor / tile /    │ │
-│  │  ink, 3 lines on desktop,         │  │    hero, full-body,      │ │
-│  │  4-5 on mobile, max-width 540px   │  │    static)               │ │
+│  │  Raised by Saturday morning       │  │   pencil-test PNG,       │ │
+│  │  cartoons and Vercel              │  │   alpha channel,         │ │
+│  │  deployment logs.                 │  │   ~640px tall            │ │
+│  │                                   │  │                          │ │
+│  │  Newsreader, clamp(36, 4.5vw, 72),│  │   (the same character    │ │
+│  │  weight 300, ink, 1-2 lines       │  │    as cursor / tile /    │ │
+│  │  desktop, 2-3 lines mobile,       │  │    hero, full-body,      │ │
+│  │  max-width 720px                  │  │    static)               │ │
 │  │                                   │  │                          │ │
 │  ╰───────────────────────────────────╯  └──────────────────────────┘ │
 │                                                                      │
@@ -54,21 +57,33 @@ A two-column animator's-sketchbook page where Sean's animator-self and PM-self r
 │  ── handwritten heading SVG ──                                       │
 │  ╱╱ B-1 · How I got here ╱╱                                          │
 │                                                                      │
-│  ┌──────────────────── PARALLEL-LINEAGE TIMELINE ─────────────────┐  │
-│  │                                                                │  │
-│  │  ANIMATOR  ╲╱╲╱╲╱╲                          ╱╲╱╲╱╲╱╲  PM       │  │
-│  │     (left column)   torn-paper vertical gutter   (right)       │  │
-│  │                                                                │  │
-│  │  ┌──────────────┐    │                       ┌──────────────┐  │  │
-│  │  │ age 8        │    │                       │ age 8        │  │  │
-│  │  │ "drew first  │    ├─ hand-drawn arrow ──→ │ "discovered  │  │  │
-│  │  │ saturday     │←───┤    "parallel"          │ vercel       │  │  │
-│  │  │ morning      │    │                       │ deployment   │  │  │
-│  │  │ cartoon"     │    │                       │ logs"        │  │  │
-│  │  └──────────────┘    │                       └──────────────┘  │  │
-│  │                      │                                         │  │
-│  │  (8-10 paired rows; mobile collapses to alternating)           │  │
-│  └────────────────────────────────────────────────────────────────┘  │
+│  ┌──────────────── STACKED BEATS, LANE-TINT RULE ────────────────┐   │
+│  │                                                               │   │
+│  │  ▌ age 8 · 1998                                               │   │
+│  │  ▌ drew a coyote badly. asked dad to deploy a webpage.        │   │
+│  │  ▌ it was on Geocities.                                       │   │
+│  │  ▌                                                            │   │
+│  │  ▌ age 14 · 2004                                              │   │
+│  │  ▌ filled six sketchbooks. shipped the school-play site.      │   │
+│  │  ▌ learned what "broken" meant.                               │   │
+│  │  ▌                                                            │   │
+│  │  ▌ age 22 · 2012                                              │   │
+│  │  ▌ first short film. first festival rejection.                │   │
+│  │  ▌ first PRD. first stakeholder loop.                         │   │
+│  │  ▌                                                            │   │
+│  │  ▌ (6-8 beats total)                                          │   │
+│  │                                                               │   │
+│  │  ▌ = left-margin lane rule, ~3px wide, runs the full height   │   │
+│  │      of each beat.                                            │   │
+│  │      ANIMATOR-coded beat → warm amber #FAC775                 │   │
+│  │      PM-coded beat       → teal #0A3E42                       │   │
+│  │      BRAIDED beat        → vertical gradient amber → teal     │   │
+│  │                                                               │   │
+│  │  Each beat: JetBrains Mono date line (age + year) above       │   │
+│  │  a 1-2 sentence Newsreader 18/16 body. ~120-160px per beat.   │   │
+│  │  Single column desktop AND mobile — no grid, no gutter,       │   │
+│  │  no cross-arrows. The braid is the gradient.                  │   │
+│  └───────────────────────────────────────────────────────────────┘   │
 │                                                                      │
 │                                                                      │
 │  ── handwritten heading SVG ──                                       │
@@ -110,10 +125,25 @@ A two-column animator's-sketchbook page where Sean's animator-self and PM-self r
 │  ── handwritten heading SVG ──                                       │
 │  ╱╱ B-4 · Where I'm going ╱╱                                         │
 │                                                                      │
-│  AVAILABLE 2026-05 · AI PM > TECH PM > CREATIVE PM                   │
-│  BOSTON METRO OR REMOTE                                              │
+│                                          ┌────────────────────────┐  │
+│                                          │ CURRENTLY @ FREE AGENT │  │
+│                                          └────────────────────────┘  │
+│                                                ↑ mono stamp,         │
+│                                                  top-right of B-4,   │
+│                                                  driven by frontmatter│
+│                                                  current_company.     │
 │                                                                      │
-│  2 short paragraphs — calm, factual.                                 │
+│  WHAT I'M BUILDING TOWARD                                            │
+│                                                                      │
+│  2 short paragraphs — direction-of-craft, not direction-of-Sean.     │
+│  Names the bet: AI-native PM, agent governance, the spec layer.      │
+│  Reads the same whether Sean is hired or hunting. No "available"     │
+│  language. No geography unless geography is part of the craft bet.   │
+│                                                                      │
+│  ── conditional, renders ONLY when available: true ─────────────     │
+│  ╱ if you're hiring around this, my agent fleet config goes out      │
+│  ╱ on second conversation.                                           │
+│  ─── Newsreader italic, single line, paper-strip background ────     │
 │                                                                      │
 │                                                                      │
 │  ── handwritten heading SVG ──                                       │
@@ -126,20 +156,20 @@ A two-column animator's-sketchbook page where Sean's animator-self and PM-self r
 │                                                                      │
 │                                                                      │
 │  ─── PULL QUOTE ──────────────────────────────────────────────────   │
-│  "Raised by Saturday morning cartoons                                │
-│   and Vercel deployment logs."                                       │
-│  Newsreader 40px italic, paper-strip background — pulled from        │
-│  the home hero tagline, as a deliberate cross-page echo              │
+│  "Product Manager. The agents handle the math.                       │
+│   I handle the taste."                                               │
+│  Newsreader 40px italic, paper-strip background — echoes             │
+│  the home hero tagline (cross-page closeout)                         │
 │                                                                      │
 │                                                                      │
 │  Sean   ← handwritten signature SVG                                  │
 │         ◐ registration mark (page closeout, bottom-right)            │
 │                                                                      │
 └──────────────────────────────────────────────────────────────────────┘
-                    ╲╱╲╱╲╱╲╱╲ torn-paper edge (bottom) → site-chrome footer (Contact lives there) ╲╱╲╱╲╱╲╱╲
+                    ╲╱╲╱╲╱╲╱╲ torn-paper edge (bottom, reveals teal chrome) → site-chrome footer (Contact lives there) ╲╱╲╱╲╱╲╱╲
 ```
 
-Six bands. Top to bottom: **dateline strip → lead-line + character hero → live pulse strip → parallel-lineage timeline (B-1) → comprehension thesis (B-2) → Saturday morning canon (B-3) → where-I'm-going (B-4) → proof points (B-5) → pull quote → signature**. The page sits on cream paper edge to edge. No splash. The character + the annotations + the pencil-test cartoon cels carry the chromatic interest.
+Six bands. Top to bottom: **dateline strip → lead-line + character hero → live pulse strip → stacked beats with lane-tint rule (B-1) → comprehension thesis (B-2) → Saturday morning canon (B-3) → building-toward (B-4) → proof points (B-5) → pull quote → signature**. The page sits on cream paper edge to edge. No splash. The character + the annotations + the pencil-test cartoon cels + the B-1 lane-tint rule carry the chromatic interest.
 
 ---
 
@@ -149,21 +179,21 @@ Six bands. Top to bottom: **dateline strip → lead-line + character hero → li
 
 | Slot | Height | Notes |
 |---|---|---|
-| Torn-paper top edge | 32px | overlaps prev surface by 16px |
+| Torn-paper top edge | ~200px visible | Raster PNG asset per texture-and-artifacts-spec §4. Overlaps the teal chrome above by 80px (negative margin); overlaps the paper sheet below by 2px to hide the seam. |
 | Top padding | 60px | |
 | **Dateline strip** | ~54px | reused component, includes reading-time `4 MIN` suffix |
 | Gap | 60px | |
-| **Lead-line + character hero** | ~640px | 2-column grid; 3-sentence lead at `clamp(36px, 4vw, 64px)` Newsreader left, character PNG full-body right |
+| **Lead-line + character hero** | ~640px | 2-column grid; single-line lead at `clamp(36px, 4.5vw, 72px)` Newsreader weight 300 left (wraps 1-2 lines), character PNG full-body right. Character height (640px) is the binding constraint on the section height. |
 | Gap | 60px | |
 | **Live pulse strip** | ~80px | mono, paper, 0.5px teal dividers top + bottom |
 | Gap | 100px | |
-| **B-1 Parallel-lineage timeline** | ~1200-1800px | 8-10 paired rows, ~150-180px per row, hand-drawn arrows in the gutter |
+| **B-1 Stacked beats + lane-tint** | ~960-1280px | 6-8 single-column beats, ~120-160px per beat, lane-tint rule on the left margin (~3px wide). No gutter, no cross-arrows. |
 | Gap | 100px | |
 | **B-2 Comprehension thesis** | ~600px | single column, max-width 680px |
 | Gap | 100px | |
 | **B-3 Saturday morning canon** | ~860px | 3×2 cel grid (~360px per row) + wire-service caption strips below each cel |
 | Gap | 100px | |
-| **B-4 Where I'm going** | ~440px | availability pill + 2 paragraphs |
+| **B-4 Where I'm going** | ~460px | `WHAT I'M BUILDING TOWARD` heading + 2 paragraphs + conditional recruiter italic (~40px when rendered). `CURRENTLY @` stamp floats top-right of the section, doesn't add to vertical budget. |
 | Gap | 80px | |
 | **B-5 Proof points** | ~280px | 4 mono links, left-aligned |
 | Gap | 120px | |
@@ -171,21 +201,21 @@ Six bands. Top to bottom: **dateline strip → lead-line + character hero → li
 | Gap | 80px | |
 | **Signature + closeout** | ~120px | handwritten "Sean" SVG + registration mark bottom-right |
 | Bottom padding | 80px | |
-| Torn-paper bottom edge | 32px | overlaps site-chrome footer by 16px (where Contact lives) |
-| **Page height** | ~5100-5700px | longest page on the site by design |
+| Torn-paper bottom edge | ~200px visible | Same raster PNG flipped via `transform: scaleY(-1)` per texture-and-artifacts-spec §4.4. Overlaps the paper sheet above by 2px; overlaps the teal chrome below by 80px. Site-chrome footer (where Contact lives) renders on the chrome, below the tear. |
+| **Page height** | ~5300-5900px | longest page on the site by design. Range bumped +200px vs. earlier draft to reflect the real ~200px raster torn-paper edges (each contributes ~118px to document flow after the §4.4 negative-margin overlaps). |
 
 ### Mobile (<768px)
 
 | Slot | Adaptation |
 |---|---|
-| Lead-line + character hero | Stack: character PNG on top (max-height 360px), lead line below, 3 sentences wrap to 4-5 lines |
+| Lead-line + character hero | Stack: character PNG on top (max-height 360px), lead line below, single line wraps to 2-3 lines at the mobile type-scale floor |
 | Live pulse strip | Wraps to 2-3 lines, same content |
-| **B-1 timeline** | Collapses to single column with **alternating left/right rows** — left-anchored row is animator-self, right-anchored row is PM-self, gutter arrows replaced with small vertical "see also" pencil marks |
+| **B-1 stacked beats** | No collapse needed — already single-column at all viewports. Lane-tint rule stays at ~3px wide; if the lane-rule color contrast feels weak at mobile sizes, the rule widens to ~4px. |
 | **B-3 cartoon canon** | Single-column stack; each cel + caption renders full-width, 6 stacked. No horizontal carousel (the lessons are too important to risk being swiped past). |
 | Annotations | Cap drops from ≤12 → ≤6 (geometry breaks at high density on mobile) |
 | Pull quote | Newsreader `clamp(24px, 5vw, 40px)` |
 
-The mobile collapse rule for B-1 is the key opinionated bit — **alternating rows preserve the parallel-lineage rule when columns can't fit**. A single linear timeline would imply chronological hierarchy and fail PMP §3.1.
+The opinionated bit for B-1 across viewports is the **lane-tint rule itself** — a single column with a chromatic left-margin rule preserves the parallel-lineage rule (PMP §3.1) without geometry, because animator-coded and PM-coded beats are visually distinguishable at-a-glance through the rule color, not through column position. A purely monochrome single-column timeline would imply chronological hierarchy and fail PMP §3.1.
 
 For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of this spec used `scroll-snap` because Polaroids are scannable; cartoon-canon entries each carry a load-bearing lesson sentence that earns the lead line, so they must be readable in single-column scroll order, not swiped through.
 
@@ -204,15 +234,18 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | Live pulse body | JetBrains Mono | 13 / 12 | 400 | 0.8px | `#546E71` |
 | **Hand-drawn section headings (B-1, B-2 …)** | SVG, not type | rendered at ~48px tall | — | — | `#0A3E42` |
 | Section frame number prefix (`B-1 ·`) | JetBrains Mono | 14 (both) | 500 | 1.8px | `#FAC775` (amber mid-stop) |
-| Timeline row labels (`age 8`, etc.) | JetBrains Mono | 11 (both) | 500 | 1.4px | `#7C2D12` |
-| Timeline row body | Newsreader | 18 / 16 | 400 | -0.1px | `#1A1A1E` |
+| **Beat date line** (`age 8 · 1998`, etc.) | JetBrains Mono | 12 / 11 | 500 | 1.4px | `#7C2D12` |
+| **Beat body** | Newsreader | 18 / 16 | 400 | -0.1px | `#1A1A1E` |
+| **Beat lane rule** (left margin) | — (CSS background) | width 3px desktop / 4px mobile | — | — | `#FAC775` (animator) / `#0A3E42` (PM) / linear-gradient `#FAC775 → #0A3E42` top-to-bottom (braided beat) |
 | B-2 prose | Newsreader | 22 / 18 | 300 | -0.2px | `#1A1A1E` |
 | **Cartoon cel name strip** | JetBrains Mono | 11 (both) | 500 | 1.2px | `#1A1A1E` (inside the cel, bottom-left) |
 | **Cartoon cel year suffix** | JetBrains Mono | 11 (both) | 400 | 1.2px | `#546E71` (inside the cel, after the name) |
 | **Cartoon lesson noun (caption prefix)** | JetBrains Mono | 12 (both) | 500 | 1.6px | `#7C2D12` (caption strip below cel) |
 | **Cartoon lesson body** | JetBrains Mono | 12 / 11 | 400 | 0.8px | `#546E71` (caption strip below cel) |
-| Availability pill | JetBrains Mono | 13 (both) | 500 | 1.8px | `#0F6E56` (success teal) |
+| **B-4 "Currently @" stamp** | JetBrains Mono | 12 (both) | 500 | 1.8px | `#7C2D12` (stamp amber) on `rgba(124,45,18,0.06)` paper-tinted background, 1px stamp-amber outline rendered as a hand-stamp rectangle |
+| **B-4 section heading** ("WHAT I'M BUILDING TOWARD") | JetBrains Mono | 13 (both) | 500 | 1.8px | `#7C2D12` (stamp amber), small-caps style — wire-service section heading, not a hand-drawn SVG, sits below the B-4 hand-drawn heading SVG |
 | B-4 prose | Newsreader | 20 / 18 | 300 | -0.1px | `#1A1A1E` |
+| **B-4 conditional recruiter italic** | Newsreader | 18 / 16 | 300 italic | -0.1px | `#0A3E42` (primary teal), on a paper-strip background `rgba(10,62,66,0.04)` with 0.5px teal top + bottom dividers — visual sibling to the live pulse strip up top |
 | Proof-point links | JetBrains Mono | 15 / 13 | 500 | 0.6px | `#0A3E42` (underline on hover) |
 | Pull quote | Newsreader | `clamp(28px, 4.5vw, 40px)` | 300 italic | -0.3px | `#0A3E42` |
 | Signature | SVG (handwritten), not type | rendered ~36px tall | — | — | `#1A1A1E` |
@@ -224,16 +257,16 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | Section | Register | Notes |
 |---|---|---|
 | Dateline strip | Wire-service mono | Same as hero/case-study |
-| **Lead line** | **Editorial credentials-block** | 3 short sentences rendered as a stat-block — Newsreader serif, but wire-service-coded in cadence. Sentence 1 calls back to the home-hero lineage frame; sentences 2-3 are factual ship-stamps. No comedic deflation; the warmth comes from the cross-page rhyme with the home tagline, not from a punchline. |
+| **Lead line** | **Editorial declarative** | A single Newsreader-serif line establishing lineage. Sedaris register — two specific true things in comedic juxtaposition (Saturday cartoons + Vercel deploys), no punchline, no credentials list. Earns the home hero's "taste" claim by naming where the taste came from. The factual ship-stamps that previously sat below the headline are now distributed to the live pulse strip and B-4 availability section, where they read as evidence rather than claims. |
 | **Live pulse strip** | **Wire-service personal** | Wire-service register applied to personal data — commits / drafts / frames cleaned / reading. Past 24h, factual, no first-person pronouns. |
-| **B-1 timeline rows** | **Wire-service captions** | Each row's prose is wire-service: dated, factual, one claim per row. Quotes around childhood mile-markers. |
+| **B-1 stacked beats** | **Wire-service captions** | Each beat's prose is wire-service: dated, factual, one claim per beat. The animator/PM braid lives in the **lane-tint rule**, not in the prose — sentences themselves are register-neutral. Quotes around childhood mile-markers are encouraged but optional. Mixing animator-detail + PM-detail in the same beat sentence is the move that earns a braided lane rule. |
 | **B-2 prose** | **Sedaris-coded narrative** | The page's most personal section. First-person-warm, comedic juxtaposition, specific nouns. |
 | **B-3 cartoon lessons** | **Wire-service captions, declarative** | Each lesson opens with a noun (`TIMING.` / `ANTICIPATION.` / `POV.`) followed by a one-line elaboration that maps the cartoon-craft principle to a product-craft principle. Pure declarative voice — no first-person, no comedic move. The lesson IS the move. |
-| **B-4 where I'm going** | **Sober / declarative** | Calm, factual. Names roles, geography, availability. No "open to opportunities" energy. |
+| **B-4 where I'm going** | **Position-statement / direction-of-craft** | Calm, factual, future-tense. Names the bet (AI-native PM, agent governance, spec-layer ownership) and the problems Sean wants to be in the room for. Reads identically whether Sean is hired or hunting. No "open to opportunities" or "looking for a seat" language — the bet is durable, the availability state is not. The `CURRENTLY @ …` stamp and the conditional italic call-out are the **only** surfaces that carry employment-state signal; the prose body must work without them. |
 | **B-5 proof points** | Wire-service mono | Single-line links. No descriptions. |
-| Pull quote | Editorial (home-hero call-back) | The home-hero tagline reproduced verbatim at the page foot, in serif italic. Closes the page with a cross-surface echo. |
+| Pull quote | Editorial (home-hero call-back) | The home-hero tagline (*"Product Manager. The agents handle the math. I handle the taste."*) reproduced verbatim at the page foot, in serif italic. Closes the page with a cross-surface echo to the surface the visitor entered through. |
 
-**The opinionated bit:** the lead line is editorial-as-stat-block, the pulse strip is wire-service, B-1 is wire-service, B-2 is Sedaris, B-3 is **declarative-wire-service** (a new register on this page — the cartoon-lessons sound like classified ads for product-craft principles), B-4 is sober, B-5 is wire-service, pull quote is editorial. **Warm and factual alternate by section** — and the new declarative register in B-3 reads as "the canon, plainly stated," which fits the section's authority claim ("here's what taught me to ship").
+**The opinionated bit:** the lead line is editorial-as-stat-block, the pulse strip is wire-service, B-1 is wire-service-with-chromatic-braid (the prose is register-neutral; the lane-tint rule carries the lineage signal), B-2 is Sedaris, B-3 is **declarative-wire-service** (a new register on this page — the cartoon-lessons sound like classified ads for product-craft principles), B-4 is position-statement (direction-of-craft, employment-state-neutral), B-5 is wire-service, pull quote is editorial. **Warm and factual alternate by section** — and the new declarative register in B-3 reads as "the canon, plainly stated," which fits the section's authority claim ("here's what taught me to ship").
 
 **STOP-DOING:** Per PMP §3.4. The HybridRouter is never described as architecture on this page either. If agent-fleet operation is named in the lead line ("Deploys agent fleets.") or B-4 ("AI PM"), the framing is product judgment + governance + authority — not concurrency or routing. The semantic-product-architecture lane, not the runtime lane.
 
@@ -246,18 +279,17 @@ About inherits the full hero §5 palette. **About has NO splash block** per hero
 | Color | Hex | Used by |
 |---|---|---|
 | Paper | `#FFF9F0` | Page background, edge to edge |
-| Ink (primary) | `#1A1A1E` | Lead line, prose, timeline body, cartoon cel name strip |
-| Teal (primary) | `#0A3E42` | Hand-drawn heading SVGs, proof-point links, pull quote |
+| Ink (primary) | `#1A1A1E` | Lead line, prose, beat body, cartoon cel name strip |
+| Teal (primary) | `#0A3E42` | Hand-drawn heading SVGs, proof-point links, pull quote, **B-1 lane-tint rule for PM-coded beats**, B-4 recruiter italic |
 | Secondary ink | `#546E71` | Dateline body, pulse body, cartoon lesson body, cel year suffix |
-| Stamp amber | `#7C2D12` | Dateline prefix, pulse prefix, timeline labels, cartoon lesson noun, reading-time |
-| Amber mid-stop | `#FAC775` | Frame-number prefixes (`B-1 ·`), registration marks, cartoon-cel registration pegs |
-| Success teal | `#0F6E56` | Availability pill (B-4) — same hex as SHIPPED status on case-study |
-| Border whisper | `rgba(10, 62, 66, 0.15)` | Pulse strip dividers, cartoon-cel 0.5px outer border, gutter shadow |
+| Stamp amber | `#7C2D12` | Dateline prefix, pulse prefix, beat date lines, cartoon lesson noun, reading-time, B-4 "Currently @" stamp, B-4 section heading |
+| Amber mid-stop | `#FAC775` | Frame-number prefixes (`B-1 ·`), registration marks, cartoon-cel registration pegs, **B-1 lane-tint rule for animator-coded beats** |
+| Border whisper | `rgba(10, 62, 66, 0.15)` | Pulse strip dividers, cartoon-cel 0.5px outer border, B-4 recruiter italic top/bottom dividers |
 | Annotation ink | `rgba(10, 62, 66, 0.7)` | Pencil-margin annotation strokes (curved arrows) |
 | Strikethrough ink | `rgba(124, 45, 18, 0.8)` | Annotation X (e.g., on the "v3 portfolio" historical artifact, if surfaced) |
 | Coffee ring | sepia PNG | One per page, ~30% opacity |
 
-**No coral, no third splash color, no decorative gradients.** The chromatic interest comes from: (1) the character PNG, (2) the 6 pencil-test cartoon cels, (3) the maximum-density pencil annotations.
+**No coral, no third splash color, no decorative gradients except the B-1 braided-beat lane rule.** The chromatic interest comes from: (1) the character PNG, (2) the 6 pencil-test cartoon cels, (3) the maximum-density pencil annotations, (4) the B-1 lane-tint rule running down the left margin of the stacked beats. The braided-beat gradient is the **only** sanctioned multi-color gradient on the site, and it's load-bearing for the parallel-lineage thesis — not decorative.
 
 ---
 
@@ -269,10 +301,10 @@ Trigger: page entry (via View Transition from a sibling route or via direct nav)
 |---|---|---|---|---|
 | 0 | View Transition completes; dateline + lead line + character PNG already painted | — | — | — |
 | 200 | Dateline + reading-time | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 400ms |
-| 400 | Lead line | **Per-sentence reveal** (3 sentences on desktop, 4-5 lines on mobile), translateY(40px) → 0 + opacity, 200ms stagger between sentences — the credentials-block reads in line-by-line like a wire-service marquee | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 1000ms total |
+| 400 | Lead line | **Per-line reveal** (1-2 lines desktop, 2-3 lines mobile), translateY(40px) → 0 + opacity, 120ms stagger between wrapped lines — the line settles in like a hand-written page heading | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms total |
 | 600 | Character PNG | Fade 0 → 1, no translation | linear | 600ms |
 | 1300 | Live pulse strip | Fade + translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 400ms |
-| viewport-triggered | Each timeline row | IntersectionObserver-triggered. Left + right paragraph fade in simultaneously; if a cross-gutter arrow is present, it draws after both land (200ms delay) using SVG `stroke-dasharray` reveal | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms per row |
+| viewport-triggered | Each B-1 beat | IntersectionObserver-triggered. Beat body fades + translateY(12px) → 0. The lane-tint rule for that beat reveals via SVG `stroke-dasharray` top-to-bottom **after** the beat body lands (200ms delay) — the rule "draws in" as the beat settles, reinforcing the sense that the lineage gets resolved beat by beat as the reader scrolls. Braided-beat rules draw amber-then-teal in a single continuous reveal. | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms body + 500ms rule |
 | viewport-triggered | Each hand-drawn heading | Fade + slight scale 0.96 → 1 — feels like a sketchbook page turning | `cubic-bezier(0.22, 1, 0.36, 1)` | 500ms |
 | viewport-triggered | **Cartoon cels** | Stagger: each cel fades + slight scale 0.97 → 1 (no rotation — cels are flat artifacts, not Polaroids), 100ms stagger row-by-row; the registration peg SVGs at the top of each cel fade in 200ms after the cel body | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms each |
 | viewport-triggered | Pull quote | Per-line reveal | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms |
@@ -291,27 +323,27 @@ The above-the-fold block. 2-column grid. Lead line left, character PNG right.
 ### 7.1 Lead line
 
 ```
-Trained by Looney Tunes and Vercel deployment logs.
-Ships AI-native products.
-Deploys agent fleets.
+Raised by Saturday morning cartoons and Vercel deployment logs.
 ```
 
-- Source: `src/content/about/index.mdx` frontmatter field `lead:` — **identical to PMP §4 locked string (revised 2026-05-17)**
+- Source: `src/content/about/index.mdx` frontmatter field `lead:` — **identical to PMP §4 locked string (revised 2026-05-18)**
 - Build-time validator (`scripts/validate_about.mjs`) asserts the lead line in MDX matches PMP §4 byte-for-byte. Build fails on drift.
-- Type: Newsreader, `clamp(36px, 4vw, 64px)`, weight 300, tracking -0.4px, ink `#1A1A1E`
-- **Renders as 3 short sentences, one per line** on desktop (≥1024px). Sentence 1 will wrap to 2 lines below ~480px. Total 3 lines desktop, 4-5 lines mobile.
-- max-width 540px desktop, 100% mobile
-- Implementation: render the 3 sentences as `<p>` elements separated by line breaks in a Newsreader display block. NOT a single `<p>` with autoflow — the line breaks are editorial decisions, not typographic accidents.
-- No quote marks render on screen — the string itself is the artifact, not quoted speech
+- Type: Newsreader, `clamp(36px, 4.5vw, 72px)`, weight 300, tracking -0.4px, ink `#1A1A1E`
+- **Renders as one editorial line.** Wraps to 2 lines on desktop (≥1024px) at the cited size — the natural break lands between `cartoons` and `and`, which the design accepts as the editorial breath. Mobile wraps to 2-3 lines.
+- max-width 720px desktop, 100% mobile
+- Implementation: single `<p>` element. No forced line breaks; let the typography determine the wrap. The string IS the artifact — its rhythm comes from the words, not from imposed `<br>` tags.
+- No quote marks render on screen — the line is declared, not quoted.
 - No CTA below it. The pulse strip is the next thing.
 
 ### 7.2 Why this lead line works
 
-**Sentence 1 is a cross-page rhyme with the home-hero tagline.** Home: *"Raised by Saturday morning cartoons and Vercel deployment logs."* About: *"Trained by Looney Tunes and Vercel deployment logs."* The shared trailing phrase (`...and Vercel deployment logs`) is a deliberate echo — recruiters who came in via the home page recognize the lineage frame and feel they're reading the same author, not a fresh template. *"Raised by..."* is the announcement (passive, childhood-coded); *"Trained by..."* is the elaboration (active, craft-coded). Same lineage, different verb-energy.
+**The line establishes lineage on the page where lineage belongs.** The home hero declares the role (*"Product Manager. The agents handle the math. I handle the taste."*); the About page establishes how the person got that taste. *"Raised by..."* puts both halves of Sean's lineage — Saturday morning cartoons (creative / right-brain) and Vercel deployment logs (technical / left-brain) — in childhood. They're parallel, equal lineage — no timeline, no hierarchy, no "old hobby vs. new career." The line passes the parallel-lineage rule (PMP §3.1) trivially because "raised by" implies both have been there all along.
 
-**Sentences 2-3 are factual ship-stamps.** Wire-service cadence, present tense. They name what the lineage produces — AI-native products + agent fleets — without selling them. The reader extracts "this person ships" from the rhythm, not from the claim.
+**It earns the home hero's "taste" claim by showing where the taste came from.** The home hero says *I handle the taste*. About says *here's the lineage that built the taste*. The two pages tell one story across two surfaces — declarative on home, biographical on About — without rhyming verbatim. The mid-page Saturday morning canon section (§11) earns this lineage claim literally by mapping six cartoons to six product/craft principles. By the time the reader leaves the page, the line has been substantiated, not just asserted.
 
-**No comedic deflation.** This is the structural break from the v1 dog framing. The dog line worked as a hard-cut deflation but forced an artifact section (the gallery) that didn't earn itself. The new line is **parallel-credentials**, not deflation — it harmonizes with the home hero and lets B-3 work as a load-bearing canon section rather than a forced personal artifact.
+**No comedic deflation, no factual ship-stamps.** The line lands its point through the comedic juxtaposition of two specific, true things (Saturday cartoons + Vercel deploys) without needing a punchline or a credentials list. Sedaris register: hyper-specific nouns, no signposting. The factual ship-stamps that were earlier carried by sentences 2-3 of the "Trained by..." credentials block (*"Ships AI-native products. Deploys agent fleets."*) are now distributed across the live pulse strip (§8) and the B-4 availability section, where they belong as evidence rather than as claims sitting next to the headline.
+
+**Cross-page closeout via pull quote.** The page ends (§Anatomy, "Pull quote") with the home hero tagline reproduced verbatim — the visitor's last beat on About is a callback to the page they entered through. Both surfaces close the loop without the rhyme architecture of the prior draft.
 
 ### 7.3 Character PNG (full-body, static)
 
@@ -373,21 +405,75 @@ The fallback is deliberately generic. It only appears when the system is broken.
 
 ---
 
-## 9. B-1 — Parallel-lineage timeline
+## 9. B-1 — How I got here (stacked beats, lane-tint rule)
 
-(Unchanged from v1 — see prior §9 of this spec for the full treatment.)
+The load-bearing section. Where PMP §3.1's parallel-lineage rule becomes **chromatic** — a single column of beats with a colored left-margin rule that varies per beat to declare which lineage(s) that beat belongs to.
 
-The load-bearing section. Where PMP §3.1's parallel-lineage rule becomes geometry.
+### 9.1 Why stacked beats, not two columns
 
-- **Two-column CSS Grid**: `grid-template-columns: 1fr 64px 1fr` (left column + gutter + right column)
-- Left = **animator-self** (cartoons, drawing, animation, traditional craft)
-- Right = **PM-self** (code, deployment, agents, product judgment)
-- Both columns run **forward in time, in sync** — age-aligned rows
-- 8-10 paired rows; row content stays for the build session
-- ≤3 cross-gutter SVG arrows (`parallel` / `becomes` vocabularies)
-- Mobile: alternating left/right rows in single column (NOT a linear timeline)
+The prior draft used a two-column CSS Grid with a torn-paper gutter and cross-gutter SVG arrows. It read as back-and-forth ping-pong: the reader's eye bounced left-right-left-right across the gutter, age by age, and the "parallel" thesis got buried under the geometry. Two real problems:
 
-**[OPEN-2: Timeline content (§9)]** — 8-10 paired rows. The geometry is locked; the prose is not. Sean writes the rows in the build session.
+1. **Reading rhythm fights the thesis.** Parallel lineage is supposed to feel like *both threads have always been there, in sync*. Side-by-side columns make the reader actively switch between two narratives — the opposite of "in sync."
+2. **Mobile collapse was load-bearing on a fragile rule.** The two-column → alternating-rows mobile collapse preserved the parallel-lineage thesis structurally but at the cost of a different reading rhythm on every viewport. Two different geometries for one thesis is a smell.
+
+The stacked-beats layout collapses both problems: **one column on every viewport, one reading rhythm (top-to-bottom), and the lineage signal lives in a chromatic left-margin rule** rather than in column position. The reader scans down once; the rule color tells them, beat by beat, whether they're in animator territory, PM territory, or a moment where both braided.
+
+### 9.2 The component shape
+
+- **Single column**, max-width 680px, centered. Same max-width as B-2 prose for vertical consistency.
+- **6-8 beats** total. The number is opinionated: 8-10 was the old paired-row count; with the back-and-forth gone, each beat carries more semantic weight, so fewer beats land harder. Sean writes the canonical list in the build session.
+- **Each beat** has three parts:
+  1. **Date line** — JetBrains Mono 12/11px weight 500, stamp amber `#7C2D12`, format `age N · YYYY` (e.g., `age 8 · 1998`)
+  2. **Body** — Newsreader 18/16px weight 400, ink `#1A1A1E`, 1-3 sentences. One claim per beat. Can quote younger-Sean ("*I want to be a cartoonist*") but the quote shouldn't be the whole beat.
+  3. **Lane-tint rule** — a left-margin vertical bar, 3px wide desktop / 4px mobile, running the full height of the beat (date line + body). The bar sits ~16px to the left of the date line. Color is determined per-beat (see §9.3).
+- **Vertical spacing** — 32px gap between beats. Lane rules do NOT extend through the gap; each beat's rule is self-contained, which makes the chromatic shift between beats legible.
+
+### 9.3 The three lane states
+
+| State | Rule color | When to use |
+|---|---|---|
+| **Animator** | Solid `#FAC775` (amber mid-stop) | Beat is purely animator-self — drawing, animation, film, traditional craft. e.g., "filled six sketchbooks; saved up for first Wacom." |
+| **PM** | Solid `#0A3E42` (primary teal) | Beat is purely PM-self — code, deploys, product judgment, agents. e.g., "first PM role; first PRD; first stakeholder loop." |
+| **Braided** | Linear gradient `#FAC775` → `#0A3E42`, top-to-bottom | Beat braids both threads in the same sentence. The most opinionated beats. e.g., "age 8 — drew a coyote badly and asked dad to deploy a webpage." These beats are the page's load-bearing moments — they're the literal evidence that the two threads were always in sync. |
+
+**Rule for the writer:** at least 2 of the 6-8 beats should be **braided**. They're the proof. If every beat is animator-only or PM-only, the parallel-lineage thesis collapses into "I had two hobbies." Braided beats are what makes it lineage.
+
+### 9.4 No annotations inside the lane rule
+
+The maximum-density pencil annotations (§14) stay **outside** the beat column — in the page margins, not in the lane-rule channel. A single annotation may point AT a beat (curved arrow with label, anchored beside the date line), but the rule itself is a chromatic system, not a notation surface. Mixing the two would create read-order confusion: is the color a signal, or is the color part of the annotation? Keep them lanes apart.
+
+### 9.5 Mobile
+
+No collapse — the layout is already single column at every viewport. The lane-tint rule widens slightly (3px → 4px) for legibility at small sizes. Vertical gap between beats reduces from 32px → 24px to keep the section from over-running on phones.
+
+### 9.6 Content collection
+
+Beats live in MDX frontmatter as an array, so the lane state is declarative:
+
+```yaml
+beats:
+  - age: 8
+    year: 1998
+    body: "drew a coyote badly. asked dad to deploy a webpage. it was on Geocities."
+    lane: braided
+  - age: 14
+    year: 2004
+    body: "filled six sketchbooks. shipped the school-play site. learned what 'broken' meant."
+    lane: braided
+  - age: 18
+    year: 2008
+    body: "RISD pencil tests; flipbook obsession."
+    lane: animator
+  - age: 22
+    year: 2012
+    body: "first short film. first festival rejection. first PRD. first stakeholder loop."
+    lane: braided
+  # …6-8 total
+```
+
+The `<Beats />` component reads this array and renders one `<BeatRow />` per entry, with the `<LaneRule />` colored per `lane` value. The schema is small enough that Sean can iterate on beats during the build session without touching component code.
+
+**[OPEN-2: Beat content (§9)]** — 6-8 beats, with at least 2 marked `lane: braided`. The component is locked; the prose is not. Sean writes the canonical beats in the build session. Recommended: draft 10-12, cut to 6-8, prioritize braided beats over animator-only or PM-only ones.
 
 ---
 
@@ -505,16 +591,53 @@ One pencil-margin annotation lands inside B-3 (not on a cel — beside one): a c
 
 ---
 
-## 12. B-4 — "Where I'm going" (calm availability)
+## 12. B-4 — "Where I'm going" (direction of craft, employment-state-neutral)
 
-(Unchanged from v1 — see prior §12 of this spec.)
+A position-statement section. **Reads identically whether Sean is hired or hunting.** The job-hunt-coded framing of the prior draft (the `AVAILABLE 2026-05 · AI PM > TECH PM > CREATIVE PM` pill, the "I'm looking for a seat..." copy, the "agent fleet config before our second conversation" line) is gone — that copy required Sean to rewrite the section the moment he got a job, which fights the whole "this site is alive" thesis. The replacement separates **what Sean is building toward (durable)** from **his current employment state (volatile)** and renders them as different surfaces with different update cadences.
 
-The job-hunt anchor section. Sober register.
+### 12.1 Three surfaces, one section
 
-- Availability pill at top: `AVAILABLE 2026-05 · AI PM > TECH PM > CREATIVE PM` / `BOSTON METRO OR REMOTE`
-- 2 short paragraphs, sober — names roles, geography, shapes of work
-- No "open to opportunities" energy
-- Renders conditionally on frontmatter `available: true | false`
+The section has three discrete surfaces, top to bottom:
+
+1. **`CURRENTLY @ …` stamp** — top-right of the section, mono 12px stamp-amber on a paper-tinted background, hand-stamp rectangle outline. Reads `CURRENTLY @ FREE AGENT` when `frontmatter.current_company` is null, `CURRENTLY @ FOO INC.` (uppercase, mono) when populated. **This is the only surface that carries employment-state signal.** Updating it is one frontmatter field; no prose edits.
+2. **`WHAT I'M BUILDING TOWARD` heading + 2 paragraphs** (always rendered) — wire-service mono section heading in stamp amber, followed by 2 short Newsreader paragraphs naming the **craft direction**: AI-native PM as discipline, agent governance, the spec layer as the durable PM artifact. Names the **problems Sean wants to be in the room for** rather than the role he wants to get. Future-tense, opinionated, employer-agnostic. Sean writes these paragraphs once; they age across job changes because the bet is about the field, not about Sean's vacancy.
+3. **Recruiter italic call-out** (conditional, `frontmatter.available === true` only) — a single Newsreader italic line on a paper-strip background (visual sibling to the live pulse strip up top), at the bottom of the section. Suggested copy: *"if you're hiring around this, my agent fleet config goes out on second conversation."* This is where the prior draft's punchy recruiter beat goes — preserved, but **fenced**. When Sean flips `available: false`, this entire surface disappears; the section above closes cleanly on the 2-paragraph craft direction and the page reads as continuous practice rather than vacancy notice.
+
+### 12.2 The aging contract
+
+When Sean accepts an offer, the **only** edits to this section are:
+
+```yaml
+available: false           # was: true
+current_company: "Foo Inc." # was: null
+```
+
+The `CURRENTLY @` stamp updates from `FREE AGENT` → `FOO INC.`, the recruiter italic call-out stops rendering, and the 2 paragraphs of craft-direction prose stay verbatim. Net: **zero prose edits** when Sean's hired. Same when he leaves: flip the two fields back, the recruiter italic returns, the rest of the page is unchanged.
+
+This is the structural answer to "I don't want to make edits whenever I actually get the job." The volatile part of the section is data, not prose, and the prose carries the durable signal.
+
+### 12.3 Voice register
+
+Position-statement / direction-of-craft. Calm, future-tense, **opinionated about the field**. Names the bet, names the problems, names the artifact Sean considers durable (the spec layer). No "open to opportunities," no "looking for," no "available for," no listing of preferred company sizes or industries. The closest registers on the rest of the page are B-2 (Sedaris-coded thesis) and the pull quote (editorial); B-4 is colder than both — more position paper than personal essay.
+
+### 12.4 What stays out
+
+- **No geography line.** "Boston metro or remote" was load-bearing only when the section was a vacancy notice. Without that framing, geography becomes irrelevant trivia; it can live in the resume PDF if needed.
+- **No "AI PM > Tech PM > Creative PM" role-stacking.** The prior pill ranked role flavors; the new prose ranks **problems**, which doesn't expire when Sean's title changes.
+- **No date window.** `AVAILABLE 2026-05` was a freshness signal; the live pulse strip up top is now the page's freshness signal (it updates daily by the Daily Driver). The B-4 section trusts the pulse strip to do that work and stays evergreen.
+
+### 12.5 Component shape
+
+```
+<section id="b-4">
+  <CurrentlyAtStamp current_company={frontmatter.current_company} />
+  <h2>WHAT I'M BUILDING TOWARD</h2>
+  <!-- 2 paragraphs from MDX body, Newsreader 20/18px weight 300 -->
+  <RecruiterCallout visible={frontmatter.available === true} />
+</section>
+```
+
+`<CurrentlyAtStamp />` reads one frontmatter field and renders the stamp. `<RecruiterCallout />` reads one frontmatter field and renders or returns null. Neither component has user-facing copy that changes — the call-out's italic line is locked in the component, validated against PMP §4 if Sean wants to surface it there for cross-page consistency.
 
 ---
 
@@ -539,11 +662,11 @@ Four mono links, left-aligned:
 
 **The seven vocabularies:**
 
-1. **Curved arrow** with label — top-of-page "updated weekly", cross-gutter arrows in B-1, "the live evidence" arrow on `/transactions/` link, "this one rewires you" arrow on one cartoon cel in B-3
+1. **Curved arrow** with label — top-of-page "updated weekly", an optional arrow beside one B-1 beat (anchored next to the date line, label like *"this is when it clicked"*), "the live evidence" arrow on `/transactions/` link, "this one rewires you" arrow on one cartoon cel in B-3. **Cross-gutter arrows are retired** — the B-1 layout no longer has a gutter to cross.
 2. **Strikethrough X** — on a "v3 portfolio" historical artifact link if Sean wants to surface it (see §18 OPEN); else not used
 3. **Coffee ring** — one per page, on B-2 prose
-4. **Registration mark** — page closeout bottom-right, plus 3 corner marks at the corners of the timeline (B-1) to evoke an animator's registration peg system. (Note: the cartoon cels' top registration pegs in B-3 are a SEPARATE pattern — they're part of the cel-frame component, not freestanding annotations.)
-5. **Kid's drawing scan** *(margin artifact)* — one per page only, in B-1 left-column margin
+4. **Registration mark** — page closeout bottom-right, plus 2 corner marks at the top + bottom of the B-1 beat column (treating the beat column itself as a registration spine) to evoke an animator's registration peg system. (Note: the cartoon cels' top registration pegs in B-3 are a SEPARATE pattern — they're part of the cel-frame component, not freestanding annotations.)
+5. **Kid's drawing scan** *(margin artifact)* — one per page only, in B-1 left or right margin (beside the beat column, not inside it)
 6. **Handwritten signature** — page closeout, just before the registration mark
 7. **Mono stamp** ("passport stamp") — 3-5 per page scattered in margins
 
@@ -576,8 +699,7 @@ Four mono links, left-aligned:
 | Lead-line validator | `scripts/validate_about.mjs` runs in `prebuild` | Asserts MDX `lead:` matches PMP §4 (revised 2026-05-17) byte-for-byte |
 | Pulse data | `/public/api/about-pulse.json` written by Daily Driver morning agent | Same agent that writes `dateline.json` + `next-piece.json` |
 | Pulse component | `<NowPulse />` Astro component | Reads JSON at build, server-renders. Stale-data fallback per §8.3. |
-| Timeline component | `<TimelineRow />` + `<TimelineGutter />` Astro components | Pure CSS Grid, no JS hydration |
-| Cross-gutter arrows | SVG with `stroke-dasharray` for IntersectionObserver-triggered draw-in | Same primitive as the signature |
+| **Stacked beats component** | `<Beats />` (reads `beats[]` from MDX frontmatter) + `<BeatRow />` (renders one beat — date line + body + lane rule) + `<LaneRule />` (3px vertical SVG, color per `lane` prop) | Pure CSS, no JS hydration. `<LaneRule />` uses inline SVG for the `stroke-dasharray` reveal animation, same primitive as the signature. |
 | Hand-drawn heading SVGs | `src/assets/headings/about/*.svg` | ~5 SVGs, one per B-N section |
 | **Cartoon canon collection** | `src/content/cartoons/*.md` content collection + **`<CartoonCanon />` + `<CartoonCel />`** Astro components | Replaces v1's `src/content/dog/` + `<DogPolaroid />`. Pure Astro, no JS hydration. |
 | **Cartoon pencil-test studies** | `src/assets/cartoons/*.png` — Sean's hand or Seedream renders | Per §11.4 OPEN: Path C (hybrid) recommended for v1 |
@@ -599,21 +721,21 @@ Four mono links, left-aligned:
 
 About page v1 ships when:
 
-1. The MDX file at `src/content/about/index.mdx` exists with full frontmatter (`lead`, `linkedin_url`, `github_url`, `available`, `available_since`, optional `current_company`).
+1. The MDX file at `src/content/about/index.mdx` exists with full frontmatter per Appendix B: `lead` (locked, validated), `linkedin_url`, `github_url`, `transactions_url`, `resume_url`, `available` (boolean), `current_company` (string or null), `character_image`, `character_alt`, `beats[]` (6-8 entries with `age` + `year` + `body` + `lane`), and `b3_load_bearing_cel` (1-6).
 2. `scripts/validate_about.mjs` runs in `prebuild` and asserts the `lead:` field matches **the revised PMP §4 string byte-for-byte** (`"Trained by Looney Tunes and Vercel deployment logs. Ships AI-native products. Deploys agent fleets."`). Build fails on drift.
 3. The above-the-fold renders the 3-sentence lead as a stat-block + character PNG at the spec'd proportions. The character PNG exists at `/public/assets/character/about-full-body.png`.
 4. The live pulse strip reads from a real `/api/about-pulse.json` written by the Daily Driver — not hardcoded. Stale-data fallback works. **No `dog_walks` item type in the schema.**
-5. The B-1 parallel-lineage timeline renders as a 2-column grid on desktop with a torn-paper gutter SVG, collapses to alternating-row single column on mobile, and has at least 8 paired rows with concrete (non-generic) content.
-6. ≤3 cross-gutter arrows render in B-1, animated via `stroke-dasharray` on viewport entry. Disabled under reduced motion.
+5. The B-1 stacked-beats section renders 6-8 beats in a single-column layout (same geometry desktop + mobile), each beat showing a JetBrains Mono date line, a Newsreader body, and a left-margin lane-tint rule (3px desktop / 4px mobile). At least 2 of the beats are marked `lane: braided` and render with the amber-to-teal vertical gradient rule.
+6. Each B-1 beat's lane rule reveals via SVG `stroke-dasharray` top-to-bottom on viewport entry, 200ms after the beat body lands. Disabled under reduced motion (rules render solid at final color). At most 1 curved-arrow annotation lands beside a beat in B-1.
 7. **The B-3 Saturday morning canon renders 6 `<CartoonCel />` entries from `src/content/cartoons/` in a 3×2 grid on desktop, stacks single-column on mobile. Each cel includes: hand-drawn registration pegs (SVG), Sean's pencil-test study (PNG), cartoon name + year strip inside the cel, and a wire-service caption strip below.** No real cartoon stills (licensing); pencil-test studies only.
-8. The B-4 availability pill renders only when frontmatter `available: true`. Renders as `CURRENTLY @ <COMPANY>` when `false`.
+8. B-4 renders three surfaces: (a) the `CURRENTLY @ FREE AGENT` / `CURRENTLY @ <COMPANY>` mono stamp top-right, driven by `frontmatter.current_company`; (b) the `WHAT I'M BUILDING TOWARD` heading + 2 paragraphs of direction-of-craft prose, always rendered, employment-state-neutral; (c) the recruiter italic call-out at the bottom, rendered **only** when `frontmatter.available === true`. Flipping `available: false` + setting `current_company` is sufficient to take the page from "available" → "employed" state with zero prose edits. The aging contract in §12.2 is satisfied: a fresh reader cannot tell that any of the section's text was written before or after Sean's last job change.
 9. The B-5 proof points render four mono links with the "rev scribble" annotation on the `/transactions/` link.
 10. Pencil annotations render at the spec'd density cap (≤12 desktop / ≤6 mobile) with the seven vocabularies defined in §14. Never adjacent within 200px (desktop) / 120px (mobile). **One annotation lands in B-3** (curved arrow with "this one rewires you" label, pointing at Sean's chosen most-load-bearing cel).
 11. The handwritten signature SVG draws itself in via `stroke-dasharray` on viewport entry. Disabled under reduced motion.
 12. Hand-drawn heading SVGs (five of them, one per B-N — including `b3-saturday-morning-canon.svg`) render with proper `<h2>` + `aria-label` accessibility.
 13. Print stylesheet renders a clean single-column, link-URL-suffixed version of the page on letter paper.
 14. Lighthouse: Accessibility ≥95, Performance ≥90, Best Practices = 100.
-15. Cold-read test: a fresh reader can describe Sean's professional positioning + read at least 3 of the 6 cartoon lessons + understand he's available within 60 seconds of landing. Re-run on the live build.
+15. Cold-read test: a fresh reader can describe Sean's professional positioning + read at least 3 of the 6 cartoon lessons + name at least one bet from the B-4 "WHAT I'M BUILDING TOWARD" paragraphs within 60 seconds of landing. Re-run on the live build. When `frontmatter.available === true`, the reader should also recall the recruiter italic line ("agent fleet config on second conversation") without prompting; when `available: false`, the reader should NOT mention employment-seeking when summarizing the page.
 
 When all 15 are green, About v1 is locked and we move to `/transactions/` (spec #3).
 
@@ -636,7 +758,7 @@ When all 15 are green, About v1 is locked and we move to `/transactions/` (spec 
 
 **[OPEN-1: Character composition (§7.3)]** — Sean alone, full-body, NO AI companion. The companion lives in hero + animation-pipeline case study; About is the human-self surface. Confirm.
 
-**[OPEN-2: Timeline content (§9)]** — 8-10 paired rows. The geometry is locked; the prose is not. Sean writes the rows in the build session.
+**[OPEN-2: Beat content (§9)]** — 6-8 stacked beats with at least 2 marked `lane: braided`. The component + lane-tint geometry is locked; the prose is not. Sean writes the canonical beats (in MDX frontmatter `beats[]` per Appendix B) in the build session. Recommended: draft 10-12 candidate beats, cut to 6-8 keepers, prioritize beats that braid both threads in a single sentence — those are the load-bearing beats for the parallel-lineage thesis.
 
 **[OPEN-3: The 6 cartoons + lessons (§11.2)]** — Spec locks: 6 cels, mono-caption format `LESSON NOUN — body line`, lesson maps cartoon-craft to product-craft. The placeholder table in §11.2 is illustrative — Sean writes the canonical list (cartoon, year, lesson noun, lesson body) in the build session, ideally with cartoons that are personally formative (Cartoon Network / Nickelodeon / Looney Tunes / etc. per Sean's note).
 
@@ -659,12 +781,13 @@ sw-ai-pm-portfolio/
 │   │   └── about/
 │   │       ├── AboutHero.astro            ← lead line + character PNG, 2-column
 │   │       ├── NowPulse.astro             ← reads /api/about-pulse.json
-│   │       ├── TimelineRow.astro          ← single paired row
-│   │       ├── TimelineGutter.astro       ← torn-paper vertical SVG
-│   │       ├── GutterArrow.astro          ← cross-gutter SVG with stroke-dasharray
+│   │       ├── Beats.astro                ← B-1 wrapper, reads beats[] from MDX frontmatter
+│   │       ├── BeatRow.astro              ← single beat (date line + body + lane rule)
+│   │       ├── LaneRule.astro             ← 3px vertical SVG, color by lane prop (animator | pm | braided)
 │   │       ├── CartoonCanon.astro         ← B-3 wrapper, grid container
 │   │       ├── CartoonCel.astro           ← single cartoon entry (pegs + study + name strip + caption)
-│   │       ├── AvailabilityPill.astro     ← conditional on frontmatter.available
+│   │       ├── CurrentlyAtStamp.astro     ← B-4, top-right mono stamp, reads frontmatter.current_company
+│   │       ├── RecruiterCallout.astro     ← B-4 conditional italic, renders only when frontmatter.available === true
 │   │       ├── ProofPoints.astro          ← 4-link block
 │   │       ├── PullQuote.astro            ← reusable on /essays/
 │   │       ├── Signature.astro            ← SVG, stroke-dasharray reveal
@@ -729,29 +852,37 @@ github_url: https://github.com/seanwinslow
 transactions_url: /transactions/
 resume_url: /resume/sean-winslow.pdf
 
-# --- Availability ---
-available: true
-available_since: 2026-05-04
-available_until: 2026-07-04         # job-hunt window close per Sean-Winslow-Full-Personal-Context-v2.0.md
-current_company: null               # null when available; "Foo Inc." when employed
+# --- Employment state (drives B-4) ---
+# These two fields together control everything employment-related on the page.
+# Sean flips them together when his job status changes. No prose edits required.
+available: true                     # true → recruiter italic call-out renders; false → it hides
+current_company: null               # null → "CURRENTLY @ FREE AGENT" stamp; "Foo Inc." → "CURRENTLY @ FOO INC."
 
 # --- Character ---
 character_image: /assets/character/about-full-body.png
 character_alt: "A pencil-test rendering of Sean Winslow, full-body."
 
+# --- B-1 stacked beats ---
+beats:
+  - { age: 8,  year: 1998, body: "drew a coyote badly. asked dad to deploy a webpage. it was on Geocities.", lane: braided }
+  - { age: 14, year: 2004, body: "filled six sketchbooks. shipped the school-play site. learned what 'broken' meant.", lane: braided }
+  - { age: 18, year: 2008, body: "RISD pencil tests; flipbook obsession.", lane: animator }
+  - { age: 22, year: 2012, body: "first short film; first festival rejection. first PRD; first stakeholder loop.", lane: braided }
+  # …final list: 6-8 beats total, at least 2 with lane: braided. Sean writes the canonical list in the build session.
+
 # --- B-3 cartoon canon (annotation hook only — content lives in src/content/cartoons/) ---
 b3_load_bearing_cel: 1               # 1-6; which cel gets the "this one rewires you" annotation arrow
 ---
 
-# (MDX body below: section B-1 timeline rows + B-2 thesis prose + B-4 calm-availability prose. B-3 is fully content-collection-driven; B-5 reads from frontmatter URLs.)
+# (MDX body below: B-2 thesis prose + B-4 "WHAT I'M BUILDING TOWARD" prose. B-1 reads from frontmatter `beats[]`; B-3 is fully content-collection-driven; B-5 reads from frontmatter URLs; B-4 stamp + recruiter italic read from the two employment-state fields above.)
 ```
 
 ---
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `case-study-spec-v1.md`, and `about-spec-v1.md` end-to-end. The hero, projects, and case-study surfaces are presumed built per their own specs. Build `src/pages/about.astro` + the about components per Appendix A. Author the MDX at `src/content/about/index.mdx` per Appendix B — Sean writes the B-1 timeline rows + B-2 thesis prose + B-4 calm-availability prose in the same session. Author or commission five hand-drawn heading SVGs per §4 / Appendix A (note `b3-saturday-morning-canon.svg`, not `b3-dog.svg`). Implement `scripts/validate_about.mjs` as a `prebuild` hook in `package.json` that asserts the `lead:` matches the revised PMP §4 string byte-for-byte. Stand up the Daily Driver agent extension to write `/public/api/about-pulse.json` alongside `dateline.json` and `next-piece.json` (no `dog_walks` item type — the v1 spec deliberately removed it). Populate `src/content/cartoons/` with 6 MDX entries per §11.6 frontmatter shape, and source 6 pencil-test studies per the OPEN-4 path Sean picks (recommended: Path C — hybrid). The handwritten signature + the five heading SVGs + the kid-drawing margin artifact + the 6 cartoon pencil-test studies need authoring before this page can ship. Stop when the 15 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `case-study-spec-v1.md`, and `about-spec-v1.md` end-to-end. The hero, projects, and case-study surfaces are presumed built per their own specs. Build `src/pages/about.astro` + the about components per Appendix A. Author the MDX at `src/content/about/index.mdx` per Appendix B — Sean writes the `beats[]` frontmatter array (6-8 entries, at least 2 with `lane: braided`) + B-2 thesis prose + B-4 "WHAT I'M BUILDING TOWARD" prose in the same session, and sets `available: true` + `current_company: null` until employment state changes. Author or commission five hand-drawn heading SVGs per §4 / Appendix A (note `b3-saturday-morning-canon.svg`, not `b3-dog.svg`). Implement `scripts/validate_about.mjs` as a `prebuild` hook in `package.json` that asserts the `lead:` matches the revised PMP §4 string byte-for-byte. Stand up the Daily Driver agent extension to write `/public/api/about-pulse.json` alongside `dateline.json` and `next-piece.json` (no `dog_walks` item type — the v1 spec deliberately removed it). Populate `src/content/cartoons/` with 6 MDX entries per §11.6 frontmatter shape, and source 6 pencil-test studies per the OPEN-4 path Sean picks (recommended: Path C — hybrid). The handwritten signature + the five heading SVGs + the kid-drawing margin artifact + the 6 cartoon pencil-test studies need authoring before this page can ship. Stop when the 15 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
 ---
 
-*Drafted 2026-05-17. Revised 2026-05-17 (dog → Saturday-morning-canon). Awaits Sean's final lock. Open questions flagged in §18.*
+*Drafted 2026-05-17. Revised 2026-05-17 (dog → Saturday-morning-canon). Revised 2026-05-18 (B-1 two-column timeline → single-column stacked beats with lane-tint; B-4 availability pill → "What I'm building toward" + frontmatter-gated recruiter note). Awaits Sean's final lock. Open questions flagged in §18.*
