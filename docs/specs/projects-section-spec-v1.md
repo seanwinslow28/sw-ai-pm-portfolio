@@ -217,12 +217,14 @@ When the cursor enters a tile (desktop only):
 
 | Element | Transition | Duration | Easing |
 |---|---|---|---|
-| Tile media | `scale(1.04)` | 700ms | `cubic-bezier(0.4, 0, 0.2, 1)` |
+| Tile media | `scale(1.03)` | 220ms | `cubic-bezier(0.23, 1, 0.32, 1)` |
 | Tile border | opacity 0.08 → 0.25 | 200ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
 | Metadata strip | translateY(0) — no change; it's always visible | — | — |
 | **Custom cursor** | Default 6px dot → expands to a 220×280px floating preview image of the tile media, positioned ~40px down-right of the cursor | 280ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
 
 The custom cursor preview is the mynrd-derived move from `hero-spec-v1.md` §9. On the projects section, it actually fires — each tile has a `data-cursor-preview="<image-url>"` attribute and the cursor swaps in that image when hovered.
+
+**Why 220ms / scale(1.03):** UI hover stays under 300ms per Emil's frequency framework. The lower 1.03 scale keeps the image from jumping under the cursor at the moment recruiters are scanning tiles.
 
 **On click:** Navigate to `/work/<slug>` via Astro's `<a>` element with View Transitions enabled. The tile media element shares a `view-transition-name` with the hero media on the case-study page, so the transition feels like the tile expanding into the page.
 

@@ -33,6 +33,7 @@ Rules:
 
 ### [`docs/projects-section-spec-v1.md`](docs/projects-section-spec-v1.md)
 
+- **2026-05-19 (critique fix 1.2 — tile hover ≤300ms):** §8 tile-media hover timing was 700ms / scale(1.04) / cubic-bezier(0.4, 0, 0.2, 1) — sluggish at the exact moment recruiters scan tiles. Now 220ms / scale(1.03) / cubic-bezier(0.23, 1, 0.32, 1). Per Emil's UI-animation-under-300ms rule and `impeccable-and-emil-design-critique.md` blocker 1.2 + §2 row 1.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt in Appendix C updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 
 ### [`docs/case-study-spec-v1.md`](docs/case-study-spec-v1.md)
