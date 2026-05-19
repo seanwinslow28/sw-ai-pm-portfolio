@@ -244,7 +244,7 @@ Trigger: the user clicked a tile on the projects section; the browser is mid-tra
 
 | t (ms) | Element | Animation | Easing | Duration |
 |---|---|---|---|---|
-| 0 | Hero media (shared element) | Cross-fade + morph from tile to full-bleed position (Astro View Transitions handles natively) | browser default | ~400ms |
+| 0 | Hero media (shared element) | Cross-fade + morph from tile to full-bleed position (Astro View Transitions handles natively). **Both endpoints use `object-fit: cover` + `object-position: center`** — a `cover`/`contain` mismatch would snap the morph mid-transition. See projects-spec §10. | browser default | ~400ms |
 | 0 | Dateline + title block | Pre-rendered, instant — already visible when the View Transition completes (mounted above the fold) | — | — |
 | 400 | Opener | Per-paragraph reveal: translateY(24px) → 0 + opacity 0 → 1, 80ms stagger | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms |
 | 600 | Investigation board section heading | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 300ms |

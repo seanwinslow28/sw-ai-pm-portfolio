@@ -35,11 +35,13 @@ Rules:
 
 ### [`docs/projects-section-spec-v1.md`](docs/projects-section-spec-v1.md)
 
+- **2026-05-19 (critique fix §2 row 7 — view-transition object-fit lock):** §10 — added an explicit bullet locking `object-fit: cover` at both endpoints of the shared `view-transition-name: hero-media-<slug>`. A `cover`/`contain` mismatch would snap the morph mid-transition; the case-study hero achieves full-bleed via container framing, not via `contain`. Per `impeccable-and-emil-design-critique.md` §2 row 7.
 - **2026-05-19 (critique fix 1.2 — tile hover ≤300ms):** §8 tile-media hover timing was 700ms / scale(1.04) / cubic-bezier(0.4, 0, 0.2, 1) — sluggish at the exact moment recruiters scan tiles. Now 220ms / scale(1.03) / cubic-bezier(0.23, 1, 0.32, 1). Per Emil's UI-animation-under-300ms rule and `impeccable-and-emil-design-critique.md` blocker 1.2 + §2 row 1.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt in Appendix C updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 
 ### [`docs/case-study-spec-v1.md`](docs/case-study-spec-v1.md)
 
+- **2026-05-19 (critique fix §2 row 7 — view-transition object-fit lock):** §6 — annotated the hero-media cross-fade row to lock `object-fit: cover` at both endpoints (matching the projects-spec §10 contract). Container is full-bleed; inner media is `cover`. Per `impeccable-and-emil-design-critique.md` §2 row 7.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
 

@@ -269,6 +269,7 @@ The tile → page transition is the most editorially important moment on the sit
 - The case-study page's hero media element has the same `view-transition-name`
 - On click, the browser cross-fades and morphs between the two — the tile feels like it expands into the full page
 - Astro 5's built-in `<ClientRouter />` handles the transition declaratively
+- **object-fit must match at both endpoints.** Tile `<img>`/`<video>` and case-study hero media both render with `object-fit: cover` and `object-position: center`. A `cover`/`contain` mismatch makes the cross-fade snap mid-transition (the morphed element resizes between the two `object-fit` rules). Lock both ends to `cover`. The case-study hero's full-bleed framing is achieved by making the *container* full-bleed; the inner media still covers, never contains.
 
 ### Browser fallback
 
