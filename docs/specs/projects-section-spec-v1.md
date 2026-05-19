@@ -217,12 +217,14 @@ When the cursor enters a tile (desktop only):
 
 | Element | Transition | Duration | Easing |
 |---|---|---|---|
-| Tile media | `scale(1.04)` | 700ms | `cubic-bezier(0.4, 0, 0.2, 1)` |
+| Tile media | `scale(1.03)` | 220ms | `cubic-bezier(0.23, 1, 0.32, 1)` |
 | Tile border | opacity 0.08 → 0.25 | 200ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
 | Metadata strip | translateY(0) — no change; it's always visible | — | — |
 | **Custom cursor** | Default 6px dot → expands to a 220×280px floating preview image of the tile media, positioned ~40px down-right of the cursor | 280ms | `cubic-bezier(0.16, 1, 0.3, 1)` |
 
 The custom cursor preview is the mynrd-derived move from `hero-spec-v1.md` §9. On the projects section, it actually fires — each tile has a `data-cursor-preview="<image-url>"` attribute and the cursor swaps in that image when hovered.
+
+**Why 220ms / scale(1.03):** UI hover stays under 300ms per Emil's frequency framework. The lower 1.03 scale keeps the image from jumping under the cursor at the moment recruiters are scanning tiles.
 
 **On click:** Navigate to `/work/<slug>` via Astro's `<a>` element with View Transitions enabled. The tile media element shares a `view-transition-name` with the hero media on the case-study page, so the transition feels like the tile expanding into the page.
 
@@ -234,7 +236,7 @@ Three annotations live in this section, all hand-drawn-feeling SVGs:
 
 | # | Annotation | Position | Animation |
 |---|---|---|---|
-| 1 | **Curved arrow with "updated weekly"** — points at the `UPDATED 2026-05-13` dateline label | Just below the dateline label, ~20px right of "UPDATED" | Fades in 800ms after the section enters viewport. Subtle bob (rotate ±2°) at 4s/cycle thereafter |
+| 1 | **Curved arrow with "updated weekly"** — points at the `UPDATED 2026-05-13` dateline label | Just below the dateline label, ~20px right of "UPDATED" | Fades in 800ms after the section enters viewport. Static thereafter (no idle bob — decorative SVG ambient motion falls into Emil's "looks cool, will see it 1000+ times" zone). |
 | 2 | **"rev 3" scribble** — small hand-drawn note tucked at the top-right corner of the A-1 tile (most recently iterated project) | Absolute, top-right of tile A-1, offset -8px / -8px | Fades in with the tile; no idle animation |
 | 3 | **Registration mark** (a "+" cross with two perpendicular tick marks) | Bottom-right corner of the section grid, ~20px below the last tile, ~20px from the right edge | Fades in with the section; static after |
 
@@ -267,6 +269,7 @@ The tile → page transition is the most editorially important moment on the sit
 - The case-study page's hero media element has the same `view-transition-name`
 - On click, the browser cross-fades and morphs between the two — the tile feels like it expands into the full page
 - Astro 5's built-in `<ClientRouter />` handles the transition declaratively
+- **object-fit must match at both endpoints.** Tile `<img>`/`<video>` and case-study hero media both render with `object-fit: cover` and `object-position: center`. A `cover`/`contain` mismatch makes the cross-fade snap mid-transition (the morphed element resizes between the two `object-fit` rules). Lock both ends to `cover`. The case-study hero's full-bleed framing is achieved by making the *container* full-bleed; the inner media still covers, never contains.
 
 ### Browser fallback
 
@@ -411,5 +414,5 @@ The home-page projects grid does a single Astro content collection query, sorts 
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md` and `projects-section-spec-v1.md` end-to-end. The hero is presumed built per its own spec. Build the projects section components per the file map in Appendix A. Create the 5 MDX content files in `src/content/work/` with placeholder body content (just the frontmatter is enough for v1 of the projects section — bodies get filled in for the case-study spec). Wire `/work/[slug].astro` as a dynamic route reading from the content collection. Implement the View Transition by adding `view-transition-name` to both the tile media and the case-study hero media. Use real media assets if available; placeholder colored rectangles otherwise. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md` and `projects-section-spec-v1.md` end-to-end. The hero is presumed built per its own spec. Build the projects section components per the file map in Appendix A. Create the 5 MDX content files in `src/content/work/` with placeholder body content (just the frontmatter is enough for v1 of the projects section — bodies get filled in for the case-study spec). Wire `/work/[slug].astro` as a dynamic route reading from the content collection. Implement the View Transition by adding `view-transition-name` to both the tile media and the case-study hero media. Use real media assets if available; placeholder colored rectangles otherwise. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 

@@ -196,6 +196,16 @@ KILL: drop shadows on the nav (no elevation), background blur (no glass morphism
 
 `position: sticky; top: 0; z-index: 100`. The nav stays at the top of the viewport as the user scrolls a sub-page. Paper bg masks content scrolling beneath. **No scroll-aware hide/reveal** (no "nav disappears when scrolling down, reappears when scrolling up") — too template-coded, adds JS.
 
+### 6.1.1 First-sub-page impression — locked
+
+The site uses **two navigation grammars**: no-nav on home (mynrd-coded linear scroll, one beat at a time), sticky-nav on every sub-page (recruiters reading a 2k-word essay need escape). This is a deliberate split — but the first sub-page visit risks reading as "wait, where did the no-nav site go?"
+
+Three rules mitigate:
+
+1. **The sticky nav uses the same chrome substrate as the home footer** (cream-on-teal, JetBrains Mono, no animated reveal). The visitor sees the chrome teal — the substrate they've already been looking through since the home page — and registers continuity, not change.
+2. **The first sub-page nav reveal is delayed 600ms after View Transition completes.** The recruiter lands; the page renders; *then* the nav fades in from translateY(-8px). Reads as "the page added a nav for me," not "a different site loaded."
+3. **Mockup verification before build complete:** a build-time QA step renders the home → first-sub-page transition in Playwright and visually inspects that the chrome continuity reads correctly. Logged as a DoD item in this spec's Definition of Done.
+
 ### 6.2 Active route highlighting
 
 Server-rendered via `Astro.url.pathname` comparison. Each nav tab renders as:
@@ -738,7 +748,7 @@ sw-ai-pm-portfolio/
 
 ## Appendix B — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, `case-study-spec-v1.md`, `transactions-spec-v1.md`, `architecture-spec-v1.md`, `essays-spec-v1.md`, and `site-chrome-spec-v1.md` end-to-end. Implement `src/layouts/BaseLayout.astro` per §3 + §12. Build `<SiteNav.astro>` + `<SiteFooter.astro>` + `<ThemeToggle.astro>` + `<SkipLink.astro>` per Appendix A. Create `src/lib/site.ts` with all constants per §11. Author `src/pages/contact.astro` per §9 and `src/pages/404.astro` per §10. Install `@astrojs/sitemap` and configure per §13. Add `/public/robots.txt`. Create the static favicon + apple-touch-icon + og-default.png assets (manually authored or placeholder). Add the print stylesheet to `src/styles/global.css` per §14. Wire the `noChrome={true}` flag on `src/pages/index.astro`. **Do NOT add analytics, chat widgets, cookie banners, or any of the §15 anti-stack items.** Stop when the 23 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, `case-study-spec-v1.md`, `transactions-spec-v1.md`, `architecture-spec-v1.md`, `essays-spec-v1.md`, and `site-chrome-spec-v1.md` end-to-end. Implement `src/layouts/BaseLayout.astro` per §3 + §12. Build `<SiteNav.astro>` + `<SiteFooter.astro>` + `<ThemeToggle.astro>` + `<SkipLink.astro>` per Appendix A. Create `src/lib/site.ts` with all constants per §11. Author `src/pages/contact.astro` per §9 and `src/pages/404.astro` per §10. Install `@astrojs/sitemap` and configure per §13. Add `/public/robots.txt`. Create the static favicon + apple-touch-icon + og-default.png assets (manually authored or placeholder). Add the print stylesheet to `src/styles/global.css` per §14. Wire the `noChrome={true}` flag on `src/pages/index.astro`. **Do NOT add analytics, chat widgets, cookie banners, or any of the §15 anti-stack items.** Stop when the 23 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
 ---
 

@@ -185,7 +185,7 @@ The page is a long-form scroll, not a hero-and-CTA. Recruiter scans the title bl
 | Methods strip cell | JetBrains Mono | 13 (both) | 400 | 0.6px | `#1A1A1E` |
 | 4Q heading | JetBrains Mono | 14 (both) | 500 | 2.4px | `#0A3E42` |
 | 4Q "What is this?" body | Newsreader | 24 / 20 | 300 | -0.2px | `#1A1A1E` |
-| 4Q Q2-Q4 body | Newsreader | 20 / 18 | 300 | -0.1px | `#1A1A1E` |
+| 4Q Q2-Q4 body | Newsreader | 18 / 16 | 300 | -0.1px | `#1A1A1E` |
 | Next/prev label | JetBrains Mono | 14 / 12 | 500 | 1.8px | `#0A3E42` |
 
 ### Voice register by section (PMP §3.3)
@@ -244,7 +244,7 @@ Trigger: the user clicked a tile on the projects section; the browser is mid-tra
 
 | t (ms) | Element | Animation | Easing | Duration |
 |---|---|---|---|---|
-| 0 | Hero media (shared element) | Cross-fade + morph from tile to full-bleed position (Astro View Transitions handles natively) | browser default | ~400ms |
+| 0 | Hero media (shared element) | Cross-fade + morph from tile to full-bleed position (Astro View Transitions handles natively). **Both endpoints use `object-fit: cover` + `object-position: center`** — a `cover`/`contain` mismatch would snap the morph mid-transition. See projects-spec §10. | browser default | ~400ms |
 | 0 | Dateline + title block | Pre-rendered, instant — already visible when the View Transition completes (mounted above the fold) | — | — |
 | 400 | Opener | Per-paragraph reveal: translateY(24px) → 0 + opacity 0 → 1, 80ms stagger | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms |
 | 600 | Investigation board section heading | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 300ms |
@@ -824,7 +824,7 @@ archived_reference_url: https://...   # ARCHIVED only — points at the single p
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, and `case-study-spec-v1.md` end-to-end. The hero and projects section are presumed built per their own specs. Build the case-study route components per the file map in Appendix A. Implement `scripts/fetch_explanations.mjs` and `scripts/validate_case_study.mjs` as `prebuild` hooks in `package.json`. Build the 4 artifact MDX components (`<PRDDecision />`, `<SlackQuote />`, `<BoardArtifact />`, `<MetricChart />`) as single-file Astro components — `<SlackQuote />` renders static SVG only (never a real screenshot). Build the `<Annotation />` wrapper + 3 SVG vocabularies + the coffee-ring PNG. Draft the 5 MDX bodies — frontmatter complete per Appendix B, opener prose (3 short paragraphs per §4 voice register), investigation board MDX with the artifact counts called out in §13. The `intent-engineering-mcp` page must have a working `<ShippedNow />` reading `/api/shipped-stats-intent-engineering-mcp.json` (hardcode the JSON for now; Daily Driver wiring comes in Phase 4 of the master plan build sequence). Stop when the 13 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, and `case-study-spec-v1.md` end-to-end. The hero and projects section are presumed built per their own specs. Build the case-study route components per the file map in Appendix A. Implement `scripts/fetch_explanations.mjs` and `scripts/validate_case_study.mjs` as `prebuild` hooks in `package.json`. Build the 4 artifact MDX components (`<PRDDecision />`, `<SlackQuote />`, `<BoardArtifact />`, `<MetricChart />`) as single-file Astro components — `<SlackQuote />` renders static SVG only (never a real screenshot). Build the `<Annotation />` wrapper + 3 SVG vocabularies + the coffee-ring PNG. Draft the 5 MDX bodies — frontmatter complete per Appendix B, opener prose (3 short paragraphs per §4 voice register), investigation board MDX with the artifact counts called out in §13. The `intent-engineering-mcp` page must have a working `<ShippedNow />` reading `/api/shipped-stats-intent-engineering-mcp.json` (hardcode the JSON for now; Daily Driver wiring comes in Phase 4 of the master plan build sequence). Stop when the 13 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
 ---
 

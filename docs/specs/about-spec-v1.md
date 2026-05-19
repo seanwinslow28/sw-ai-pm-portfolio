@@ -169,7 +169,7 @@ A single-column animator's-sketchbook page where Sean's animator-self and PM-sel
                     ╲╱╲╱╲╱╲╱╲ torn-paper edge (bottom, reveals teal chrome) → site-chrome footer (Contact lives there) ╲╱╲╱╲╱╲╱╲
 ```
 
-Six bands. Top to bottom: **dateline strip → lead-line + character hero → live pulse strip → stacked beats with lane-tint rule (B-1) → comprehension thesis (B-2) → Saturday morning canon (B-3) → building-toward (B-4) → proof points (B-5) → pull quote → signature**. The page sits on cream paper edge to edge. No splash. The character + the annotations + the pencil-test cartoon cels + the B-1 lane-tint rule carry the chromatic interest.
+Six bands. Top to bottom: **dateline strip → lead-line + character hero → daily-dated pulse strip → stacked beats with lane-tint rule (B-1) → comprehension thesis (B-2) → Saturday morning canon (B-3) → building-toward (B-4) → proof points (B-5) → pull quote → signature**. The page sits on cream paper edge to edge. No splash. The character + the annotations + the pencil-test cartoon cels + the B-1 lane-tint rule carry the chromatic interest.
 
 ---
 
@@ -185,7 +185,7 @@ Six bands. Top to bottom: **dateline strip → lead-line + character hero → li
 | Gap | 60px | |
 | **Lead-line + character hero** | ~640px | 2-column grid; single-line lead at `clamp(36px, 4.5vw, 72px)` Newsreader weight 300 left (wraps 1-2 lines), character PNG full-body right. Character height (640px) is the binding constraint on the section height. |
 | Gap | 60px | |
-| **Live pulse strip** | ~80px | mono, paper, 0.5px teal dividers top + bottom |
+| **Daily-dated pulse strip** | ~80px | mono, paper, 0.5px teal dividers top + bottom |
 | Gap | 100px | |
 | **B-1 Stacked beats + lane-tint** | ~960-1280px | 6-8 single-column beats, ~120-160px per beat, lane-tint rule on the left margin (~3px wide). No gutter, no cross-arrows. |
 | Gap | 100px | |
@@ -209,7 +209,7 @@ Six bands. Top to bottom: **dateline strip → lead-line + character hero → li
 | Slot | Adaptation |
 |---|---|
 | Lead-line + character hero | Stack: character PNG on top (max-height 360px), lead line below, single line wraps to 2-3 lines at the mobile type-scale floor |
-| Live pulse strip | Wraps to 2-3 lines, same content |
+| Daily-dated pulse strip | Wraps to 2-3 lines, same content |
 | **B-1 stacked beats** | No collapse needed — already single-column at all viewports. Lane-tint rule stays at ~3px wide; if the lane-rule color contrast feels weak at mobile sizes, the rule widens to ~4px. |
 | **B-3 cartoon canon** | Single-column stack; each cel + caption renders full-width, 6 stacked. No horizontal carousel (the lessons are too important to risk being swiped past). |
 | Annotations | Cap drops from ≤12 → ≤6 (geometry breaks at high density on mobile) |
@@ -230,8 +230,8 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | Dateline strip | JetBrains Mono | 12 / 11 | 500 + 400 | 1.2px | stamp `#7C2D12` + body `#546E71` |
 | Reading-time suffix | JetBrains Mono | 12 (both) | 500 | 1.6px | `#7C2D12` |
 | **Lead line (3 sentences)** | Newsreader | `clamp(36px, 4vw, 64px)` | 300 | -0.4px | `#1A1A1E` |
-| Live pulse "LAST 24H" prefix | JetBrains Mono | 12 (both) | 500 | 1.6px | `#7C2D12` |
-| Live pulse body | JetBrains Mono | 13 / 12 | 400 | 0.8px | `#546E71` |
+| Daily-dated pulse "LAST 24H" prefix | JetBrains Mono | 12 (both) | 500 | 1.6px | `#7C2D12` |
+| Daily-dated pulse body | JetBrains Mono | 13 / 12 | 400 | 0.8px | `#546E71` |
 | **Hand-drawn section headings (B-1, B-2 …)** | SVG, not type | rendered at ~48px tall | — | — | `#0A3E42` |
 | Section frame number prefix (`B-1 ·`) | JetBrains Mono | 14 (both) | 500 | 1.8px | `#FAC775` (amber mid-stop) |
 | **Beat date line** (`age 8 · 1998`, etc.) | JetBrains Mono | 12 / 11 | 500 | 1.4px | `#7C2D12` |
@@ -245,7 +245,7 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | **B-4 "Currently @" stamp** | JetBrains Mono | 12 (both) | 500 | 1.8px | `#7C2D12` (stamp amber) on `rgba(124,45,18,0.06)` paper-tinted background, 1px stamp-amber outline rendered as a hand-stamp rectangle |
 | **B-4 section heading** ("WHAT I'M BUILDING TOWARD") | JetBrains Mono | 13 (both) | 500 | 1.8px | `#7C2D12` (stamp amber), small-caps style — wire-service section heading, not a hand-drawn SVG, sits below the B-4 hand-drawn heading SVG |
 | B-4 prose | Newsreader | 20 / 18 | 300 | -0.1px | `#1A1A1E` |
-| **B-4 conditional recruiter italic** | Newsreader | 18 / 16 | 300 italic | -0.1px | `#0A3E42` (primary teal), on a paper-strip background `rgba(10,62,66,0.04)` with 0.5px teal top + bottom dividers — visual sibling to the live pulse strip up top |
+| **B-4 conditional recruiter italic** | Newsreader | 18 / 16 | 300 italic | -0.1px | `#0A3E42` (primary teal), on a paper-strip background `rgba(10,62,66,0.04)` with 0.5px teal top + bottom dividers — visual sibling to the daily-dated pulse strip up top |
 | Proof-point links | JetBrains Mono | 15 / 13 | 500 | 0.6px | `#0A3E42` (underline on hover) |
 | Pull quote | Newsreader | `clamp(28px, 4.5vw, 40px)` | 300 italic | -0.3px | `#0A3E42` |
 | Signature | SVG (handwritten), not type | rendered ~36px tall | — | — | `#1A1A1E` |
@@ -257,8 +257,8 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | Section | Register | Notes |
 |---|---|---|
 | Dateline strip | Wire-service mono | Same as hero/case-study |
-| **Lead line** | **Editorial declarative** | A single Newsreader-serif line establishing lineage. Sedaris register — two specific true things in comedic juxtaposition (Saturday cartoons + Vercel deploys), no punchline, no credentials list. Earns the home hero's "taste" claim by naming where the taste came from. The factual ship-stamps that previously sat below the headline are now distributed to the live pulse strip and B-4 availability section, where they read as evidence rather than claims. |
-| **Live pulse strip** | **Wire-service personal** | Wire-service register applied to personal data — commits / drafts / frames cleaned / reading. Past 24h, factual, no first-person pronouns. |
+| **Lead line** | **Editorial declarative** | A single Newsreader-serif line establishing lineage. Sedaris register — two specific true things in comedic juxtaposition (Saturday cartoons + Vercel deploys), no punchline, no credentials list. Earns the home hero's "taste" claim by naming where the taste came from. The factual ship-stamps that previously sat below the headline are now distributed to the daily-dated pulse strip and B-4 availability section, where they read as evidence rather than claims. |
+| **Daily-dated pulse strip** | **Wire-service personal** | Wire-service register applied to personal data — commits / drafts / frames cleaned / reading. Past 24h, factual, no first-person pronouns. |
 | **B-1 stacked beats** | **Wire-service captions** | Each beat's prose is wire-service: dated, factual, one claim per beat. The animator/PM braid lives in the **lane-tint rule**, not in the prose — sentences themselves are register-neutral. Quotes around childhood mile-markers are encouraged but optional. Mixing animator-detail + PM-detail in the same beat sentence is the move that earns a braided lane rule. |
 | **B-2 prose** | **Sedaris-coded narrative** | The page's most personal section. First-person-warm, comedic juxtaposition, specific nouns. |
 | **B-3 cartoon lessons** | **Wire-service captions, declarative** | Each lesson opens with a noun (`TIMING.` / `ANTICIPATION.` / `POV.`) followed by a one-line elaboration that maps the cartoon-craft principle to a product-craft principle. Pure declarative voice — no first-person, no comedic move. The lesson IS the move. |
@@ -303,12 +303,12 @@ Trigger: page entry (via View Transition from a sibling route or via direct nav)
 | 200 | Dateline + reading-time | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 400ms |
 | 400 | Lead line | **Per-line reveal** (1-2 lines desktop, 2-3 lines mobile), translateY(40px) → 0 + opacity, 120ms stagger between wrapped lines — the line settles in like a hand-written page heading | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms total |
 | 600 | Character PNG | Fade 0 → 1, no translation | linear | 600ms |
-| 1300 | Live pulse strip | Fade + translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 400ms |
+| 1300 | Daily-dated pulse strip | Fade + translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 400ms |
 | viewport-triggered | Each B-1 beat | IntersectionObserver-triggered. Beat body fades + translateY(12px) → 0. The lane-tint rule for that beat reveals via SVG `stroke-dasharray` top-to-bottom **after** the beat body lands (200ms delay) — the rule "draws in" as the beat settles, reinforcing the sense that the lineage gets resolved beat by beat as the reader scrolls. Braided-beat rules draw amber-then-teal in a single continuous reveal. | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms body + 500ms rule |
 | viewport-triggered | Each hand-drawn heading | Fade + slight scale 0.96 → 1 — feels like a sketchbook page turning | `cubic-bezier(0.22, 1, 0.36, 1)` | 500ms |
 | viewport-triggered | **Cartoon cels** | Stagger: each cel fades + slight scale 0.97 → 1 (no rotation — cels are flat artifacts, not Polaroids), 100ms stagger row-by-row; the registration peg SVGs at the top of each cel fade in 200ms after the cel body | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms each |
 | viewport-triggered | Pull quote | Per-line reveal | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms |
-| viewport-triggered | Signature | SVG `stroke-dasharray` reveal — the signature draws itself in | `cubic-bezier(0.6, 0, 0.4, 1)` | 1200ms |
+| viewport-triggered | Signature | SVG `stroke-dasharray` reveal — the signature draws itself in. The easing reads as a pen writing: starts fast (the down-stroke), settles into the closing curl. | `cubic-bezier(0.16, 1, 0.3, 1)` | 1200ms |
 
 **The opinionated bit:** the signature draws itself in, slowly. Most pages close with a button or a CTA. This page closes with Sean's hand signing the page — the most explicit "this is not a template" gesture in the entire site. Reduced motion collapses it to opacity 0 → 1 over 200ms (drawn-in static version).
 
@@ -341,7 +341,7 @@ Raised by Saturday morning cartoons and Vercel deployment logs.
 
 **It earns the home hero's "taste" claim by showing where the taste came from.** The home hero says *I handle the taste*. About says *here's the lineage that built the taste*. The two pages tell one story across two surfaces — declarative on home, biographical on About — without rhyming verbatim. The mid-page Saturday morning canon section (§11) earns this lineage claim literally by mapping six cartoons to six product/craft principles. By the time the reader leaves the page, the line has been substantiated, not just asserted.
 
-**No comedic deflation, no factual ship-stamps.** The line lands its point through the comedic juxtaposition of two specific, true things (Saturday cartoons + Vercel deploys) without needing a punchline or a credentials list. Sedaris register: hyper-specific nouns, no signposting. The factual ship-stamps that were earlier carried by sentences 2-3 of the "Trained by..." credentials block (*"Ships AI-native products. Deploys agent fleets."*) are now distributed across the live pulse strip (§8) and the B-4 availability section, where they belong as evidence rather than as claims sitting next to the headline.
+**No comedic deflation, no factual ship-stamps.** The line lands its point through the comedic juxtaposition of two specific, true things (Saturday cartoons + Vercel deploys) without needing a punchline or a credentials list. Sedaris register: hyper-specific nouns, no signposting. The factual ship-stamps that were earlier carried by sentences 2-3 of the "Trained by..." credentials block (*"Ships AI-native products. Deploys agent fleets."*) are now distributed across the daily-dated pulse strip (§8) and the B-4 availability section, where they belong as evidence rather than as claims sitting next to the headline.
 
 **Cross-page closeout via pull quote.** The page ends (§Anatomy, "Pull quote") with the home hero tagline reproduced verbatim — the visitor's last beat on About is a callback to the page they entered through. Both surfaces close the loop without the rhyme architecture of the prior draft.
 
@@ -362,7 +362,7 @@ Above-the-fold motion competes with the lead line. The home hero has motion beca
 
 ---
 
-## 8. Live pulse strip
+## 8. Daily-dated pulse strip
 
 Wire-service strip below the lead. Reads from `/api/about-pulse.json` (Daily Driver writes 08:45 daily, same agent infrastructure as `dateline.json`).
 
@@ -425,12 +425,36 @@ The stacked-beats layout collapses both problems: **one column on every viewport
 - **Each beat** has three parts:
   1. **Date line** — JetBrains Mono 12/11px weight 500, stamp amber `#7C2D12`, format `age N · YYYY` (e.g., `age 8 · 1998`)
   2. **Body** — Newsreader 18/16px weight 400, ink `#1A1A1E`, 1-3 sentences. One claim per beat. Can quote younger-Sean ("*I want to be a cartoonist*") but the quote shouldn't be the whole beat.
-  3. **Lane-tint rule** — a left-margin vertical bar, 3px wide desktop / 4px mobile, running the full height of the beat (date line + body). The bar sits ~16px to the left of the date line. Color is determined per-beat (see §9.3).
+  3. **Lane-tint rule** — an SVG `<line>` (NOT a CSS `border-left`) rendered as the first child of the beat container. Stroke 3px desktop / 4px mobile, full beat height (date line + body). The line sits ~16px to the left of the date line. Stroke color is determined per-beat (see §9.3). This is rendered as SVG explicitly to (a) sidestep the side-stripe-border anti-pattern by reading as a timeline scrubber rather than a card affordance, and (b) animate via `stroke-dasharray` per §6.
 - **Vertical spacing** — 32px gap between beats. Lane rules do NOT extend through the gap; each beat's rule is self-contained, which makes the chromatic shift between beats legible.
+
+### 9.2.1 The lane-rule SVG markup (canonical)
+
+Each beat renders a single-`<line>` SVG, sized to match the beat's content height via JS measurement on mount (the height isn't known at server-render time because beat bodies wrap to a variable number of lines). For Animator beats the stroke is the amber solid; for PM beats, the teal solid; for braided beats, a `linearGradient` defined in `<defs>` inside the same SVG:
+
+````html
+<svg class="lane-rule" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="braid-{slug}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#FAC775" />
+      <stop offset="100%" stop-color="#0A3E42" />
+    </linearGradient>
+  </defs>
+  <line x1="0" y1="0" x2="0" y2="100%"
+        stroke="url(#braid-{slug})"
+        stroke-width="3"
+        stroke-dasharray="0 9999"
+        class="lane-rule__stroke" />
+</svg>
+````
+
+The `stroke-dasharray="0 9999"` start state hides the stroke; the reveal animation lerps it to `9999 0` (full draw). See §6 for the reveal timing.
+
+**SVG gradient exemption:** Impeccable's color rules ban gradient text and ban gradient backgrounds on full-bleed surfaces. The lane-rule gradient sits in neither category — it's a *strategic* gradient carrying semantic meaning (this beat braids both lineages), is the only multi-color gradient on the site, and lives at <1% of the section's pixel area. The exemption applies here only; any future ask to add a second site-wide gradient gets re-evaluated against Impeccable's rules from scratch.
 
 ### 9.3 The three lane states
 
-| State | Rule color | When to use |
+| State | Stroke color | When to use |
 |---|---|---|
 | **Animator** | Solid `#FAC775` (amber mid-stop) | Beat is purely animator-self — drawing, animation, film, traditional craft. e.g., "filled six sketchbooks; saved up for first Wacom." |
 | **PM** | Solid `#0A3E42` (primary teal) | Beat is purely PM-self — code, deploys, product judgment, agents. e.g., "first PM role; first PRD; first stakeholder loop." |
@@ -532,6 +556,7 @@ Each cel is 280×320px on desktop, contained in a 3×2 CSS Grid (`grid-template-
 | Cel body | White paper background (`#FFFFFF`, not the page's cream `#FFF9F0` — the cel sits ON the paper, not as part of it). 0.5px teal outer border `rgba(10, 62, 66, 0.15)`. Inset shadow 0 2px 4px rgba(0,0,0,0.04). |
 | Pencil-test study | Sean's hand-drawn study of the cartoon character (e.g., Wile E. Coyote mid-anticipation crouch). PNG with alpha. ~200×220px, centered, with breathing room above (for the cel name strip below). |
 | Cel name strip | Inside the cel, bottom-left corner, ~16px from the edges. Cartoon name in mono 11px weight 500 ink + year suffix in mono 11px weight 400 secondary-ink. Example: `WILE E. COYOTE · 1949–` |
+| Cel rotation | The entire cel (registration pegs + body + name strip) rotates ±1.5° around its center. Angle is set per-cel via frontmatter (`angle: -1.2`, `angle: 1.4`, etc.); when omitted, the build script `scripts/randomize_cel_angles.mjs` writes a stable randomized angle in the ±1.5° range at first build (cached in `src/content/cartoons/_angles.json` so the layout doesn't reshuffle between builds). The rotation breaks the 3×2 bento-box feel without destabilizing the read. |
 
 **Caption strip (below the cel, separate element):**
 
@@ -541,6 +566,12 @@ Each cel is 280×320px on desktop, contained in a 3×2 CSS Grid (`grid-template-
 | Lesson body | Mono 12px / 11px weight 400 tracking 0.8px, secondary ink `#546E71`. E.g., `the wind-up sells every gag. ship the wind-up before the deliverable.` |
 | Caption alignment | Left-aligned with the cel's left edge. Max-width matches the cel (280px). Wraps to 2-3 lines naturally. |
 | Vertical position | 16px below the cel's bottom edge. |
+
+### 11.3.1 The "rewires-you" cel breaks the grid
+
+One cel — the cel Sean considers most load-bearing (the cel the §11.7 annotation arrows at) — sets `break_grid: true` in its frontmatter. That cel renders at **1.2× scale** (336×384 instead of 280×320) and **spans two grid columns** on desktop, pushing the cels around it to reflow. The §11.7 annotation arrow + the geometric break work in concert: typography flags the cel, geometry confirms it. Without the break, all 6 cels read at identical visual weight despite the annotation calling one out — the bento-box quality the spec was trying to dodge.
+
+Mobile (§11.5): `break_grid: true` is a no-op (single-column stack already gives every cel equal width). The visual emphasis comes from the annotation alone on mobile.
 
 ### 11.4 Why pencil-test studies, not real cartoon stills
 
@@ -580,6 +611,8 @@ image: /assets/cartoons/coyote-study.png
 image_alt: pencil-test study of Wile E. Coyote in mid-anticipation crouch
 lesson_noun: ANTICIPATION TIMING
 lesson_body: the wind-up sells every gag. ship the wind-up before the deliverable.
+angle: -0.8  # optional; ±1.5° range; defaults to a stable random value if omitted
+break_grid: false  # optional; when true, cel renders at 1.2× scale and breaks the 3×2 grid — reserved for the rewires-you cel per §11.7
 ---
 ```
 
@@ -601,7 +634,7 @@ The section has three discrete surfaces, top to bottom:
 
 1. **`CURRENTLY @ …` stamp** — top-right of the section, mono 12px stamp-amber on a paper-tinted background, hand-stamp rectangle outline. Reads `CURRENTLY @ FREE AGENT` when `frontmatter.current_company` is null, `CURRENTLY @ FOO INC.` (uppercase, mono) when populated. **This is the only surface that carries employment-state signal.** Updating it is one frontmatter field; no prose edits.
 2. **`WHAT I'M BUILDING TOWARD` heading + 2 paragraphs** (always rendered) — wire-service mono section heading in stamp amber, followed by 2 short Newsreader paragraphs naming the **craft direction**: AI-native PM as discipline, agent governance, the spec layer as the durable PM artifact. Names the **problems Sean wants to be in the room for** rather than the role he wants to get. Future-tense, opinionated, employer-agnostic. Sean writes these paragraphs once; they age across job changes because the bet is about the field, not about Sean's vacancy.
-3. **Recruiter italic call-out** (conditional, `frontmatter.available === true` only) — a single Newsreader italic line on a paper-strip background (visual sibling to the live pulse strip up top), at the bottom of the section. Suggested copy: *"if you're hiring around this, my agent fleet config goes out on second conversation."* This is where the prior draft's punchy recruiter beat goes — preserved, but **fenced**. When Sean flips `available: false`, this entire surface disappears; the section above closes cleanly on the 2-paragraph craft direction and the page reads as continuous practice rather than vacancy notice.
+3. **Recruiter italic call-out** (conditional, `frontmatter.available === true` only) — a single Newsreader italic line on a paper-strip background (visual sibling to the daily-dated pulse strip up top), at the bottom of the section. Suggested copy: *"if you're hiring around this, my agent fleet config goes out on second conversation."* This is where the prior draft's punchy recruiter beat goes — preserved, but **fenced**. When Sean flips `available: false`, this entire surface disappears; the section above closes cleanly on the 2-paragraph craft direction and the page reads as continuous practice rather than vacancy notice.
 
 ### 12.2 The aging contract
 
@@ -624,7 +657,7 @@ Position-statement / direction-of-craft. Calm, future-tense, **opinionated about
 
 - **No geography line.** "Boston metro or remote" was load-bearing only when the section was a vacancy notice. Without that framing, geography becomes irrelevant trivia; it can live in the resume PDF if needed.
 - **No "AI PM > Tech PM > Creative PM" role-stacking.** The prior pill ranked role flavors; the new prose ranks **problems**, which doesn't expire when Sean's title changes.
-- **No date window.** `AVAILABLE 2026-05` was a freshness signal; the live pulse strip up top is now the page's freshness signal (it updates daily by the Daily Driver). The B-4 section trusts the pulse strip to do that work and stays evergreen.
+- **No date window.** `AVAILABLE 2026-05` was a freshness signal; the daily-dated pulse strip up top is now the page's freshness signal (it updates daily by the Daily Driver). The B-4 section trusts the pulse strip to do that work and stays evergreen.
 
 ### 12.5 Component shape
 
@@ -724,7 +757,7 @@ About page v1 ships when:
 1. The MDX file at `src/content/about/index.mdx` exists with full frontmatter per Appendix B: `lead` (locked, validated), `linkedin_url`, `github_url`, `transactions_url`, `resume_url`, `available` (boolean), `current_company` (string or null), `character_image`, `character_alt`, `beats[]` (6-8 entries with `age` + `year` + `body` + `lane`), and `b3_load_bearing_cel` (1-6).
 2. `scripts/validate_about.mjs` runs in `prebuild` and asserts the `lead:` field matches **the revised PMP §4 string byte-for-byte** (`"Trained by Looney Tunes and Vercel deployment logs. Ships AI-native products. Deploys agent fleets."`). Build fails on drift.
 3. The above-the-fold renders the 3-sentence lead as a stat-block + character PNG at the spec'd proportions. The character PNG exists at `/public/assets/character/about-full-body.png`.
-4. The live pulse strip reads from a real `/api/about-pulse.json` written by the Daily Driver — not hardcoded. Stale-data fallback works. **No `dog_walks` item type in the schema.**
+4. The daily-dated pulse strip reads from a real `/api/about-pulse.json` written by the Daily Driver — not hardcoded. Stale-data fallback works. **No `dog_walks` item type in the schema.**
 5. The B-1 stacked-beats section renders 6-8 beats in a single-column layout (same geometry desktop + mobile), each beat showing a JetBrains Mono date line, a Newsreader body, and a left-margin lane-tint rule (3px desktop / 4px mobile). At least 2 of the beats are marked `lane: braided` and render with the amber-to-teal vertical gradient rule.
 6. Each B-1 beat's lane rule reveals via SVG `stroke-dasharray` top-to-bottom on viewport entry, 200ms after the beat body lands. Disabled under reduced motion (rules render solid at final color). At most 1 curved-arrow annotation lands beside a beat in B-1.
 7. **The B-3 Saturday morning canon renders 6 `<CartoonCel />` entries from `src/content/cartoons/` in a 3×2 grid on desktop, stacks single-column on mobile. Each cel includes: hand-drawn registration pegs (SVG), Sean's pencil-test study (PNG), cartoon name + year strip inside the cel, and a wire-service caption strip below.** No real cartoon stills (licensing); pencil-test studies only.
@@ -750,7 +783,7 @@ When all 15 are green, About v1 is locked and we move to `/transactions/` (spec 
 - **Calendly / scheduling embed** — deferred.
 - **A photo of Sean** — anti-character; never on this site.
 - **"Press / mentions" strip** — premature; revisit if mentions accrue.
-- **Real-time camera / "live workspace" stream** — deferred (the live pulse strip already carries the live-layer signal at appropriate fidelity).
+- **Real-time camera / "live workspace" stream** — deferred (the daily-dated pulse strip already carries the daily-dated-layer signal at appropriate fidelity).
 - **A "skills graph"** — luxury-PM template trap; killed.
 - **Dog gallery / personal-life Polaroids** — explicitly removed in this revision. The page focuses on lineage (B-1) + thesis (B-2) + craft canon (B-3); personal artifacts that aren't load-bearing to the thesis are out.
 
@@ -881,7 +914,7 @@ b3_load_bearing_cel: 1               # 1-6; which cel gets the "this one rewires
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `case-study-spec-v1.md`, and `about-spec-v1.md` end-to-end. The hero, projects, and case-study surfaces are presumed built per their own specs. Build `src/pages/about.astro` + the about components per Appendix A. Author the MDX at `src/content/about/index.mdx` per Appendix B — Sean writes the `beats[]` frontmatter array (6-8 entries, at least 2 with `lane: braided`) + B-2 thesis prose + B-4 "WHAT I'M BUILDING TOWARD" prose in the same session, and sets `available: true` + `current_company: null` until employment state changes. Author or commission five hand-drawn heading SVGs per §4 / Appendix A (note `b3-saturday-morning-canon.svg`, not `b3-dog.svg`). Implement `scripts/validate_about.mjs` as a `prebuild` hook in `package.json` that asserts the `lead:` matches the revised PMP §4 string byte-for-byte. Stand up the Daily Driver agent extension to write `/public/api/about-pulse.json` alongside `dateline.json` and `next-piece.json` (no `dog_walks` item type — the v1 spec deliberately removed it). Populate `src/content/cartoons/` with 6 MDX entries per §11.6 frontmatter shape, and source 6 pencil-test studies per the OPEN-4 path Sean picks (recommended: Path C — hybrid). The handwritten signature + the five heading SVGs + the kid-drawing margin artifact + the 6 cartoon pencil-test studies need authoring before this page can ship. Stop when the 15 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `case-study-spec-v1.md`, and `about-spec-v1.md` end-to-end. The hero, projects, and case-study surfaces are presumed built per their own specs. Build `src/pages/about.astro` + the about components per Appendix A. Author the MDX at `src/content/about/index.mdx` per Appendix B — Sean writes the `beats[]` frontmatter array (6-8 entries, at least 2 with `lane: braided`) + B-2 thesis prose + B-4 "WHAT I'M BUILDING TOWARD" prose in the same session, and sets `available: true` + `current_company: null` until employment state changes. Author or commission five hand-drawn heading SVGs per §4 / Appendix A (note `b3-saturday-morning-canon.svg`, not `b3-dog.svg`). Implement `scripts/validate_about.mjs` as a `prebuild` hook in `package.json` that asserts the `lead:` matches the revised PMP §4 string byte-for-byte. Stand up the Daily Driver agent extension to write `/public/api/about-pulse.json` alongside `dateline.json` and `next-piece.json` (no `dog_walks` item type — the v1 spec deliberately removed it). Populate `src/content/cartoons/` with 6 MDX entries per §11.6 frontmatter shape, and source 6 pencil-test studies per the OPEN-4 path Sean picks (recommended: Path C — hybrid). The handwritten signature + the five heading SVGs + the kid-drawing margin artifact + the 6 cartoon pencil-test studies need authoring before this page can ship. Stop when the 15 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
 ---
 

@@ -19,7 +19,7 @@ Before proposing anything, ask: *is this drifting toward either template?* If ye
 **The three load-bearing things** that kill the template feeling — never drop one:
 1. **The character** — Sean's hand-drawn pencil-test character (`reference-images/2D-Character-Sketch-Sean-v1.png`). The load-bearing wall.
 2. **The voice** — comedic, specific, self-deprecating. Calibrated via `.claude/skills/writing-voice-modes`.
-3. **The live layer** — real autonomous agent-fleet activity surfaced on the page. The unfakeable differentiator.
+3. **The daily-dated layer** — real autonomous agent-fleet activity surfaced on the page, dated to the morning it was written. Sub-daily for the agent-feed footer; daily-fresh (Daily Driver writes 08:45) for the dateline + pulse strip + shipped-stats. The unfakeable differentiator. The framing reads "real and dated," not "streaming" — the honesty is the load-bearing part.
 
 ## Working mindset
 
@@ -90,4 +90,4 @@ sw-ai-pm-portfolio/
 
 ## Related context (outside this repo)
 
-- `/Users/seanwinslow/Code-Brain/claude-code-superuser-pack/` — Sean's Claude Code command center (118 skills, 14 SDK agents). The portfolio's "live layer" (dateline, agent feed) reads from this fleet's outputs. The Daily Driver agent there will be extended to write `/api/dateline.json`.
+- `/Users/seanwinslow/Code-Brain/claude-code-superuser-pack/` — Sean's Claude Code command center (118 skills, 14 SDK agents). The portfolio's "daily-dated layer" (dateline, pulse strip) and the footer's live agent feed both read from this fleet's outputs. The Daily Driver agent there will be extended to write `/api/dateline.json`.

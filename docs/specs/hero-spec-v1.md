@@ -132,9 +132,9 @@ Trigger: `DOMContentLoaded`. Total entrance window: 1800ms.
 |---|---|---|---|---|
 | 0 | Hero paper background | Fade from 0 → 1 | linear | 200ms |
 | 200 | Dateline strip | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 500ms |
-| 400 | Name (`Sean Winslow`) | Per-character stagger, translateY(40px) → 0 + opacity 0 → 1 | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms, 20ms/char stagger |
+| 400 | Name (`Sean Winslow`) | Per-character stagger, translateY(24px) → 0 + opacity 0 → 1 | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms, 18ms/char stagger (target ~600ms total reveal) |
 | 700 | Role tag | Fade + slight translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 300ms |
-| 900 | Tagline | Per-line reveal (1 line desktop, 2-3 mobile); each line translateY(60%) → 0 + opacity | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms, 120ms/line stagger |
+| 900 | Tagline | Per-line reveal (1 line desktop, 2-3 mobile); each line translateY(28px) → 0 + opacity. Fixed-px offset (NOT a percentage) so the line doesn't briefly overshoot the line-box at small sizes. Verify in QA that no layout shift fires during the reveal. | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms, 120ms/line stagger |
 | 1300 | Character lane | Opacity 0 → 1 fade-in; the video loop begins playing from frame 1 at this exact moment | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms fade |
 | 1900 | Hero settled | Loop running on its own clock, dateline static | — | — |
 
@@ -246,7 +246,7 @@ The fallback is the only line on the site that's "voicey" without being earned b
 
 | Target | Cursor transforms to | Notes |
 |---|---|---|
-| `Sean Winslow` (name) | Scales to a 60px circle, ink fill, blend-difference | Click does nothing — name is not a link |
+| `Sean Winslow` (name) | Scales to a 60px circle, ink fill, blend-difference. Transition: 160ms `cubic-bezier(0.23, 1, 0.32, 1)` | Click does nothing — name is not a link. The 160ms is Emil's snap-feedback range for button-press equivalents; leaving it unspecified would invite an implementer-default ease-in. |
 | Character lane | Cursor becomes a tiny pencil icon | Easter egg — no click action |
 | Empty paper | Default 6px dot | |
 
@@ -322,7 +322,7 @@ The hero is the clean cover of the sketchbook. The annotations live inside.
 ## 14. Out of scope for hero v1
 
 - Live agent feed footer (E1) — **no longer a build item.** Task 11's Agent Fleet Observability Dashboard already shipped at `fleet.seanwinslow.com` (v1 code-complete 2026-05-17 evening). The portfolio footer links out to it rather than embedding a custom Cloudflare Worker reading `agent-run-history.csv`. The dateline strip in the hero remains the only inline live-data surface; everything richer lives one click away on the dashboard.
-- MCP server interactive embed (E2) — separate page (`/transactions/intent-engineering-mcp`), not in the hero.
+- MCP server interactive embed (E2) — separate page (`/work/intent-engineering-mcp`), not in the hero. (Tile destination realigned 2026-05-19 to match projects-spec §3 routing + case-study spec §13.3 — the canonical narrative deep-dive lives under `/work/`. A `/transactions/intent-engineering-mcp/` ledger row exists separately at the same slug per blueprint §3.1.)
 - Time-of-day auto-dark-mode (D5) — V2 enhancement. Hero v1 ships light-mode only; add a manual toggle in the footer for dark mode if needed before V2.
 - Cinematic case-study scroll (V3 §9) — separate spec, doesn't touch the hero.
 - The Transactions wing routing + index (V4 §11) — paused until post-employment per V4 §0 anchors.
@@ -374,5 +374,5 @@ sw-ai-pm-portfolio/
 
 ## Appendix B — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read this spec end-to-end. The `prototype/index.html` file is the visually-approved reference for proportions and behavior — match it. Scaffold an Astro 5 project with Tailwind 4. Build Hero, Dateline, TornPaperEdge, and CharacterLane as Astro components (CharacterLane is a thin wrapper around a native `<video autoplay muted loop playsinline>` — no JS hydration needed). Build Cursor as the only React island, `client:load`. There is NO badge — the contact CTA lives in the footer section, not the hero. The character WebM at `/public/assets/character/hero-loop.webm` and its WebP poster are expected to be in place. Hardcode the dateline JSON for now (`fleet_pulse` pattern, today's date, current vault indexer numbers). Implement the page-load motion timeline exactly as specified in §6 — note the character lane fades in at t=1300 and the video begins playback from frame 1 at that exact moment. Lane sizing per §3: 1024×576, `right: -180px`, `bottom: 80px` desktop. Name + tagline use the `clamp()` values from §4. Use Newsreader + JetBrains Mono from Google Fonts via `astro-google-fonts-optimizer`. Do not introduce any other dependencies. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read this spec end-to-end. The `prototype/index.html` file is the visually-approved reference for proportions and behavior — match it. Scaffold an Astro 5 project with Tailwind 4. Build Hero, Dateline, TornPaperEdge, and CharacterLane as Astro components (CharacterLane is a thin wrapper around a native `<video autoplay muted loop playsinline>` — no JS hydration needed). Build Cursor as the only React island, `client:load`. There is NO badge — the contact CTA lives in the footer section, not the hero. The character WebM at `/public/assets/character/hero-loop.webm` and its WebP poster are expected to be in place. Hardcode the dateline JSON for now (`fleet_pulse` pattern, today's date, current vault indexer numbers). Implement the page-load motion timeline exactly as specified in §6 — note the character lane fades in at t=1300 and the video begins playback from frame 1 at that exact moment. Lane sizing per §3: 1024×576, `right: -180px`, `bottom: 80px` desktop. Name + tagline use the `clamp()` values from §4. Use Newsreader + JetBrains Mono from Google Fonts via `astro-google-fonts-optimizer`. Do not introduce any other dependencies. Stop when the 10 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 

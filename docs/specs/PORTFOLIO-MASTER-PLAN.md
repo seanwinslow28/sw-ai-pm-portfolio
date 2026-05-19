@@ -29,7 +29,7 @@ Sean is building his **third** attempt at a PM portfolio. The first two attempts
 
 ## 0.5 Relationship to the Roadmap (NEW 2026-05-17)
 
-This redesign **supersedes** the V3-card portfolio currently in flight at `~/Code-Brain/sw-portfolio/`, which the [unified roadmap](2026-05-06-unified-roadmap%20copy.md) is actively deploying to `seanwinslow.com` on Mon 2026-05-19 (Council Gap-Fill 3, un-deferred 2026-05-16).
+This redesign **supersedes** the V3-card portfolio currently in flight at `~/Code-Brain/sw-portfolio/`, which the [unified roadmap](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) is actively deploying to `seanwinslow.com` on Mon 2026-05-19 (Council Gap-Fill 3, un-deferred 2026-05-16).
 
 **Why two efforts existed in parallel:** Sean built the V3 site first; the dissatisfaction with it (the "design-system-viewer template trap" diagnosed in §1.3) is what triggered this redesign. The roadmap kept executing against the V3 site in parallel because the job hunt needed a recruiter-readable surface *now* — couldn't wait for the redesign to finish.
 
@@ -71,7 +71,7 @@ What actually moves Sean — confirmed by his reaction to the references — is 
 **The three things prior attempts kept dropping:**
 1. **The character.** Sean has a killer pencil-test character sketch (`reference-images/2D-Character-Sketch-Sean-v1.png`). Every iteration that lost the character drifted into template-land. The character is the load-bearing wall.
 2. **The voice.** mynrd has "Simply making cool sh*t Wilson would say wow too." Sean's own voice (comedic, self-deprecating, specific — see `.claude/skills/writing-voice-modes`) was never *in* the prior specs' copy.
-3. **The live layer.** mynrd is a 2024 static site. Sean is a 2026 AI PM with a real autonomous agent fleet. He can surface *live* agent activity on the page — something no template can fake. This is the single biggest differentiator and it was absent from V3/V4.
+3. **The daily-dated layer.** mynrd is a 2024 static site. Sean is a 2026 AI PM with a real autonomous agent fleet. He can surface real agent activity on the page, dated to the morning it was written — something no template can fake. This is the single biggest differentiator and it was absent from V3/V4.
 
 ### 1.4 What carries forward from V3/V4
 
@@ -112,7 +112,13 @@ The portfolio is a natural history museum of creative evolution — engineering-
 
 > "I'm a fan of simplicity with splashes of color."
 
-Codified as the **one-splash-per-section** rule (see §5, idea D2): 95% of the site is warm paper (`#FFF9F0`) and ink. Each section gets *one* full-bleed splash-color moment, never two. The "Iterative Blueprint" mockup violated this — every screen had four colors at once.
+Codified as a two-layer architecture (locked in `docs/specs/texture-and-artifacts-spec-v1.md` §2):
+
+- **The substrate is Committed-teal.** A persistent teal `#0A3E42` chrome at Z=0 carries the site as a structural color — visible through every torn-paper edge on every page. Per Impeccable's color-strategy axis, this is a *Committed* palette (one saturated color carrying 30–60% of the visible page surface), not the Restrained palette earlier drafts described.
+- **The page surface is paper.** Each page sits on the chrome as a cream `#FFF9F0` paper sheet at Z=10, with torn-paper edges revealing the teal at the seams.
+- **Each section still earns *one* full-bleed splash-color block, never two** — this rule survives intact. The chrome and the splash blocks are at different z-layers (Z=0 vs Z=20) and serve different jobs: the chrome is the *book cover*, the splash blocks are *full-page color illustrations inside the book*. Sections without a splash (hero, About) sit on paper-on-chrome and read as 95% paper.
+
+The "Iterative Blueprint" mockup violated both rules — four colors at once on every screen, no substrate logic. Committed-teal fits the autobiography thesis (the chrome IS the book cover); Restrained-paper-with-one-accent would have been too quiet for an animator-as-PM positioning.
 
 ---
 
@@ -136,6 +142,7 @@ Any future line (hero, About, case study, meta description) gets checked against
 - **Comedic juxtaposition without a joke.** The gap between two specific, true things — not a punchline. Sedaris, not standup.
 - **Wire-service voice for technical/live surfaces.** The dateline strip, project tags, frame numbers, Methods strips — all JetBrains Mono, all wire-service register.
 - **Editorial voice for the human surfaces.** The hero tagline, About prose, case-study narrative — all Newsreader serif, all first-person-warm.
+- **Em-dash exception, wire-service register only.** Datelines and other wire-service-coded copy use em dashes by inheritance from real newspaper typography (e.g., `BOSTON, MAY 13, 2026 — vault indexer wrote 47 chunks`). Impeccable's default rule bans em dashes in product copy; this exception is a deliberate editorial choice limited to the *wire-service register* surfaces only — datelines, ledger captions, methods-strip prefixes, Daily-Driver-written body copy. The editorial register (hero, About, case-study narrative, essays) and any non-mono surface follows Impeccable's no-em-dash rule. If a future session "fixes" em dashes in a dateline, it's regressing the brand voice.
 
 ### 3.3 Voice register by surface (NEW 2026-05-17)
 
@@ -152,7 +159,7 @@ Adding a third row for the `/essays/` IA introduced by roadmap Task 13. Manifest
 
 ### 3.4 Inherited STOP-DOING constraint (NEW 2026-05-17)
 
-From [unified roadmap](2026-05-06-unified-roadmap%20copy.md) Task 7 / Council Deprioritization 1 (Gemini Pro, chairman-endorsed):
+From [unified roadmap](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) Task 7 / Council Deprioritization 1 (Gemini Pro, chairman-endorsed):
 
 > **Never frame the HybridRouter as "Agent OS" or "runtime architecture" anywhere on the portfolio.**
 
@@ -203,7 +210,7 @@ Run via `pm-product-discovery:brainstorm` (mode: ideas, new product). Three pers
 | # | Idea | Why it isn't a template | Impact/Effort |
 |---|---|---|---|
 | D1 | **The character IS the cursor** — default a tiny lagged pencil; hover a project tile and it becomes a frame-number tag (A-2, B-3) | Only Sean has this character; unforgeable signature | H/M |
-| D2 | **One splash color per section, never two** — 95% paper+ink; work section = full teal; contact = amber; about = soft coral; torn-paper edges between | Codifies "simplicity with splashes of color" as architecture, not decoration | H/L |
+| D2 | **One splash color per section, never two** — 95% paper+ink at the section level; work section = full teal splash; contact = amber; about = paper-no-splash; torn-paper edges between. Layered over a **Committed-teal chrome substrate** (Z=0, full-bleed, visible through every torn edge — see §2.2) so the site reads as paper-on-teal at rest, with full-bleed splash blocks per section. | Codifies "simplicity with splashes of color" as a two-layer architecture (chrome + page), not a flat palette | H/L |
 | D3 | **Pencil-test margin annotations** — hand-drawn SVGs in the gutters (arrows, "rev 3 / fix this," coffee-ring stain, registration marks) | The physical artifact of his process invading the digital frame | M/L |
 | D4 | **Two fonts, intentionally clashing** — Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). No Inter, no Sora | Prior mockups used 3 fonts with no opinion; the serif-vs-mono contrast IS the duality | H/L |
 | D5 | **Dark mode is the time of day, not a toggle** — 6am–6pm light (animator), 6pm–6am dark (technologist) | Every portfolio has a toggle; time-aware is poetic and earns the duality thesis | M/L |
@@ -245,6 +252,7 @@ The non-obvious calls:
 - **Two fonts only.** Newsreader + JetBrains Mono. Inter and Sora killed.
 - **The hero gets zero splash color.** The dateline's transaction-stamp amber is the only chromatic moment. The first full splash is the projects section — a reward for scrolling.
 - **The dateline reads from a real file.** `/api/dateline.json`, written by the Daily Driver agent at 08:45 daily. Four rotation patterns (fleet pulse / ship log / reading log / now line).
+- **The framing is daily-dated, not live.** The Daily Driver writes the dateline once at 08:45; that's daily-fresh, which is what the page claims. The footer's agent-fleet feed is the only sub-daily surface — that one is "live" in the streaming sense.
 - **No GSAP, no Framer, no Lenis.** Native CSS + IntersectionObserver + one RAF loop for the cursor.
 - Full 15-section spec + a copy-paste build hand-off prompt (Appendix B).
 
@@ -398,7 +406,7 @@ Everything a future session needs, in one place.
 | `docs/projects-section-spec-v1.md` | Projects section build spec (locked) |
 | `docs/Sean-Winslow-Full-Personal-Context-v2.0.md` | Sean's Tier-0 personal context — identity, values, career, goals |
 | `docs/sw-portfolio-idea-1.md` | The original portfolio idea note (design philosophy seed, color palette, the mynrd + Vercel inspirations) |
-| `docs/2026-05-06-unified-roadmap copy.md` | **The active job-hunt roadmap (last_updated 2026-05-17).** Source of truth for what artifacts ship when, the Council gap-fills (Tasks 12–15), the IA additions, and the V3-bridge crossover. This redesign absorbs everything that ships into the ledger. |
+| [`docs/prompts-and-references/2026-05-06-unified-roadmap copy.md`](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) | **The active job-hunt roadmap (last_updated 2026-05-17).** Source of truth for what artifacts ship when, the Council gap-fills (Tasks 12–15), the IA additions, and the V3-bridge crossover. This redesign absorbs everything that ships into the ledger. |
 | `~/Code-Brain/sw-portfolio/` (external) | **The V3 bridge site** shipping Mon 5/19 to `seanwinslow.com`. The redesign replaces it at the same apex. Useful as the live reference implementation of the `/transactions/` ledger schema (`surface`, `shipped`, `repoUrl`, `explanationUrl`, RSS). |
 | `~/Code-Brain/agent-fleet-observability/` (external) | **Task 11 dashboard** at `fleet.seanwinslow.com` (v1 code-complete 2026-05-17 evening). The redesign's footer links here; we don't reimplement live-data inline. |
 | Five live `EXPLANATION.md` files (external) | The crossover ledger inheritance: intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, Phase 6 knowledge loop. Carry forward at hard-cutover. |
@@ -423,13 +431,13 @@ For future Claude sessions — the working mindset:
 
 1. **Open in brainstorm mindset.** Sean will invoke `pm-product-discovery:brainstorm` to put Claude in the same multi-perspective (PM / Designer / Engineer) headspace this plan was built in. Honor that — generate breadth before converging, and pressure-test every idea against *"why is this Sean, not a template?"*
 2. **The template trap is the enemy.** Before proposing anything, ask: does this drift toward the design-system-viewer or the luxury-minimal-PM template? If yes, stop. (See §1.3.)
-3. **The three load-bearing things:** the character, the voice, the live layer. If a proposal drops any of them, it's drifting.
+3. **The three load-bearing things:** the character, the voice, the daily-dated layer. If a proposal drops any of them, it's drifting.
 4. **Read before proposing.** The reference materials in §11 exist so Claude doesn't give generic advice. Use them.
 5. **Be a thinking partner, not an executor.** Challenge while Sean is exploring; amplify once he's committed. Cross-pollinate from game design / animation / PM. Flag uncertainty honestly. (Per Sean's communication baseline — see his personal-context doc §Communication Baseline.)
 6. **Brief and to the point.** No trailing summaries. Don't restate what a diff already shows. Calm, factual, zen tone.
 7. **Specs are tactical, this plan is strategic.** When a section gets locked, write a `*-spec-v1.md` for it and add a pointer here — don't bloat this file with build detail.
 8. **Update this doc when direction changes.** It's a living document. New locked decisions, killed ideas, resolved open questions — they land here.
-9. **The roadmap is the source of truth for what ships into the ledger; this plan is the source of truth for what it looks like (NEW 2026-05-17).** Every Task in `2026-05-06-unified-roadmap copy.md` that produces an `EXPLANATION.md` writes a row into the `/transactions/` content collection — automatically. The 5 case-study tiles only change when a flagship earns a narrative deep-dive. The ledger handles everything else with zero ceremony. If a new artifact emerges in the roadmap that doesn't fit the 5-tile slot, it's a ledger row, not a tile.
+9. **The roadmap is the source of truth for what ships into the ledger; this plan is the source of truth for what it looks like (NEW 2026-05-17).** Every Task in [`docs/prompts-and-references/2026-05-06-unified-roadmap copy.md`](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) that produces an `EXPLANATION.md` writes a row into the `/transactions/` content collection — automatically. The 5 case-study tiles only change when a flagship earns a narrative deep-dive. The ledger handles everything else with zero ceremony. If a new artifact emerges in the roadmap that doesn't fit the 5-tile slot, it's a ledger row, not a tile.
 
 ---
 

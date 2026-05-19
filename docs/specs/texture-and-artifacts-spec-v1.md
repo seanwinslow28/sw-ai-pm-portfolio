@@ -490,6 +490,22 @@ The handwritten B-N section headings on the about page (`B-1 · How I got here`,
 
 End-to-end workflow from Procreate/Figma → optimized site asset.
 
+### 7.0 Asset authoring order (Phase 0 Gantt)
+
+Hand-authored assets ship in three waves, each unblocking a specific build phase. Don't wait for the build to start before authoring — start Phase 0a the same week the spec is locked.
+
+| Wave | Assets | Authoring window | Unblocks |
+|---|---|---|---|
+| **0a — Substrate** | `paper-tile.png` (§3), `tear-edge.png` ×3 variants (§4), hero floor-shadow `hero-floor-shadow.png` (§5) | Week 1, before hero build starts | Hero build (needs paper substrate + floor shadow), torn-edge transitions site-wide |
+| **0b — Hero + projects splash** | `coffee-ring.png` (§6.3), `kid-drawing-1.png` (§6.4), `signature.svg` (§6.6 + about §6), the 3 projects annotations (curved arrow / "rev 3" scribble / registration mark) | Week 1–2, in parallel with hero build | Projects-section build (the splash + annotations land here first), about-page closeout (signature) |
+| **0c — About long-form** | 6 cartoon-cel pencil-test studies (§6.5 + about §11) — path C per about §11.4 (Sean hand-draws 2–3, Seedream 2.0 renders 3–4 from anchor style) ; 5 about heading SVGs (§6.6); OG card | Week 3, in parallel with case-study build | About build (cels are §11's load-bearing artifact; without them §11 doesn't render), social-share previews |
+
+**Asset count:** 13 mandatory PNG/SVG files + the 6 cartoon studies. Total ~19 hand-authored assets in 3 weeks.
+
+**Gating rule:** If a Phase 0a asset slips into Week 2, the hero build cannot complete; if Phase 0b slips into Week 3, the projects build cannot complete; if Phase 0c slips, About ships as a stub. Track in the build session's open-questions log.
+
+**OPEN:** Whether the OG card lives in this spec or in site-chrome-spec — currently undecided. Resolve at build session start.
+
 ### 7.1 Procreate workflow (raster path)
 
 1. **Author at @2x.** Every Procreate canvas is sized at 2× the CSS display size, so the asset is retina-ready.
@@ -757,7 +773,7 @@ The complete table, for Sean's authoring session:
 
 ## Appendix B — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `texture-and-artifacts-spec-v1.md` end-to-end alongside any page-level spec being built (`about-spec-v1.md`, `hero-spec-v1.md`, etc.). The texture spec is foundational — the three-layer model (`<body>` → `.page-sheet` → page content) must be implemented before any page-level CSS sits coherently on top of it.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `texture-and-artifacts-spec-v1.md` end-to-end alongside any page-level spec being built (`about-spec-v1.md`, `hero-spec-v1.md`, etc.). The texture spec is foundational — the three-layer model (`<body>` → `.page-sheet` → page content) must be implemented before any page-level CSS sits coherently on top of it.
 >
 > Implementation order: (1) stand up the `<body>` chrome backdrop with `background-color: var(--chrome)` and the CSS-custom-property tokens for `--chrome`, `--paper`, `--ink`, `--teal`, `--amber`, `--stamp` etc. per §2.4. (2) Implement the `.page-sheet` wrapper with the paper texture tile, blend mode, and inverted palette tokens. (3) Implement `<TearDivider />` as a reusable Astro component reading `/assets/textures/tear-edge.png`, with `--top` and `--bottom` variants per §4.4. (4) Implement `<CharacterStage />` as a wrapper for the hero with the floor-shadow underlay positioned at z-index 18 per §5.4. (5) Wire `scripts/optimize-assets.sh` (SVGO + pngquant) into `prebuild` per §7.4. (6) Apply the cross-spec patches per §13.
 >
