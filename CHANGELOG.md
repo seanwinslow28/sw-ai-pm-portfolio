@@ -79,6 +79,7 @@ Rules:
 
 ### [`docs/site-chrome-spec-v1.md`](docs/site-chrome-spec-v1.md)
 
+- **2026-05-19 (critique fix §4 — sticky-nav first-impression):** §6.1.1 — documented the two-navigation-grammars split (no-nav home, sticky sub-pages) and added three mitigation rules: (a) sticky nav uses the same chrome substrate, (b) first sub-page nav fades in 600ms after View Transition completes, (c) Playwright mockup verification gate. Per `impeccable-and-emil-design-critique.md` §4 "Sticky nav vs no-nav home discipline split".
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Kills the V3-bridge `<form>`-based `/contact/` route (placeholder-alert pattern). Kills the V3 React islands `<NavIsland.jsx>` + `<SmoothScroll.jsx>`. Keeps the V3 theme-cookie pattern verbatim. Folds in Contact per About spec §18 deferral. Aggregates all three collection RSS feeds (`/transactions/`, `/architecture/`, `/essays/`) into the footer's Subscribe column. Reconciles the nav-budget tension between hero spec §13 (home has no nav) and the four collection specs (sub-pages have implicit ~56px desktop / ~48px mobile nav above their vertical budgets) via a `noChrome` BaseLayout prop.
 
