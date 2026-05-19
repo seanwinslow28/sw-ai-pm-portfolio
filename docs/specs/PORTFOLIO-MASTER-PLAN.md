@@ -142,6 +142,7 @@ Any future line (hero, About, case study, meta description) gets checked against
 - **Comedic juxtaposition without a joke.** The gap between two specific, true things — not a punchline. Sedaris, not standup.
 - **Wire-service voice for technical/live surfaces.** The dateline strip, project tags, frame numbers, Methods strips — all JetBrains Mono, all wire-service register.
 - **Editorial voice for the human surfaces.** The hero tagline, About prose, case-study narrative — all Newsreader serif, all first-person-warm.
+- **Em-dash exception, wire-service register only.** Datelines and other wire-service-coded copy use em dashes by inheritance from real newspaper typography (e.g., `BOSTON, MAY 13, 2026 — vault indexer wrote 47 chunks`). Impeccable's default rule bans em dashes in product copy; this exception is a deliberate editorial choice limited to the *wire-service register* surfaces only — datelines, ledger captions, methods-strip prefixes, Daily-Driver-written body copy. The editorial register (hero, About, case-study narrative, essays) and any non-mono surface follows Impeccable's no-em-dash rule. If a future session "fixes" em dashes in a dateline, it's regressing the brand voice.
 
 ### 3.3 Voice register by surface (NEW 2026-05-17)
 
