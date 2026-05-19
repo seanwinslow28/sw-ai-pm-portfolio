@@ -12,13 +12,13 @@ You're starting a fresh Cowork session to spec the remaining surfaces of my port
 
 **Read these in this order before doing anything else:**
 
-1. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/PORTFOLIO-MASTER-PLAN.md` — the strategic blueprint. Focus especially on §0.5 (V3-bridge → redesign succession), §1.3 (the template trap), §2 (design philosophy), §3 (voice rules — including §3.3 register-by-surface and §3.4 the HybridRouter STOP-DOING), §6 (what's locked), §7 (your work list), §10 (open decisions, especially #7 nav shape and #9 crossover sequencing).
-2. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/hero-spec-v1.md` — the format model. Your specs match this section structure + opinionated tone + Appendix-B hand-off prompt at the end.
-3. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/projects-section-spec-v1.md` — format model. §10 (click-through contract) and §11 (case-study high-level shape) are direct inputs to spec #1.
-4. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/2026-05-06-unified-roadmap copy.md` — the source of truth for what ships into the ledger. Skim Tasks 1 (Step 3 = transactions ledger), 13 (essays), 14 (control architecture), 15 (architecture / vault scorecard).
+1. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/PORTFOLIO-MASTER-PLAN.md` — the strategic blueprint. Focus especially on §0.5 (V3-bridge → redesign succession), §1.3 (the template trap), §2 (design philosophy), §3 (voice rules — including §3.3 register-by-surface and §3.4 the HybridRouter STOP-DOING), §6 (what's locked), §7 (your work list), §10 (open decisions, especially #7 nav shape and #9 crossover sequencing).
+2. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/hero-spec-v1.md` — the format model. Your specs match this section structure + opinionated tone + Appendix-B hand-off prompt at the end.
+3. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/projects-section-spec-v1.md` — format model. §10 (click-through contract) and §11 (case-study high-level shape) are direct inputs to spec #1.
+4. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/2026-05-06-unified-roadmap copy.md` — the source of truth for what ships into the ledger. Skim Tasks 1 (Step 3 = transactions ledger), 13 (essays), 14 (control architecture), 15 (architecture / vault scorecard).
 5. `/Users/seanwinslow/Code-Brain/code-brain/vault/40_knowledge/templates/EXPLANATION-template.md` — the canonical 4Q template. The case-study spec's 4Q block must mirror it exactly, not invent a parallel shape.
 
-**Your job:** spec the 6 remaining surfaces in this order, one at a time, each saved as `<name>-spec-v1.md` in `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/`:
+**Your job:** spec the 6 remaining surfaces in this order, one at a time, each saved as `<name>-spec-v1.md` in `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/`:
 
 | # | Spec | Filename | Why this order |
 |---|---|---|---|

@@ -9,11 +9,11 @@ You are joining Sean Winslow's PM portfolio project mid-build. The hero and proj
 
 ## Read first, in order
 
-1. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/CLAUDE.md` — project orientation, the three load-bearing things, the template trap
-2. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/PORTFOLIO-MASTER-PLAN.md` — the strategic plan (§7 lists what's left to spec; §10 lists open decisions)
-3. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/hero-spec-v1.md` — locked + prototype-validated; the *format and depth* a v1 spec should reach
-4. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/projects-section-spec-v1.md` — locked; sets the click-through contract you'll inherit
-5. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/mynrd.co.uk-site-analysis/01-site-dna.md` — the #1 inspiration anchor; reference when proposing patterns
+1. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/CLAUDE.md` — project orientation, the three load-bearing things, the template trap
+2. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/PORTFOLIO-MASTER-PLAN.md` — the strategic plan (§7 lists what's left to spec; §10 lists open decisions)
+3. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/hero-spec-v1.md` — locked + prototype-validated; the *format and depth* a v1 spec should reach
+4. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/projects-section-spec-v1.md` — locked; sets the click-through contract you'll inherit
+5. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/mynrd.co.uk-site-analysis/01-site-dna.md` — the #1 inspiration anchor; reference when proposing patterns
 
 Optional but useful when relevant:
 - `docs/previous-design-specs/DESIGN-SPEC-V3.md` and `V4.md` — superseded direction, but the 4Q block + Methods strip patterns inherited from V4 belong in the case-study spec; site-wide foundations (color tokens, paper texture, torn-paper edge) live in V3 §2–§6
@@ -21,7 +21,7 @@ Optional but useful when relevant:
 
 ## Current state (as of 2026-05-16)
 
-- Hero spec locked, prototype rendered at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/prototype/index.html` and visually approved.
+- Hero spec locked, prototype rendered at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/prototype/index.html` and visually approved.
 - Projects section spec locked.
 - Character animation done: 9.2s loop redirected to the animation-pipeline case study; the 3.9s "Sean at desk + AI companion" loop lives in the hero.
 - Hero tagline + About lead line locked (master plan §4).

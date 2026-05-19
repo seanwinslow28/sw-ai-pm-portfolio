@@ -7,9 +7,9 @@ Paste the section between the `---` markers below into a new Claude Code session
 You are resuming a parallel-execution session of Sean Winslow's portfolio animation frame cleanup pipeline. Multiple Claude Code sessions may be running this same prompt concurrently against different frame ranges. **Sean is the coordinator** — ask him which range your session owns before doing anything, and don't touch ranges he hasn't assigned to you.
 
 ## Read first (in order)
-1. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/CLAUDE.md` — project orientation
-2. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/docs/superpowers/plans/2026-05-14-animation-frame-cleanup.md` — original implementation plan
-3. `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/RESUME-PROMPT.md` — this file (you may have it already; if not, read it for the full state below)
+1. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/CLAUDE.md` — project orientation
+2. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/docs/superpowers/plans/2026-05-14-animation-frame-cleanup.md` — original implementation plan
+3. `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/sw-portfolio-animation-2026/RESUME-PROMPT.md` — this file (you may have it already; if not, read it for the full state below)
 
 ## Current state (as of 2026-05-14)
 - **Loop-1 frames 92–166:** ✅ 63 cleaned with the WITH-COMPANION wrapper, gate-approved by Sean. Do not re-run these.
@@ -25,7 +25,7 @@ You are resuming a parallel-execution session of Sean Winslow's portfolio animat
 | **With companion** (v1.3) | `scripts/cleanup-prompt.txt` | `scripts/clean-frame.sh` | `scripts/clean-batch.sh` | raw + anchor-1 + companion turnaround |
 | **Solo Sean** | `scripts/cleanup-prompt-solo.txt` | `scripts/clean-frame-solo.sh` | `scripts/clean-batch-solo.sh` | raw + anchor-1 |
 
-All paths are under `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/`. The wrappers handle output paths, logging, and skip-existing automatically — re-running the same batch range is safe and won't re-bill existing frames.
+All paths are under `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/sw-portfolio-animation-2026/`. The wrappers handle output paths, logging, and skip-existing automatically — re-running the same batch range is safe and won't re-bill existing frames.
 
 The `.env` is symlinked at `sw-portfolio-animation-2026/.env` → `/Users/seanwinslow/Code-Brain/BMAD/.env` (contains `GEMINI_API_KEY`).
 
@@ -51,8 +51,8 @@ The `.env` is symlinked at `sw-portfolio-animation-2026/.env` → `/Users/seanwi
 1. Read the three files at the top of this prompt.
 2. Run quick state check:
    ```bash
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/ | wc -l
-   ls /Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/ 2>/dev/null | wc -l
+   ls /Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-1/loop-1-cleaned/ | wc -l
+   ls /Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/sw-portfolio-animation-2026/loop-2/loop-2-cleaned/ 2>/dev/null | wc -l
    ```
 3. Confirm understanding back to Sean in ≤120 words.
 4. Ask: **"Which frame range and mode should this session own?"** Don't pick a range yourself.
