@@ -515,6 +515,8 @@ The RSS feed is the **email-signature subscribe affordance** — the cold-open U
 | `scripts/derive_crosslinks.mjs` | `prebuild` hook (after validate) | Builds the bidirectional cross-link graph. Writes `src/content/crosslinks.json` with reverse-lookup tables (`<slug> → list of rows that reference it as relatedCaseStudy/relatedTransactions/previousVersion`). The Related block on each deep-dive page reads this file. |
 | Daily Driver write step | runtime (08:45 daily) | Reads `src/content/transactions/*.md` filesystem; computes ledger count + most-recent title; if a new row landed in the last 24h, sets hero `dateline.json` pattern to `ledger_row` with the rendered body string. Single source of truth — see §13 hero wiring. |
 
+**`derive_crosslinks.mjs` — error message contract:** when the script rejects a dangling slug, the error names (a) the offending file path, (b) the offending field name, (c) the offending slug value, (d) the closest matching real slug if Levenshtein distance ≤ 2. Example: `[derive_crosslinks] src/content/work/animation-pipeline.mdx — relatedArchitecture: "vault-scorcard" — no such architecture slug. Did you mean "vault-scorecard"?` This matters because at v1 most cross-link fields are aspirational (`relatedArchitecture`, `relatedEssay`, `relatedTransactions`); one typo will break the build, and the error needs to point at the typo, not at a generic "dangling slug" message.
+
 ### 11.2 Build performance
 
 - Index + 6 per-surface pages: ~7 static HTML files

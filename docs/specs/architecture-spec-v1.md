@@ -543,6 +543,8 @@ The `tryItYourselfCommand` value is rendered as a `<pre>` block with Shiki synta
 | `scripts/build_scoreboard_svg.mjs` | build-time (within Astro render path) | Reads `scoreboard:` frontmatter, generates inline SVG symbol cells with palette colors. Hand-rolled (no charting lib). |
 | Daily Driver | runtime | **No new pattern** for architecture. The paired ledger row's `ledger_row` hero dateline pattern (per ledger spec §13) fires when an architecture writeup ships, because architecture writeups always have paired ledger rows (§14). No separate `architecture_writeup` pattern needed. |
 
+**`fetch_canonical_sources.mjs` — fallback contract:** the script never *requires* a network call. The fetched files (`src/content/explanations/<slug>.md`, `src/content/architecture/essays/<slug>.md`, etc.) are committed to the repo; the script's job is to *refresh* them. On network failure (GitHub 404, ENOTFOUND, ETag mismatch with no body), the script logs a warning, leaves the committed version in place, and exits 0. Builds never fail because a remote source moved. CI on the upstream repo runs a separate verification that no `EXPLANATION.md` was deleted from a fetched source repo.
+
 ### 11.2 Build performance
 
 - Index + architecture deep-dive pages: ~5-8 static HTML files in v1
