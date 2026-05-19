@@ -132,9 +132,9 @@ Trigger: `DOMContentLoaded`. Total entrance window: 1800ms.
 |---|---|---|---|---|
 | 0 | Hero paper background | Fade from 0 → 1 | linear | 200ms |
 | 200 | Dateline strip | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 500ms |
-| 400 | Name (`Sean Winslow`) | Per-character stagger, translateY(40px) → 0 + opacity 0 → 1 | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms, 20ms/char stagger |
+| 400 | Name (`Sean Winslow`) | Per-character stagger, translateY(24px) → 0 + opacity 0 → 1 | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms, 18ms/char stagger (target ~600ms total reveal) |
 | 700 | Role tag | Fade + slight translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 300ms |
-| 900 | Tagline | Per-line reveal (1 line desktop, 2-3 mobile); each line translateY(60%) → 0 + opacity | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms, 120ms/line stagger |
+| 900 | Tagline | Per-line reveal (1 line desktop, 2-3 mobile); each line translateY(28px) → 0 + opacity. Fixed-px offset (NOT a percentage) so the line doesn't briefly overshoot the line-box at small sizes. Verify in QA that no layout shift fires during the reveal. | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms, 120ms/line stagger |
 | 1300 | Character lane | Opacity 0 → 1 fade-in; the video loop begins playing from frame 1 at this exact moment | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms fade |
 | 1900 | Hero settled | Loop running on its own clock, dateline static | — | — |
 
