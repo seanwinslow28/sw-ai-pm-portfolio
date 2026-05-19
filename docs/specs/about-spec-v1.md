@@ -450,7 +450,7 @@ Each beat renders a single-`<line>` SVG, sized to match the beat's content heigh
 
 The `stroke-dasharray="0 9999"` start state hides the stroke; the reveal animation lerps it to `9999 0` (full draw). See §6 for the reveal timing.
 
-**Why the gradient is sanctioned (color-strategy note):** Per PMP §5, the site bans gradient text and bans gradient backgrounds on full-bleed surfaces. A linear gradient on a vertical SVG `<line>` stroke is a *strategic* gradient — it carries semantic meaning (this beat braids both lineages), is the only multi-color gradient on the site, and lives at <1% of the section's pixel area. Document the exemption in PMP §5.
+**SVG gradient exemption:** Impeccable's color rules ban gradient text and ban gradient backgrounds on full-bleed surfaces. The lane-rule gradient sits in neither category — it's a *strategic* gradient carrying semantic meaning (this beat braids both lineages), is the only multi-color gradient on the site, and lives at <1% of the section's pixel area. The exemption applies here only; any future ask to add a second site-wide gradient gets re-evaluated against Impeccable's rules from scratch.
 
 ### 9.3 The three lane states
 
