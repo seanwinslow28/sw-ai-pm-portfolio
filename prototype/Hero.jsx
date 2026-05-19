@@ -16,7 +16,7 @@ const DATELINE = {
 
 const NAME = "Sean Winslow";
 const ROLE = "/ AI PRODUCT MANAGER";
-const TAGLINE = "Raised by Saturday morning cartoons and Vercel deployment logs.";
+const TAGLINE = "Product Manager. The agents handle the math. I handle the taste.";
 
 const CHARACTER_VIDEO_SRC = "./hero-loop.webm";
 const CHARACTER_POSTER_SRC =

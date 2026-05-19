@@ -71,6 +71,22 @@ Six tiles. Five are projects, the sixth is the "next in production" card. The da
 
 > **A-3 status amended 2026-05-17:** Originally locked as `COMING` (anticipating the 2026-05-25 launch). Shipped 13 days early on 2026-05-12 — `@swins/intent-engineering-mcp@0.1.0` live on npm; `com.seanwinslow/intent-engineering@0.1.0` live on the MCP registry via DNS-verified domain namespace. Status flipped to `SHIPPED` accordingly.
 
+### 3.1 Project taglines
+
+Each tile may carry an **optional tagline** — one short line rendered below the tile title in the metadata strip (JetBrains Mono 12px weight 400, secondary ink `#546E71`, single line, no wrap). The same string also functions as the case-study page hero subtitle, sharing a `view-transition-name` with the tile so the line doesn't rewrite mid-transition. Taglines are project-tile voice — they drop the "Product Manager who" subject because the tile is *about* a project, not *about* a person.
+
+| Frame | Tagline | Status |
+|---|---|---|
+| A-1 | (open — write during case-study draft) | OPEN |
+| A-2 | (open — write during case-study draft) | OPEN |
+| **A-3** | *"Drawing up agents to act with intent."* | **LOCKED 2026-05-18** |
+| A-4 | (open — write during case-study draft) | OPEN |
+| A-5 | (open — write during case-study draft) | OPEN |
+
+**A-3 rationale:** The verb "drawing up" threads two domains in two words — *drawing* (the animator's hand) and *drafting up plans* (the PM's spec hand). The phrase "act with intent" is the philosophical core of the Intent Engineering MCP server. The line is a project teaser that doubles as the project thesis. Locked in PMP §4. Same string lives on the case-study page hero per §11.
+
+**Implementation:** The MDX frontmatter `tagline:` field is optional (see Appendix B). When present, the tile metadata strip renders it as an additional line below the title; when absent, the strip renders title + tags only (the v1 behavior for A-1, A-2, A-4, A-5 until their case-study drafts land taglines).
+
 ### Status labels — single-word, mono, uppercase
 
 | Status | Color | Meaning |
@@ -375,6 +391,7 @@ Every `src/content/work/<slug>.mdx` opens with frontmatter matching this shape:
 slug: animation-pipeline
 frame: A-1
 title: 2D Animation Pipeline
+tagline:                  # optional, see §3.1; when present, rendered below the title on the tile + as case-study hero subtitle
 status: ACTIVE           # ACTIVE | COMING | PAUSED | ARCHIVED | SHIPPED
 tags:
   - animation
