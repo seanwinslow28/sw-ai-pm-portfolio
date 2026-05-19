@@ -308,7 +308,7 @@ Trigger: page entry (via View Transition from a sibling route or via direct nav)
 | viewport-triggered | Each hand-drawn heading | Fade + slight scale 0.96 → 1 — feels like a sketchbook page turning | `cubic-bezier(0.22, 1, 0.36, 1)` | 500ms |
 | viewport-triggered | **Cartoon cels** | Stagger: each cel fades + slight scale 0.97 → 1 (no rotation — cels are flat artifacts, not Polaroids), 100ms stagger row-by-row; the registration peg SVGs at the top of each cel fade in 200ms after the cel body | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms each |
 | viewport-triggered | Pull quote | Per-line reveal | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms |
-| viewport-triggered | Signature | SVG `stroke-dasharray` reveal — the signature draws itself in | `cubic-bezier(0.6, 0, 0.4, 1)` | 1200ms |
+| viewport-triggered | Signature | SVG `stroke-dasharray` reveal — the signature draws itself in. The easing reads as a pen writing: starts fast (the down-stroke), settles into the closing curl. | `cubic-bezier(0.16, 1, 0.3, 1)` | 1200ms |
 
 **The opinionated bit:** the signature draws itself in, slowly. Most pages close with a button or a CTA. This page closes with Sean's hand signing the page — the most explicit "this is not a template" gesture in the entire site. Reduced motion collapses it to opacity 0 → 1 over 200ms (drawn-in static version).
 
@@ -556,6 +556,7 @@ Each cel is 280×320px on desktop, contained in a 3×2 CSS Grid (`grid-template-
 | Cel body | White paper background (`#FFFFFF`, not the page's cream `#FFF9F0` — the cel sits ON the paper, not as part of it). 0.5px teal outer border `rgba(10, 62, 66, 0.15)`. Inset shadow 0 2px 4px rgba(0,0,0,0.04). |
 | Pencil-test study | Sean's hand-drawn study of the cartoon character (e.g., Wile E. Coyote mid-anticipation crouch). PNG with alpha. ~200×220px, centered, with breathing room above (for the cel name strip below). |
 | Cel name strip | Inside the cel, bottom-left corner, ~16px from the edges. Cartoon name in mono 11px weight 500 ink + year suffix in mono 11px weight 400 secondary-ink. Example: `WILE E. COYOTE · 1949–` |
+| Cel rotation | The entire cel (registration pegs + body + name strip) rotates ±1.5° around its center. Angle is set per-cel via frontmatter (`angle: -1.2`, `angle: 1.4`, etc.); when omitted, the build script `scripts/randomize_cel_angles.mjs` writes a stable randomized angle in the ±1.5° range at first build (cached in `src/content/cartoons/_angles.json` so the layout doesn't reshuffle between builds). The rotation breaks the 3×2 bento-box feel without destabilizing the read. |
 
 **Caption strip (below the cel, separate element):**
 
@@ -565,6 +566,12 @@ Each cel is 280×320px on desktop, contained in a 3×2 CSS Grid (`grid-template-
 | Lesson body | Mono 12px / 11px weight 400 tracking 0.8px, secondary ink `#546E71`. E.g., `the wind-up sells every gag. ship the wind-up before the deliverable.` |
 | Caption alignment | Left-aligned with the cel's left edge. Max-width matches the cel (280px). Wraps to 2-3 lines naturally. |
 | Vertical position | 16px below the cel's bottom edge. |
+
+### 11.3.1 The "rewires-you" cel breaks the grid
+
+One cel — the cel Sean considers most load-bearing (the cel the §11.7 annotation arrows at) — sets `break_grid: true` in its frontmatter. That cel renders at **1.2× scale** (336×384 instead of 280×320) and **spans two grid columns** on desktop, pushing the cels around it to reflow. The §11.7 annotation arrow + the geometric break work in concert: typography flags the cel, geometry confirms it. Without the break, all 6 cels read at identical visual weight despite the annotation calling one out — the bento-box quality the spec was trying to dodge.
+
+Mobile (§11.5): `break_grid: true` is a no-op (single-column stack already gives every cel equal width). The visual emphasis comes from the annotation alone on mobile.
 
 ### 11.4 Why pencil-test studies, not real cartoon stills
 
@@ -604,6 +611,8 @@ image: /assets/cartoons/coyote-study.png
 image_alt: pencil-test study of Wile E. Coyote in mid-anticipation crouch
 lesson_noun: ANTICIPATION TIMING
 lesson_body: the wind-up sells every gag. ship the wind-up before the deliverable.
+angle: -0.8  # optional; ±1.5° range; defaults to a stable random value if omitted
+break_grid: false  # optional; when true, cel renders at 1.2× scale and breaks the 3×2 grid — reserved for the rewires-you cel per §11.7
 ---
 ```
 
