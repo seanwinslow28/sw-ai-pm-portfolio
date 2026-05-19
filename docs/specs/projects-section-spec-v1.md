@@ -236,7 +236,7 @@ Three annotations live in this section, all hand-drawn-feeling SVGs:
 
 | # | Annotation | Position | Animation |
 |---|---|---|---|
-| 1 | **Curved arrow with "updated weekly"** — points at the `UPDATED 2026-05-13` dateline label | Just below the dateline label, ~20px right of "UPDATED" | Fades in 800ms after the section enters viewport. Subtle bob (rotate ±2°) at 4s/cycle thereafter |
+| 1 | **Curved arrow with "updated weekly"** — points at the `UPDATED 2026-05-13` dateline label | Just below the dateline label, ~20px right of "UPDATED" | Fades in 800ms after the section enters viewport. Static thereafter (no idle bob — decorative SVG ambient motion falls into Emil's "looks cool, will see it 1000+ times" zone). |
 | 2 | **"rev 3" scribble** — small hand-drawn note tucked at the top-right corner of the A-1 tile (most recently iterated project) | Absolute, top-right of tile A-1, offset -8px / -8px | Fades in with the tile; no idle animation |
 | 3 | **Registration mark** (a "+" cross with two perpendicular tick marks) | Bottom-right corner of the section grid, ~20px below the last tile, ~20px from the right edge | Fades in with the section; static after |
 
