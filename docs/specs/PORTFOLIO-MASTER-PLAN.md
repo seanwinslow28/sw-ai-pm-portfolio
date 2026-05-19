@@ -112,7 +112,13 @@ The portfolio is a natural history museum of creative evolution — engineering-
 
 > "I'm a fan of simplicity with splashes of color."
 
-Codified as the **one-splash-per-section** rule (see §5, idea D2): 95% of the site is warm paper (`#FFF9F0`) and ink. Each section gets *one* full-bleed splash-color moment, never two. The "Iterative Blueprint" mockup violated this — every screen had four colors at once.
+Codified as a two-layer architecture (locked in `docs/specs/texture-and-artifacts-spec-v1.md` §2):
+
+- **The substrate is Committed-teal.** A persistent teal `#0A3E42` chrome at Z=0 carries the site as a structural color — visible through every torn-paper edge on every page. Per Impeccable's color-strategy axis, this is a *Committed* palette (one saturated color carrying 30–60% of the visible page surface), not the Restrained palette earlier drafts described.
+- **The page surface is paper.** Each page sits on the chrome as a cream `#FFF9F0` paper sheet at Z=10, with torn-paper edges revealing the teal at the seams.
+- **Each section still earns *one* full-bleed splash-color block, never two** — this rule survives intact. The chrome and the splash blocks are at different z-layers (Z=0 vs Z=20) and serve different jobs: the chrome is the *book cover*, the splash blocks are *full-page color illustrations inside the book*. Sections without a splash (hero, About) sit on paper-on-chrome and read as 95% paper.
+
+The "Iterative Blueprint" mockup violated both rules — four colors at once on every screen, no substrate logic. Committed-teal fits the autobiography thesis (the chrome IS the book cover); Restrained-paper-with-one-accent would have been too quiet for an animator-as-PM positioning.
 
 ---
 
@@ -203,7 +209,7 @@ Run via `pm-product-discovery:brainstorm` (mode: ideas, new product). Three pers
 | # | Idea | Why it isn't a template | Impact/Effort |
 |---|---|---|---|
 | D1 | **The character IS the cursor** — default a tiny lagged pencil; hover a project tile and it becomes a frame-number tag (A-2, B-3) | Only Sean has this character; unforgeable signature | H/M |
-| D2 | **One splash color per section, never two** — 95% paper+ink; work section = full teal; contact = amber; about = soft coral; torn-paper edges between | Codifies "simplicity with splashes of color" as architecture, not decoration | H/L |
+| D2 | **One splash color per section, never two** — 95% paper+ink at the section level; work section = full teal splash; contact = amber; about = paper-no-splash; torn-paper edges between. Layered over a **Committed-teal chrome substrate** (Z=0, full-bleed, visible through every torn edge — see §2.2) so the site reads as paper-on-teal at rest, with full-bleed splash blocks per section. | Codifies "simplicity with splashes of color" as a two-layer architecture (chrome + page), not a flat palette | H/L |
 | D3 | **Pencil-test margin annotations** — hand-drawn SVGs in the gutters (arrows, "rev 3 / fix this," coffee-ring stain, registration marks) | The physical artifact of his process invading the digital frame | M/L |
 | D4 | **Two fonts, intentionally clashing** — Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). No Inter, no Sora | Prior mockups used 3 fonts with no opinion; the serif-vs-mono contrast IS the duality | H/L |
 | D5 | **Dark mode is the time of day, not a toggle** — 6am–6pm light (animator), 6pm–6am dark (technologist) | Every portfolio has a toggle; time-aware is poetic and earns the duality thesis | M/L |
