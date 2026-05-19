@@ -246,7 +246,7 @@ The fallback is the only line on the site that's "voicey" without being earned b
 
 | Target | Cursor transforms to | Notes |
 |---|---|---|
-| `Sean Winslow` (name) | Scales to a 60px circle, ink fill, blend-difference | Click does nothing — name is not a link |
+| `Sean Winslow` (name) | Scales to a 60px circle, ink fill, blend-difference. Transition: 160ms `cubic-bezier(0.23, 1, 0.32, 1)` | Click does nothing — name is not a link. The 160ms is Emil's snap-feedback range for button-press equivalents; leaving it unspecified would invite an implementer-default ease-in. |
 | Character lane | Cursor becomes a tiny pencil icon | Easter egg — no click action |
 | Empty paper | Default 6px dot | |
 
