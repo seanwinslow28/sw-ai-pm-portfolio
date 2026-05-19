@@ -185,7 +185,7 @@ The page is a long-form scroll, not a hero-and-CTA. Recruiter scans the title bl
 | Methods strip cell | JetBrains Mono | 13 (both) | 400 | 0.6px | `#1A1A1E` |
 | 4Q heading | JetBrains Mono | 14 (both) | 500 | 2.4px | `#0A3E42` |
 | 4Q "What is this?" body | Newsreader | 24 / 20 | 300 | -0.2px | `#1A1A1E` |
-| 4Q Q2-Q4 body | Newsreader | 20 / 18 | 300 | -0.1px | `#1A1A1E` |
+| 4Q Q2-Q4 body | Newsreader | 18 / 16 | 300 | -0.1px | `#1A1A1E` |
 | Next/prev label | JetBrains Mono | 14 / 12 | 500 | 1.8px | `#0A3E42` |
 
 ### Voice register by section (PMP §3.3)
