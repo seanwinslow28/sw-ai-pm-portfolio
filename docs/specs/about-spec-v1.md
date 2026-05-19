@@ -425,12 +425,36 @@ The stacked-beats layout collapses both problems: **one column on every viewport
 - **Each beat** has three parts:
   1. **Date line** — JetBrains Mono 12/11px weight 500, stamp amber `#7C2D12`, format `age N · YYYY` (e.g., `age 8 · 1998`)
   2. **Body** — Newsreader 18/16px weight 400, ink `#1A1A1E`, 1-3 sentences. One claim per beat. Can quote younger-Sean ("*I want to be a cartoonist*") but the quote shouldn't be the whole beat.
-  3. **Lane-tint rule** — a left-margin vertical bar, 3px wide desktop / 4px mobile, running the full height of the beat (date line + body). The bar sits ~16px to the left of the date line. Color is determined per-beat (see §9.3).
+  3. **Lane-tint rule** — an SVG `<line>` (NOT a CSS `border-left`) rendered as the first child of the beat container. Stroke 3px desktop / 4px mobile, full beat height (date line + body). The line sits ~16px to the left of the date line. Stroke color is determined per-beat (see §9.3). This is rendered as SVG explicitly to (a) sidestep the side-stripe-border anti-pattern by reading as a timeline scrubber rather than a card affordance, and (b) animate via `stroke-dasharray` per §6.
 - **Vertical spacing** — 32px gap between beats. Lane rules do NOT extend through the gap; each beat's rule is self-contained, which makes the chromatic shift between beats legible.
+
+### 9.2.1 The lane-rule SVG markup (canonical)
+
+Each beat renders a single-`<line>` SVG, sized to match the beat's content height via JS measurement on mount (the height isn't known at server-render time because beat bodies wrap to a variable number of lines). For Animator beats the stroke is the amber solid; for PM beats, the teal solid; for braided beats, a `linearGradient` defined in `<defs>` inside the same SVG:
+
+````html
+<svg class="lane-rule" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="braid-{slug}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#FAC775" />
+      <stop offset="100%" stop-color="#0A3E42" />
+    </linearGradient>
+  </defs>
+  <line x1="0" y1="0" x2="0" y2="100%"
+        stroke="url(#braid-{slug})"
+        stroke-width="3"
+        stroke-dasharray="0 9999"
+        class="lane-rule__stroke" />
+</svg>
+````
+
+The `stroke-dasharray="0 9999"` start state hides the stroke; the reveal animation lerps it to `9999 0` (full draw). See §6 for the reveal timing.
+
+**Why the gradient is sanctioned (color-strategy note):** Per PMP §5, the site bans gradient text and bans gradient backgrounds on full-bleed surfaces. A linear gradient on a vertical SVG `<line>` stroke is a *strategic* gradient — it carries semantic meaning (this beat braids both lineages), is the only multi-color gradient on the site, and lives at <1% of the section's pixel area. Document the exemption in PMP §5.
 
 ### 9.3 The three lane states
 
-| State | Rule color | When to use |
+| State | Stroke color | When to use |
 |---|---|---|
 | **Animator** | Solid `#FAC775` (amber mid-stop) | Beat is purely animator-self — drawing, animation, film, traditional craft. e.g., "filled six sketchbooks; saved up for first Wacom." |
 | **PM** | Solid `#0A3E42` (primary teal) | Beat is purely PM-self — code, deploys, product judgment, agents. e.g., "first PM role; first PRD; first stakeholder loop." |
