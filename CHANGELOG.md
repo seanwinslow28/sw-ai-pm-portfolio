@@ -13,7 +13,7 @@ When you make a substantive change to a locked or drafted spec (revision, restru
 Rules:
 - **Reverse chronological within each spec** (newest first).
 - **Use absolute dates**, never "today" or "last week."
-- **Lead with what changed, then why.** Skip filler. Match the voice rules in [`docs/PORTFOLIO-MASTER-PLAN.md`](docs/PORTFOLIO-MASTER-PLAN.md) §3.
+- **Lead with what changed, then why.** Skip filler. Match the voice rules in [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) §3.
 - **One entry per coherent change.** Multiple unrelated edits on the same day get multiple bullets.
 - If a spec doesn't yet have a section here, add one (alphabetical by filename under the `## Spec Changelogs` heading).
 - If a change cuts across specs (e.g. a decision lock that ripples through 3 of them), record the lockstep update under each affected spec — don't try to invent a cross-cutting section.
@@ -23,7 +23,7 @@ Rules:
 
 ## Spec Changelogs
 
-### [`docs/hero-spec-v1.md`](docs/hero-spec-v1.md)
+### [`docs/specs/hero-spec-v1.md`](docs/specs/hero-spec-v1.md)
 
 - **2026-05-19 (critique fix §2 rows 3 + 6 — name + tagline motion):** §6 — (a) Name reveal: `translateY(40px)` → `translateY(24px)`, stagger 20ms → 18ms (40px on each of 12 letters was a lot of distance for a confident name reveal). (b) Tagline reveal: `translateY(60%)` → `translateY(28px)` — fixed-px offset prevents the line briefly overshooting the line-box at small sizes. Per `impeccable-and-emil-design-critique.md` §2 rows 3 + 6.
 - **2026-05-19 (critique fix punch #5 — cursor hover duration):** §9 — the name-hover cursor expansion (default 6px dot → 60px circle) was missing an explicit transition duration; specified 160ms `cubic-bezier(0.23, 1, 0.32, 1)`. Emil's snap-feedback range; leaving it unspecified would invite an implementer-default ease-in. Per `impeccable-and-emil-design-critique.md` §2 row 2.
@@ -33,21 +33,21 @@ Rules:
 - **2026-05-16 (animation reconcile):** Originally three frame sets (walk-in / idle / blink). Replaced with a single seamless WebM loop per master plan §8.1.
 - **2026-05-13:** Original spec locked + recall-tested.
 
-### [`docs/projects-section-spec-v1.md`](docs/projects-section-spec-v1.md)
+### [`docs/specs/projects-section-spec-v1.md`](docs/specs/projects-section-spec-v1.md)
 
 - **2026-05-19 (critique fix §2 row 8 — drop annotation idle bob):** §9 — removed the "subtle bob (rotate ±2°) at 4s/cycle" from the updated-weekly arrow annotation. The annotation is decorative (the dateline below it carries the actual information); persistent ambient rotation on a decorative SVG is Emil's "looks cool, will see it 1000+ times" anti-pattern. Settle on first reveal, then static. Per `impeccable-and-emil-design-critique.md` §2 row 8.
 - **2026-05-19 (critique fix §2 row 7 — view-transition object-fit lock):** §10 — added an explicit bullet locking `object-fit: cover` at both endpoints of the shared `view-transition-name: hero-media-<slug>`. A `cover`/`contain` mismatch would snap the morph mid-transition; the case-study hero achieves full-bleed via container framing, not via `contain`. Per `impeccable-and-emil-design-critique.md` §2 row 7.
 - **2026-05-19 (critique fix 1.2 — tile hover ≤300ms):** §8 tile-media hover timing was 700ms / scale(1.04) / cubic-bezier(0.4, 0, 0.2, 1) — sluggish at the exact moment recruiters scan tiles. Now 220ms / scale(1.03) / cubic-bezier(0.23, 1, 0.32, 1). Per Emil's UI-animation-under-300ms rule and `impeccable-and-emil-design-critique.md` blocker 1.2 + §2 row 1.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt in Appendix C updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 
-### [`docs/case-study-spec-v1.md`](docs/case-study-spec-v1.md)
+### [`docs/specs/case-study-spec-v1.md`](docs/specs/case-study-spec-v1.md)
 
 - **2026-05-19 (critique fix §3 — 4Q body type step):** §4 — 4Q Q2-Q4 body size dropped from Newsreader 20/18 → 18/16 so the Q1 ("What is this?") → Q2-Q4 step lands at 1.33× desktop / 1.25× mobile (was 1.2× / 1.1×). Restores the type-step discipline the rest of the page already follows. Per `impeccable-and-emil-design-critique.md` §3 "Type hierarchy spot-check".
 - **2026-05-19 (critique fix §2 row 7 — view-transition object-fit lock):** §6 — annotated the hero-media cross-fade row to lock `object-fit: cover` at both endpoints (matching the projects-spec §10 contract). Container is full-bleed; inner media is `cover`. Per `impeccable-and-emil-design-critique.md` §2 row 7.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
 
-### [`docs/about-spec-v1.md`](docs/about-spec-v1.md)
+### [`docs/specs/about-spec-v1.md`](docs/specs/about-spec-v1.md)
 
 - **2026-05-19 (critique fix §3 — daily-dated rename):** Swept "live" → "daily-dated" / "morning-fresh" wherever the data source is the Daily Driver. Section heading §8 "Live pulse strip" → "Daily-dated pulse strip"; all in-body references to the pulse strip follow. See the `## Non-spec changes` entry for the cross-spec rationale.
 - **2026-05-19 (critique fix §2 row 4 + §3 cards — signature easing + cel grid):** Two edits. §6: signature stroke-dasharray easing was `cubic-bezier(0.6, 0, 0.4, 1)` (ease-in-out); switched to `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out) — reads as a pen writing in, fast down-stroke then settle. §11.3 + new §11.3.1: cels now carry a frontmatter `angle: ±1.5°` (defaults randomized + cached) and one cel (the §11.7 "rewires-you" cel) sets `break_grid: true` to render 1.2× and span two columns — breaks the 3×2 bento-box feel; geometry now confirms what the annotation already flags. Per `impeccable-and-emil-design-critique.md` §2 row 4 + §3 "Identical card grids" finding.
@@ -58,7 +58,7 @@ Rules:
 - **2026-05-17 (revision):** Lead-line + B-3 section revised after Sean's review of v1. The dog framing was killed (it forced an artifact that wasn't load-bearing to Sean's actual personality). The PMP §4 About-page lead row gets updated in lockstep — the locked string moves from the dog deflation to a **compressed-parallel credentials block** that harmonizes with the home-hero tagline ("Raised by..." → "Trained by..."). B-3 transitions from a dog-Polaroid gallery to **Saturday morning canon** — six hand-drawn pencil-test studies of cartoon characters Sean takes as formative, each captioned with the product/craft principle the cartoon taught. Animation-cel frame treatment (with hand-drawn registration pegs) replaces Polaroid framing to signal "cultural-craft reference rendered through Sean's hand" rather than "personal artifact." Five dog-related OPEN questions in §18 are removed; three cartoon-canon OPENs added.
 - **2026-05-17 (initial):** First draft. Honored hero §10's locked "About = paper, no splash" decision. Annotation density cap raised from ≤6 (case-study) to ≤12 (About).
 
-### [`docs/transactions-spec-v1.md`](docs/transactions-spec-v1.md)
+### [`docs/specs/transactions-spec-v1.md`](docs/specs/transactions-spec-v1.md)
 
 - **2026-05-19 (critique fix §4 — derive_crosslinks error messages):** §11.1 — declared the error-message contract: dangling-slug errors must name file + field + slug + nearest-real-slug suggestion. Eliminates the "one typo breaks the build with a generic error" surface flagged by `impeccable-and-emil-design-critique.md` §4.
 - **2026-05-19 (audit fix I-1.1, additive — `relatedArchitecture`):** Added `relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional()` to §3.2 schema per architecture-spec §14.1, with a matching bidirectional row in §14's cross-link contracts table and a `relatedArchitecture: null` example in Appendix B. Pure additive; legacy rows without the field still validate. Closes the 4-surface cross-link graph from the ledger side. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding I-1.
@@ -66,18 +66,18 @@ Rules:
 - **2026-05-19 (audit fix M-3):** Hand-off prompt in Appendix C updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per audit finding M-3.
 - **2026-05-17:** Initial draft. Re-architects the V3-bridge schema (which doesn't carry forward verbatim — see §3.1). Inherits case-study spec §9.2's canonical-EXPLANATION contract. Reuses `scripts/fetch_explanations.mjs`. Slugs from the 2 (or 5, depending on cadence at crossover) V3 entries are preserved across migration. Recruiter mental model: "Sean's resume is the ledger."
 
-### [`docs/architecture-spec-v1.md`](docs/architecture-spec-v1.md)
+### [`docs/specs/architecture-spec-v1.md`](docs/specs/architecture-spec-v1.md)
 
 - **2026-05-19 (critique fix §4 — fetch_canonical_sources fallback):** §11.1 — declared the never-requires-network contract: committed fetched files are the source of truth; the script refreshes but exits 0 on remote failure. Eliminates the build-failure-on-rename surface flagged by `impeccable-and-emil-design-critique.md` §4 "Build infrastructure fragility".
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Establishes /architecture/ as the third top-level IA surface (alongside /transactions/ + /work/), specifically for **architectural arguments** (thesis-shaped, comparison-based) — distinct from /transactions/ which is for **shipped systems**. An artifact can appear on both surfaces with the same slug, cross-linked. Requires an **additive** update to `transactions-spec-v1.md` §3.2 — adding `relatedArchitecture: string \| string[]` as an optional field on the ledger schema (see §15.4). No removals or renames to the locked transactions spec.
 
-### [`docs/essays-spec-v1.md`](docs/essays-spec-v1.md)
+### [`docs/specs/essays-spec-v1.md`](docs/specs/essays-spec-v1.md)
 
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Establishes /essays/ as the **fourth top-level IA surface** (alongside /work/, /transactions/, /architecture/), specifically for **thesis-shaped writing that frames multiple artifacts into a single argument** — distinct from /architecture/, which argues *about a single system*. An artifact can appear on all four surfaces simultaneously with the same slug, bidirectionally cross-linked. Closes the four-surface cross-link graph: every artifact named in an essay's `plottedArtifacts` array auto-renders "← named in: [essay title]" on its ledger row + architecture writeup, build-derived by `derive_crosslinks.mjs`. No schema changes required on locked transactions or architecture specs (this is the third surface to receive reverse links via the same script).
 
-### [`docs/site-chrome-spec-v1.md`](docs/site-chrome-spec-v1.md)
+### [`docs/specs/site-chrome-spec-v1.md`](docs/specs/site-chrome-spec-v1.md)
 
 - **2026-05-19 (critique fix §4 — sticky-nav first-impression):** §6.1.1 — documented the two-navigation-grammars split (no-nav home, sticky sub-pages) and added three mitigation rules: (a) sticky nav uses the same chrome substrate, (b) first sub-page nav fades in 600ms after View Transition completes, (c) Playwright mockup verification gate. Per `impeccable-and-emil-design-critique.md` §4 "Sticky nav vs no-nav home discipline split".
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
@@ -91,13 +91,13 @@ Rules:
 
 ## Non-spec changes
 
-Use this section for changes to [`CLAUDE.md`](CLAUDE.md), [`docs/PORTFOLIO-MASTER-PLAN.md`](docs/PORTFOLIO-MASTER-PLAN.md), or other root-level files that aren't tied to a single spec.
+Use this section for changes to [`CLAUDE.md`](CLAUDE.md), [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md), or other root-level files that aren't tied to a single spec.
 
 - **2026-05-19 (critique implementation complete):** All 7 punch-list items + §2 motion review + §3 Impeccable findings + §4 cross-spec items from [`docs/impeccable-and-emil-design-critique.md`](docs/impeccable-and-emil-design-critique.md) are landed. Specs are ready for build per the critique's verdict: "Ready to build after three specific blockers are addressed." The three blockers were resolved in Tasks 1–3 of the implementation plan ([`docs/superpowers/plans/2026-05-19-impeccable-emil-critique-implementation.md`](docs/superpowers/plans/2026-05-19-impeccable-emil-critique-implementation.md)).
 - **2026-05-19 (critique fix §3 — "daily-dated" honest framing):** [`CLAUDE.md`](CLAUDE.md) "three load-bearing things" block + [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) + cross-spec sweep. Renamed "the live layer" → "the daily-dated layer" wherever the data source is the Daily Driver (08:45 daily writes). "Live" is reserved for genuinely sub-daily surfaces (footer agent feed reading `agent-run-history.csv`). The honest framing reads stronger than the marketing framing — Sean's voice everywhere else is honest, this had been the one place it wasn't. Per `impeccable-and-emil-design-critique.md` §3 "The 'live' framing oversells slightly".
 - **2026-05-19 (critique fix §3 — em-dash exception):** [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) §3.2 — documented the em-dash exception for wire-service register surfaces (datelines, ledger captions, methods-strip prefixes, Daily Driver-written body copy). The editorial register still follows Impeccable's no-em-dash rule. Locking this exception once prevents future sessions from "fixing" dateline em dashes. Per `impeccable-and-emil-design-critique.md` §3 "Em dashes in wire-service copy".
 - **2026-05-19 (critique fix 1.3 — Committed-teal color strategy):** [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) §2.2 + §5 D2 row — declared the site's color strategy as **Committed-teal** (one saturated color carrying 30–60% of visible surface) rather than the prior Restrained-paper math ("95% paper, one accent ≤10%"). The texture-and-artifacts spec promoted teal `#0A3E42` from a per-section splash to full-bleed structural chrome at Z=0 — Committed is the honest framing now. The one-splash-per-section rule survives intact; chrome and splash blocks are at different z-layers serving different jobs. Per `impeccable-and-emil-design-critique.md` blocker 1.3.
-- **2026-05-19 (audit fix M-2 — PMP roadmap links):** Repaired three broken relative links in [`docs/PORTFOLIO-MASTER-PLAN.md`](docs/PORTFOLIO-MASTER-PLAN.md) (§0.5, §3.4, §11). The link target moved from `2026-05-06-unified-roadmap%20copy.md` (which resolved to a non-existent file under `docs/specs/`) to `../prompts-and-references/2026-05-06-unified-roadmap%20copy.md` (the actual canonical location after the 2026-05-18 reorg). The " copy" suffix is retained — that is the on-disk filename. Per `docs/prompts-and-references/2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-2.
+- **2026-05-19 (audit fix M-2 — PMP roadmap links):** Repaired three broken relative links in [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) (§0.5, §3.4, §11). The link target moved from `2026-05-06-unified-roadmap%20copy.md` (which resolved to a non-existent file under `docs/specs/`) to `../prompts-and-references/2026-05-06-unified-roadmap%20copy.md` (the actual canonical location after the 2026-05-18 reorg). The " copy" suffix is retained — that is the on-disk filename. Per `docs/prompts-and-references/2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-2.
 - **2026-05-19 (audit fix M-1 — roadmap Task 13 date drift):** Edited [`docs/prompts-and-references/2026-05-06-unified-roadmap copy.md`](docs/prompts-and-references/2026-05-06-unified-roadmap%20copy.md) line 901 heading: `draft-lock 2026-05-23` → `draft-lock 2026-05-22` to match the authoritative date used throughout the Task 13 body (Steps 4–7 + verification gate). Body-wins resolution per audit recommendation. Per audit finding M-1.
 - **2026-05-19 (audit fix M-3 — BLUEPRINT + texture-spec hand-off prompts):** [`docs/specs/BLUEPRINT-COMPLETE.md`](docs/specs/BLUEPRINT-COMPLETE.md) §10 hand-off prompt and [`docs/specs/texture-and-artifacts-spec-v1.md`](docs/specs/texture-and-artifacts-spec-v1.md) Appendix C hand-off prompt: `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per audit finding M-3. (The eight other in-spec M-3 fixes are recorded per-spec above.)
 - **2026-05-19:** Created this file. Extracted existing per-spec `## 1.1 Changelog` sections verbatim as a baseline. Added pointer in `CLAUDE.md` so future Claude sessions log spec changes here instead of inside the specs.
