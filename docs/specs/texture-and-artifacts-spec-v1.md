@@ -490,6 +490,22 @@ The handwritten B-N section headings on the about page (`B-1 · How I got here`,
 
 End-to-end workflow from Procreate/Figma → optimized site asset.
 
+### 7.0 Asset authoring order (Phase 0 Gantt)
+
+Hand-authored assets ship in three waves, each unblocking a specific build phase. Don't wait for the build to start before authoring — start Phase 0a the same week the spec is locked.
+
+| Wave | Assets | Authoring window | Unblocks |
+|---|---|---|---|
+| **0a — Substrate** | `paper-tile.png` (§3), `tear-edge.png` ×3 variants (§4), hero floor-shadow `hero-floor-shadow.png` (§5) | Week 1, before hero build starts | Hero build (needs paper substrate + floor shadow), torn-edge transitions site-wide |
+| **0b — Hero + projects splash** | `coffee-ring.png` (§6.3), `kid-drawing-1.png` (§6.4), `signature.svg` (§6.6 + about §6), the 3 projects annotations (curved arrow / "rev 3" scribble / registration mark) | Week 1–2, in parallel with hero build | Projects-section build (the splash + annotations land here first), about-page closeout (signature) |
+| **0c — About long-form** | 6 cartoon-cel pencil-test studies (§6.5 + about §11) — path C per about §11.4 (Sean hand-draws 2–3, Seedream 2.0 renders 3–4 from anchor style) ; 5 about heading SVGs (§6.6); OG card | Week 3, in parallel with case-study build | About build (cels are §11's load-bearing artifact; without them §11 doesn't render), social-share previews |
+
+**Asset count:** 13 mandatory PNG/SVG files + the 6 cartoon studies. Total ~19 hand-authored assets in 3 weeks.
+
+**Gating rule:** If a Phase 0a asset slips into Week 2, the hero build cannot complete; if Phase 0b slips into Week 3, the projects build cannot complete; if Phase 0c slips, About ships as a stub. Track in the build session's open-questions log.
+
+**OPEN:** Whether the OG card lives in this spec or in site-chrome-spec — currently undecided. Resolve at build session start.
+
 ### 7.1 Procreate workflow (raster path)
 
 1. **Author at @2x.** Every Procreate canvas is sized at 2× the CSS display size, so the asset is retina-ready.
