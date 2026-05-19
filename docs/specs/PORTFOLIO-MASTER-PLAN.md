@@ -29,7 +29,7 @@ Sean is building his **third** attempt at a PM portfolio. The first two attempts
 
 ## 0.5 Relationship to the Roadmap (NEW 2026-05-17)
 
-This redesign **supersedes** the V3-card portfolio currently in flight at `~/Code-Brain/sw-portfolio/`, which the [unified roadmap](2026-05-06-unified-roadmap%20copy.md) is actively deploying to `seanwinslow.com` on Mon 2026-05-19 (Council Gap-Fill 3, un-deferred 2026-05-16).
+This redesign **supersedes** the V3-card portfolio currently in flight at `~/Code-Brain/sw-portfolio/`, which the [unified roadmap](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) is actively deploying to `seanwinslow.com` on Mon 2026-05-19 (Council Gap-Fill 3, un-deferred 2026-05-16).
 
 **Why two efforts existed in parallel:** Sean built the V3 site first; the dissatisfaction with it (the "design-system-viewer template trap" diagnosed in §1.3) is what triggered this redesign. The roadmap kept executing against the V3 site in parallel because the job hunt needed a recruiter-readable surface *now* — couldn't wait for the redesign to finish.
 
@@ -152,7 +152,7 @@ Adding a third row for the `/essays/` IA introduced by roadmap Task 13. Manifest
 
 ### 3.4 Inherited STOP-DOING constraint (NEW 2026-05-17)
 
-From [unified roadmap](2026-05-06-unified-roadmap%20copy.md) Task 7 / Council Deprioritization 1 (Gemini Pro, chairman-endorsed):
+From [unified roadmap](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) Task 7 / Council Deprioritization 1 (Gemini Pro, chairman-endorsed):
 
 > **Never frame the HybridRouter as "Agent OS" or "runtime architecture" anywhere on the portfolio.**
 
@@ -398,7 +398,7 @@ Everything a future session needs, in one place.
 | `docs/projects-section-spec-v1.md` | Projects section build spec (locked) |
 | `docs/Sean-Winslow-Full-Personal-Context-v2.0.md` | Sean's Tier-0 personal context — identity, values, career, goals |
 | `docs/sw-portfolio-idea-1.md` | The original portfolio idea note (design philosophy seed, color palette, the mynrd + Vercel inspirations) |
-| `docs/2026-05-06-unified-roadmap copy.md` | **The active job-hunt roadmap (last_updated 2026-05-17).** Source of truth for what artifacts ship when, the Council gap-fills (Tasks 12–15), the IA additions, and the V3-bridge crossover. This redesign absorbs everything that ships into the ledger. |
+| [`docs/prompts-and-references/2026-05-06-unified-roadmap copy.md`](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) | **The active job-hunt roadmap (last_updated 2026-05-17).** Source of truth for what artifacts ship when, the Council gap-fills (Tasks 12–15), the IA additions, and the V3-bridge crossover. This redesign absorbs everything that ships into the ledger. |
 | `~/Code-Brain/sw-portfolio/` (external) | **The V3 bridge site** shipping Mon 5/19 to `seanwinslow.com`. The redesign replaces it at the same apex. Useful as the live reference implementation of the `/transactions/` ledger schema (`surface`, `shipped`, `repoUrl`, `explanationUrl`, RSS). |
 | `~/Code-Brain/agent-fleet-observability/` (external) | **Task 11 dashboard** at `fleet.seanwinslow.com` (v1 code-complete 2026-05-17 evening). The redesign's footer links here; we don't reimplement live-data inline. |
 | Five live `EXPLANATION.md` files (external) | The crossover ledger inheritance: intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, Phase 6 knowledge loop. Carry forward at hard-cutover. |
@@ -429,7 +429,7 @@ For future Claude sessions — the working mindset:
 6. **Brief and to the point.** No trailing summaries. Don't restate what a diff already shows. Calm, factual, zen tone.
 7. **Specs are tactical, this plan is strategic.** When a section gets locked, write a `*-spec-v1.md` for it and add a pointer here — don't bloat this file with build detail.
 8. **Update this doc when direction changes.** It's a living document. New locked decisions, killed ideas, resolved open questions — they land here.
-9. **The roadmap is the source of truth for what ships into the ledger; this plan is the source of truth for what it looks like (NEW 2026-05-17).** Every Task in `2026-05-06-unified-roadmap copy.md` that produces an `EXPLANATION.md` writes a row into the `/transactions/` content collection — automatically. The 5 case-study tiles only change when a flagship earns a narrative deep-dive. The ledger handles everything else with zero ceremony. If a new artifact emerges in the roadmap that doesn't fit the 5-tile slot, it's a ledger row, not a tile.
+9. **The roadmap is the source of truth for what ships into the ledger; this plan is the source of truth for what it looks like (NEW 2026-05-17).** Every Task in [`docs/prompts-and-references/2026-05-06-unified-roadmap copy.md`](../prompts-and-references/2026-05-06-unified-roadmap%20copy.md) that produces an `EXPLANATION.md` writes a row into the `/transactions/` content collection — automatically. The 5 case-study tiles only change when a flagship earns a narrative deep-dive. The ledger handles everything else with zero ceremony. If a new artifact emerges in the roadmap that doesn't fit the 5-tile slot, it's a ledger row, not a tile.
 
 ---
 

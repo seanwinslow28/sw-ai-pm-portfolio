@@ -175,6 +175,9 @@ const transactionsCollection = defineCollection({
     relatedTransactions: z.array(z.string()).optional(),
     relatedEssay: z.string().optional(),           // /essays/<slug>
     previousVersion: z.string().optional(),        // slug of superseded ledger row
+    relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional(),
+    // slug or array of slugs into /architecture/; bidirectional via derive_crosslinks.mjs
+    // per architecture-spec §14.1. Pure additive; legacy rows that omit the field still validate.
 
     // --- Optional editorial ---
     repoUrl: z.string().url().optional(),
@@ -566,6 +569,24 @@ The kickoff cites 5 entries (intent-engineering MCP, vault-synthesizer eval suit
 
 The migration script does NOT mass-map `cushion-economics` — it flags those rows for manual surface assignment.
 
+#### Free-text → canonical `surface` remap (forward-looking)
+
+The unified roadmap and the V3 bridge author `surface` as free-text (the V3 schema is permissive). The redesign's enum is strict (`fleet` / `pipeline` / `product` / `writing` / `infra`). To prevent every new ledger row from failing the validator at crossover, the migration script consumes the canonical mapping below — defaulting per row, with Sean overriding at the interactive prompt when needed.
+
+| Free-text input (V3 bridge + roadmap authoring) | Canonical `surface` enum value |
+|---|---|
+| `MCP server` (Task 1 intent-engineering-mcp; future Task 10 vault-knowledge-mcp) | `product` |
+| `eval harness` (Task 8 vault-synthesizer-eval-suite) | `fleet` |
+| `SDK agent` (Task 9 substack-drafter) | `fleet` |
+| `control-plane interceptor` (Task 12 judge-layer) | `fleet` |
+| `manifesto / thesis` (Task 13 meaning-over-access ledger row) | `writing` |
+| `architecture writeup` (Task 14 control-architecture; Task 15 vault-scorecard) | `infra` |
+| `agentic-engineering` (V3 `beat`, Phase D + Phase 6) | `fleet` |
+| `creative-pipeline` (V3 `beat`, animation work) | `pipeline` |
+| `cushion-economics` (V3 `beat`, vault-as-cushion thesis) | **manual per row** — `product` OR `infra` per the §12.3 note above |
+
+This table is real-data, not example data. `scripts/migrate_v3_transactions.mjs` (§11.1) is the consumer of record; the interactive prompt default-suggests the canonical value but lets Sean override per row.
+
 ### 12.4 SEO + link equity preservation
 
 - Slugs are byte-identical pre/post crossover
@@ -612,6 +633,7 @@ The ledger + case studies + essays form one graph. Build-time-derived, bidirecti
 | `relatedTransactions: [phase-6]` (on ledger row) | `/transactions/phase-6/` | Both rows' Related blocks show each other as "sister ships". |
 | `previousVersion: phase-6` (on Phase D row) | `/transactions/phase-6/` | Phase D shows "→ supersedes: Phase 6". Phase 6 shows "← superseded by: Phase D" (auto-derived). |
 | `relatedEssay: access-vs-meaning` (on ledger row) | `/essays/access-vs-meaning/` | Ledger row shows "→ read the essay". Essay page gains a "← supporting ledger artifacts" section auto-listing every row that names it. |
+| `relatedArchitecture: vault-scorecard` (on ledger row; slug or `string[]`) | `/architecture/vault-scorecard/` | Ledger row shows "→ architecture writeup". Architecture page gains a "← shipped on the ledger" section auto-listing every row that names it. Bidirectional via `derive_crosslinks.mjs`; mirrors the `relatedLedgerRow` direction declared by architecture-spec §14.1. |
 | Methods strip cell `link: /work/<slug>` (on ledger deep-dive) | `/work/<slug>/` | Same cross-link rule as case-study spec §8.2 — Methods cells become internal links. |
 
 **The opinionated bit:** every cross-link is declared in **one place only** (the source row), and every reverse surface is **auto-derived** at build. Sean never maintains a bidirectional pair manually. The graph stays consistent because the derivation script enforces it.
@@ -802,6 +824,7 @@ relatedTransactions:
   - vault-synthesizer-eval-suite
 relatedEssay: null
 previousVersion: null
+relatedArchitecture: null      # slug, list of slugs, or null — bidirectional via derive_crosslinks.mjs
 
 # --- Optional editorial ---
 repoUrl: https://github.com/seanwinslow/claude-code-superuser-pack
@@ -818,7 +841,7 @@ headings as the inline-body fallback contract.)
 
 ## Appendix C — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, `case-study-spec-v1.md`, and `transactions-spec-v1.md` end-to-end. The hero, projects section, and case-study route are presumed built per their own specs. Build `src/pages/transactions/` per Appendix A, components per the same map. Implement `src/content/config.ts` with the new `transactions` schema per §3.2. Implement the four scripts per §11.1 — `migrate_v3_transactions.mjs` runs once interactively (Sean confirms each row's ISO date + methods array + surface mapping during the run); `validate_transactions.mjs`, `derive_crosslinks.mjs`, and the shared `fetch_explanations.mjs` run as `prebuild` hooks in `package.json`. Wire the RSS endpoint at `src/pages/transactions/rss.xml.ts` per §10.1. Extend the Daily Driver agent to compute the `ledger_row` hero dateline pattern per §13. Drop pencil annotations from the index page; max 2 on each deep-dive page per §9.3. Stop when the 16 Definition-of-Done items can be ticked on a `localhost:4321` preview.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `hero-spec-v1.md`, `projects-section-spec-v1.md`, `case-study-spec-v1.md`, and `transactions-spec-v1.md` end-to-end. The hero, projects section, and case-study route are presumed built per their own specs. Build `src/pages/transactions/` per Appendix A, components per the same map. Implement `src/content/config.ts` with the new `transactions` schema per §3.2. Implement the four scripts per §11.1 — `migrate_v3_transactions.mjs` runs once interactively (Sean confirms each row's ISO date + methods array + surface mapping during the run); `validate_transactions.mjs`, `derive_crosslinks.mjs`, and the shared `fetch_explanations.mjs` run as `prebuild` hooks in `package.json`. Wire the RSS endpoint at `src/pages/transactions/rss.xml.ts` per §10.1. Extend the Daily Driver agent to compute the `ledger_row` hero dateline pattern per §13. Drop pencil annotations from the index page; max 2 on each deep-dive page per §9.3. Stop when the 16 Definition-of-Done items can be ticked on a `localhost:4321` preview.
 
 ---
 

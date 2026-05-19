@@ -757,7 +757,7 @@ The complete table, for Sean's authoring session:
 
 ## Appendix B — Hand-off prompt for the build session
 
-> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/BMAD/sw-ai-pm-portfolio/`. Read `texture-and-artifacts-spec-v1.md` end-to-end alongside any page-level spec being built (`about-spec-v1.md`, `hero-spec-v1.md`, etc.). The texture spec is foundational — the three-layer model (`<body>` → `.page-sheet` → page content) must be implemented before any page-level CSS sits coherently on top of it.
+> Open a Claude Code session at `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. Read `texture-and-artifacts-spec-v1.md` end-to-end alongside any page-level spec being built (`about-spec-v1.md`, `hero-spec-v1.md`, etc.). The texture spec is foundational — the three-layer model (`<body>` → `.page-sheet` → page content) must be implemented before any page-level CSS sits coherently on top of it.
 >
 > Implementation order: (1) stand up the `<body>` chrome backdrop with `background-color: var(--chrome)` and the CSS-custom-property tokens for `--chrome`, `--paper`, `--ink`, `--teal`, `--amber`, `--stamp` etc. per §2.4. (2) Implement the `.page-sheet` wrapper with the paper texture tile, blend mode, and inverted palette tokens. (3) Implement `<TearDivider />` as a reusable Astro component reading `/assets/textures/tear-edge.png`, with `--top` and `--bottom` variants per §4.4. (4) Implement `<CharacterStage />` as a wrapper for the hero with the floor-shadow underlay positioned at z-index 18 per §5.4. (5) Wire `scripts/optimize-assets.sh` (SVGO + pngquant) into `prebuild` per §7.4. (6) Apply the cross-spec patches per §13.
 >
