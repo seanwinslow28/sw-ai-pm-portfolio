@@ -40,10 +40,6 @@ Rules:
 - **2026-05-19 (critique fix 1.2 — tile hover ≤300ms):** §8 tile-media hover timing was 700ms / scale(1.04) / cubic-bezier(0.4, 0, 0.2, 1) — sluggish at the exact moment recruiters scan tiles. Now 220ms / scale(1.03) / cubic-bezier(0.23, 1, 0.32, 1). Per Emil's UI-animation-under-300ms rule and `impeccable-and-emil-design-critique.md` blocker 1.2 + §2 row 1.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt in Appendix C updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 
-### [`docs/specs/architecture-spec-v1.md`](docs/specs/architecture-spec-v1.md)
-
-- **2026-05-19 (critique fix §4 — fetch_canonical_sources fallback):** §11.1 — declared the never-requires-network contract: committed fetched files are the source of truth; the script refreshes but exits 0 on remote failure. Eliminates the build-failure-on-rename surface flagged by `impeccable-and-emil-design-critique.md` §4 "Build infrastructure fragility".
-
 ### [`docs/case-study-spec-v1.md`](docs/case-study-spec-v1.md)
 
 - **2026-05-19 (critique fix §3 — 4Q body type step):** §4 — 4Q Q2-Q4 body size dropped from Newsreader 20/18 → 18/16 so the Q1 ("What is this?") → Q2-Q4 step lands at 1.33× desktop / 1.25× mobile (was 1.2× / 1.1×). Restores the type-step discipline the rest of the page already follows. Per `impeccable-and-emil-design-critique.md` §3 "Type hierarchy spot-check".
@@ -72,6 +68,7 @@ Rules:
 
 ### [`docs/architecture-spec-v1.md`](docs/architecture-spec-v1.md)
 
+- **2026-05-19 (critique fix §4 — fetch_canonical_sources fallback):** §11.1 — declared the never-requires-network contract: committed fetched files are the source of truth; the script refreshes but exits 0 on remote failure. Eliminates the build-failure-on-rename surface flagged by `impeccable-and-emil-design-critique.md` §4 "Build infrastructure fragility".
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
 - **2026-05-17:** Initial draft. Establishes /architecture/ as the third top-level IA surface (alongside /transactions/ + /work/), specifically for **architectural arguments** (thesis-shaped, comparison-based) — distinct from /transactions/ which is for **shipped systems**. An artifact can appear on both surfaces with the same slug, cross-linked. Requires an **additive** update to `transactions-spec-v1.md` §3.2 — adding `relatedArchitecture: string \| string[]` as an optional field on the ledger schema (see §15.4). No removals or renames to the locked transactions spec.
 
