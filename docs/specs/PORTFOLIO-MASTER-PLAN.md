@@ -71,7 +71,7 @@ What actually moves Sean — confirmed by his reaction to the references — is 
 **The three things prior attempts kept dropping:**
 1. **The character.** Sean has a killer pencil-test character sketch (`reference-images/2D-Character-Sketch-Sean-v1.png`). Every iteration that lost the character drifted into template-land. The character is the load-bearing wall.
 2. **The voice.** mynrd has "Simply making cool sh*t Wilson would say wow too." Sean's own voice (comedic, self-deprecating, specific — see `.claude/skills/writing-voice-modes`) was never *in* the prior specs' copy.
-3. **The live layer.** mynrd is a 2024 static site. Sean is a 2026 AI PM with a real autonomous agent fleet. He can surface *live* agent activity on the page — something no template can fake. This is the single biggest differentiator and it was absent from V3/V4.
+3. **The daily-dated layer.** mynrd is a 2024 static site. Sean is a 2026 AI PM with a real autonomous agent fleet. He can surface real agent activity on the page, dated to the morning it was written — something no template can fake. This is the single biggest differentiator and it was absent from V3/V4.
 
 ### 1.4 What carries forward from V3/V4
 
@@ -252,6 +252,7 @@ The non-obvious calls:
 - **Two fonts only.** Newsreader + JetBrains Mono. Inter and Sora killed.
 - **The hero gets zero splash color.** The dateline's transaction-stamp amber is the only chromatic moment. The first full splash is the projects section — a reward for scrolling.
 - **The dateline reads from a real file.** `/api/dateline.json`, written by the Daily Driver agent at 08:45 daily. Four rotation patterns (fleet pulse / ship log / reading log / now line).
+- **The framing is daily-dated, not live.** The Daily Driver writes the dateline once at 08:45; that's daily-fresh, which is what the page claims. The footer's agent-fleet feed is the only sub-daily surface — that one is "live" in the streaming sense.
 - **No GSAP, no Framer, no Lenis.** Native CSS + IntersectionObserver + one RAF loop for the cursor.
 - Full 15-section spec + a copy-paste build hand-off prompt (Appendix B).
 
@@ -430,7 +431,7 @@ For future Claude sessions — the working mindset:
 
 1. **Open in brainstorm mindset.** Sean will invoke `pm-product-discovery:brainstorm` to put Claude in the same multi-perspective (PM / Designer / Engineer) headspace this plan was built in. Honor that — generate breadth before converging, and pressure-test every idea against *"why is this Sean, not a template?"*
 2. **The template trap is the enemy.** Before proposing anything, ask: does this drift toward the design-system-viewer or the luxury-minimal-PM template? If yes, stop. (See §1.3.)
-3. **The three load-bearing things:** the character, the voice, the live layer. If a proposal drops any of them, it's drifting.
+3. **The three load-bearing things:** the character, the voice, the daily-dated layer. If a proposal drops any of them, it's drifting.
 4. **Read before proposing.** The reference materials in §11 exist so Claude doesn't give generic advice. Use them.
 5. **Be a thinking partner, not an executor.** Challenge while Sean is exploring; amplify once he's committed. Cross-pollinate from game design / animation / PM. Flag uncertainty honestly. (Per Sean's communication baseline — see his personal-context doc §Communication Baseline.)
 6. **Brief and to the point.** No trailing summaries. Don't restate what a diff already shows. Calm, factual, zen tone.
