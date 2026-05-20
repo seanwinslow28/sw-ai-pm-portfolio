@@ -655,7 +655,7 @@ The cross-link graph closes with essays as the fourth surface. Bidirectional rul
 | Same | `/architecture/intent-engineering-mcp/` (if exists) | Architecture writeup's Related block shows same line |
 | `relatedLedgerRow: meaning-over-access` | `/transactions/meaning-over-access/` | Ledger row shows "→ thesis: Access vs Meaning (essay)" |
 | `relatedArchitecture: [vault-scorecard]` | `/architecture/vault-scorecard/` | Architecture writeup shows "← thesis citing this work: Access vs Meaning (essay)" |
-| `relatedCaseStudy: superuser-pack` | `/work/superuser-pack/` | Case-study page shows "← thesis citing this project: Access vs Meaning (essay)" |
+| `relatedCaseStudy: code-brain` | `/work/code-brain/` | Case-study page shows "← thesis citing this project: Access vs Meaning (essay)" |
 | `relatedEssays: [...]` | `/essays/<slug>/` | Both essays' Related blocks show each other |
 
 ### 14.1 Derivation script behavior

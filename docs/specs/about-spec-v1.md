@@ -48,7 +48,7 @@ A single-column animator's-sketchbook page where Sean's animator-self and PM-sel
 │  ╰───────────────────────────────────╯  └──────────────────────────┘ │
 │                                                                      │
 │  ─── LIVE PULSE STRIP ────────────────────────────────────────────── │
-│  LAST 24H — 4 commits to superuser-pack. 1 substack draft. 2         │
+│  LAST 24H — 4 commits to code-brain. 1 substack draft. 2         │
 │  pencil-test frames cleaned. currently reading: karpathy on the      │
 │  explanation artifact. updated 08:45 by daily driver.                │
 │  ──────────────────────────────────────────────────────────────      │
@@ -372,7 +372,7 @@ Wire-service strip below the lead. Reads from `/api/about-pulse.json` (Daily Dri
 {
   "date_iso": "2026-05-17",
   "items": [
-    { "type": "commits",          "count": 4, "repo": "superuser-pack" },
+    { "type": "commits",          "count": 4, "repo": "code-brain" },
     { "type": "drafts",           "count": 1, "destination": "substack" },
     { "type": "pencil_frames",    "count": 2 },
     { "type": "reading",          "title": "the explanation artifact in the generative era", "author": "karpathy" }
@@ -386,7 +386,7 @@ Wire-service strip below the lead. Reads from `/api/about-pulse.json` (Daily Dri
 ### 8.2 Rendered shape
 
 ```
-LAST 24H — 4 commits to superuser-pack. 1 substack draft. 2 pencil-test
+LAST 24H — 4 commits to code-brain. 1 substack draft. 2 pencil-test
 frames cleaned. currently reading: karpathy on the explanation artifact.
 updated 08:45 by daily driver.
 ```

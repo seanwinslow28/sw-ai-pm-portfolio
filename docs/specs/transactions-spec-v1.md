@@ -89,7 +89,7 @@ Five bands. Top to bottom: **dateline strip → page title block → filter pill
 │  ┌────────────────┬──────────────────────┬─────────────────┐         │
 │  │ TASK           │ AGENT / TOOL         │ MODEL / COST    │         │
 │  ├────────────────┼──────────────────────┼─────────────────┤         │
-│  │ edge insertion │ → /work/superuser…   │ Sonnet 4.6 / …  │         │
+│  │ edge insertion │ → /work/code-brain…   │ Sonnet 4.6 / …  │         │
 │  │ sql query      │ sqlite3              │ local / $0      │         │
 │  └────────────────┴──────────────────────┴─────────────────┘         │
 │                                                                      │
@@ -108,7 +108,7 @@ Five bands. Top to bottom: **dateline strip → page title block → filter pill
 │  · Nightly synthesize takes 4 minutes…                               │
 │                                                                      │
 │  ─ RELATED ────────────────────────────────────────────────         │
-│  → part of: Claude Code Superuser Pack (case study)                  │
+│  → part of: Code Brain (case study)                  │
 │  → sister ships: Phase 6 · Vault Synthesizer Eval Suite              │
 │  → supersedes: (none)                                                │
 │                                                                      │
@@ -734,7 +734,7 @@ When all 16 are green, `/transactions/` v1 is locked and we move to `/architectu
 
 **[OPEN-1: Surface enum values (§3.2)]** — proposed `[fleet, pipeline, product, writing, infra]`. The 5-value count mirrors the projects-spec status count (visual continuity). But this is a **5-future-year contract**, not just v1 — every future ship picks one of these. Should `writing` exist as a surface when essays have their own IA? Or should `writing` collapse into `product` (the manifesto IS a product) or `fleet` (the substack-drafter IS a fleet tool)? **Recommended default:** keep all 5; the substack-drafter belongs in `writing` (the *tooling* is the artifact), while the manifesto itself lives at `/essays/` and only appears on the ledger if it warrants its own ledger row (likely yes — it's a published artifact with a 4Q). Confirm.
 
-**[OPEN-2: 4Q source for v1 ledger rows (§9.2)]** — the 2 committed V3 entries have inline-body 4Q (no external `EXPLANATION.md`). The 3 expected-at-crossover entries (intent-engineering MCP, eval suite, substack-drafter) **do** have external `EXPLANATION.md` per superuser-pack repo. **Recommended default:** new entries default to `explanationUrl:` (canonical lives in the artifact's repo). V3 entries stay inline-body until they earn external EXPLANATIONs in their repos. Confirm migration plan accepts dual-mode for ~3-6 months until backfill is complete.
+**[OPEN-2: 4Q source for v1 ledger rows (§9.2)]** — the 2 committed V3 entries have inline-body 4Q (no external `EXPLANATION.md`). The 3 expected-at-crossover entries (intent-engineering MCP, eval suite, substack-drafter) **do** have external `EXPLANATION.md` per code-brain repo. **Recommended default:** new entries default to `explanationUrl:` (canonical lives in the artifact's repo). V3 entries stay inline-body until they earn external EXPLANATIONs in their repos. Confirm migration plan accepts dual-mode for ~3-6 months until backfill is complete.
 
 **[OPEN-3: Substack-drafter / manifesto duality on the ledger (§3.3, OPEN-1 dependency)]** — does the manifesto (Task 13) appear as a ledger row when it publishes ~6/19? The kickoff says "the URL in the email signature" is the manifesto, not the ledger. **Recommended default:** yes, the manifesto is a ledger row with `surface: writing`, `relatedEssay: access-vs-meaning`. Recruiter who lands on the ledger sees it; recruiter who clicks through hits the full essay at `/essays/access-vs-meaning/`. Two surfaces, one artifact, one canonical 4Q. Confirm before `/essays/` spec is written (spec #3).
 
@@ -800,9 +800,9 @@ status: SHIPPED
 valueProp: "A typed-edge SQLite layer the nightly synthesizer writes to as a side effect of connection articles. Six relation types turn weekly knowledge-lint contradiction detection into a SQL query instead of an LLM scan."
 methods:
   - task: edge insertion
-    tool: Claude Code Superuser Pack (synthesizer)
+    tool: Code Brain (synthesizer)
     cost: Sonnet 4.6 (HybridRouter)
-    link: /work/superuser-pack
+    link: /work/code-brain
   - task: sql query
     tool: sqlite3
     cost: local / $0
@@ -820,7 +820,7 @@ explanationUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/
 # OR omit explanationUrl and put the 4Q headings in the MDX body (V3 fallback)
 
 # --- Cross-links (all optional; build validator enforces resolution) ---
-relatedCaseStudy: superuser-pack
+relatedCaseStudy: code-brain
 relatedTransactions:
   - knowledge-loop-phase-6
   - vault-synthesizer-eval-suite

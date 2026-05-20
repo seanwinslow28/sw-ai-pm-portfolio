@@ -108,7 +108,7 @@ All seams: Firefox <128 + older Safari fall back to instant navigation. Function
 
 ### 3.6 Daily Driver agent wiring
 
-The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per superuser-pack `CLAUDE.md`) gains **4 write endpoints** + **1 ledger-pattern computation**:
+The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per code-brain `CLAUDE.md`) gains **4 write endpoints** + **1 ledger-pattern computation**:
 
 | Endpoint | Origin spec | Body |
 |---|---|---|
@@ -119,7 +119,7 @@ The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per su
 
 The `ledger_row` pattern is the closure point of the daily-dated layer: agent reads `src/content/transactions/*.md` filesystem at write-time, computes count + most-recent title + new-arrivals-overnight signal, picks the pattern, renders the body string. Transactions spec §13 confirms the wiring; hero spec §8 declares the consumer.
 
-**Key constraint:** the Daily Driver runs in a headless SDK environment with **no MCP access** (per superuser-pack `CLAUDE.md`). All 4 endpoints write from filesystem reads only — no Slack, no Gmail, no calendar. Live install counts on `shipped-stats-<slug>.json` come from npm/GitHub public APIs via HTTPS, not an MCP client.
+**Key constraint:** the Daily Driver runs in a headless SDK environment with **no MCP access** (per code-brain `CLAUDE.md`). All 4 endpoints write from filesystem reads only — no Slack, no Gmail, no calendar. Live install counts on `shipped-stats-<slug>.json` come from npm/GitHub public APIs via HTTPS, not an MCP client.
 
 ---
 
@@ -139,7 +139,7 @@ Fully locked. A-3 status amendment (COMING → SHIPPED) executed inline 2026-05-
 
 | # | Where | Recommended default | Switch-only-if |
 |---|---|---|---|
-| §13.1 | Animation-pipeline `EXPLANATION.md` location | The superuser-pack repo (co-located in `~/Code-Brain/code-brain/animation-pipeline/EXPLANATION.md`) | Sean's working folder for the animation short is separate from the superuser-pack repo |
+| §13.1 | Animation-pipeline `EXPLANATION.md` location | The code-brain repo (co-located in `~/Code-Brain/code-brain/animation-pipeline/EXPLANATION.md`) | Sean's working folder for the animation short is separate from the code-brain repo |
 | §13.4 | The Block content review (PMP §10 Decision 4 dependency) | First draft with Larry Cermak as primary reference. Frame-the-work, not the exit. ARCHIVED status locked. | Anonymization review surfaces material that can't ship publicly even sanitized — in which case the case study leans on Reference Artifact link + frontmatter-mirror 4Q only |
 | §13.5 | 16BitFit shippable artifact material (PMP §10 Decision 5 dependency) | Spec assumes the pipeline is the artifact, not the game. Pipeline artifacts (renders, sprite explorations, agent runs) carry the case study; gameplay screenshots only where they exist | Pipeline artifact material is insufficient even leaning on the pipeline — then the tile drops to A-4 (4 tiles + 1 next-in-production card; reduce grid to 5 cells) |
 
@@ -248,10 +248,10 @@ Concrete prereqs that must close before code is written.
 14. **Already committed at PMP §0.5 reference point (5 files):** intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, Phase 6 knowledge loop. These carry forward at crossover via the migration script.
 
 15. **Must ship upstream before their consumer surface builds:**
-    - `animation-pipeline/EXPLANATION.md` — case-study spec §13.1 OPEN (location TBD; default: in superuser-pack repo)
-    - `superuser-pack/EXPLANATION.md` — case-study spec §13.2 (in `~/Code-Brain/code-brain/`)
+    - `animation-pipeline/EXPLANATION.md` — case-study spec §13.1 OPEN (location TBD; default: in code-brain repo)
+    - `code-brain/EXPLANATION.md` — case-study spec §13.2 (in `~/Code-Brain/code-brain/`)
     - `intent-engineering-mcp/EXPLANATION.md` — case-study spec §13.3 (in the intent-engineering-mcp repo)
-    - `VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` — architecture spec Appendix B (Task 15, ships 6/3, in superuser-pack `docs/`)
+    - `VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` — architecture spec Appendix B (Task 15, ships 6/3, in code-brain `docs/`)
     - `MEANING_OVER_ACCESS_EXPLANATION.md` — essays spec Appendix B (Task 13, draft-locks 5/22, publish ~6/19)
     - Plus the long-form essay sources at `VAULT_AS_AGENT_INFRASTRUCTURE.md` (architecture) + `MEANING_OVER_ACCESS.md` (essays) — fetched at build via `fetch_canonical_sources.mjs`
 
@@ -324,7 +324,7 @@ The dependency order matters here. Case-study + transactions share `<FourQBlock 
 - ☐ `<SiteNav />` + skip link (site chrome §6) — needed before any sub-page renders
 - ☐ Build `<FourQBlock />` + `<MethodsStrip />` + `<Annotation />` shared components (case-study spec is the canonical source for all three)
 - ☐ Build 4 artifact MDX components (`<PRDDecision />`, `<SlackQuote />`, `<BoardArtifact />`, `<MetricChart />`) (case-study spec §7.2)
-- ☐ 5 MDX case-study files (`animation-pipeline`, `superuser-pack`, `intent-engineering-mcp`, `the-block`, `16bitfit`) with frontmatter + opener prose + investigation board content
+- ☐ 5 MDX case-study files (`animation-pipeline`, `code-brain`, `intent-engineering-mcp`, `the-block`, `16bitfit`) with frontmatter + opener prose + investigation board content
 - ☐ `/work/[slug]` dynamic route + status-driven page-shape rendering (case-study spec §12 — 4 status behaviors)
 - ☐ About page (single MDX at `src/content/about/index.mdx`) + B-3 cartoon canon content collection at `src/content/cartoons/`
 - ☐ Run `scripts/migrate_v3_transactions.mjs` once at this point — interactively, with Sean confirming each row

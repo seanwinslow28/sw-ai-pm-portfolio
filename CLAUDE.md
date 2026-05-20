@@ -50,7 +50,7 @@ Be a thinking partner, not an executor — challenge while exploring, amplify on
 - **Hero treatment:** the "duet" — newsroom dateline strip above the name, tagline below.
 - **Fonts:** Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). Only two. No Inter, no Sora.
 - **Color:** warm paper `#FFF9F0` + ink + teal `#0A3E42`; one splash color per section, never two.
-- **5 projects:** 2D Animation Pipeline, Claude Code Superuser Pack, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
+- **5 projects:** 2D Animation Pipeline, Code Brain, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
 - **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
 
