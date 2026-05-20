@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-19T00:00:00-04:00",
+  "title": "Design System: SW Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "teal-chrome": {
+        "role": "primary",
+        "displayName": "Deep Teal Chrome",
+        "canonical": "oklch(31.6% 0.043 197)",
+        "tonalRamp": [
+          "oklch(15% 0.030 197)",
+          "oklch(22% 0.038 197)",
+          "oklch(28% 0.042 197)",
+          "oklch(35% 0.045 197)",
+          "oklch(48% 0.045 197)",
+          "oklch(62% 0.042 197)",
+          "oklch(78% 0.030 197)",
+          "oklch(93% 0.015 197)"
+        ]
+      },
+      "teal-chrome-deep": {
+        "role": "primary",
+        "displayName": "Deep Teal Chrome (deepest)",
+        "canonical": "oklch(24.5% 0.034 197)",
+        "tonalRamp": [
+          "oklch(12% 0.024 197)",
+          "oklch(18% 0.030 197)",
+          "oklch(24% 0.034 197)",
+          "oklch(32% 0.036 197)",
+          "oklch(45% 0.034 197)",
+          "oklch(60% 0.030 197)",
+          "oklch(76% 0.020 197)",
+          "oklch(92% 0.010 197)"
+        ]
+      },
+      "paper-cream": {
+        "role": "neutral",
+        "displayName": "Paper Cream",
+        "canonical": "oklch(98.3% 0.008 80)",
+        "tonalRamp": [
+          "oklch(28% 0.012 80)",
+          "oklch(42% 0.012 80)",
+          "oklch(58% 0.012 80)",
+          "oklch(72% 0.011 80)",
+          "oklch(83% 0.010 80)",
+          "oklch(91% 0.009 80)",
+          "oklch(96% 0.008 80)",
+          "oklch(98.3% 0.008 80)"
+        ]
+      },
+      "ink-primary": {
+        "role": "neutral",
+        "displayName": "Ink Primary",
+        "canonical": "oklch(20.6% 0.005 280)",
+        "tonalRamp": [
+          "oklch(12% 0.005 280)",
+          "oklch(20.6% 0.005 280)",
+          "oklch(30% 0.005 280)",
+          "oklch(42% 0.005 280)",
+          "oklch(55% 0.005 280)",
+          "oklch(68% 0.005 280)",
+          "oklch(82% 0.004 280)",
+          "oklch(94% 0.003 280)"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "oklch(48.4% 0.020 200)",
+        "tonalRamp": [
+          "oklch(22% 0.015 200)",
+          "oklch(32% 0.018 200)",
+          "oklch(40% 0.020 200)",
+          "oklch(48.4% 0.020 200)",
+          "oklch(58% 0.020 200)",
+          "oklch(70% 0.018 200)",
+          "oklch(84% 0.012 200)",
+          "oklch(94% 0.006 200)"
+        ]
+      },
+      "success-teal": {
+        "role": "tertiary",
+        "displayName": "Success Teal",
+        "canonical": "oklch(45.8% 0.078 170)",
+        "tonalRamp": [
+          "oklch(22% 0.045 170)",
+          "oklch(30% 0.060 170)",
+          "oklch(38% 0.072 170)",
+          "oklch(45.8% 0.078 170)",
+          "oklch(56% 0.075 170)",
+          "oklch(68% 0.062 170)",
+          "oklch(80% 0.040 170)",
+          "oklch(93% 0.020 170)"
+        ]
+      },
+      "stamp-amber": {
+        "role": "secondary",
+        "displayName": "Stamp Amber",
+        "canonical": "oklch(36.8% 0.13 35)",
+        "tonalRamp": [
+          "oklch(20% 0.08 35)",
+          "oklch(28% 0.11 35)",
+          "oklch(36.8% 0.13 35)",
+          "oklch(46% 0.14 35)",
+          "oklch(58% 0.14 35)",
+          "oklch(72% 0.12 35)",
+          "oklch(84% 0.08 35)",
+          "oklch(94% 0.03 35)"
+        ]
+      },
+      "amber-mid": {
+        "role": "secondary",
+        "displayName": "Amber Mid-Stop",
+        "canonical": "oklch(85.1% 0.124 75)",
+        "tonalRamp": [
+          "oklch(35% 0.080 75)",
+          "oklch(48% 0.105 75)",
+          "oklch(60% 0.120 75)",
+          "oklch(72% 0.125 75)",
+          "oklch(80% 0.125 75)",
+          "oklch(85.1% 0.124 75)",
+          "oklch(91% 0.090 75)",
+          "oklch(96% 0.040 75)"
+        ]
+      },
+      "amber-warm": {
+        "role": "secondary",
+        "displayName": "Amber Warm",
+        "canonical": "oklch(70.5% 0.13 50)",
+        "tonalRamp": [
+          "oklch(30% 0.085 50)",
+          "oklch(42% 0.115 50)",
+          "oklch(54% 0.130 50)",
+          "oklch(64% 0.130 50)",
+          "oklch(70.5% 0.13 50)",
+          "oklch(80% 0.115 50)",
+          "oklch(89% 0.075 50)",
+          "oklch(96% 0.030 50)"
+        ]
+      },
+      "border-whisper-paper": {
+        "role": "neutral",
+        "displayName": "Border Whisper (paper)",
+        "canonical": "color-mix(in oklab, oklch(31.6% 0.043 197) 15%, transparent)",
+        "tonalRamp": []
+      },
+      "border-whisper-chrome": {
+        "role": "neutral",
+        "displayName": "Border Whisper (chrome)",
+        "canonical": "color-mix(in oklab, oklch(98.3% 0.008 80) 18%, transparent)",
+        "tonalRamp": []
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name 'Sean Winslow'. The single largest type on any page. Newsreader 400, always teal #0A3E42, never gradient, never animated as color shift."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Hero tagline, About lead, essay deck, case-study deck. Sedaris-register editorial. Newsreader weight 300 so the line reads as spoken, not declared."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project tile titles, B-N section headings on About, case-study section headings. Newsreader 24px weight 400."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "About prose, case-study narrative, essay body, /contact page. Newsreader weight 300, line-height 1.6, capped at 65–75ch."
+      },
+      "label": {
+        "displayName": "Label (Mono)",
+        "purpose": "Status pills, nav tabs, role tag, footer column headers, agent-feed timestamps. JetBrains Mono uppercase + space-tracked. Wire-service register."
+      },
+      "dateline": {
+        "displayName": "Dateline",
+        "purpose": "The hero dateline strip pattern. Mono 12px. Stamp prefix in #7C2D12 weight 500, body in #546E71 weight 400. Em-dash exception lives here."
+      },
+      "annotation": {
+        "displayName": "Annotation (Handwritten)",
+        "purpose": "Hand-drawn margin annotations on tiles, kid-drawing artifacts in case studies. Caveat or Homemade Apple. Used rarely — annotations are signal, not pattern."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floor-shadow",
+        "value": "0 4px 24px rgba(10, 62, 66, 0.18)",
+        "purpose": "Hero character's standing surface — supports the illusion that the illustrated character stands on the page, not floating above it. Often baked into a PNG underlay (Hero-floor-shadow-2800x560.png) instead of a CSS shadow."
+      },
+      {
+        "name": "tile-ambient",
+        "value": "0 4px 10px rgba(0, 0, 0, 0.04)",
+        "purpose": "Sub-perceptible. Lifts the metadata strip on project tiles so the rgba(0,0,0,0.15) overlay reads as a layered chip rather than a flat overlay."
+      },
+      {
+        "name": "sticky-nav-hairline",
+        "value": "0 1px 0 rgba(10, 62, 66, 0.15)",
+        "purpose": "Separation between the sticky sub-page nav and content scrolling beneath. Functions as a hairline border, not a shadow. Never deeper than 1px offset, never above 0.15 alpha."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-emphasized",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrance animations (name, dateline, tagline reveal). Quart-exponential ease-out. The default motion curve across the site."
+      },
+      {
+        "name": "ease-tagline",
+        "value": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "purpose": "Tagline per-line reveal. Slightly softer ease-out than the default, tuned to feel like a spoken pause-and-deliver rhythm."
+      },
+      {
+        "name": "ease-character-fade",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Hero character lane fade-in at t=1300ms. Slow ease-out so the character settles rather than pops."
+      },
+      {
+        "name": "ease-state",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Hover state transitions (tile border, button underline, nav tab color). Material-default ease-in-out for state changes only."
+      },
+      {
+        "name": "duration-state",
+        "value": "200ms",
+        "purpose": "Default duration for hover/focus state changes. Long enough to feel intentional, short enough to never feel laggy."
+      },
+      {
+        "name": "duration-entrance",
+        "value": "600ms",
+        "purpose": "Default duration for first-paint entrance animations (name, tagline lines, character lane fade)."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1440px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Hero Name (Display)",
+      "kind": "custom",
+      "refersTo": "typography.display",
+      "description": "The hero's primary headline. Sean Winslow at clamp(56px, 7.2vw, 130px), Newsreader 400, deep teal.",
+      "html": "<h1 class=\"ds-hero-name\">Sean Winslow</h1>",
+      "css": ".ds-hero-name { font-family: 'Newsreader', Georgia, serif; font-size: clamp(56px, 7.2vw, 130px); font-weight: 400; line-height: 1.05; letter-spacing: -0.8px; color: #0A3E42; margin: 0; }"
+    },
+    {
+      "name": "Hero Tagline (Headline)",
+      "kind": "custom",
+      "refersTo": "typography.headline",
+      "description": "Hero subhead: 'Product Manager. The agents handle the math. I handle the taste.' Newsreader 300 — the lightness is what makes it read as spoken, not declared.",
+      "html": "<p class=\"ds-hero-tagline\">Product Manager. The agents handle the math. I handle the taste.</p>",
+      "css": ".ds-hero-tagline { font-family: 'Newsreader', Georgia, serif; font-size: clamp(26px, 3.2vw, 56px); font-weight: 300; line-height: 1.22; letter-spacing: -0.3px; color: #1A1A1E; max-width: 600px; margin: 0; }"
+    },
+    {
+      "name": "Dateline Stamp",
+      "kind": "custom",
+      "refersTo": "dateline-stamp",
+      "description": "The wire-service dateline at the top of the hero. Stamp prefix in stamp amber, body in ink-secondary. The only chromatic moment in the hero.",
+      "html": "<div class=\"ds-dateline\"><span class=\"ds-dateline__stamp\">BOSTON, MAY 13, 2026 —</span> <span class=\"ds-dateline__body\">vault indexer wrote 47 chunks at 02:34. fleet green. 7 of 9 agents on.</span></div>",
+      "css": ".ds-dateline { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; line-height: 1.4; letter-spacing: 1.2px; text-transform: uppercase; padding-bottom: 30px; border-bottom: 0.5px solid rgba(10, 62, 66, 0.15); } .ds-dateline__stamp { color: #7C2D12; font-weight: 500; } .ds-dateline__body { color: #546E71; font-weight: 400; }"
+    },
+    {
+      "name": "Project Tile (ACTIVE)",
+      "kind": "card",
+      "refersTo": "tile-project",
+      "description": "The signature component of the home page. 4:5 portrait tile on the teal splash, full-bleed media + bottom metadata strip with frame number, status pill, title, and tags.",
+      "html": "<a href=\"/work/animation-pipeline\" class=\"ds-tile\"><div class=\"ds-tile__media\" aria-hidden=\"true\"></div><div class=\"ds-tile__meta\"><div class=\"ds-tile__meta-top\"><span class=\"ds-tile__frame\">A-1</span><span class=\"ds-pill ds-pill--active\">ACTIVE</span></div><h3 class=\"ds-tile__title\">2D Animation Pipeline</h3><p class=\"ds-tile__tags\">animation · agentic · pipeline</p></div></a>",
+      "css": ".ds-tile { display: flex; flex-direction: column; aspect-ratio: 4 / 5; width: 100%; max-width: 440px; background: transparent; border: 0.5px solid rgba(255, 249, 240, 0.08); text-decoration: none; transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-tile:hover { border-color: rgba(255, 249, 240, 0.25); } .ds-tile__media { flex: 1; background: linear-gradient(135deg, #14545a, #0c2d2f); } .ds-tile__meta { background: rgba(0, 0, 0, 0.15); padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; } .ds-tile__meta-top { display: flex; justify-content: space-between; align-items: center; } .ds-tile__frame { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 1.4px; color: #FAC775; } .ds-tile__title { font-family: 'Newsreader', Georgia, serif; font-size: 20px; font-weight: 400; line-height: 1.2; color: #FFF9F0; margin: 0; } .ds-tile__tags { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; font-weight: 400; letter-spacing: 1.2px; color: rgba(255, 249, 240, 0.65); margin: 0; }"
+    },
+    {
+      "name": "Status Pill — ACTIVE",
+      "kind": "chip",
+      "refersTo": "pill-status-active",
+      "description": "ACTIVE status pill on a project tile. Stamp amber text on paper-cream background.",
+      "html": "<span class=\"ds-pill ds-pill--active\">ACTIVE</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; background: #FFF9F0; } .ds-pill--active { color: #7C2D12; }"
+    },
+    {
+      "name": "Status Pill — SHIPPED",
+      "kind": "chip",
+      "refersTo": "pill-status-shipped",
+      "description": "SHIPPED status pill. Success-teal text on paper-cream.",
+      "html": "<span class=\"ds-pill ds-pill--shipped\">SHIPPED</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; background: #FFF9F0; } .ds-pill--shipped { color: #0F6E56; }"
+    },
+    {
+      "name": "Next-in-Production Tile",
+      "kind": "card",
+      "refersTo": "tile-next-in-production",
+      "description": "The sixth tile in the projects grid. Dashed paper-at-40% border on the teal splash; no fill. Title in Newsreader 300, subtitle in stamp amber mono.",
+      "html": "<div class=\"ds-next-tile\"><h3 class=\"ds-next-tile__title\">next piece<br>in production</h3><p class=\"ds-next-tile__sub\">check back ~jun 11</p></div>",
+      "css": ".ds-next-tile { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; aspect-ratio: 4 / 5; width: 100%; max-width: 440px; padding: 32px; background: transparent; border: 1.5px dashed rgba(255, 249, 240, 0.4); transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-next-tile:hover { border-color: rgba(255, 249, 240, 1); } .ds-next-tile__title { font-family: 'Newsreader', Georgia, serif; font-size: 24px; font-weight: 300; line-height: 1.2; color: #FFF9F0; margin: 0 0 24px 0; } .ds-next-tile__sub { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; color: #7C2D12; margin: 0; }"
+    },
+    {
+      "name": "Nav Tab (Active)",
+      "kind": "nav",
+      "refersTo": "nav-tab-active",
+      "description": "Sub-page sticky nav tab in active state. Teal text with a 1px stamp-amber bottom border 4px below the baseline.",
+      "html": "<a href=\"/work\" class=\"ds-nav-tab ds-nav-tab--active\" aria-current=\"page\">WORK</a>",
+      "css": ".ds-nav-tab { display: inline-flex; align-items: center; height: 56px; padding: 0 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; color: #546E71; text-decoration: none; position: relative; transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-tab:hover { color: #0A3E42; } .ds-nav-tab--active { color: #0A3E42; } .ds-nav-tab--active::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 14px; height: 1px; background: #7C2D12; }"
+    },
+    {
+      "name": "Footer Mono Link",
+      "kind": "nav",
+      "refersTo": "footer-link",
+      "description": "Universal footer link. Mono, teal default, underline on hover. The footer's affordance vocabulary — there are no buttons.",
+      "html": "<a href=\"mailto:sean@seanwinslow.com\" class=\"ds-footer-link\"><span class=\"ds-footer-link__arrow\">→</span> sean@seanwinslow.com</a>",
+      "css": ".ds-footer-link { display: inline-flex; gap: 6px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.8px; color: #0A3E42; text-decoration: none; transition: text-decoration 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-footer-link:hover { text-decoration: underline; text-underline-offset: 4px; } .ds-footer-link__arrow { color: #546E71; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "An animator's pencil test, mounted in a Vercel-grade frame.",
+    "overview": "The system is a three-layer physical model — a Committed deep-teal chrome carrying the page like a book cover, cream paper sheets sitting on the chrome like pages in that book, and editorial content + hand-authored artifacts living on the paper. Torn-paper PNG edges with real fluff reveal the chrome at every paper-to-paper seam. The chrome reads as architecture (Vercel restraint, mono labels, flat surfaces, sharp corners). The paper reads as handmade (warm cream #FFF9F0, fiber texture, the illustrated pencil-test character, comedic-editorial Newsreader serif). Both layers are non-negotiable: drop the chrome and the portfolio becomes a hobby blog; drop the paper and it becomes a design-system viewer.\n\nColor strategy is Committed — #0A3E42 teal carries 30–60% of the visible surface as the persistent chrome at Z=0. The paper sheets sit on top at Z=10. Each section earns at most one full-bleed splash-color block, never two. The hero is the calm exception (paper-on-chrome, zero splash); the projects section is the first chromatic moment (the teal chrome reveals itself as a full splash through the torn-paper edges).\n\nThis system explicitly rejects the design-system-viewer template, the luxury-minimal-PM template, the generic AI-PM aesthetic, and the hero-metric template. Every visual decision exists to make recruiters believe the positioning, not to demonstrate craft for its own sake.",
+    "keyCharacteristics": [
+      "Two layers, always: teal chrome (Z=0) + cream paper (Z=10). Never one without the other.",
+      "Two fonts only: Newsreader (editorial) + JetBrains Mono (wire-service). No Inter. No Sora.",
+      "Sharp corners by default. Radius is 0px for tiles, sections, page edges. Status pills are 2px and only because they're sub-glyph affordances.",
+      "Flat by default. No shadows on chrome, no glass, no gradient borders. Depth comes from torn-paper PNG edges and z-stacking, never from box-shadow decoration.",
+      "One splash color per section. Never two.",
+      "The hand-drawn character anchors every key surface. Lose the character, lose the system.",
+      "Every dated string on the site is real and dated — never streaming, never invented."
+    ],
+    "rules": [
+      { "name": "The Committed-Teal Rule", "body": "The teal carries the chrome at 30–60% of any given screen. Anyone who collapses this back to '10% accent' is rebuilding the Restrained palette and producing the luxury-minimal-PM template. The chrome IS the book cover.", "section": "colors" },
+      { "name": "The One Splash Rule", "body": "Each section earns at most one full-bleed splash-color block, never two. The hero has zero splash (paper-on-chrome). The projects section earns the teal splash (the chrome reveals through torn edges). A future section can earn an amber splash, but the same page cannot earn both a teal splash and an amber splash.", "section": "colors" },
+      { "name": "The Paper-vs-Chrome Inversion Rule", "body": "Type and accent colors invert between the two layers. On paper: ink #1A1A1E text, teal #0A3E42 accent. On chrome: cream #FFF9F0 text, amber mid-stop #FAC775 accent. Stamp amber #7C2D12 is the only color that survives both surfaces. Never put paper-mode tokens on chrome or vice versa.", "section": "colors" },
+      { "name": "The No Pure Black, No Pure White Rule", "body": "#000 is prohibited. #fff is prohibited. Ink is #1A1A1E (slightly cool tint). Paper is #FFF9F0 (warm cream). Every neutral carries hue.", "section": "colors" },
+      { "name": "The Two-Fonts Rule", "body": "Newsreader + JetBrains Mono. Caveat is the one allowed annotation accent. Anything else — Inter, Sora, Public Sans, Switzer, Recoleta, Söhne — is a regression to template land. If a new surface 'needs' a third font, the surface is wrong.", "section": "typography" },
+      { "name": "The No-Gradient-Text Rule", "body": "background-clip: text combined with a gradient background is prohibited. Headlines are solid teal #0A3E42. Emphasis comes from weight contrast and size, never from color flow.", "section": "typography" },
+      { "name": "The Wire-Service Em-Dash Exception", "body": "Em dashes (—) are banned across the site except in datelines, ledger captions, methods-strip prefixes, and any Daily-Driver-written body copy. Those surfaces use em dashes by inheritance from real newspaper typography. Editorial surfaces (hero, About, case-study narrative, essays) follow the no-em-dash rule.", "section": "typography" },
+      { "name": "The Uppercase-Mono-Only Rule", "body": "Uppercase + letter-spacing is reserved for JetBrains Mono labels and stamps. Newsreader is never uppercased except for the wordmark SW. Putting Newsreader in uppercase recreates the luxury-PM 'VISION MEETS VELOCITY' template instantly.", "section": "typography" },
+      { "name": "The Tagline-Weight-300 Rule", "body": "The hero tagline renders at Newsreader weight 300, not 400. The light weight is what makes the tagline read as spoken and true, not declared. Bumping to 400 turns it into a banner. Don't bump.", "section": "typography" },
+      { "name": "The Flat-Chrome Rule", "body": "The teal chrome at Z=0 carries zero shadows, zero blurs, zero gradients. The chrome is the structural color and must read absolutely flat. Adding a noise texture or a teal-to-teal gradient is the 'make it interesting' reflex that destroys the substrate metaphor. Resist.", "section": "elevation" },
+      { "name": "The Torn-Edge-Is-Depth Rule", "body": "Depth between sections comes from torn-paper PNG edges, never from box-shadow. The torn edge reveals the chrome through alpha — that's the depth signal. A shadow under a section header re-invents an effect torn-paper already does, and does it worse.", "section": "elevation" },
+      { "name": "The No Glass-Cards Rule", "body": "backdrop-filter: blur() is banned for decorative use. The only acceptable backdrop blur is the sticky nav's optional 6px blur on a paper-tinted background when content scrolls under it — and even that is opt-in, not default.", "section": "elevation" },
+      { "name": "The Sharp-Corners-By-Default Rule", "body": "Default radius is 0px. The only allowed radius values are 0px (default), 2px (status pills only, because they're sub-glyph affordances and 0px reads as cramped), and 4px (reserved). No rounded-lg, no rounded-xl. Sharpness IS the engineering register.", "section": "components" },
+      { "name": "The Character-on-Every-Key-Surface Rule", "body": "The hand-drawn pencil-test character (in static, looped, or beat-illustrated form) appears on the hero, the About B-N sections (cartoon cels), the project tiles' default media when video isn't ready, and as the close-out on every case-study page. If a key surface can't earn the character, the surface is wrong.", "section": "components" },
+      { "name": "The No-Card-Reflex Rule", "body": "Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The 'next in production' zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.", "section": "components" }
+    ],
+    "dos": [
+      "Do put #0A3E42 teal at Z=0 as the persistent chrome on every page. The chrome is the book cover; the paper sheets sit on it.",
+      "Do use the cream #FFF9F0 paper texture (construction-paper PNG tile) at multiply blend, 1024×1024 tile, ≤180 KB. Never raw flat cream.",
+      "Do put real torn-paper PNG edges at every chrome-to-paper seam. Photograph real torn cardstock; the fluff is load-bearing.",
+      "Do use Newsreader for editorial register and JetBrains Mono for wire-service register. Those are the two voices.",
+      "Do keep the hero tagline at Newsreader weight 300. The lightness is what makes it read as spoken.",
+      "Do uppercase + space-track only the JetBrains Mono labels (1.2–1.8px tracking depending on size). Never uppercase the serif.",
+      "Do earn the dateline through real data. The Daily Driver writes /api/dateline.json at 08:45 daily; the page renders what's there. Never invent the dateline string.",
+      "Do keep the character on every key surface. The hand-drawn pencil-test of Sean (with the AI companion on the hero) is the load-bearing wall.",
+      "Do ship a torn-paper-PNG edge at the projects-section top/bottom, with negative-margin overlap into the adjoining section by 16px so it reads as one continuous tear.",
+      "Do render status pills at exactly 2px radius, in the five colors locked in §5. No sixth status.",
+      "Do keep the home page nav-free per noChrome={true} on BaseLayout. Sub-pages get the sticky 56px nav, never the home.",
+      "Do carry the em-dash exception only in wire-service surfaces (datelines, ledger captions, methods strips, Daily-Driver body). Editorial surfaces use commas, colons, semicolons, periods, parentheses."
+    ],
+    "donts": [
+      "Don't rebuild the V3 'Iterative Blueprint' design-system-viewer aesthetic. No color swatch rows, no type-sample grids, no component-card galleries on the portfolio's primary surfaces.",
+      "Don't drift into the luxury-minimal-PM template. No 'VISION MEETS VELOCITY' headlines, no abstract gradient art behind editorial copy, no minimal-serif-on-cream-with-zero-personality, no 'SAY HELLO.' footers.",
+      "Don't drift into the generic AI-PM look. Dark navy + electric purple/blue gradient + glassmorphism panels = the first-order category reflex. Avoid all three.",
+      "Don't use the hero-metric template. Big number + small label + supporting stats + gradient accent is the SaaS cliché the entire field has converged on. Banned globally.",
+      "Don't put border-left or border-right greater than 1px as a colored stripe on any card, list item, callout, or alert. Side-stripe borders are never intentional.",
+      "Don't use background-clip: text with a gradient. Headlines are solid teal #0A3E42.",
+      "Don't use backdrop-filter: blur() decoratively. No glass cards.",
+      "Don't add a third typeface beyond Newsreader + JetBrains Mono + the Caveat annotation accent.",
+      "Don't use #000 or #fff anywhere. Ink is #1A1A1E. Paper is #FFF9F0. Every neutral is tinted toward teal or cream.",
+      "Don't add gradients to the chrome. The chrome #0A3E42 is absolutely flat.",
+      "Don't add noise texture or grain to the chrome. The chrome stays clean; the paper carries the fiber.",
+      "Don't put paper-mode tokens on the chrome or chrome-mode tokens on paper.",
+      "Don't frame the HybridRouter as 'Agent OS' or 'runtime architecture' anywhere on the site. Sean's edge is semantic product architecture.",
+      "Don't use em dashes anywhere outside the wire-service surfaces.",
+      "Don't stream the agent feed. Real and dated is the honest framing; fake-streaming is the dishonest one.",
+      "Don't put the animator-self on a timeline with the PM-self. Both lineages have always been there. Parallel, never before/after.",
+      "Don't use modal dialogs as a first thought. The portfolio has no modals at all in v1.",
+      "Don't ship a 6-on-a-page identical card grid. The project section's grid is intentionally non-uniform."
+    ]
+  }
+}
