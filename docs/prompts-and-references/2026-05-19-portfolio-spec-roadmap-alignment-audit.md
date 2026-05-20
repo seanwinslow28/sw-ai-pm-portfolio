@@ -222,7 +222,7 @@ relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional(),  // 
 | `agents-sdk/docs/CONTROL_ARCHITECTURE.md` + `agents-sdk/docs/EXPLANATION.md` | Control Architecture writeup + ledger row | ⏳ NOT YET — Task 14 ship 2026-06-10 | Task 14 |
 | `vault/SCORECARD.md` + `docs/VAULT_AS_AGENT_INFRASTRUCTURE.md` + `docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` | Vault Scorecard architecture writeup + ledger row | ⏳ NOT YET — Task 15 ship 2026-06-03 | Task 15 |
 | `<animation-pipeline-repo>/EXPLANATION.md` | 2D Animation Pipeline case study (A-1) | ⏳ NOT YET — case-study spec §13.1 OPEN-1 | Task 5 / animation 6/11 |
-| `claude-code-superuser-pack/EXPLANATION.md` | Superuser Pack case study (A-2) | ⏳ NOT YET — case-study spec §13.2 | (informal — no roadmap task assigned) |
+| `code-brain/EXPLANATION.md` | Superuser Pack case study (A-2) | ⏳ NOT YET — case-study spec §13.2 | (informal — no roadmap task assigned) |
 | `<the-block-templates>/EXPLANATION.md` | The Block case study (A-4) | ⏳ NOT YET — case-study spec §13.4 + PMP §10 Decision 4 | (depends on Block content review) |
 | `<16bitfit-repo>/EXPLANATION.md` | 16BitFit case study (A-5) | ⏳ NOT YET — case-study spec §13.5 + PMP §10 Decision 5 | (paused; case study leans on pipeline) |
 

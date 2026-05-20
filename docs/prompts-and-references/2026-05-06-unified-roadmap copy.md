@@ -861,7 +861,7 @@ Modify [`substack_drafter.py main()`](../../../../agents-sdk/agents/substack_dra
 Add `--demo-injection` flag to `_cli()` (mutually exclusive with `--voice-override`). When set, the prompt composer in `compose_prompt()` appends a synthetic fragment instructing the actor to fabricate a specific quote attributed to a named-but-archived figure. The judge response on that draft is real (the model genuinely evaluates the actor's output against the `substack_drafter.yaml` rule (a) → `ESCALATE` with quarantine_reason citing the unverifiable claim). The fragment lives in `agents-sdk/policies/demo_injection_fragments.yaml` (NOT in source — keeps the demo content tunable without code change). Production runs without the flag never load the file. Tests verify the flag injects the fragment + production runs don't. ~3 hours.
 
 **- [ ] Step 7 (Day 8, 2026-06-03 evening or 2026-06-04 morning): 4-Q `EXPLANATION.md` artifact.**
-Author `agents-sdk/lib/judge/EXPLANATION.md` per the Task 1 Step 1 schema. Frontmatter: `artifact: judge-layer`, `created: 2026-06-XX`, `surface: control-plane`, `shipped: 2026-06-XX`, `repoUrl: https://github.com/seanwinslow28/CLAUDE-CODE-SUPERUSER-PACK/tree/main/agents-sdk/lib/judge`, `explanationUrl: <github-permalink>`, related wikilinks to `substack_drafter.py`, `policy.py`, `evaluate.py`, `ledger.py`. Body answers all 4 questions concretely — *What is this?* a Pydantic-typed control-plane interceptor for one production agent (the substack-drafter); *Why this approach?* actor-judge separation per Nate §3.5, intercept-don't-rebuild to ship in 9 days, local model for $0/decision; *What would break?* judge model unavailability (mitigated by fail-open + Pushover), policy YAML drift from actual code paths (mitigated by integration tests), judge becoming the bottleneck on the actor's retry loop; *What did I learn?* the gap between an agent that writes and an actor inside a control architecture is exactly one Pydantic schema + one YAML policy file. ~90 minutes.
+Author `agents-sdk/lib/judge/EXPLANATION.md` per the Task 1 Step 1 schema. Frontmatter: `artifact: judge-layer`, `created: 2026-06-XX`, `surface: control-plane`, `shipped: 2026-06-XX`, `repoUrl: https://github.com/seanwinslow28/code-brain/tree/main/agents-sdk/lib/judge`, `explanationUrl: <github-permalink>`, related wikilinks to `substack_drafter.py`, `policy.py`, `evaluate.py`, `ledger.py`. Body answers all 4 questions concretely — *What is this?* a Pydantic-typed control-plane interceptor for one production agent (the substack-drafter); *Why this approach?* actor-judge separation per Nate §3.5, intercept-don't-rebuild to ship in 9 days, local model for $0/decision; *What would break?* judge model unavailability (mitigated by fail-open + Pushover), policy YAML drift from actual code paths (mitigated by integration tests), judge becoming the bottleneck on the actor's retry loop; *What did I learn?* the gap between an agent that writes and an actor inside a control architecture is exactly one Pydantic schema + one YAML policy file. ~90 minutes.
 
 **- [ ] Step 8 (Day 9, 2026-06-04): 90-second Loom + ledger row + LinkedIn post.**
 Record the demo: `python3 agents-sdk/agents/substack_drafter.py --demo-injection --dry-run` → ActionProposal serialized to terminal → judge returns `REVISE` (or `ESCALATE` depending on fragment) with required-citation feedback → actor retries → `ALLOW` → JSONL ledger entry shown via `tail vault/health/judge_log/$(date +%F).jsonl` → local draft only, no Pushover (publishing gate untouched). Closing line of narration: *"Agents draft. I send. Every word."* Loom under 90 sec. Add ledger entry at `~/Code-Brain/sw-ai-pm-portfolio/src/content/transactions/judge-layer.md` per Gap-Fill 3's content collection schema (surface: `"control-plane interceptor"`). One LinkedIn post: ~120 words, tags Anthropic + FDE-Boston JD URL + links to seanwinslow.com/transactions/judge-layer/. Sean's hand — agents do not draft the LinkedIn copy. ~3 hours including the take + retakes.
@@ -1272,7 +1272,7 @@ Run `python3 scripts/validate.py` → ≤60 warnings / 0 errors. Run `python3 sc
 
 **- [ ] Step 1: Update bio.** Format: "AI PM building [specific thing]. Shipping [specific cadence]. Lives at seanwinslow.com/transactions." Remove any "passionate about AI" / "AI enthusiast" / generic phrases.
 
-**- [ ] Step 2: Choose the 6 pinned repos.** Default selection: (1) intent-engineering-mcp, (2) vault-synthesizer-evals (after N1 Task 37 ships), (3) ldr-grounding-collapse (after N2 Task 25 ships), (4) agent-fleet-observability, (5) sw-ai-pm-portfolio, (6) claude-code-superuser-pack. Reorder by recruiter-impact: MCP server first.
+**- [ ] Step 2: Choose the 6 pinned repos.** Default selection: (1) intent-engineering-mcp, (2) vault-synthesizer-evals (after N1 Task 37 ships), (3) ldr-grounding-collapse (after N2 Task 25 ships), (4) agent-fleet-observability, (5) sw-ai-pm-portfolio, (6) code-brain. Reorder by recruiter-impact: MCP server first.
 
 **- [ ] Step 3: Audit each pinned repo's README.** For each: Problem (who has this pain? be specific), Solution (what does the tool do? how does the user interact?), Tradeoffs and Decisions (1-2 decisions made + alternatives considered + why chosen), What I Learned (real insight that travels beyond this artifact). No "I learned a lot about APIs" — specific.
 
@@ -1334,7 +1334,7 @@ Run `python3 scripts/validate.py` → ≤60 warnings / 0 errors. Run `python3 sc
 
 **- [ ] Step 6: Reference templates.** Cite Google Model Cards, Anthropic Claude 3.5 Sonnet System Card, OpenAI GPT-4 System Card by URL. Note: this artifact is a portfolio piece, not a regulated production system — frame it as such.
 
-**- [ ] Step 7: Ship.** Push to claude-code-superuser-pack/docs/. Add ledger row. LinkedIn teaser.
+**- [ ] Step 7: Ship.** Push to code-brain/docs/. Add ledger row. LinkedIn teaser.
 
 **Verification gate:** System card document is 1,500–2,500 words. All 11 active components mapped. All gaps honestly named. Ledger row live.
 
@@ -1736,13 +1736,13 @@ Run `python3 scripts/validate.py` → ≤60 warnings / 0 errors. Run `python3 sc
 
 **Files:**
 - Create: `~/Code-Brain/vault-synthesizer-evals/` (NEW public repo, lifted from monorepo)
-- Copy: `claude-code-superuser-pack/evals/vault-synthesizer/*` to new repo
+- Copy: `code-brain/evals/vault-synthesizer/*` to new repo
 - Create: `<repo>/README.md` (portfolio narrative, NOT internal-engineering shape)
 - Create: `<repo>/EXPLANATION.md` (4Q artifact)
 - Create: `~/Code-Brain/sw-ai-pm-portfolio/src/content/transactions/vault-synthesizer-evals.md` (if not already present from prior Task 8 ship)
 - Create: GitHub Actions workflow `.github/workflows/evals.yml` (run suite on PR)
 
-**- [ ] Step 1: Copy evals directory.** `cp -r claude-code-superuser-pack/evals/vault-synthesizer/* ~/Code-Brain/vault-synthesizer-evals/`. Preserve cases.yaml, failure-modes.md, runner.py, traces/, EXPLANATION.md.
+**- [ ] Step 1: Copy evals directory.** `cp -r code-brain/evals/vault-synthesizer/* ~/Code-Brain/vault-synthesizer-evals/`. Preserve cases.yaml, failure-modes.md, runner.py, traces/, EXPLANATION.md.
 
 **- [ ] Step 2: Rewrite README as portfolio narrative.** Lead with "I shipped this eval suite intentionally red, with 1/10 cases passing the baseline. Three weeks later, it was 7/10. Here are the 6 failure modes it catches." 800 words.
 

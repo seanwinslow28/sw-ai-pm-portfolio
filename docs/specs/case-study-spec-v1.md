@@ -12,7 +12,7 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 
 ## 1.1 Changelog
 
-- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
+- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
 
 ---
 
@@ -360,7 +360,7 @@ The MDX body never writes the Methods table inline — it's frontmatter-driven s
 
 ## 9. 4Q block — the canonical `EXPLANATION.md`
 
-The closer. Sits below Methods, above next/prev. Mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) **heading-for-heading**.
+The closer. Sits below Methods, above next/prev. Mirrors [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) **heading-for-heading**.
 
 ### 9.1 The four sections, in order
 
@@ -574,7 +574,7 @@ Each of the 5 case studies is a single `.mdx` file in `src/content/work/`. Front
   4. A board excerpt: schedule-recommendations.md update (Mar)
   5. A killed v1 process-inbox cloud-Sonnet approach — strikethrough
 **Methods strip:** Claude Agent SDK / launchd / Ollama (Mac Mini + MBP) / nomic-embed-text / Qwen3-14B
-**4Q source:** read from `EXPLANATION.md` in `~/Code-Brain/claude-code-superuser-pack/`
+**4Q source:** read from `EXPLANATION.md` in `~/Code-Brain/code-brain/`
 **Note on STOP-DOING:** HybridRouter mentioned in Methods strip only. Not in opener. Not in 4Q's Q2 framing.
 
 ### 13.3 `intent-engineering-mcp.mdx` — `SHIPPED`
@@ -802,7 +802,7 @@ methods:
     link: /work/superuser-pack
 
 # Either explanation_url (preferred) OR four_q must be present:
-explanation_url: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/animation-pipeline/EXPLANATION.md
+explanation_url: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/animation-pipeline/EXPLANATION.md
 # OR:
 # four_q:
 #   what: "..."

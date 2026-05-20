@@ -9,7 +9,7 @@
 
 ## 1. The Architecture Route, in one sentence
 
-A sober, paper-on-ink editorial surface for **architectural arguments** — thesis-shaped writeups whose canonical long-form essays live upstream in `claude-code-superuser-pack/docs/`, fetched at build, rendered with embedded Mermaid `erDiagram`s and flat comparison tables, where the honesty calibration (`HONEST NOTE — Linear wins`) is the load-bearing credibility signal.
+A sober, paper-on-ink editorial surface for **architectural arguments** — thesis-shaped writeups whose canonical long-form essays live upstream in `code-brain/docs/`, fetched at build, rendered with embedded Mermaid `erDiagram`s and flat comparison tables, where the honesty calibration (`HONEST NOTE — Linear wins`) is the load-bearing credibility signal.
 
 ## 1.1 Changelog
 
@@ -248,7 +248,7 @@ const architectureCollection = defineCollection({
     relatedArchitecture: z.array(z.string()).optional(),
 
     // --- Optional editorial ---
-    sourceRepoUrl: z.string().url().optional(),   // top-level repo URL (e.g., github.com/seanwinslow/claude-code-superuser-pack)
+    sourceRepoUrl: z.string().url().optional(),   // top-level repo URL (e.g., github.com/seanwinslow28/code-brain)
     tryItYourselfUrl: z.string().url().optional(),// fixture / demo URL (e.g., github.com/.../examples/public_vault_fixture)
     tryItYourselfCommand: z.string().optional(),  // ~3-line code snippet rendered in the callout
   }),
@@ -510,10 +510,10 @@ If `astro-mermaid` fails to render (Mermaid syntax error, missing source file), 
 Optional. Renders only when `tryItYourselfUrl` is set in frontmatter.
 
 ```yaml
-tryItYourselfUrl: https://github.com/seanwinslow/claude-code-superuser-pack/tree/main/examples/public_vault_fixture
+tryItYourselfUrl: https://github.com/seanwinslow28/code-brain/tree/main/examples/public_vault_fixture
 tryItYourselfCommand: |
-  git clone https://github.com/seanwinslow/claude-code-superuser-pack
-  cp -r claude-code-superuser-pack/examples/public_vault_fixture /tmp/test_vault
+  git clone https://github.com/seanwinslow28/code-brain
+  cp -r code-brain/examples/public_vault_fixture /tmp/test_vault
   AGENT_VAULT_PATH=/tmp/test_vault python3 ./agents-sdk/scripts/query.py "what brewing methods compete with espresso?"
 ```
 
@@ -655,7 +655,7 @@ v1 ships only the row → deep-dive title morph.
 
 ## 16. Open questions
 
-**[OPEN-1: Control Architecture surface placement (§1.1, §16)]** — Task 14 (Control Architecture trinity, ships ~6/10) currently has its canonical `docs/CONTROL_ARCHITECTURE.md` in `claude-code-superuser-pack/` and a ledger row at `/transactions/control-architecture/`. **Should it also become an architecture writeup at `/architecture/control-architecture/`?** It's a 1,500-word architectural argument (under the 2,000-word Vault Scorecard but the same shape). **Recommended default:** yes. Control Architecture is the same artifact-shape as Vault Scorecard (thesis + comparison + diagram + worked example). The architecture surface earns three v1 occupants if Task 14 ships before crossover, which is plausible given the 6/10 target. Confirm.
+**[OPEN-1: Control Architecture surface placement (§1.1, §16)]** — Task 14 (Control Architecture trinity, ships ~6/10) currently has its canonical `docs/CONTROL_ARCHITECTURE.md` in `code-brain/` and a ledger row at `/transactions/control-architecture/`. **Should it also become an architecture writeup at `/architecture/control-architecture/`?** It's a 1,500-word architectural argument (under the 2,000-word Vault Scorecard but the same shape). **Recommended default:** yes. Control Architecture is the same artifact-shape as Vault Scorecard (thesis + comparison + diagram + worked example). The architecture surface earns three v1 occupants if Task 14 ships before crossover, which is plausible given the 6/10 target. Confirm.
 
 **[OPEN-2: Index page hook line (§4.1, §5)]** — proposed 1-line hook: *"Most people see Obsidian as content. I treat my vault as agent infrastructure."* This is Sean's hand from the Vault Scorecard demo-shape paraphrase in Task 15. It's the only Newsreader-italic moment on the page above the writeup rows. **Open question: stays as-is, or rewritten to be route-level rather than writeup-specific?** A more generic version: *"Architectural arguments where the proof is the code, linked."* (Pure declarative — no first-person.) **Recommended default:** keep the Vault Scorecard hook as the page hook until the architecture surface has 3+ writeups. Then revisit — the hook becomes route-level when the route is no longer dominated by a single writeup. Confirm.
 
@@ -790,8 +790,8 @@ methods:
     link: null
 
 # --- Canonical sources (fetched at build) ---
-essaySourceUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md
-explanationUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md
+essaySourceUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md
+explanationUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md
 
 # --- Diagram ---
 mermaidSource: diagrams/concept-edges-erd.mmd
@@ -825,11 +825,11 @@ relatedArchitecture:
   - vault-knowledge-mcp                          # second occupant, ships ~6/4
 
 # --- Optional editorial ---
-sourceRepoUrl: https://github.com/seanwinslow/claude-code-superuser-pack
-tryItYourselfUrl: https://github.com/seanwinslow/claude-code-superuser-pack/tree/main/examples/public_vault_fixture
+sourceRepoUrl: https://github.com/seanwinslow28/code-brain
+tryItYourselfUrl: https://github.com/seanwinslow28/code-brain/tree/main/examples/public_vault_fixture
 tryItYourselfCommand: |
-  git clone https://github.com/seanwinslow/claude-code-superuser-pack
-  cp -r claude-code-superuser-pack/examples/public_vault_fixture /tmp/test_vault
+  git clone https://github.com/seanwinslow28/code-brain
+  cp -r code-brain/examples/public_vault_fixture /tmp/test_vault
   AGENT_VAULT_PATH=/tmp/test_vault python3 ./agents-sdk/scripts/query.py \
     "what brewing methods compete with espresso?"
 ---

@@ -45,7 +45,7 @@ Rules:
 - **2026-05-19 (critique fix §3 — 4Q body type step):** §4 — 4Q Q2-Q4 body size dropped from Newsreader 20/18 → 18/16 so the Q1 ("What is this?") → Q2-Q4 step lands at 1.33× desktop / 1.25× mobile (was 1.2× / 1.1×). Restores the type-step discipline the rest of the page already follows. Per `impeccable-and-emil-design-critique.md` §3 "Type hierarchy spot-check".
 - **2026-05-19 (critique fix §2 row 7 — view-transition object-fit lock):** §6 — annotated the hero-media cross-fade row to lock `object-fit: cover` at both endpoints (matching the projects-spec §10 contract). Container is full-bleed; inner media is `cover`. Per `impeccable-and-emil-design-critique.md` §2 row 7.
 - **2026-05-19 (audit fix M-3):** Hand-off prompt updated — `Code-Brain/BMAD/sw-ai-pm-portfolio/` → `Code-Brain/sw-ai-pm-portfolio/`. Per `2026-05-19-portfolio-spec-roadmap-alignment-audit.md` finding M-3.
-- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
+- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
 
 ### [`docs/specs/about-spec-v1.md`](docs/specs/about-spec-v1.md)
 

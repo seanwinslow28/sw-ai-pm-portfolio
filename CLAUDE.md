@@ -90,4 +90,4 @@ sw-ai-pm-portfolio/
 
 ## Related context (outside this repo)
 
-- `/Users/seanwinslow/Code-Brain/claude-code-superuser-pack/` — Sean's Claude Code command center (118 skills, 14 SDK agents). The portfolio's "daily-dated layer" (dateline, pulse strip) and the footer's live agent feed both read from this fleet's outputs. The Daily Driver agent there will be extended to write `/api/dateline.json`.
+- `/Users/seanwinslow/Code-Brain/code-brain/` — Sean's Claude Code command center (118 skills, 14 SDK agents). The portfolio's "daily-dated layer" (dateline, pulse strip) and the footer's live agent feed both read from this fleet's outputs. The Daily Driver agent there will be extended to write `/api/dateline.json`.

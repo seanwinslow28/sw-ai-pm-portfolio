@@ -9,7 +9,7 @@
 
 ## 1. The Essays Route, in one sentence
 
-A sober-middle / personal-voice-bookended editorial surface for **thesis-shaped writing** — where the manifesto's quadrantChart and role-map table sit alongside cross-linked artifact references, the canonical Markdown lives upstream in `claude-code-superuser-pack/docs/`, and recruiters who arrive cold from Sean's email signature read the thesis + click straight to the artifacts that back it.
+A sober-middle / personal-voice-bookended editorial surface for **thesis-shaped writing** — where the manifesto's quadrantChart and role-map table sit alongside cross-linked artifact references, the canonical Markdown lives upstream in `code-brain/docs/`, and recruiters who arrive cold from Sean's email signature read the thesis + click straight to the artifacts that back it.
 
 ## 1.1 Changelog
 
@@ -847,8 +847,8 @@ tags:
 excerpt: "I don't think the durable enterprise value is agents clicking around UIs. I think it's the semantic layer: typed work objects, authorization, memory provenance, reviewable decisions."
 
 # --- Canonical sources (fetched at build) ---
-sourceUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/MEANING_OVER_ACCESS.md
-explanationUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/MEANING_OVER_ACCESS_EXPLANATION.md
+sourceUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/MEANING_OVER_ACCESS.md
+explanationUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/MEANING_OVER_ACCESS_EXPLANATION.md
 
 # --- Visual centerpiece ---
 mermaidSource: diagrams/access-meaning-spectrum.mmd
@@ -920,7 +920,7 @@ relatedEssays: []
 crossPostedTo:
   - name: Substack
     url: https://sean.substack.com/p/meaning-over-access
-sourceRepoUrl: https://github.com/seanwinslow/claude-code-superuser-pack
+sourceRepoUrl: https://github.com/seanwinslow28/code-brain
 
 # --- OG ---
 ogImage: /og-cards/essays/meaning-over-access.png

@@ -816,7 +816,7 @@ limitations:
   - "Nightly synthesize takes 4 minutes because it queries the entire graph."
 
 # --- 4Q source (one of two required) ---
-explanationUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/agents-sdk/lib/concept_edges/EXPLANATION.md
+explanationUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/agents-sdk/lib/concept_edges/EXPLANATION.md
 # OR omit explanationUrl and put the 4Q headings in the MDX body (V3 fallback)
 
 # --- Cross-links (all optional; build validator enforces resolution) ---
@@ -829,7 +829,7 @@ previousVersion: null
 relatedArchitecture: null      # slug, list of slugs, or null — bidirectional via derive_crosslinks.mjs
 
 # --- Optional editorial ---
-repoUrl: https://github.com/seanwinslow/claude-code-superuser-pack
+repoUrl: https://github.com/seanwinslow28/code-brain
 loomUrl: null
 loomPosterUrl: null
 ---
