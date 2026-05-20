@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sean Winslow — Hero + Projects combined preview (real torn-paper PNG)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="preload" as="image" href="../assets/textures/tear-edge.png" />
+  <link rel="preload" as="image" href="../assets/Hero-floor-shadow-2800x560-optimized.png" />
+
+  <style>
+    /* ============================================================
+       TOKENS — merged from index.html + projects.html
+       ============================================================ */
+    :root {
+      --paper: #fff9f0;
+      --ink: #1a1a1e;
+      --teal: #0a3e42;
+      --teal-success: #0f6e56;
+      --secondary: #546e71;
+      --stamp: #7c2d12;
+      --amber: #fac775;
+      --border: rgba(10, 62, 66, 0.15);
+      --paper-low: rgba(255, 249, 240, 0.08);
+      --paper-mid: rgba(255, 249, 240, 0.25);
+      --paper-65: rgba(255, 249, 240, 0.65);
+      --paper-40: rgba(255, 249, 240, 0.4);
+      --strip: rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      /* CHROME — body is teal, paper sheets sit on top */
+      background: var(--teal);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body { cursor: none; }
+    @media (prefers-reduced-motion: reduce) { body { cursor: auto; } }
+    @media (hover: none)                    { body { cursor: auto; } }
+
+    /* ============================================================
+       HERO — copied from prototype/index.html with bg made explicit
+       and internal SVG torn-edge removed (replaced by real PNG bridge below)
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 720px;
+      background: var(--paper); /* CREAM paper sheet — paper-tile texture deferred to build phase */
+      overflow: hidden;
+      padding: 60px 52px 120px;
+      opacity: 0;
+      animation: paperFade 200ms linear forwards;
+    }
+
+    @keyframes paperFade { to { opacity: 1; } }
+
+    .hero__inner { max-width: 1336px; margin: 0 auto; position: relative; }
+
+    /* Dateline */
+    .dateline { margin-bottom: 30px; position: relative; }
+    .dateline__line {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 1.2px; line-height: 1.4; font-weight: 400;
+    }
+    .dateline__stamp  { color: var(--stamp); font-weight: 500; }
+    .dateline__body   { color: var(--secondary); }
+    .dateline__cursor { color: var(--secondary); margin-left: 2px; animation: blink 600ms steps(2, end) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .dateline__divider { margin-top: 12px; height: 0.5px; background: var(--border); width: 100%; }
+
+    /* Head (title) */
+    .hero__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; margin-top: 32px; }
+
+    .name {
+      margin: 0;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(56px, 7.2vw, 130px);
+      font-weight: 400; line-height: 1.05; letter-spacing: -0.8px;
+      color: var(--teal);
+    }
+    .name__char {
+      display: inline-block; white-space: pre;
+      opacity: 0; transform: translateY(40px);
+      animation: nameIn 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .name__char--reduced { animation: fadeOnly 200ms linear forwards !important; }
+    @keyframes nameIn   { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOnly { from { opacity: 0; } to { opacity: 1; } }
+
+    .role {
+      margin-top: 12px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 14px; font-weight: 400; letter-spacing: 1.8px;
+      color: var(--secondary); text-transform: uppercase;
+      opacity: 0; transform: translateY(8px);
+      animation: roleIn 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes roleIn { to { opacity: 1; transform: translateY(0); } }
+
+    .hero__body { position: relative; margin-top: 56px; min-height: 480px; }
+
+    .tagline {
+      margin: 0; max-width: 600px;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(26px, 3.2vw, 56px);
+      font-weight: 300; line-height: 1.22; letter-spacing: -0.3px;
+      color: var(--ink); overflow: hidden;
+    }
+    .tagline__inner {
+      display: inline-block; opacity: 0; transform: translateY(60%);
+      animation: tagIn 700ms cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+    @keyframes tagIn { to { opacity: 1; transform: translateY(0); } }
+
+    .character {
+      position: absolute; right: -180px; bottom: 80px;
+      width: 1024px; height: 576px; pointer-events: auto;
+      z-index: 20; /* above the floor shadow */
+      opacity: 0; animation: characterFadeIn 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes characterFadeIn { to { opacity: 1; } }
+    .character__video {
+      width: 100%; height: 100%; display: block;
+      object-fit: contain; object-position: bottom right;
+      user-select: none; -webkit-user-drag: none; background: transparent;
+    }
+
+    /* Hero floor-shadow underlay (pencil-rendered floorboards + soft desk shadow) */
+    .hero-floor-shadow {
+      position: absolute;
+      right: -60px;          /* tucked tight to the character, slight overhang past viewport */
+      bottom: 40px;          /* aligns with the character's feet line */
+      width: 800px;          /* contained — roughly the character's footprint, not a full-page floor */
+      height: auto;
+      z-index: 18;           /* below character (20), above paper sheet */
+      opacity: 0.55;         /* softens the pencil so it reads as a hint, not a drawing */
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      animation: floorIn 600ms 1500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      opacity: 0; /* overridden by animation end-state */
+    }
+    @keyframes floorIn { to { opacity: 0.55; } }
+
+    .badge {
+      position: relative; width: 142px; height: 142px;
+      display: inline-block; text-decoration: none; flex-shrink: 0; margin-top: 8px;
+      opacity: 0; transform: scale(0.6);
+      animation: badgeIn 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes badgeIn { to { opacity: 1; transform: scale(1); } }
+    .badge__svg { width: 100%; height: 100%; display: block; }
+    .badge__rotor { transform-origin: 100px 100px; animation: rotate 12s linear infinite; }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .badge__text {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 10px; font-weight: 400; letter-spacing: 1.4px;
+      fill: var(--teal); text-transform: uppercase;
+    }
+    .badge:focus-visible { outline: 2px dashed var(--teal); outline-offset: 6px; border-radius: 50%; }
+
+    /* ============================================================
+       TORN-PAPER BRIDGE — the real PNG we're testing
+       Positioned between the hero (cream paper, above) and the
+       projects section (teal chrome, below). scaleY(-1) flips the
+       asset so the solid cream sits on top (blending into the hero)
+       and the fluffy fiber edge points DOWN into the teal chrome.
+       ============================================================ */
+    .tear-bridge {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 12;
+      margin-top: -40px;     /* small overlap — cream paper backing comes from the hero's extra padding-bottom */
+      margin-bottom: -1px;   /* hairline overlap with the projects section below */
+      transform: scaleY(-1); /* fluff points DOWN into the teal */
+      transform-origin: center;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* ============================================================
+       PROJECTS — copied from prototype/projects.html minus its
+       internal torn-edge SVGs (we're using the real PNG bridge above)
+       ============================================================ */
+    .projects {
+      position: relative;
+      background: var(--teal);
+      padding: 96px 52px 96px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fade 240ms 200ms linear forwards;
+    }
+    @keyframes fade { to { opacity: 1; } }
+
+    .projects__inner { max-width: 1336px; margin: 0 auto; position: relative; }
+
+    .projects-dateline { position: relative; margin-bottom: 56px; }
+    .projects-dateline__line {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 1.2px; line-height: 1.4; font-weight: 500;
+      color: var(--paper); text-transform: uppercase;
+    }
+    .projects-dateline__count   { color: var(--amber); }
+    .projects-dateline__updated { color: var(--paper-65); }
+
+    .annotation {
+      position: absolute; pointer-events: none;
+      opacity: 0; animation: annoIn 800ms 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes annoIn { to { opacity: 1; } }
+    .annotation--updated { top: 18px; left: 280px; width: 180px; height: 64px; }
+    .annotation--updated svg { width: 100%; height: 100%; overflow: visible; }
+    .annotation__bob { transform-origin: 20% 50%; animation: bob 4s ease-in-out infinite; }
+    @keyframes bob {
+      0%, 100% { transform: rotate(-1.5deg); }
+      50%      { transform: rotate(1.5deg); }
+    }
+    .annotation__label { font-family: "Caveat", "Newsreader", cursive; font-size: 22px; fill: var(--paper); opacity: 0.7; }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 60px 40px; position: relative;
+    }
+
+    .tile {
+      position: relative; aspect-ratio: 4 / 5;
+      background: rgba(0, 0, 0, 0.18);
+      border: 0.5px solid var(--paper-low);
+      overflow: hidden; cursor: none;
+      transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .tile:hover { border-color: var(--paper-mid); }
+    .tile__media {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tile:hover .tile__media { transform: scale(1.04); }
+
+    .tile__placeholder {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tile:hover .tile__placeholder { transform: scale(1.04); }
+
+    .tile__placeholder--superuser { background: linear-gradient(160deg, #0c2d2f 0%, #14545a 100%); }
+    .tile__placeholder--mcp        { background: linear-gradient(160deg, #1a2e3a 0%, #2a4f5e 100%); }
+    .tile__placeholder--block      { background: linear-gradient(160deg, #2a1f1a 0%, #4a342a 100%); }
+    .tile__placeholder--16bitfit   { background: linear-gradient(160deg, #2a1740 0%, #4a2870 100%); }
+
+    .tile__strip {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 16px 18px 18px;
+      background: linear-gradient(to top, var(--strip) 60%, rgba(0,0,0,0) 100%);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .tile__row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .tile__frame {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px; letter-spacing: 1.4px; color: var(--amber); font-weight: 500;
+    }
+    .tile__status {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 1.4px; font-weight: 500; text-transform: uppercase;
+    }
+    .tile__status--active   { color: #ffb15b; }
+    .tile__status--coming   { color: #ffb15b; animation: pulse 2.4s ease-in-out infinite; }
+    .tile__status--shipped  { color: #4fc4a3; }
+    .tile__status--paused   { color: var(--paper-65); }
+    .tile__status--archived { color: var(--paper-65); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+    .tile__title {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 20px; font-weight: 400; line-height: 1.15;
+      color: var(--paper); margin: 4px 0 2px;
+    }
+    .tile__tags {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px; letter-spacing: 1.2px; color: var(--paper-65); text-transform: lowercase;
+    }
+    .tile__scribble {
+      position: absolute; top: -10px; right: -10px;
+      width: 56px; height: 36px; pointer-events: none;
+      transform: rotate(8deg);
+    }
+    .tile__scribble text { font-family: "Caveat", cursive; font-size: 22px; fill: var(--paper); opacity: 0.55; }
+
+    .next {
+      position: relative; aspect-ratio: 4 / 5;
+      background: transparent; border: 1.5px dashed var(--paper-40);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 24px; padding: 32px;
+      transition: border-color 240ms ease;
+      cursor: none;
+    }
+    .next:hover { border-color: var(--paper); }
+    .next__title {
+      font-family: "Newsreader", Georgia, serif;
+      font-weight: 300; font-size: 24px; line-height: 1.2;
+      color: var(--paper); text-align: center; margin: 0;
+    }
+    .next__sub {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 1.4px; color: var(--amber);
+      text-transform: uppercase; text-align: center;
+    }
+    .next__ticks { position: absolute; inset: 8px; pointer-events: none; opacity: 0.25; }
+
+    .reg-mark {
+      position: absolute; right: 0; bottom: -40px;
+      width: 28px; height: 28px; pointer-events: none;
+      opacity: 0; animation: annoIn 800ms 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* ============================================================
+       UNIFIED CURSOR — combines hero (size-shift) + projects (tile preview)
+       ============================================================ */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ink);
+      pointer-events: none; z-index: 800;
+      mix-blend-mode: difference;
+      transition: width 200ms ease, height 200ms ease, background 200ms ease, border-radius 200ms ease, mix-blend-mode 0ms 200ms;
+      will-change: transform;
+    }
+    .cursor--name      { width: 60px; height: 60px; background: var(--ink); }
+    .cursor--badge     { width: 80px; height: 80px; background: var(--teal); mix-blend-mode: normal; opacity: 0.85; }
+    .cursor--character { width: 24px; height: 24px; background: var(--teal); mix-blend-mode: normal; }
+    .cursor--preview {
+      width: 220px; height: 280px; border-radius: 0;
+      background-size: cover; background-position: center;
+      background-color: rgba(255,249,240,0.05);
+      border: 0.5px solid var(--paper-mid);
+      mix-blend-mode: normal;
+      transform-origin: top left;
+    }
+    .cursor--calendar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--amber); mix-blend-mode: normal;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cursor__cal-icon {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 16px; color: var(--teal);
+    }
+
+    /* ============================================================
+       Reduced motion
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero, .name__char, .role, .tagline__inner, .character, .badge,
+      .projects, .annotation, .reg-mark {
+        animation: fadeOnly 200ms linear forwards !important;
+        transform: none !important;
+      }
+      .badge__rotor, .dateline__cursor, .annotation__bob,
+      .tile__status--coming {
+        animation: none !important;
+      }
+      .tile__media, .tile__placeholder { transition: none !important; }
+      .tile:hover .tile__media, .tile:hover .tile__placeholder { transform: none !important; }
+    }
+
+    /* ============================================================
+       Responsive
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 40px 32px; }
+      .annotation, .reg-mark { display: none; }
+    }
+    @media (max-width: 768px) {
+      .hero { padding: 40px 24px 80px; min-height: 640px; }
+      .hero__head { flex-direction: column; gap: 16px; }
+      .name { font-size: 48px; }
+      .tagline { font-size: 26px; max-width: none; }
+      .hero__body { min-height: 320px; }
+      .badge { width: 56px; height: 56px; align-self: flex-end; margin-top: 0; }
+      .character { width: 100%; max-width: 420px; height: 240px; right: -24px; bottom: -10px; }
+      .tear-bridge { margin-top: -20px; } /* less overlap on small screens since PNG height shrinks proportionally */
+    }
+    @media (max-width: 640px) {
+      .projects { padding: 64px 24px 80px; }
+      .grid { grid-template-columns: 1fr; gap: 32px; }
+      .tile, .next { aspect-ratio: 4 / 3; }
+      .projects-dateline { margin-bottom: 32px; }
+    }
+
+    /* ============================================================
+       Dev helper — small footer note so you know this is the preview
+       ============================================================ */
+    .preview-note {
+      position: fixed; bottom: 12px; right: 12px; z-index: 999;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 10px; letter-spacing: 1px;
+      color: var(--paper-65);
+      background: rgba(10, 62, 66, 0.75);
+      padding: 6px 10px; border-radius: 2px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div class="preview-note">PREVIEW · tear-edge-2 · scroll to see transition</div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    const TOKENS = {
+      paper: "#FFF9F0",
+      ink: "#1A1A1E",
+      teal: "#0A3E42",
+      secondary: "#546E71",
+      stamp: "#7C2D12",
+      amber: "#FAC775",
+    };
+
+    /* =========================================================
+       HERO content
+       ========================================================= */
+    const DATELINE = {
+      stamp: "BOSTON, MAY 19, 2026 — ",
+      body: "vault indexer wrote 47 chunks at 02:34. fleet green. 7 of 9 agents on.",
+    };
+    const NAME    = "Sean Winslow";
+    const ROLE    = "/ AI PRODUCT MANAGER";
+    const TAGLINE = "Product Manager. The agents handle the math. I handle the taste.";
+
+    /* The hero index.html references ./hero-loop.webm which doesn't exist
+       in /prototype/. The closest existing asset is hero-color-final.webm. */
+    const CHARACTER_VIDEO_SRC  = "./hero-color-final.webm";
+    const CHARACTER_POSTER_SRC = "../sw-portfolio-animation-2026/loop-3-hero-shoulder/loop-3-frames-bg-removed/frame_0001.png";
+
+    /* The torn-paper bridge — uses the asset Sean optimized */
+    const TEAR_BRIDGE_SRC = "../assets/textures/tear-edge.png";
+
+    /* Hero floor-shadow — pencil-rendered floorboards + desk shadow */
+    const FLOOR_SHADOW_SRC = "../assets/Hero-floor-shadow-2800x560-optimized.png";
+
+    /* =========================================================
+       PROJECTS content
+       ========================================================= */
+    const PROJ_DATELINE = {
+      label: "WORK",
+      count: "5 PIECES",
+      updated: "UPDATED 2026-05-18",
+    };
+
+    const PROJECTS_LIST = [
+      { frame: "A-1", status: "ACTIVE",   title: "2D Animation Pipeline",       tags: "animation · agentic · pipeline",     slug: "animation-pipeline",     mediaType: "video",       mediaSrc: "./hero-color-final.webm", previewSrc: "./hero-color-final.webm", placeholderClass: null,                            scribble: true },
+      { frame: "A-2", status: "ACTIVE",   title: "Claude Code Superuser Pack",  tags: "agents · mcp · ai-pm",                slug: "superuser-pack",         mediaType: "placeholder", placeholderClass: "tile__placeholder--superuser",  placeholderIcon: "terminal" },
+      { frame: "A-3", status: "SHIPPED",  title: "Intent Engineering MCP",       tags: "mcp · ai-pm · infrastructure",       slug: "intent-engineering-mcp", mediaType: "placeholder", placeholderClass: "tile__placeholder--mcp",        placeholderIcon: "mcp" },
+      { frame: "A-4", status: "ARCHIVED", title: "The Block — Campus + RevOps",  tags: "pm · b2b · crypto",                   slug: "the-block",              mediaType: "placeholder", placeholderClass: "tile__placeholder--block",      placeholderIcon: "block" },
+      { frame: "A-5", status: "PAUSED",   title: "16BitFit Battle Mode",         tags: "game · agentic · phaser",             slug: "16bitfit",               mediaType: "placeholder", placeholderClass: "tile__placeholder--16bitfit",   placeholderIcon: "sprite" },
+    ];
+
+    /* =========================================================
+       Hooks + shared utils
+       ========================================================= */
+    function useReducedMotion() {
+      const [reduced, setReduced] = useState(false);
+      useEffect(() => {
+        const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        setReduced(mq.matches);
+        const handler = (e) => setReduced(e.matches);
+        mq.addEventListener?.("change", handler);
+        return () => mq.removeEventListener?.("change", handler);
+      }, []);
+      return reduced;
+    }
+
+    /* =========================================================
+       Hero subcomponents
+       ========================================================= */
+    function Dateline({ start = 200 }) {
+      const [stampShown, setStampShown] = useState("");
+      const [bodyShown, setBodyShown] = useState("");
+      const [cursorOn, setCursorOn] = useState(false);
+      const reduced = useReducedMotion();
+
+      useEffect(() => {
+        if (reduced) {
+          setStampShown(DATELINE.stamp);
+          setBodyShown(DATELINE.body);
+          return;
+        }
+        const timers = [];
+        const t1 = setTimeout(() => {
+          const stampDur = 300;
+          const stampStep = stampDur / DATELINE.stamp.length;
+          DATELINE.stamp.split("").forEach((_, i) => {
+            timers.push(setTimeout(() => setStampShown(DATELINE.stamp.slice(0, i + 1)), i * stampStep));
+          });
+          const bodyStart = stampDur;
+          const bodyDur = 200;
+          const bodyStep = bodyDur / DATELINE.body.length;
+          DATELINE.body.split("").forEach((_, i) => {
+            timers.push(setTimeout(() => setBodyShown(DATELINE.body.slice(0, i + 1)), bodyStart + i * bodyStep));
+          });
+          timers.push(setTimeout(() => setCursorOn(true),  bodyStart + bodyDur));
+          timers.push(setTimeout(() => setCursorOn(false), bodyStart + bodyDur + 800));
+        }, start);
+        timers.push(t1);
+        return () => timers.forEach(clearTimeout);
+      }, [reduced, start]);
+
+      return (
+        <div className="dateline" aria-live="polite">
+          <div className="dateline__line">
+            <span className="dateline__stamp">{stampShown}</span>
+            <span className="dateline__body">{bodyShown}</span>
+            {cursorOn && <span className="dateline__cursor">▌</span>}
+          </div>
+          <div className="dateline__divider" />
+        </div>
+      );
+    }
+
+    function Name({ start = 400 }) {
+      const reduced = useReducedMotion();
+      return (
+        <h1 className="name" aria-label={NAME}>
+          {NAME.split("").map((ch, i) => (
+            <span
+              key={i}
+              className={"name__char" + (reduced ? " name__char--reduced" : "")}
+              style={{ animationDelay: `${start + i * 20}ms` }}
+            >
+              {ch === " " ? " " : ch}
+            </span>
+          ))}
+        </h1>
+      );
+    }
+
+    function RoleTag({ start = 700 }) {
+      return (
+        <div className="role" style={{ animationDelay: `${start}ms` }}>
+          {ROLE}
+        </div>
+      );
+    }
+
+    function Tagline({ start = 900 }) {
+      return (
+        <p className="tagline">
+          <span className="tagline__inner" style={{ animationDelay: `${start}ms` }}>{TAGLINE}</span>
+        </p>
+      );
+    }
+
+    function Badge({ start = 1200 }) {
+      const text = "GET IN TOUCH • GET IN TOUCH • ";
+      return (
+        <a
+          className="badge"
+          href="mailto:sean.winslow28@gmail.com"
+          aria-label="Get in touch"
+          style={{ animationDelay: `${start}ms` }}
+        >
+          <svg viewBox="0 0 200 200" className="badge__svg">
+            <defs>
+              <path id="badge-circle" d="M 100, 100 m -64, 0 a 64,64 0 1,1 128,0 a 64,64 0 1,1 -128,0" />
+            </defs>
+            <g className="badge__rotor">
+              <text className="badge__text">
+                <textPath href="#badge-circle" startOffset="0">{text}</textPath>
+              </text>
+            </g>
+            <circle cx="100" cy="100" r="28" fill={TOKENS.teal} />
+            <text x="100" y="106" textAnchor="middle" fontSize="16" fill={TOKENS.paper}
+                  fontFamily="'JetBrains Mono', monospace">↗</text>
+          </svg>
+        </a>
+      );
+    }
+
+    function Character({ start = 1300 }) {
+      const reduced = useReducedMotion();
+      return (
+        <div className="character" style={{ animationDelay: `${start}ms` }} aria-hidden="true">
+          {reduced ? (
+            <img src={CHARACTER_POSTER_SRC} alt="" className="character__video" />
+          ) : (
+            <video
+              src={CHARACTER_VIDEO_SRC}
+              poster={CHARACTER_POSTER_SRC}
+              autoPlay muted loop playsInline preload="auto"
+              className="character__video"
+            />
+          )}
+        </div>
+      );
+    }
+
+    function Hero() {
+      return (
+        <section className="hero">
+          <div className="hero__inner">
+            <Dateline start={200} />
+            <div className="hero__head">
+              <div className="hero__title">
+                <Name start={400} />
+                <RoleTag start={700} />
+              </div>
+              <Badge start={1200} />
+            </div>
+            <div className="hero__body">
+              <Tagline start={900} />
+              <img
+                className="hero-floor-shadow"
+                src={FLOOR_SHADOW_SRC}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+              />
+              <Character start={1300} />
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* =========================================================
+       Projects subcomponents
+       ========================================================= */
+    function PlaceholderIcon({ kind }) {
+      if (kind === "terminal") {
+        return (
+          <svg viewBox="0 0 200 200" width="55%" height="55%" aria-hidden="true">
+            <rect x="20" y="40" width="160" height="120" rx="4" fill="rgba(0,0,0,0.35)" stroke="rgba(255,249,240,0.3)" />
+            <circle cx="32" cy="52" r="3" fill="rgba(255,249,240,0.3)" />
+            <circle cx="44" cy="52" r="3" fill="rgba(255,249,240,0.3)" />
+            <circle cx="56" cy="52" r="3" fill="rgba(255,249,240,0.3)" />
+            <text x="32" y="86"  fontFamily="JetBrains Mono, monospace" fontSize="9" fill="#FAC775">$ fleet.dispatch</text>
+            <text x="32" y="102" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,249,240,0.7)">→ daily-driver  ✓</text>
+            <text x="32" y="118" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,249,240,0.7)">→ vault-indexer ✓</text>
+            <text x="32" y="134" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,249,240,0.7)">→ judge-layer   ◌</text>
+            <text x="32" y="150" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,249,240,0.4)">_</text>
+          </svg>
+        );
+      }
+      if (kind === "mcp") {
+        return (
+          <svg viewBox="0 0 200 200" width="55%" height="55%" aria-hidden="true">
+            <circle cx="100" cy="100" r="32" fill="none" stroke="rgba(79,196,163,0.7)" strokeWidth="1.5" />
+            <circle cx="40"  cy="60"  r="18" fill="none" stroke="rgba(255,249,240,0.5)" strokeWidth="1" />
+            <circle cx="160" cy="60"  r="18" fill="none" stroke="rgba(255,249,240,0.5)" strokeWidth="1" />
+            <circle cx="40"  cy="140" r="18" fill="none" stroke="rgba(255,249,240,0.5)" strokeWidth="1" />
+            <circle cx="160" cy="140" r="18" fill="none" stroke="rgba(255,249,240,0.5)" strokeWidth="1" />
+            <line x1="58"  y1="60"  x2="68"  y2="84"  stroke="rgba(255,249,240,0.4)" strokeWidth="0.8" />
+            <line x1="142" y1="60"  x2="132" y2="84"  stroke="rgba(255,249,240,0.4)" strokeWidth="0.8" />
+            <line x1="58"  y1="140" x2="68"  y2="116" stroke="rgba(255,249,240,0.4)" strokeWidth="0.8" />
+            <line x1="142" y1="140" x2="132" y2="116" stroke="rgba(255,249,240,0.4)" strokeWidth="0.8" />
+            <text x="100" y="105" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11" fill="#4fc4a3">MCP</text>
+            <text x="100" y="186" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8"  fill="rgba(255,249,240,0.5)">SHIPPED 2026-05-12</text>
+          </svg>
+        );
+      }
+      if (kind === "block") {
+        return (
+          <svg viewBox="0 0 200 200" width="55%" height="55%" aria-hidden="true">
+            <rect x="30"  y="40"  width="60" height="60" fill="rgba(250,199,117,0.15)" stroke="rgba(250,199,117,0.4)" />
+            <rect x="110" y="40"  width="60" height="60" fill="rgba(255,249,240,0.08)" stroke="rgba(255,249,240,0.3)" />
+            <rect x="30"  y="120" width="60" height="40" fill="rgba(255,249,240,0.08)" stroke="rgba(255,249,240,0.3)" />
+            <rect x="110" y="120" width="60" height="40" fill="rgba(255,249,240,0.08)" stroke="rgba(255,249,240,0.3)" />
+            <text x="60"  y="74"  textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#FAC775">CAMPUS</text>
+            <text x="140" y="74"  textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(255,249,240,0.6)">REVOPS</text>
+            <text x="100" y="180" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(255,249,240,0.4)">2022 – 2024</text>
+          </svg>
+        );
+      }
+      if (kind === "sprite") {
+        return (
+          <svg viewBox="0 0 200 200" width="55%" height="55%" aria-hidden="true" shapeRendering="crispEdges">
+            {[...Array(8)].map((_, r) =>
+              [...Array(8)].map((_, c) => {
+                const filled = (r + c) % 3 === 0 || (r === 3 && c >= 2 && c <= 5);
+                return <rect key={`${r}-${c}`} x={56 + c*12} y={56 + r*12} width="12" height="12" fill={filled ? "rgba(250,199,117,0.5)" : "rgba(0,0,0,0)"} />;
+              })
+            )}
+            <text x="100" y="186" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(255,249,240,0.5)">BATTLE MODE</text>
+          </svg>
+        );
+      }
+      return null;
+    }
+
+    function Tile({ project }) {
+      const isVideo = project.mediaType === "video";
+      const isPlaceholder = project.mediaType === "placeholder";
+      const statusCls = `tile__status tile__status--${project.status.toLowerCase()}`;
+      return (
+        <a
+          className="tile"
+          href={`/work/${project.slug}`}
+          data-cursor-preview={project.previewSrc || ""}
+          data-cursor-preview-type={isVideo ? "video" : "image"}
+          data-tile
+          aria-label={`View case study: ${project.title}`}
+          onClick={(e) => e.preventDefault()}
+        >
+          {isVideo && (
+            <video className="tile__media" src={project.mediaSrc}
+                   autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+          )}
+          {isPlaceholder && (
+            <div className={`tile__placeholder ${project.placeholderClass}`} aria-hidden="true">
+              <PlaceholderIcon kind={project.placeholderIcon} />
+            </div>
+          )}
+          {project.scribble && (
+            <svg className="tile__scribble" viewBox="0 0 56 36" aria-hidden="true">
+              <text x="4" y="24">rev 3</text>
+              <path d="M2,30 Q14,28 26,30 T50,28" fill="none" stroke="rgba(255,249,240,0.5)" strokeWidth="0.9" />
+            </svg>
+          )}
+          <div className="tile__strip">
+            <div className="tile__row">
+              <span className="tile__frame">{project.frame}</span>
+              <span className={statusCls}>{project.status}</span>
+            </div>
+            <h3 className="tile__title">{project.title}</h3>
+            <div className="tile__tags">{project.tags}</div>
+          </div>
+        </a>
+      );
+    }
+
+    function NextInProduction() {
+      return (
+        <div className="next" data-cursor-calendar aria-label="Next piece in production. Check back around June 11.">
+          <svg className="next__ticks" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="0" x2="10" y2="0" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="100" y1="0" x2="90" y2="0" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="100" y1="0" x2="100" y2="10" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="0" y1="100" x2="10" y2="100" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="0" y1="100" x2="0" y2="90" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="100" y1="100" x2="90" y2="100" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+            <line x1="100" y1="100" x2="100" y2="90" stroke="rgba(255,249,240,0.4)" strokeWidth="0.6" />
+          </svg>
+          <h3 className="next__title">next piece<br/>in production</h3>
+          <div className="next__sub">check back ~jun 11</div>
+        </div>
+      );
+    }
+
+    function UpdatedWeeklyAnnotation() {
+      return (
+        <div className="annotation annotation--updated" aria-hidden="true">
+          <svg viewBox="0 0 180 64" preserveAspectRatio="xMinYMin meet">
+            <g className="annotation__bob">
+              <path d="M8,40 Q40,12 88,18 Q120,22 138,28" fill="none"
+                    stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" strokeLinecap="round" />
+              <path d="M138,28 L130,22 M138,28 L132,34" fill="none"
+                    stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" strokeLinecap="round" />
+              <text x="18" y="58" className="annotation__label">updated weekly</text>
+            </g>
+          </svg>
+        </div>
+      );
+    }
+
+    function RegistrationMark() {
+      return (
+        <svg className="reg-mark" viewBox="0 0 28 28" aria-hidden="true">
+          <line x1="14" y1="2"  x2="14" y2="26" stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+          <line x1="2"  y1="14" x2="26" y2="14" stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+          <line x1="6"  y1="6"  x2="9"  y2="6"  stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+          <line x1="22" y1="6"  x2="19" y2="6"  stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+          <line x1="6"  y1="22" x2="9"  y2="22" stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+          <line x1="22" y1="22" x2="19" y2="22" stroke="rgba(255,249,240,0.5)" strokeWidth="1.2" />
+        </svg>
+      );
+    }
+
+    function Projects() {
+      return (
+        <section className="projects" aria-labelledby="projects-dateline">
+          <div className="projects__inner">
+            <div className="projects-dateline" id="projects-dateline">
+              <div className="projects-dateline__line">
+                <span>{PROJ_DATELINE.label}</span>
+                <span> · </span>
+                <span className="projects-dateline__count">{PROJ_DATELINE.count}</span>
+                <span> · </span>
+                <span className="projects-dateline__updated">{PROJ_DATELINE.updated}</span>
+              </div>
+              <UpdatedWeeklyAnnotation />
+            </div>
+            <div className="grid">
+              {PROJECTS_LIST.map((p) => <Tile key={p.slug} project={p} />)}
+              <NextInProduction />
+              <RegistrationMark />
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* =========================================================
+       Unified cursor
+       ========================================================= */
+    function Cursor() {
+      const cursorRef = useRef(null);
+      const reduced = useReducedMotion();
+      const [mode, setMode] = useState("default");
+      const [previewSrc, setPreviewSrc] = useState(null);
+      const [previewType, setPreviewType] = useState("image");
+
+      useEffect(() => {
+        if (reduced) return;
+        const el = cursorRef.current;
+        if (!el) return;
+        let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+        let cx = mx, cy = my;
+        let raf;
+        const onMove = (e) => { mx = e.clientX; my = e.clientY; };
+        const loop = () => {
+          cx += (mx - cx) * 0.18;
+          cy += (my - cy) * 0.18;
+          const offset = mode === "preview" ? "translate(40px, 40px)" : "translate(-50%, -50%)";
+          el.style.transform = `translate(${cx}px, ${cy}px) ${offset}`;
+          raf = requestAnimationFrame(loop);
+        };
+        window.addEventListener("mousemove", onMove);
+        loop();
+        return () => {
+          window.removeEventListener("mousemove", onMove);
+          cancelAnimationFrame(raf);
+        };
+      }, [reduced, mode]);
+
+      useEffect(() => {
+        if (reduced) return;
+        const onOver = (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const tile  = t.closest("[data-tile]");
+          const cal   = t.closest("[data-cursor-calendar]");
+          if (tile) {
+            setPreviewSrc(tile.getAttribute("data-cursor-preview") || null);
+            setPreviewType(tile.getAttribute("data-cursor-preview-type") || "image");
+            setMode("preview");
+          } else if (cal) {
+            setMode("calendar"); setPreviewSrc(null);
+          } else if (t.closest(".name")) {
+            setMode("name"); setPreviewSrc(null);
+          } else if (t.closest(".character")) {
+            setMode("character"); setPreviewSrc(null);
+          } else if (t.closest(".badge")) {
+            setMode("badge"); setPreviewSrc(null);
+          } else {
+            setMode("default"); setPreviewSrc(null);
+          }
+        };
+        document.addEventListener("mouseover", onOver);
+        return () => document.removeEventListener("mouseover", onOver);
+      }, [reduced]);
+
+      if (reduced) return null;
+
+      const cls = `cursor cursor--${mode}`;
+      const style = (mode === "preview" && previewSrc && previewType !== "video")
+        ? { backgroundImage: `url("${previewSrc}")` }
+        : {};
+
+      return (
+        <div ref={cursorRef} className={cls} style={style} aria-hidden="true">
+          {mode === "preview" && previewType === "video" && previewSrc && (
+            <video src={previewSrc} autoPlay muted loop playsInline
+                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          )}
+          {mode === "calendar" && <span className="cursor__cal-icon">▦</span>}
+        </div>
+      );
+    }
+
+    /* =========================================================
+       Top-level app — Hero, real PNG tear bridge, Projects, Cursor
+       ========================================================= */
+    function App() {
+      return (
+        <>
+          <Hero />
+          <img
+            className="tear-bridge"
+            src={TEAR_BRIDGE_SRC}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+          />
+          <Projects />
+          <Cursor />
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+
+</html>
