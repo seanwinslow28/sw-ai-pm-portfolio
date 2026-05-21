@@ -2,19 +2,25 @@
 /**
  * scripts/validate_content.mjs — schema validator.
  *
- * Phase 3b scope: walks src/content/work/*.mdx and asserts every entry
- * carries the required Phase 3b frontmatter fields. Phase 3c extends
- * to cover transactions + architecture + essays.
+ * Phase 3b scope (still active): work collection.
+ * Phase 3c.1 scope (added): transactions collection — required fields,
+ *   array minimums, explanationUrl OR inline-body 4Q (one-of), forbidden
+ *   slug collision check (slug must not match surface enum).
+ * Phase 3c.2 will add: architecture + essays collections (the unified
+ *   validator merge per essays-spec §11.2 also folds JD URL HEAD checks
+ *   + `roleMap.lastValidated` staleness check at that point).
  *
  * Astro's content collection schema (src/content/config.ts) catches
  * most of this at build time, but THIS validator catches semantic
  * rules Astro can't express:
- *   - exactly one of {four_q, explanation_url} must be present
- *   - status-specific frontmatter (SHIPPED → shipped_at + shipped_stats_endpoint;
- *     PAUSED → return_condition; ARCHIVED → archived_reference_url)
- *   - methods[] is non-empty
+ *   - exactly one of {four_q, explanation_url} must be present (work)
+ *   - exactly one of {explanationUrl, inline-body 4Q headings} (transactions)
+ *   - status-specific frontmatter (work)
+ *   - methods[] / limitations[] are non-empty
+ *   - slug must not collide with a routing-level enum value
  *
- * Source: case-study-spec-v1.md §15 + BLUEPRINT-COMPLETE.md §3.3.
+ * Source: case-study-spec-v1.md §15 + transactions-spec-v1.md §11.1 +
+ *         BLUEPRINT-COMPLETE.md §3.3.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -38,7 +44,36 @@ const COLLECTIONS = [
     },
     requiredArrays: ["tags", "methods"],
   },
-  // Phase 3c will add transactions / architecture / essays here.
+  {
+    name: "transactions",
+    contentDir: path.join(ROOT, "src/content/transactions"),
+    requiredFields: [
+      "title", "dateline", "shipped", "surface", "status", "valueProp",
+    ],
+    // explanationUrl OR inline-body 4Q (validator detects the latter
+    // by scanning the MDX body for all 4 canonical h2 headings).
+    requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
+    statusFields: {
+      // SHIPPED has no extra required fields on the ledger (no shipped_at;
+      // `shipped` IS the date). Status-specific fields are intentionally
+      // narrower than work — transactions spec §3.2 doesn't require
+      // shipped_stats_endpoint / return_condition / archived_reference_url
+      // at the ledger row level. Those live on case-study pages only.
+    },
+    requiredArrays: ["methods", "limitations"],
+    // Transactions-specific: slug must not collide with a surface enum value
+    // (Astro routing safety — `src/pages/transactions/[surface]/index.astro`
+    // and `src/pages/transactions/[slug].astro` both resolve under
+    // /transactions/<value>/; disjoint slug sets prevent collision).
+    forbiddenSlugs: ["fleet", "pipeline", "product", "writing", "infra"],
+    // Cross-link fields whose value must resolve to a real slug in another
+    // collection (derive_crosslinks.mjs Task 2.3 enforces; the validator
+    // just notes them here for completeness).
+    crossLinkFields: [
+      "relatedCaseStudy", "relatedTransactions", "relatedEssay",
+      "previousVersion", "relatedArchitecture",
+    ],
+  },
 ];
 
 /**
@@ -141,7 +176,7 @@ function parseFrontmatter(src) {
 }
 
 async function validateCollection(coll) {
-  const entries = await fs.readdir(coll.contentDir);
+  const entries = await fs.readdir(coll.contentDir).catch(() => []);
   const errors = [];
   for (const fname of entries) {
     if (!fname.endsWith(".mdx") && !fname.endsWith(".md")) continue;
@@ -162,13 +197,25 @@ async function validateCollection(coll) {
         errors.push(`${coll.name}/${slug}: required array "${arrField}" is missing or empty`);
       }
     }
-    for (const oneOf of coll.requiredOneOf) {
-      const present = oneOf.filter((f) => fm[f] !== undefined && fm[f] !== "");
-      if (present.length === 0) {
-        errors.push(`${coll.name}/${slug}: must declare one of [${oneOf.join(", ")}]`);
+    // Forbidden slugs (transactions: slug must not match a surface enum value)
+    for (const forbidden of coll.forbiddenSlugs ?? []) {
+      if (slug === forbidden) {
+        errors.push(`${coll.name}/${slug}: slug "${slug}" collides with the surface enum — pick a different slug`);
       }
     }
-    const statusReq = coll.statusFields[fm.status] ?? [];
+    // Inline-4Q detection — used by transactions' requiredOneOf
+    const hasInline4Q = detectInline4Q(src);
+    for (const oneOf of coll.requiredOneOf ?? []) {
+      const present = oneOf.filter((f) => {
+        if (f === "__inline_4Q__") return hasInline4Q;
+        return fm[f] !== undefined && fm[f] !== "";
+      });
+      if (present.length === 0) {
+        const label = oneOf.map((f) => (f === "__inline_4Q__" ? "inline-body 4Q headings" : f)).join(", ");
+        errors.push(`${coll.name}/${slug}: must declare one of [${label}]`);
+      }
+    }
+    const statusReq = coll.statusFields?.[fm.status] ?? [];
     for (const f of statusReq) {
       if (fm[f] === undefined || fm[f] === "") {
         errors.push(`${coll.name}/${slug}: status=${fm.status} requires field "${f}"`);
@@ -179,8 +226,27 @@ async function validateCollection(coll) {
   return errors;
 }
 
+/**
+ * Scans an MDX file body (everything after the closing `---`) for the
+ * 4 canonical EXPLANATION.md h2 headings. Returns true when all 4 are
+ * present. Used by the transactions validator's requiredOneOf:
+ * [explanationUrl, __inline_4Q__] — the V3-bridge fallback path.
+ */
+function detectInline4Q(src) {
+  const bodyMatch = src.match(/^---\n[\s\S]+?\n---\n([\s\S]*)$/);
+  if (!bodyMatch) return false;
+  const body = bodyMatch[1];
+  const required = [
+    /^##\s+What is this\?/m,
+    /^##\s+Why this approach\?/m,
+    /^##\s+What would break\?/m,
+    /^##\s+What did I learn\?/m,
+  ];
+  return required.every((re) => re.test(body));
+}
+
 async function main() {
-  process.stdout.write("\nvalidate_content.mjs — Phase 3b scope (work)\n");
+  process.stdout.write("\nvalidate_content.mjs — Phase 3c.1 scope (work + transactions)\n");
   const allErrors = [];
   for (const coll of COLLECTIONS) {
     process.stdout.write(`\n[${coll.name}]\n`);
