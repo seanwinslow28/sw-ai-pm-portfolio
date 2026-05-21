@@ -1,0 +1,177 @@
+---
+/**
+ * Home → About Teaser section.
+ * Source: home-about-teaser-spec-v1.md §2 + §3 + §4 + §8 + §9.
+ *
+ * Renders between <ProjectsSection /> and <SiteFooter /> on the home page.
+ * Reads about-pulse.json at build time for the dated proof beat; falls back
+ * to a static line if missing (§9.2 contract).
+ */
+import TeaserSwiper from "~/components/teaser/TeaserSwiper.astro";
+
+/* Build-time fetch with fallback. */
+let beatItems = "log will refresh at 08:45";
+try {
+  const pulse = await import("../../../public/api/about-pulse.json");
+  const items = (pulse.default?.items ?? []).slice(0, 3);
+  if (items.length > 0) {
+    beatItems = items.map((i: { label: string }) => i.label).join(" · ");
+  }
+} catch (e) {
+  /* fallback already set */
+}
+
+/* The editorial line is locked per spec §2. */
+const EDITORIAL_LINE = "A man, a pencil, an agent fleet. Same person, different tools.";
+const EYEBROW = "ABOUT — TEASER";
+const CTA = "→ READ THE FULL ABOUT";
+---
+
+<section class="about-teaser page-sheet" aria-labelledby="about-teaser-heading">
+  <div class="teaser-inner">
+    <div class="teaser-text">
+      <p id="about-teaser-heading" class="eyebrow">{EYEBROW}</p>
+      <p class="editorial">{EDITORIAL_LINE}</p>
+      <p class="beat" aria-live="polite">
+        <span class="beat-today">TODAY ·&nbsp;</span>
+        <span class="beat-items">{beatItems}</span>
+      </p>
+      <a href="/about/" class="cta">{CTA}</a>
+    </div>
+
+    <div class="teaser-deck">
+      <TeaserSwiper />
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-teaser {
+    position: relative;
+    padding: 80px 52px;
+    background-color: var(--paper);
+    /* Wire-service-quiet per spec §5: no splash color, paper + ink + teal only. */
+  }
+
+  .teaser-inner {
+    position: relative;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .teaser-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    line-height: 1.0;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin: 0;
+    opacity: 0;
+    animation: teaser-fade-in 400ms var(--ease-out) 0ms forwards;
+  }
+
+  .editorial {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 300;
+    line-height: 1.32;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: teaser-rise-in 400ms var(--ease-out) 0ms forwards;
+  }
+
+  .beat {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    line-height: 1.4;
+    color: var(--teal);
+    margin: 0;
+    opacity: 0;
+    animation: teaser-fade-in 400ms var(--ease-out) 200ms forwards;
+  }
+
+  .beat-today {
+    color: var(--amber-mid);
+    /* spec §4 calls for stamp-amber on the TODAY prefix */
+  }
+
+  .cta {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    line-height: 1.0;
+    color: var(--teal);
+    text-decoration: none;
+    align-self: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms var(--ease-out);
+    opacity: 0;
+    animation: teaser-fade-in 400ms var(--ease-out) 400ms forwards;
+  }
+  .cta:hover,
+  .cta:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @keyframes teaser-fade-in {
+    to { opacity: 1; }
+  }
+  @keyframes teaser-rise-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 1023px) {
+    .teaser-inner {
+      grid-template-columns: 45% 55%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .about-teaser {
+      padding: 48px 24px;
+    }
+    .teaser-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    /* Swiper on top, text below per spec §3 mobile budget */
+    .teaser-deck {
+      order: 1;
+    }
+    .teaser-text {
+      order: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow,
+    .editorial,
+    .beat,
+    .cta {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
