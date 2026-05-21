@@ -38,3 +38,6 @@ sw-portfolio-animation-2026/loop-1/
 sw-portfolio-animation-2026/loop-2/
 sw-portfolio-animation-2026/hero-color-final-RAW-frames/
 sw-portfolio-animation-2026/hero-color-final-BG-removed-frames/
+
+# Prebuild canonical-source ETag cache (Phase 3b)
+.cache/
