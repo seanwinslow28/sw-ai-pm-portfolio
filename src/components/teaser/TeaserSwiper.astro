@@ -1,0 +1,87 @@
+---
+/**
+ * 10-card swipeable character deck.
+ * Source: home-about-teaser-spec-v1.md §6 + §7.
+ */
+import { getEntry } from "astro:content";
+import TeaserCard from "./TeaserCard.astro";
+import SwipeMeIndicator from "./SwipeMeIndicator.astro";
+import ReducedMotionControls from "./ReducedMotionControls.astro";
+
+const deck = await getEntry("teaserDeck", "deck");
+const { cards } = deck!.data;
+---
+
+<div class="teaser-swiper-wrap">
+  <div
+    id="teaser-swiper"
+    class="teaser-swiper"
+    role="region"
+    aria-label="Sean rendered ten ways — swipeable character deck"
+  >
+    {cards.map((card) => (
+      <TeaserCard
+        cardIndex={card.cardIndex}
+        src={card.src}
+        alt={card.alt}
+        style={card.style}
+        loadingHint={card.cardIndex < 2 ? "eager" : "lazy"}
+      />
+    ))}
+  </div>
+
+  <SwipeMeIndicator />
+  <ReducedMotionControls />
+</div>
+
+<script>
+  import { initTeaserSwiper } from "~/scripts/teaser-swiper.js";
+
+  function mount() {
+    const container = document.getElementById("teaser-swiper");
+    if (container) initTeaserSwiper({ container });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mount);
+  } else {
+    mount();
+  }
+</script>
+
+<style>
+  .teaser-swiper-wrap {
+    /* Aligns under the editorial column with the spec §3 ~40px upward visual rhyme */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: -40px;
+  }
+
+  .teaser-swiper {
+    position: relative;
+    width: 320px;
+    height: 427px;
+    /* perspective is on the container; cards do translateZ to fan back */
+    perspective: 700px;
+    touch-action: pan-y;
+  }
+
+  @media (max-width: 1023px) {
+    .teaser-swiper {
+      width: 290px;
+      height: 387px;
+    }
+    .teaser-swiper-wrap {
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 767px) {
+    .teaser-swiper {
+      width: 260px;
+      height: 347px;
+    }
+  }
+</style>
