@@ -7,6 +7,7 @@
  * Source: site-chrome-spec-v1.md §3, §12.
  */
 
+import { ClientRouter } from "astro:transitions";
 import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
@@ -77,6 +78,9 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
+
+    <!-- View Transitions -->
+    <ClientRouter />
   </head>
   <body>
     <SkipLink />
