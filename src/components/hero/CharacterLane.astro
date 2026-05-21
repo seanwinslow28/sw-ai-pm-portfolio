@@ -53,27 +53,34 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
   .hero-floor-shadow {
     /* Reference: sw-portfolio-animation-2026/.../hero-image-with-bg000.png —
        a tight ellipse only under the desk + chair, not a wide swath.
-       Shadow PNG centroid is at 49% of its own width; positioning left:18%
-       (width 55%) puts the dark center at ~46% of lane → ~78% of viewport
-       on a 1920 viewport, matching the painted desk's visible position
-       (lane right:-180px bleed places the desk on the right of the viewport).
+       Shadow PNG centroid is at 49% of its own width. Per Sean's 2026-05-21
+       review, the desk's painted center sits at ~78% of viewport on a 1920
+       viewport — the original `left: 18%; width: 55%` rule landed at ~80%.
+       Below 1280px viewports the lane scales down and the offset diverges
+       further. The breakpoint table below nudges the centroid back toward
+       the desk-foot on each viewport class.
 
-       TODO(v1.1): shadow still reads slightly off-center to the desk per
-       Sean's 2026-05-21 review. The CSS math lands at ~80% viewport vs the
-       desk's ~78% — close but not pixel-perfect. Tightening requires either
-       (a) re-cropping the shadow PNG so its alpha centroid aligns with the
-       desk-foot center, or (b) per-viewport-width calibration. Deferred. */
+       Re-cropping the source PNG would be cleaner long-term but blocks on
+       Procreate-substrate work that's deferred indefinitely per the
+       texture-spec deferral table. Per-viewport calibration is the v1 fix. */
     position: absolute;
     width: 55%;
     height: auto;
     bottom: -6px;
-    left: 18%;
+    left: 16%;        /* was 18% — shifts the shadow ~2% leftward at >=1280px */
     right: auto;
     object-fit: contain;
     object-position: center bottom;
     z-index: 18;
     pointer-events: none;
     opacity: 0.9;
+  }
+  /* Mid-viewport (≥1280 ≤1599): same nudge holds. */
+  /* Wide viewport (≥1600): the lane sits further right; shadow needs ~1% more leftward shift. */
+  @media (min-width: 1600px) {
+    .hero-floor-shadow {
+      left: 15%;
+    }
   }
   @media (max-width: 1024px) {
     .hero-floor-shadow {
