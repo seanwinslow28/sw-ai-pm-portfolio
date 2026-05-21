@@ -1,0 +1,50 @@
+---
+/**
+ * <InvestigationBoard /> — investigation-board section wrapper.
+ *
+ * Wraps the MDX body's artifacts in a <section role="region">. Acts
+ * as the annotation-anchor-root container for the
+ * src/scripts/annotation-positioner.js module — that script reads
+ * .annotation-anchor-root elements at load and resolves data-target
+ * within them.
+ *
+ * Source: case-study-spec-v1.md §7.
+ */
+---
+
+<section
+  class="investigation-board annotation-anchor-root"
+  role="region"
+  aria-labelledby="investigation-heading"
+>
+  <h2 id="investigation-heading" class="section-heading">─ INVESTIGATION BOARD ─</h2>
+  <div class="board-content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .investigation-board {
+    max-width: 1120px;
+    margin: 80px auto 0;
+    padding: 0 24px;
+    position: relative;  /* annotation positioner anchors here */
+  }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 40px;
+  }
+  .board-content {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (max-width: 767px) {
+    .investigation-board { padding: 0 16px; margin-top: 56px; }
+  }
+</style>
