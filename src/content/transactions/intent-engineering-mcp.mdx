@@ -1,0 +1,58 @@
+---
+title: "Intent Engineering MCP"
+dateline: "BOSTON, MAY 12, 2026"
+shipped: "2026-05-12"
+
+surface: product
+status: SHIPPED
+
+valueProp: "A Model Context Protocol server exposing intent-engineering tools to Claude Desktop. DNS-verified namespace; shipped to npm + MCP registry 13 days early because the design was right."
+
+methods:
+  - task: protocol implementation
+    tool: MCP SDK
+    cost: open-source / $0
+    link: null
+  - task: registry verification
+    tool: DNS-verified MCP registry
+    cost: registry / $0
+    link: null
+  - task: package publish
+    tool: npm
+    cost: free tier
+    link: null
+  - task: case-study writeup
+    tool: case study
+    cost: portfolio time
+    link: /work/intent-engineering-mcp
+
+limitations:
+  - "Claude Desktop's MCP client revs faster than the server; semver discipline is the v1.x discipline."
+  - "DNS verification expires annually — renewal is on Sean's calendar but not automated."
+
+# 4Q via inline-body fallback. Upstream EXPLANATION.md lives in the
+# intent-engineering-mcp repo and will be wired via explanationUrl
+# when the case-study Option-A canonical path activates.
+
+relatedCaseStudy: intent-engineering-mcp
+relatedTransactions: []
+# relatedArchitecture: null
+
+repoUrl: https://github.com/seanwinslow28/intent-engineering-mcp
+---
+
+## What is this?
+
+A Model Context Protocol server published to npm + the MCP registry on May 12, 2026. Two MCP tools registered (`tools/list` + `tools/call`); DNS-verified namespace. Installed by Claude Desktop with one line of config.
+
+## Why this approach?
+
+[PLACEHOLDER — Q2] Three options were on the table: ship as a standalone CLI tool, bake into a larger MCP, or ship as a registered server. The registered-server path won because DNS-verified registry adoption was the right scope-cut signal — recruiter could see the install count + registry presence at a glance. The case study at /work/intent-engineering-mcp documents what got cut to ship early.
+
+## What would break?
+
+[PLACEHOLDER — Q3] Three named failure modes: (1) Claude Desktop's MCP client revs faster than this server; (2) DNS verification expiring; (3) npm registry vetting failing on first publish. Mitigations: semver discipline on the server, calendar reminder for renewal, manual vetting check before each publish.
+
+## What did I learn?
+
+[PLACEHOLDER — Q4] It shipped 13 days early because the design was right. What got cut was right too — the interactive MCP-tool-call embed page is a future spec, not v1. The cut list is on the case-study page; the install count is on this ledger row's <ShippedNow /> block (rendered via the case-study route, not duplicated here).
