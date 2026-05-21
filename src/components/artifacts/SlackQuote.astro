@@ -1,0 +1,94 @@
+---
+/**
+ * <SlackQuote /> — investigation-board artifact: anonymized Slack DM.
+ *
+ * **STATIC SVG ONLY.** Never a real screenshot — anonymization
+ * guaranteed by construction. Names replaced with role labels.
+ *
+ * Source: case-study-spec-v1.md §7.2.
+ */
+import ArtifactImage from "./ArtifactImage.astro";
+
+interface SlackMessage {
+  role: string;     // e.g. "eng lead", "design crit", "customer"
+  text: string;
+}
+interface Props {
+  artifactId: string;
+  date: string;
+  messages: SlackMessage[];   // 1-2 messages typical
+  killed?: boolean;
+}
+const { artifactId, date, messages, killed = false } = Astro.props;
+
+const ariaLabel = `Slack exchange: ${messages.map((m) => `${m.role} — ${m.text}`).join(" / ")}`;
+
+// Build-time deterministic mock timestamps to keep the SVG stable across builds.
+const mockTimes = ["14:02", "14:07", "14:11", "14:18", "14:23"];
+---
+
+<ArtifactImage artifactId={artifactId} date={date} killed={killed}>
+  <div slot="body" class="slack-body" role="img" aria-label={ariaLabel}>
+    {messages.map((m, i) => (
+      <div class="slack-message">
+        <div class="slack-meta">
+          <span class="slack-role">{m.role}</span>
+          <span class="slack-time" aria-hidden="true">{mockTimes[i % mockTimes.length]}</span>
+        </div>
+        <p class="slack-text">{m.text}</p>
+      </div>
+    ))}
+    <p class="slack-disclaimer">— anonymized, static svg —</p>
+  </div>
+  <slot slot="caption" />
+</ArtifactImage>
+
+<style>
+  .slack-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .slack-message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .slack-meta {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .slack-role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+    text-transform: lowercase;
+  }
+  .slack-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-secondary);
+  }
+  .slack-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+  }
+  .slack-disclaimer {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: var(--ink-secondary);
+    margin: 8px 0 0;
+    padding-top: 8px;
+    border-top: 0.5px dashed var(--border-paper);
+    opacity: 0.7;
+  }
+</style>
