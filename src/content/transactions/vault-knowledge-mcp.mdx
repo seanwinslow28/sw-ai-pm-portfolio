@@ -1,0 +1,56 @@
+---
+title: "Vault Knowledge MCP — Design Lock"
+dateline: "BOSTON, MAY 21, 2026"
+shipped: "2026-05-21"
+
+surface: product
+status: ACTIVE
+
+valueProp: "Design-locked MCP that wraps Sean's vault — the only public PM vault that passes all five Nate-tests on the agent-infrastructure scoreboard. Ship target ~6/4."
+
+methods:
+  - task: protocol design
+    tool: MCP SDK
+    cost: open-source / $0
+    link: null
+  - task: vault read-layer
+    tool: Code Brain (concept_edges + JSONL)
+    cost: Sonnet 4.6 (HybridRouter)
+    link: /work/code-brain
+  - task: design lock
+    tool: spec authoring + Notion review
+    cost: $0
+    link: null
+
+limitations:
+  - "Design only at this point — the read-layer is wired to concept_edges but the MCP transport layer is stubbed."
+  - "The five-Nate-test scoreboard pass depends on the Audit pillar, which itself depends on the queryable JSONL filesystem layer landing first."
+
+# 4Q via inline-body fallback. explanationUrl arrives when the upstream
+# repo ships VAULT_KNOWLEDGE_MCP_EXPLANATION.md.
+
+relatedCaseStudy: code-brain
+relatedTransactions: []
+relatedArchitecture: vault-knowledge-mcp
+# ↑ Forward-declared. Architecture page at /architecture/vault-knowledge-mcp/
+#   ships in Phase 3c.2. derive_crosslinks.mjs accepts the forward-declared
+#   slug (archSlugs is empty in 3c.1; validation permits any value).
+
+repoUrl: https://github.com/seanwinslow28/code-brain
+---
+
+## What is this?
+
+A Model Context Protocol that exposes Sean's vault as a queryable agent surface. Design-locked May 21, 2026; ship-target ~June 4. The architecture argument lives at `/architecture/vault-knowledge-mcp/` (Phase 3c.2). This row tracks the *shipped artifact* — the MCP transport + tool surface — not the thesis.
+
+## Why this approach?
+
+[PLACEHOLDER — Q2] The vault is the only PM vault that passes all five Nate-tests. The MCP wraps it. Recruiter from Glean lands on /architecture/vault-knowledge-mcp/ → reads the scoreboard → clicks through to the ledger row → sees the ship date. The two surfaces close the loop: architecture argues, ledger ships.
+
+## What would break?
+
+[PLACEHOLDER — Q3] If the MCP HTTP transport spec revs between design-lock and ship, the design re-opens. If concept_edges hits the 47-edge production limit (likely), the read-layer paginates or the vault sharding strategy lands first.
+
+## What did I learn?
+
+[PLACEHOLDER — Q4] Design-lock is the artifact, not the code. Locking the design on May 21 with a June 4 ship target gives 14 days of runway — enough for a real implementation cycle without scope drift. The pattern: lock at T-14, ship at T-0.
