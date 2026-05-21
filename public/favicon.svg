@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="SW — Sean Winslow">
+  <title>SW — Sean Winslow</title>
+  <rect width="64" height="64" fill="#FFF9F0"/>
+  <text x="32" y="32"
+        text-anchor="middle"
+        dominant-baseline="central"
+        font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-weight="700"
+        font-size="34"
+        letter-spacing="-1"
+        fill="#0A3E42">SW</text>
+</svg>
