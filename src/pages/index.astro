@@ -1,16 +1,9 @@
 ---
-import '~/styles/global.css';
+import BaseLayout from "~/layouts/BaseLayout.astro";
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Sean Winslow</title>
-  </head>
-  <body>
-    <main class="page-sheet" style="min-height: 100vh; padding: 40px;">
-      <h1 style="font-family: var(--font-serif); color: var(--teal); font-size: 64px;">Token check</h1>
-      <p style="font-family: var(--font-mono); color: var(--ink-secondary);">If this is teal serif + secondary-ink mono, tokens load.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title="Sean Winslow" noChrome={true}>
+  <section class="page-sheet" style="padding: 80px 24px; min-height: 80vh;">
+    <h1 style="font-family: var(--font-serif); color: var(--teal); font-size: 96px;">Hello, Layout.</h1>
+    <p style="font-family: var(--font-mono); color: var(--ink-secondary);">BaseLayout shell loads with skip link + footer stub. Fonts via Google Fonts Optimizer.</p>
+  </section>
+</BaseLayout>
