@@ -1,0 +1,149 @@
+---
+/**
+ * <ShippedNow /> — live install-count block for SHIPPED case studies.
+ *
+ * Reads /api/shipped-stats-<slug>.json at BUILD time (no client fetch).
+ * Daily Driver writes this file nightly in Phase 4; v1 hand-seeds it
+ * (see public/api/shipped-stats-intent-engineering-mcp.json).
+ *
+ * Source: case-study-spec-v1.md §12.2 + §15.
+ */
+import fs from "node:fs/promises";
+import path from "node:path";
+
+interface Props {
+  slug: string;
+  shippedStatsEndpoint: string;   // e.g. /api/shipped-stats-intent-engineering-mcp.json
+}
+
+const { slug, shippedStatsEndpoint } = Astro.props;
+
+interface StatsRow { label: string; value: string; unit?: string }
+interface Stats {
+  updated_at?: string;
+  items?: StatsRow[];
+}
+
+async function readLocalJson(endpoint: string): Promise<Stats | null> {
+  // endpoint = "/api/foo.json" → public/api/foo.json
+  const rel = endpoint.replace(/^\//, "");
+  try {
+    const filePath = path.join(process.cwd(), "public", rel);
+    const raw = await fs.readFile(filePath, "utf8");
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+const stats = await readLocalJson(shippedStatsEndpoint);
+const fallbackText = stats === null
+  ? "LIVE — stats will refresh nightly"
+  : null;
+
+const updatedPretty = stats?.updated_at
+  ? new Date(stats.updated_at).toLocaleString("en-US", {
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false,
+    })
+  : null;
+---
+
+<aside class="shipped-now" aria-labelledby={`shipped-now-${slug}`}>
+  <p id={`shipped-now-${slug}`} class="live-label">
+    <span class="live-dot" aria-hidden="true">●</span>
+    LIVE
+  </p>
+  {fallbackText && <p class="fallback">{fallbackText}</p>}
+  {stats?.items && (
+    <ul class="stats-list">
+      {stats.items.map((row) => (
+        <li class="stats-row">
+          <span class="stat-value">{row.value}</span>
+          <span class="stat-unit">{row.unit ?? ""}</span>
+          <span class="stat-label">{row.label}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+  {updatedPretty && (
+    <p class="updated-at">updated {updatedPretty} by daily driver</p>
+  )}
+</aside>
+
+<style>
+  .shipped-now {
+    max-width: 720px;
+    margin: 32px auto 0;
+    padding: 16px 24px;
+    border: 0.5px solid var(--border-paper);
+    border-radius: 2px;
+    background-color: rgba(15, 110, 86, 0.04);
+    font-family: var(--font-mono);
+  }
+  .live-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--success-teal, #0F6E56);
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .live-dot {
+    color: var(--success-teal, #0F6E56);
+    font-size: 10px;
+    animation: live-pulse 2s ease-in-out infinite;
+  }
+  @keyframes live-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .fallback {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+  .stats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+  }
+  .stats-row {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.4px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .stat-value { font-weight: 500; color: var(--teal); }
+  .stat-unit { color: var(--ink-secondary); font-size: 11px; }
+  .stat-label { color: var(--ink-secondary); }
+  .updated-at {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    color: var(--ink-secondary);
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 0.5px dashed var(--border-paper);
+  }
+
+  @media (max-width: 767px) {
+    .shipped-now { padding: 12px 16px; }
+    .stats-list { gap: 8px 16px; }
+    .stats-row { font-size: 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot { animation: none; }
+  }
+</style>
