@@ -1,0 +1,101 @@
+---
+/**
+ * <MetricChart /> — investigation-board artifact: hand-rolled SVG chart.
+ *
+ * Static SVG at build. Line chart geometry computed from a data[] prop.
+ * No runtime fetch, no charting library. The discipline IS the artifact —
+ * "I shipped a chart" without pulling in 200KB of recharts.
+ *
+ * Source: case-study-spec-v1.md §7.2 + §15 anti-stack.
+ */
+import ArtifactImage from "./ArtifactImage.astro";
+
+interface DataPoint {
+  x: string;   // label, e.g. "v1" or "Apr 17"
+  y: number;
+}
+interface Props {
+  artifactId: string;
+  date: string;
+  chartTitle: string;
+  yLabel?: string;
+  data: DataPoint[];
+  killed?: boolean;
+}
+const { artifactId, date, chartTitle, yLabel, data, killed = false } = Astro.props;
+
+const W = 460, H = 200;
+const padding = { top: 24, right: 16, bottom: 28, left: 32 };
+const ys = data.map((d) => d.y);
+const maxY = Math.max(...ys);
+const minY = Math.min(...ys);
+const yRange = maxY - minY || 1;
+const xStep = data.length > 1
+  ? (W - padding.left - padding.right) / (data.length - 1)
+  : 0;
+const points = data.map((d, i) => {
+  const x = padding.left + i * xStep;
+  const y = padding.top + (H - padding.top - padding.bottom) * (1 - (d.y - minY) / yRange);
+  return { x: x.toFixed(1), y: y.toFixed(1), label: d.x, value: d.y };
+});
+const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
+const xLabelStep = Math.max(1, Math.ceil(points.length / 6));
+
+const ariaLabel = `Chart titled ${chartTitle}. ${data.length} points ranging from ${minY} to ${maxY}.`;
+---
+
+<ArtifactImage artifactId={artifactId} date={date} killed={killed}>
+  <div slot="body" class="chart-body">
+    <p class="chart-title">
+      {chartTitle}
+      {yLabel && <span class="chart-y-label"> ({yLabel})</span>}
+    </p>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={ariaLabel}>
+      <line
+        x1={padding.left} x2={W - padding.right}
+        y1={H - padding.bottom} y2={H - padding.bottom}
+        stroke="var(--border-paper)" stroke-width="0.5" />
+      <polyline points={polyline}
+        fill="none" stroke="var(--teal)" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round" />
+      {points.map((p) => (
+        <circle cx={p.x} cy={p.y} r="3" fill="var(--amber-mid)" />
+      ))}
+      {points.map((p, i) => (
+        i % xLabelStep === 0 && (
+          <text x={p.x} y={H - 8}
+            font-family="JetBrains Mono, monospace"
+            font-size="10" fill="var(--ink-secondary)"
+            text-anchor="middle">{p.label}</text>
+        )
+      ))}
+      <text x={6} y={padding.top + 4}
+        font-family="JetBrains Mono, monospace"
+        font-size="10" fill="var(--ink-secondary)">{maxY}</text>
+      <text x={6} y={H - padding.bottom + 4}
+        font-family="JetBrains Mono, monospace"
+        font-size="10" fill="var(--ink-secondary)">{minY}</text>
+    </svg>
+  </div>
+  <slot slot="caption" />
+</ArtifactImage>
+
+<style>
+  .chart-body { display: flex; flex-direction: column; gap: 8px; }
+  .chart-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    color: var(--stamp-amber);
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .chart-y-label {
+    font-weight: 400;
+    color: var(--ink-secondary);
+    text-transform: lowercase;
+    letter-spacing: 0.8px;
+  }
+  svg { width: 100%; height: auto; display: block; }
+</style>
