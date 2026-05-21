@@ -41,17 +41,66 @@ const work = defineCollection({
     methods: z.array(methodRow).min(1),
 
     // One of (four_q, explanation_url) is required — enforced by
-    // scripts/validate_content.mjs since Zod can't express "one-of" cleanly
-    // without union-discriminator gymnastics. Both fields are optional at
-    // the schema level; the validator is the source of truth.
+    // scripts/validate_content.mjs since Zod can't express "one-of" cleanly.
     four_q: fourQ.optional(),
     explanation_url: z.string().url().optional(),
 
     // --- Status-specific frontmatter (validator enforces presence per status) ---
-    shipped_at: z.coerce.string().optional(),                  // SHIPPED only
-    shipped_stats_endpoint: z.string().optional(),             // SHIPPED only
-    return_condition: z.string().optional(),                   // PAUSED only
-    archived_reference_url: z.string().url().optional(),       // ARCHIVED only
+    shipped_at: z.coerce.string().optional(),
+    shipped_stats_endpoint: z.string().optional(),
+    return_condition: z.string().optional(),
+    archived_reference_url: z.string().url().optional(),
+  }),
+});
+
+// ============================================================
+// Phase 3c.1 — transactions collection
+// Source: transactions-spec-v1.md §3.2
+//        + architecture-spec-v1.md §14.1 (relatedArchitecture additive)
+//        + BLUEPRINT-COMPLETE.md §5 punch-list #1
+// ============================================================
+
+const SURFACE_ENUM = ["fleet", "pipeline", "product", "writing", "infra"] as const;
+
+const transactions = defineCollection({
+  type: "content",
+  schema: z.object({
+    // --- Identity ---
+    title: z.string(),
+    dateline: z.string(),                                    // "BOSTON, MAY 13, 2026"
+    shipped: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),        // ISO YYYY-MM-DD
+
+    // --- IA + status ---
+    surface: z.enum(SURFACE_ENUM),
+    status: z.enum(["ACTIVE", "SHIPPED", "PAUSED", "ARCHIVED"]),
+
+    // --- Comprehension layer ---
+    valueProp: z.string().max(280),
+    methods: z.array(methodRow).min(1),
+    limitations: z.array(z.string()).min(1),
+
+    // --- 4Q source (one of two required — enforced by validate_content.mjs) ---
+    explanationUrl: z.string().url().optional(),
+    // OR: inline-body 4Q headings (V3-bridge fallback) — validator detects the
+    // presence of all 4 canonical `## What is this?` / `## Why this approach?`
+    // / `## What would break?` / `## What did I learn?` h2s in the MDX body.
+
+    // --- Cross-links (bidirectional graph; derive_crosslinks.mjs enforces resolution) ---
+    relatedCaseStudy: z.string().optional(),                 // /work/<slug>
+    relatedTransactions: z.array(z.string()).optional(),
+    relatedEssay: z.string().optional(),                     // /essays/<slug>  (consumed in 3c.2)
+    previousVersion: z.string().optional(),
+    relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional(),
+    // ↑ ADDITIVE per architecture-spec §14.1 / BLUEPRINT-COMPLETE §5 punch-list #1.
+    //   Pure additive — legacy rows that omit the field still validate.
+    //   Slug or array of slugs into /architecture/. Bidirectional via
+    //   derive_crosslinks.mjs (Task 2.3). The /architecture/ surface itself
+    //   ships in Phase 3c.2.
+
+    // --- Optional editorial ---
+    repoUrl: z.string().url().optional(),
+    loomUrl: z.string().url().optional(),
+    loomPosterUrl: z.string().url().optional(),
   }),
 });
 
@@ -69,4 +118,4 @@ const teaserDeck = defineCollection({
   }),
 });
 
-export const collections = { work, teaserDeck };
+export const collections = { work, teaserDeck, transactions };
