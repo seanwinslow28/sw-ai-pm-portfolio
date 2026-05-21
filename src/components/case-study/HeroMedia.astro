@@ -1,0 +1,65 @@
+---
+/**
+ * <HeroMedia /> — case-study hero media (View Transition target).
+ *
+ * Renders <video> for hero_media_type=video, <img> for image. Both
+ * endpoints use object-fit: cover so the morph from the projects-tile
+ * lands cleanly per case-study-spec §6 + projects-spec §10.4.
+ *
+ * The view-transition-name attribute lives on the wrapper, NOT on
+ * <video>/<img> directly — Astro 5's ClientRouter handles the
+ * morph by name match.
+ *
+ * Source: case-study-spec-v1.md §2 + projects-section-spec-v1.md §10.4.
+ */
+interface Props {
+  slug: string;
+  heroMedia: string;          // path under /public, e.g. /assets/projects/...
+  heroMediaType: "video" | "image";
+  heroMediaAlt: string;
+}
+
+const { slug, heroMedia, heroMediaType, heroMediaAlt } = Astro.props;
+---
+
+<figure class="hero-media-wrap" style={`view-transition-name: hero-media-${slug};`}>
+  {heroMediaType === "video" ? (
+    <video
+      src={heroMedia}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-label={heroMediaAlt}
+    />
+  ) : (
+    <img src={heroMedia} alt={heroMediaAlt} loading="eager" decoding="async" />
+  )}
+</figure>
+
+<style>
+  .hero-media-wrap {
+    max-width: 1120px;
+    margin: 48px auto 0;
+    padding: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: rgba(10, 62, 66, 0.06);
+  }
+  .hero-media-wrap video,
+  .hero-media-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    .hero-media-wrap {
+      aspect-ratio: 4 / 3;
+      margin: 24px 0 0;
+    }
+  }
+</style>
