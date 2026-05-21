@@ -69,12 +69,36 @@ const { cardIndex, src, alt, style, loadingHint } = Astro.props;
     transition: none;
   }
   .teaser-card[data-card-index="0"].is-flying-out {
-    transition: transform 300ms var(--ease-snap, cubic-bezier(0.23, 1, 0.32, 1)), opacity 300ms linear;
-    transform:
-      perspective(700px)
-      translateX(var(--swipe-fly-x))
-      rotate(var(--swipe-fly-rotate));
-    opacity: 0;
+    /* Tossed-card tumble (spec §6.2): the card rotates one direction across
+       the first half of the 300ms, then flips opposite direction across
+       the second half. Linear interpolation between the four keyframes
+       lands the card at its final --swipe-fly-rotate at t=300ms while the
+       midpoint visibly reverses, reading as a tumble rather than a glide. */
+    animation: teaser-card-toss 300ms var(--ease-snap, cubic-bezier(0.23, 1, 0.32, 1)) forwards;
+    opacity: 1;
+  }
+  @keyframes teaser-card-toss {
+    0% {
+      transform: perspective(700px) translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      /* Midway: rotation flips to the opposite of the final --swipe-fly-rotate.
+         The CSS calc multiplies the final-rotate custom property by -0.6 to
+         get a visible counter-rotation without overshooting. */
+      transform:
+        perspective(700px)
+        translateX(calc(var(--swipe-fly-x) * 0.5))
+        rotate(calc(var(--swipe-fly-rotate) * -0.6));
+      opacity: 0.7;
+    }
+    100% {
+      transform:
+        perspective(700px)
+        translateX(var(--swipe-fly-x))
+        rotate(var(--swipe-fly-rotate));
+      opacity: 0;
+    }
   }
 
   .teaser-card img {
