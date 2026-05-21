@@ -1074,7 +1074,7 @@
       lead:    "Three passes, two failures, and the failures are where vault-knowledge-mcp and the Judge Layer are going next.",
       methods: [
         { task: "persistent state", tool: "SQLite + git + JSONL",                cost: "local / $0",                  link: null },
-        { task: "typed edges",      tool: "Claude Code Superuser Pack (concept_edges)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "typed edges",      tool: "Code Brain (concept_edges)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/code-brain" },
         { task: "er diagram gen",   tool: "scripts/generate_schema.py",          cost: "stdlib / $0",                 link: null },
         { task: "fixture author",   tool: "Sean + LLM seed",                     cost: "~$0.10",                      link: null },
       ],
@@ -1084,8 +1084,8 @@
         break: "Three failure modes. (1) Vault sprawl — if the chunk_hash drifts, the SQLite typed-edge layer reports false contradictions; detection: weekly knowledge-lint job. (2) The scoring rubric is calibrated to one moment in time; new tests (e.g., \"queryable causality\") will eventually expose new failures. (3) Linear's RBAC really is better; closing that gap is vault-knowledge-mcp's job.",
         learn: "Comparison is the cheapest credibility instrument that exists. The discipline that makes it land is showing the failures with the same flat treatment as the passes — equality of presentation IS the honesty signal.",
       },
-      explanationUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md",
-      essaySourceUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md",
+      explanationUrl: "https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md",
+      essaySourceUrl: "https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md",
       navfold: {
         prev: null,
         next: { date: "JUN 04", title: "VAULT KNOWLEDGE MCP", slug: "/architecture/vault-knowledge-mcp" },
@@ -1212,11 +1212,11 @@ ORDER BY confidence DESC;
               <div className="try-it__body">
                 The synthetic public vault fixture is reproducible. Clone, copy, query:
               </div>
-              <div className="try-it__code">{`git clone https://github.com/seanwinslow/claude-code-superuser-pack
-cp -r claude-code-superuser-pack/examples/public_vault_fixture /tmp/test_vault
+              <div className="try-it__code">{`git clone https://github.com/seanwinslow28/code-brain
+cp -r code-brain/examples/public_vault_fixture /tmp/test_vault
 AGENT_VAULT_PATH=/tmp/test_vault python3 ./agents-sdk/scripts/query.py \\
   "what brewing methods compete with espresso?"`}</div>
-              <a className="try-it__link" href="https://github.com/seanwinslow/claude-code-superuser-pack/tree/main/examples/public_vault_fixture" onClick={e=>e.preventDefault()}>
+              <a className="try-it__link" href="https://github.com/seanwinslow28/code-brain/tree/main/examples/public_vault_fixture" onClick={e=>e.preventDefault()}>
                 → examples/public_vault_fixture/ on github ↗
               </a>
             </div>
@@ -1283,7 +1283,7 @@ AGENT_VAULT_PATH=/tmp/test_vault python3 ./agents-sdk/scripts/query.py \\
               <div className="related-row">
                 <span className="related-row__label">→ companion case study:</span>
                 <span className="related-row__body">
-                  <a href="/work/superuser-pack" onClick={e=>e.preventDefault()}>Claude Code Superuser Pack</a>
+                  <a href="/work/code-brain" onClick={e=>e.preventDefault()}>Code Brain</a>
                 </span>
               </div>
               <div className="related-row">

@@ -28,10 +28,10 @@
 5. Six drafted specs still need lock confirmation (case-study, about, transactions, architecture, essays, site-chrome).
 
 **The roadmap dependencies (4 minor items):**
-6. Five upstream `EXPLANATION.md` files referenced by frontmatter `explanationUrl` don't exist upstream yet (animation-pipeline, superuser-pack, the-block, 16bitfit + the manifesto/architecture sources). Without them, `scripts/fetch_canonical_sources.mjs` fails the build.
+6. Five upstream `EXPLANATION.md` files referenced by frontmatter `explanationUrl` don't exist upstream yet (animation-pipeline, code-brain, the-block, 16bitfit + the manifesto/architecture sources). Without them, `scripts/fetch_canonical_sources.mjs` fails the build.
 7. One date drift: roadmap Task 13 heading says draft-lock 2026-05-23; body says 2026-05-22. Confirm and fix one of them.
 8. Hero `/api/dateline.json` `ledger_row` pattern + projects `/api/next-piece.json` need the Daily Driver extension before Phase 2 ships (BLUEPRINT §3.6).
-9. The five Daily Driver write endpoints share **no MCP access** (superuser-pack CLAUDE.md). Live install counts (`shipped-stats-intent-engineering-mcp.json`) come from npm/GitHub public HTTPS APIs only.
+9. The five Daily Driver write endpoints share **no MCP access** (code-brain CLAUDE.md). Live install counts (`shipped-stats-intent-engineering-mcp.json`) come from npm/GitHub public HTTPS APIs only.
 
 ---
 
@@ -212,7 +212,7 @@ relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional(),  // 
 
 | Upstream file | Required by | Status | Roadmap task |
 |---|---|---|---|
-| `agents-sdk/lib/concept_edges/EXPLANATION.md` | Phase D ledger row + superuser-pack case study | ✅ COMMITTED 2026-05-12 | Task 2 |
+| `agents-sdk/lib/concept_edges/EXPLANATION.md` | Phase D ledger row + code-brain case study | ✅ COMMITTED 2026-05-12 | Task 2 |
 | `agents-sdk/agents/knowledge_loop/EXPLANATION.md` | Phase 6 ledger row | ✅ COMMITTED 2026-05-12 | Task 2 |
 | `evals/vault-synthesizer/EXPLANATION.md` | Eval suite ledger row | ✅ COMMITTED 2026-05-12 | Task 8 |
 | `~/Code-Brain/sw-mcp-intent-engineering/docs/EXPLANATION.md` | Intent Engineering MCP case study + ledger row | ✅ COMMITTED 2026-05-12 | Task 3 |
@@ -222,7 +222,7 @@ relatedArchitecture: z.union([z.string(), z.array(z.string())]).optional(),  // 
 | `agents-sdk/docs/CONTROL_ARCHITECTURE.md` + `agents-sdk/docs/EXPLANATION.md` | Control Architecture writeup + ledger row | ⏳ NOT YET — Task 14 ship 2026-06-10 | Task 14 |
 | `vault/SCORECARD.md` + `docs/VAULT_AS_AGENT_INFRASTRUCTURE.md` + `docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` | Vault Scorecard architecture writeup + ledger row | ⏳ NOT YET — Task 15 ship 2026-06-03 | Task 15 |
 | `<animation-pipeline-repo>/EXPLANATION.md` | 2D Animation Pipeline case study (A-1) | ⏳ NOT YET — case-study spec §13.1 OPEN-1 | Task 5 / animation 6/11 |
-| `claude-code-superuser-pack/EXPLANATION.md` | Superuser Pack case study (A-2) | ⏳ NOT YET — case-study spec §13.2 | (informal — no roadmap task assigned) |
+| `code-brain/EXPLANATION.md` | Code Brain case study (A-2) | ⏳ NOT YET — case-study spec §13.2 | (informal — no roadmap task assigned) |
 | `<the-block-templates>/EXPLANATION.md` | The Block case study (A-4) | ⏳ NOT YET — case-study spec §13.4 + PMP §10 Decision 4 | (depends on Block content review) |
 | `<16bitfit-repo>/EXPLANATION.md` | 16BitFit case study (A-5) | ⏳ NOT YET — case-study spec §13.5 + PMP §10 Decision 5 | (paused; case study leans on pipeline) |
 
@@ -237,7 +237,7 @@ The redesign's Phase 3 (case studies + about + transactions + architecture + ess
 - The case studies have either canonical EXPLANATION.md (preferred) OR inline-body 4Q (V3-fallback, case-study spec §9.2 Option B)
 - The architecture + essays surfaces have their canonical sources (or those surfaces don't ship in the first wave)
 
-**- [ ] Action R-1.1:** For the 4 case study upstream files that don't yet exist (superuser-pack, animation-pipeline, the-block, 16bitfit) — case-study spec §9.2 Option B already allows inline-body 4Q for v1. Author the 4Q content directly in MDX frontmatter `four_q:` mirror initially; co-located `EXPLANATION.md` follows when the work earns one. This unblocks Phase 3 case-study builds **without** waiting on upstream authoring.
+**- [ ] Action R-1.1:** For the 4 case study upstream files that don't yet exist (code-brain, animation-pipeline, the-block, 16bitfit) — case-study spec §9.2 Option B already allows inline-body 4Q for v1. Author the 4Q content directly in MDX frontmatter `four_q:` mirror initially; co-located `EXPLANATION.md` follows when the work earns one. This unblocks Phase 3 case-study builds **without** waiting on upstream authoring.
 
 **- [ ] Action R-1.2:** For Task 13 (manifesto) — the architecture surface ships **after** Task 15 (Vault Scorecard, 6/3) and Task 14 (Control Architecture, 6/10). Order the Phase 3 surface-build sequence in the build session:
 1. Case studies (5 MDX, inline-body 4Q where needed) — can start any time post-Phase-2
@@ -272,7 +272,7 @@ The redesign's Phase 3 (case studies + about + transactions + architecture + ess
 ### R-3: Daily Driver agent extension required before Phase 2 ships
 
 **Where it lives:**
-- Hero spec §8 (line 202): `/api/dateline.json` — the **existing** Daily Driver write step (per superuser-pack v3.16.0 morning-mode preamble).
+- Hero spec §8 (line 202): `/api/dateline.json` — the **existing** Daily Driver write step (per code-brain v3.16.0 morning-mode preamble).
 - Projects spec §4 (line 135): `/api/next-piece.json` — NEW; reads earliest-upcoming-ship-date from the roadmap's anchor list.
 - About spec §8.1 (per BLUEPRINT §3.6): `/api/about-pulse.json` — NEW; LAST 24H strip.
 - Case-study spec §15 (per BLUEPRINT §3.6): `/api/shipped-stats-<slug>.json` per SHIPPED page — NEW; live install counts via npm/GitHub public HTTPS (no MCP).
@@ -356,7 +356,7 @@ Every artifact has one canonical kebab-case slug used identically in the roadmap
 - `meaning-over-access` (Task 13 / `/essays/` first occupant + paired ledger row)
 - `control-architecture` (Task 14 / paired `/architecture/` writeup + ledger row)
 - `vault-scorecard` (Task 15 / `/architecture/` first occupant + paired ledger row)
-- `animation-pipeline`, `superuser-pack`, `the-block`, `16bitfit` (case-study A-1, A-2, A-4, A-5)
+- `animation-pipeline`, `code-brain`, `the-block`, `16bitfit` (case-study A-1, A-2, A-4, A-5)
 
 ### A-2: IA shape aligned (4 surfaces + `/about/`)
 

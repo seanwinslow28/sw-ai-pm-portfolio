@@ -24,16 +24,16 @@ A 6-cell grid of project tiles on a full-bleed deep-teal splash, framed by torn-
 │                                                                      │
 │   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐               │
 │   │              │  │              │  │              │               │
-│   │   animation  │  │   superuser  │  │     mcp      │               │
-│   │   pipeline   │  │     pack     │  │              │               │
+│   │   animation  │  │  code brain  │  │     mcp      │               │
+│   │   pipeline   │  │              │  │              │               │
 │   │              │  │              │  │              │               │
 │   │              │  │              │  │  ◜ coming    │               │
 │   │              │  │              │  │   may 25 ◞   │               │
 │   ├──────────────┤  ├──────────────┤  ├──────────────┤               │
 │   │ A-1 ACTIVE   │  │ A-2 ACTIVE   │  │ A-3 COMING   │               │
-│   │ 2D Animation │  │ Claude Code  │  │ Intent       │               │
-│   │ Pipeline     │  │ Superuser    │  │ Engineering  │               │
-│   │ animation·   │  │ Pack         │  │ MCP          │               │
+│   │ 2D Animation │  │ Code Brain   │  │ Intent       │               │
+│   │ Pipeline     │  │              │  │ Engineering  │               │
+│   │ animation·   │  │              │  │ MCP          │               │
 │   │ agentic      │  │ agents·mcp   │  │ mcp·ai-pm    │               │
 │   └──────────────┘  └──────────────┘  └──────────────┘               │
 │                                                                      │
@@ -64,7 +64,7 @@ Six tiles. Five are projects, the sixth is the "next in production" card. The da
 | Frame | Project | Status | Title | Tags | Slug |
 |---|---|---|---|---|---|
 | **A-1** | 2D Animation Pipeline | `ACTIVE` | 2D Animation Pipeline | animation · agentic · pipeline | `/work/animation-pipeline` |
-| **A-2** | Claude Code Superuser Pack | `ACTIVE` | Claude Code Superuser Pack | agents · mcp · ai-pm | `/work/superuser-pack` |
+| **A-2** | Code Brain | `ACTIVE` | Code Brain | agents · mcp · ai-pm | `/work/code-brain` |
 | **A-3** | Intent Engineering MCP | `SHIPPED` | Intent Engineering MCP | mcp · ai-pm · infrastructure | `/work/intent-engineering-mcp` |
 | **A-4** | The Block — Campus + RevOps | `ARCHIVED` | The Block — Campus + RevOps | pm · b2b · crypto | `/work/the-block` |
 | **A-5** | 16BitFit Battle Mode | `PAUSED` | 16BitFit Battle Mode | game · agentic · phaser | `/work/16bitfit` |
@@ -104,7 +104,7 @@ Five statuses. No others. The status is the second-strongest signal on the tile 
 | Tile | Default media | If media not ready |
 |---|---|---|
 | A-1 (animation) | Looping video of a pencil-test frame from the in-progress short (muted, autoplay, playsinline, loop) | A still frame with the animator's character mid-walk |
-| A-2 (superuser pack) | Looping video of an agent fleet event firing in the terminal | Architecture diagram (the 3-domain map) |
+| A-2 (code brain) | Looping video of an agent fleet event firing in the terminal | Architecture diagram (the 3-domain map) |
 | A-3 (mcp) | 90-sec Loom poster frame (terminal showing `npm install @swins/intent-engineering-mcp` resolving + Claude Desktop loading the server) | npm registry screenshot OR a still of the MCP protocol diagram with a `SHIPPED 2026-05-12` stamp overlay |
 | A-4 (the block) | Static product screenshot — Campus or RevOps surface, sanitized | A Jira board excerpt or roadmap snippet |
 | A-5 (16bitfit) | Looping gameplay GIF / video — battle mode sprite collision | Sprite sheet image |
@@ -362,7 +362,7 @@ sw-ai-pm-portfolio/
 │   ├── content/
 │   │   └── work/
 │   │       ├── animation-pipeline.mdx
-│   │       ├── superuser-pack.mdx
+│   │       ├── code-brain.mdx
 │   │       ├── intent-engineering-mcp.mdx
 │   │       ├── the-block.mdx
 │   │       └── 16bitfit.mdx
@@ -371,7 +371,7 @@ sw-ai-pm-portfolio/
 │   └── assets/
 │       ├── projects/
 │       │   ├── animation-pipeline.mp4
-│       │   ├── superuser-pack.mp4
+│       │   ├── code-brain.mp4
 │       │   ├── intent-engineering-mcp.png  (with "coming may 25" stamp)
 │       │   ├── the-block.png
 │       │   └── 16bitfit.gif

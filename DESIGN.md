@@ -213,7 +213,7 @@ Tinted neutrals built around a deep teal anchor with two earned warm accents and
 
 **The Uppercase-Mono-Only Rule.** Uppercase + letter-spacing is reserved for JetBrains Mono labels and stamps. Newsreader is never uppercased except for the wordmark "SW." Putting Newsreader in uppercase recreates the luxury-PM "VISION MEETS VELOCITY" template instantly.
 
-**The Tagline-Weight-300 Rule.** The hero tagline ("Product Manager. The agents handle the math. I handle the taste.") renders at Newsreader weight 300, not 400. The light weight is what makes the tagline read as *spoken* and *true*, not declared. Bumping to 400 turns it into a banner. Don't bump.
+**The Tagline-Weight-300 Rule.** The hero tagline ("Product Manager. The agents handle the loops. I handle the taste.") renders at Newsreader weight 300, not 400. The light weight is what makes the tagline read as *spoken* and *true*, not declared. Bumping to 400 turns it into a banner. Don't bump.
 
 ## 4. Elevation
 

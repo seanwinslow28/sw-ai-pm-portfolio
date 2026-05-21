@@ -9,7 +9,7 @@
 
 ## 1. TL;DR
 
-Eight surface specs locked or drafted-awaiting-lock across two sessions. The strategic layer ([`PORTFOLIO-MASTER-PLAN.md`](PORTFOLIO-MASTER-PLAN.md)) and the canonical 4Q template ([`EXPLANATION-template.md`](../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md)) anchor the tactical specs. One additive update is **pending** and **must** be folded in before build session #1: architecture-spec-v1.md §14.1 requires `relatedArchitecture: string | string[]` as an optional field on `transactions-spec-v1.md` §3.2. 29 `[OPEN-N]` questions are flagged across 6 specs plus 6 open PMP §10 decisions — every one has a recommended default; Sean's task at lock is confirm-or-switch, not author-from-scratch. One inter-spec contradiction surfaces in the punch list (hero §14 vs case-study §13.3 on the MCP embed URL). Build proceeds in 5 phases inheriting PMP §9.
+Eight surface specs locked or drafted-awaiting-lock across two sessions. The strategic layer ([`PORTFOLIO-MASTER-PLAN.md`](PORTFOLIO-MASTER-PLAN.md)) and the canonical 4Q template ([`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md)) anchor the tactical specs. One additive update is **pending** and **must** be folded in before build session #1: architecture-spec-v1.md §14.1 requires `relatedArchitecture: string | string[]` as an optional field on `transactions-spec-v1.md` §3.2. 29 `[OPEN-N]` questions are flagged across 6 specs plus 6 open PMP §10 decisions — every one has a recommended default; Sean's task at lock is confirm-or-switch, not author-from-scratch. One inter-spec contradiction surfaces in the punch list (hero §14 vs case-study §13.3 on the MCP embed URL). Build proceeds in 5 phases inheriting PMP §9.
 
 ---
 
@@ -19,7 +19,7 @@ Eight surface specs locked or drafted-awaiting-lock across two sessions. The str
 |---|---|---|---|
 | **Strategic anchor** | [`PORTFOLIO-MASTER-PLAN.md`](PORTFOLIO-MASTER-PLAN.md) | Living | The three load-bearing things — character, voice, daily-dated layer — are what prior V3/V4 attempts kept dropping. PMP §10 carries the open decisions adjudicated cross-cutting (dark mode, nav shape, crossover sequencing). |
 | **Roadmap source-of-truth** | [`2026-05-06-unified-roadmap copy.md`](2026-05-06-unified-roadmap%20copy.md) | Living | Every Task that ships an `EXPLANATION.md` writes a `/transactions/` ledger row automatically. Tasks 13/14/15 introduce the three new IAs (`/essays/`, `/architecture/`, `/transactions/`); Gap-Fill 3 ships the V3 bridge ledger Mon 5/19 that this redesign replaces at the same apex. Task 10 (`vault-knowledge-mcp`) and Task 11 (fleet dashboard, live) gate downstream surfaces. |
-| **4Q comprehension contract** | [`EXPLANATION-template.md`](../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) | Canonical | Every collection that fetches a 4Q at build (work, transactions, architecture, essays) validates against this template's 4 headings exactly: `What is this?` / `Why this approach?` / `What would break?` / `What did I learn?`. The case-study `<FourQBlock />` component is the shared renderer. |
+| **4Q comprehension contract** | [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) | Canonical | Every collection that fetches a 4Q at build (work, transactions, architecture, essays) validates against this template's 4 headings exactly: `What is this?` / `Why this approach?` / `What would break?` / `What did I learn?`. The case-study `<FourQBlock />` component is the shared renderer. |
 | **Hero (locked)** | [`hero-spec-v1.md`](hero-spec-v1.md) | LOCKED 2026-05-13, animation-reconciled 2026-05-16 | Sean + AI companion are *already there together* when you land — no walk-in arrival beat. The 3.917s WebM loop runs as the page's ambient heartbeat. Lane is `right: -180px` bleed-and-clip so the source canvas's empty band falls off-screen and the painted character sits flush against the viewport edge. |
 | **Projects section (locked)** | [`projects-section-spec-v1.md`](projects-section-spec-v1.md) | LOCKED 2026-05-13, A-3 status amended 2026-05-17 | The grid is 5 curated tiles + 1 dashed "next in production" card pulling from `/api/next-piece.json`. The full artifact roster (9+ flagship + 3 supporting at scale) does NOT compete with the 5 tiles — it lives at `/transactions/`. Same MDX content collection feeds both. |
 | **Case study (drafted)** | [`case-study-spec-v1.md`](case-study-spec-v1.md) | Drafted 2026-05-17 | Status governs page *shape*, not just the label. ACTIVE/COMING look default; SHIPPED gets a literal hand-drawn stamp + `<ShippedNow />` live install-count block; PAUSED gets a return-condition callout before the hero media; ARCHIVED gets a frame-the-work preamble + 50%-opacity right-margin accent. 4Q reads from canonical `EXPLANATION.md` at build (Option A); `four_q:` frontmatter mirror is the legacy fallback (Option B). |
@@ -108,7 +108,7 @@ All seams: Firefox <128 + older Safari fall back to instant navigation. Function
 
 ### 3.6 Daily Driver agent wiring
 
-The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per superuser-pack `CLAUDE.md`) gains **4 write endpoints** + **1 ledger-pattern computation**:
+The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per code-brain `CLAUDE.md`) gains **4 write endpoints** + **1 ledger-pattern computation**:
 
 | Endpoint | Origin spec | Body |
 |---|---|---|
@@ -119,7 +119,7 @@ The Daily Driver morning agent (runs 08:45 daily, existing infrastructure per su
 
 The `ledger_row` pattern is the closure point of the daily-dated layer: agent reads `src/content/transactions/*.md` filesystem at write-time, computes count + most-recent title + new-arrivals-overnight signal, picks the pattern, renders the body string. Transactions spec §13 confirms the wiring; hero spec §8 declares the consumer.
 
-**Key constraint:** the Daily Driver runs in a headless SDK environment with **no MCP access** (per superuser-pack `CLAUDE.md`). All 4 endpoints write from filesystem reads only — no Slack, no Gmail, no calendar. Live install counts on `shipped-stats-<slug>.json` come from npm/GitHub public APIs via HTTPS, not an MCP client.
+**Key constraint:** the Daily Driver runs in a headless SDK environment with **no MCP access** (per code-brain `CLAUDE.md`). All 4 endpoints write from filesystem reads only — no Slack, no Gmail, no calendar. Live install counts on `shipped-stats-<slug>.json` come from npm/GitHub public APIs via HTTPS, not an MCP client.
 
 ---
 
@@ -139,7 +139,7 @@ Fully locked. A-3 status amendment (COMING → SHIPPED) executed inline 2026-05-
 
 | # | Where | Recommended default | Switch-only-if |
 |---|---|---|---|
-| §13.1 | Animation-pipeline `EXPLANATION.md` location | The superuser-pack repo (co-located in `~/Code-Brain/claude-code-superuser-pack/animation-pipeline/EXPLANATION.md`) | Sean's working folder for the animation short is separate from the superuser-pack repo |
+| §13.1 | Animation-pipeline `EXPLANATION.md` location | The code-brain repo (co-located in `~/Code-Brain/code-brain/animation-pipeline/EXPLANATION.md`) | Sean's working folder for the animation short is separate from the code-brain repo |
 | §13.4 | The Block content review (PMP §10 Decision 4 dependency) | First draft with Larry Cermak as primary reference. Frame-the-work, not the exit. ARCHIVED status locked. | Anonymization review surfaces material that can't ship publicly even sanitized — in which case the case study leans on Reference Artifact link + frontmatter-mirror 4Q only |
 | §13.5 | 16BitFit shippable artifact material (PMP §10 Decision 5 dependency) | Spec assumes the pipeline is the artifact, not the game. Pipeline artifacts (renders, sprite explorations, agent runs) carry the case study; gameplay screenshots only where they exist | Pipeline artifact material is insufficient even leaning on the pipeline — then the tile drops to A-4 (4 tiles + 1 next-in-production card; reduce grid to 5 cells) |
 
@@ -229,7 +229,7 @@ Concrete prereqs that must close before code is written.
 
 6. **About page character** — `about-full-body.png` authored via Seedream 2.0 from anchor sheets in `sw-portfolio-animation-2026/anchor-images/`. Sean alone, full-body, no AI companion (about spec OPEN-1 default). ≤800KB, 2x retina source.
 
-7. **Saturday morning canon cels** — 6 pencil-test studies. Per about spec OPEN-4 Path C: Sean draws 2-3 by hand (locks visual language); Seedream backfills the remaining 3-4. Land at `src/assets/cartoons/<name>-study.png`.
+7. ~~**Saturday morning canon cels** — 6 pencil-test studies.~~ **DONE 2026-05-21.** All 6 authored via Gemini Nano Banana 2 / Approach B (style anchor + per-character reference). Canon locked: Tommy Pickles · Ash Ketchum · Rocko · Samurai Jack (`break_grid: true`) · Uncle Iroh · Jake the Dog. Sources at [`reference-images/about-cartoons/`](../../reference-images/about-cartoons/); MDX frontmatter draft at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](../../reference-images/about-cartoons/cartoons-content-collection-draft.md). Bugs Bunny was generated and rejected in favor of Iroh's deeper PM lesson; post-mortem in [`GENERATION-PROMPTS.md`](../../reference-images/about-cartoons/GENERATION-PROMPTS.md). The about spec's "Seedream 2.0" reference was a tooling-name error — corrected to Gemini Nano Banana 2 in §11.4 of the about spec at the same lock.
 
 8. **Five About B-N heading SVGs** — `b1-how-i-got-here.svg`, `b2-why-pm.svg`, `b3-saturday-morning-canon.svg`, `b4-where-im-going.svg`, `b5-proof-points.svg`. Per about spec OPEN-6: Path A (hand-drawn + scanned) or Path B (Seedream); Path C (Caveat font) discouraged.
 
@@ -237,21 +237,21 @@ Concrete prereqs that must close before code is written.
 
 10. **Kid-drawing scan margin artifact** — one per page, B-1 left-column margin (about spec §14 vocabulary 5).
 
-11. **`/public/og-default.png`** (1200×630) — wordmark + hero tagline, manually authored or placeholder (site chrome spec §12.2).
+11. ~~**`/public/og-default.png`** (1200×630) — wordmark + hero tagline.~~ **DONE 2026-05-21.** Authored at [`reference-images/og-cards/og-default.png`](../../reference-images/og-cards/og-default.png) (52KB). Carries the PMP §4 locked meta-description hook ("AI Product Manager. Raised by Saturday morning cartoons and Vercel deployment logs.") + the SW wordmark + the dateline strip register. Moves to `/public/` at Phase 2 scaffold.
 
-12. **Per-page OG cards** — `/public/og-cards/vault-scorecard.png` + `/public/og-cards/vault-knowledge-mcp.png` + `/public/og-cards/essays/meaning-over-access.png`. Static PNG authored per page; satori auto-generation is v2 (architecture spec §17 + essays spec §18).
+12. ~~**Per-page OG cards** — vault-scorecard + vault-knowledge-mcp + essays/meaning-over-access.~~ **DONE 2026-05-21.** All three authored at [`reference-images/og-cards/vault-scorecard.png`](../../reference-images/og-cards/vault-scorecard.png) (46KB), [`reference-images/og-cards/vault-knowledge-mcp.png`](../../reference-images/og-cards/vault-knowledge-mcp.png) (46KB, includes SHIPPED 2026-05-12 stamp), and [`reference-images/og-cards/essays/meaning-over-access.png`](../../reference-images/og-cards/essays/meaning-over-access.png) (44KB). All 1200×630, all under the 200KB budget. Generated deterministically via Python + Pillow + Newsreader/JetBrains Mono TTFs — script preserved at [`scripts/phase-0/generate_og_cards.py`](../../scripts/phase-0/generate_og_cards.py) for future regens. Satori auto-generation remains a v2 enhancement.
 
-13. **Favicon set** — `favicon.svg` + `favicon.ico` + `apple-touch-icon.png` in `/public/` (site chrome spec Appendix A).
+13. ~~**Favicon set** — `favicon.svg` + `favicon.ico` + `apple-touch-icon.png`.~~ **DONE 2026-05-21.** Authored at [`reference-images/favicon/`](../../reference-images/favicon/): hand-authored SVG (SW wordmark, JetBrains Mono 700, teal `#0A3E42` on warm paper `#FFF9F0`) + multi-resolution ICO (16/32/48px raster, 372B) + apple-touch-icon.png (180×180, 4.5KB). Rasters generated via Pillow from the same SW wordmark used in the SVG; script at [`scripts/phase-0/generate_favicons.py`](../../scripts/phase-0/generate_favicons.py). Site-chrome §16 OPEN-1 wordmark question CONFIRMED at the recommended default in lockstep.
 
 **Upstream `EXPLANATION.md` files (gate canonical-source fetch):**
 
 14. **Already committed at PMP §0.5 reference point (5 files):** intent-engineering MCP, vault-synthesizer eval suite, substack-drafter (gate-b-drafts), Phase D typed reasoning edges, Phase 6 knowledge loop. These carry forward at crossover via the migration script.
 
 15. **Must ship upstream before their consumer surface builds:**
-    - `animation-pipeline/EXPLANATION.md` — case-study spec §13.1 OPEN (location TBD; default: in superuser-pack repo)
-    - `superuser-pack/EXPLANATION.md` — case-study spec §13.2 (in `~/Code-Brain/claude-code-superuser-pack/`)
+    - `animation-pipeline/EXPLANATION.md` — case-study spec §13.1 OPEN (location TBD; default: in code-brain repo)
+    - `code-brain/EXPLANATION.md` — case-study spec §13.2 (in `~/Code-Brain/code-brain/`)
     - `intent-engineering-mcp/EXPLANATION.md` — case-study spec §13.3 (in the intent-engineering-mcp repo)
-    - `VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` — architecture spec Appendix B (Task 15, ships 6/3, in superuser-pack `docs/`)
+    - `VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md` — architecture spec Appendix B (Task 15, ships 6/3, in code-brain `docs/`)
     - `MEANING_OVER_ACCESS_EXPLANATION.md` — essays spec Appendix B (Task 13, draft-locks 5/22, publish ~6/19)
     - Plus the long-form essay sources at `VAULT_AS_AGENT_INFRASTRUCTURE.md` (architecture) + `MEANING_OVER_ACCESS.md` (essays) — fetched at build via `fetch_canonical_sources.mjs`
 
@@ -324,7 +324,7 @@ The dependency order matters here. Case-study + transactions share `<FourQBlock 
 - ☐ `<SiteNav />` + skip link (site chrome §6) — needed before any sub-page renders
 - ☐ Build `<FourQBlock />` + `<MethodsStrip />` + `<Annotation />` shared components (case-study spec is the canonical source for all three)
 - ☐ Build 4 artifact MDX components (`<PRDDecision />`, `<SlackQuote />`, `<BoardArtifact />`, `<MetricChart />`) (case-study spec §7.2)
-- ☐ 5 MDX case-study files (`animation-pipeline`, `superuser-pack`, `intent-engineering-mcp`, `the-block`, `16bitfit`) with frontmatter + opener prose + investigation board content
+- ☐ 5 MDX case-study files (`animation-pipeline`, `code-brain`, `intent-engineering-mcp`, `the-block`, `16bitfit`) with frontmatter + opener prose + investigation board content
 - ☐ `/work/[slug]` dynamic route + status-driven page-shape rendering (case-study spec §12 — 4 status behaviors)
 - ☐ About page (single MDX at `src/content/about/index.mdx`) + B-3 cartoon canon content collection at `src/content/cartoons/`
 - ☐ Run `scripts/migrate_v3_transactions.mjs` once at this point — interactively, with Sean confirming each row
@@ -369,7 +369,7 @@ The dependency order matters here. Case-study + transactions share `<FourQBlock 
 
 ## 7. First build session hand-off
 
-> **Open a Claude Code session at** `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. **Read this file first** (`docs/BLUEPRINT-COMPLETE.md`) — it points at everything else. Then read the 8 surface specs end-to-end in their numbered order (hero, projects-section, case-study, about, transactions, architecture, essays, site-chrome). Reference [`PORTFOLIO-MASTER-PLAN.md`](PORTFOLIO-MASTER-PLAN.md) for strategic context (especially §3 voice rules and §10 open decisions) and [`EXPLANATION-template.md`](../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) for the canonical 4Q contract every collection's deep-dive page renders. Before writing any code, fold in the pending additive flagged in this blueprint's §5 punch list item #1 — add `relatedArchitecture` as an optional field on `transactions-spec-v1.md` §3.2 per architecture-spec §14.1. Then proceed in phase order: Phase 0 asset prep → Phase 2 hero + projects (use the hero spec Appendix B + projects spec Appendix C hand-off prompts verbatim) → Phase 3 narrative + catalog surfaces in dependency order (foundations + scripts → case-study → about → transactions → architecture → essays → contact + 404) → Phase 4 launch. The three load-bearing things — character, voice, daily-dated layer — survive every phase. The template trap (design-system-viewer / luxury-minimal-PM) is the enemy. The HybridRouter is never framed as "Agent OS" or "runtime architecture" anywhere on the portfolio. Stop after each phase to validate the relevant DoD items on `localhost:4321` before opening the next phase.
+> **Open a Claude Code session at** `/Users/seanwinslow/Code-Brain/sw-ai-pm-portfolio/`. **Read this file first** (`docs/BLUEPRINT-COMPLETE.md`) — it points at everything else. Then read the 8 surface specs end-to-end in their numbered order (hero, projects-section, case-study, about, transactions, architecture, essays, site-chrome). Reference [`PORTFOLIO-MASTER-PLAN.md`](PORTFOLIO-MASTER-PLAN.md) for strategic context (especially §3 voice rules and §10 open decisions) and [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) for the canonical 4Q contract every collection's deep-dive page renders. Before writing any code, fold in the pending additive flagged in this blueprint's §5 punch list item #1 — add `relatedArchitecture` as an optional field on `transactions-spec-v1.md` §3.2 per architecture-spec §14.1. Then proceed in phase order: Phase 0 asset prep → Phase 2 hero + projects (use the hero spec Appendix B + projects spec Appendix C hand-off prompts verbatim) → Phase 3 narrative + catalog surfaces in dependency order (foundations + scripts → case-study → about → transactions → architecture → essays → contact + 404) → Phase 4 launch. The three load-bearing things — character, voice, daily-dated layer — survive every phase. The template trap (design-system-viewer / luxury-minimal-PM) is the enemy. The HybridRouter is never framed as "Agent OS" or "runtime architecture" anywhere on the portfolio. Stop after each phase to validate the relevant DoD items on `localhost:4321` before opening the next phase.
 
 ---
 

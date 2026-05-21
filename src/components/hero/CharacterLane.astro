@@ -1,0 +1,108 @@
+---
+/**
+ * Hero character lane — flush-right WebM + intro icon cycle + floor shadow.
+ * Source: hero-spec §7, §7.5; texture-spec §5.
+ */
+import HeroIconCycle from "./HeroIconCycle.astro";
+import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
+---
+
+<div class="character" aria-hidden="true">
+  <img
+    class="hero-floor-shadow"
+    src="/assets/textures/hero-floor-shadow.png"
+    alt=""
+    loading="eager"
+    decoding="async"
+  />
+  <HeroIconCycle />
+  <video
+    class="character-video"
+    src={HERO_LOOP_WEBM}
+    poster={HERO_LOOP_POSTER}
+    muted
+    loop
+    playsinline
+    preload="auto"
+    data-state="pending"
+  />
+</div>
+
+<script>
+  import { initHeroIconCycle } from "~/scripts/hero-icon-cycle.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".hero-intro-cycle");
+    const video = document.querySelector(".character-video");
+    if (container && video) {
+      initHeroIconCycle({ container, video });
+    }
+  });
+</script>
+
+<style>
+  .character {
+    position: absolute;
+    width: 1024px;
+    height: 576px;
+    right: -180px;
+    bottom: 80px;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .hero-floor-shadow {
+    /* Reference: sw-portfolio-animation-2026/.../hero-image-with-bg000.png —
+       a tight ellipse only under the desk + chair, not a wide swath.
+       Shadow PNG centroid is at 49% of its own width; positioning left:18%
+       (width 55%) puts the dark center at ~46% of lane → ~78% of viewport
+       on a 1920 viewport, matching the painted desk's visible position
+       (lane right:-180px bleed places the desk on the right of the viewport).
+
+       TODO(v1.1): shadow still reads slightly off-center to the desk per
+       Sean's 2026-05-21 review. The CSS math lands at ~80% viewport vs the
+       desk's ~78% — close but not pixel-perfect. Tightening requires either
+       (a) re-cropping the shadow PNG so its alpha centroid aligns with the
+       desk-foot center, or (b) per-viewport-width calibration. Deferred. */
+    position: absolute;
+    width: 55%;
+    height: auto;
+    bottom: -6px;
+    left: 18%;
+    right: auto;
+    object-fit: contain;
+    object-position: center bottom;
+    z-index: 18;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+  @media (max-width: 1024px) {
+    .hero-floor-shadow {
+      width: 70%;
+      left: 20%;
+    }
+  }
+  .character-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom right;
+    z-index: 20;
+    opacity: 0;
+  }
+  @media (max-width: 1024px) {
+    .character {
+      width: 420px;
+      height: 240px;
+      right: -24px;
+      bottom: -10px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* No video mounted in JS — but we hide it via CSS as a defensive measure. */
+    .character-video {
+      display: none;
+    }
+  }
+</style>

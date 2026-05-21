@@ -1,0 +1,70 @@
+Create a head-and-shoulders bust portrait of the man in the FIRST reference photo, rendered as a traditional animation pencil test sketch on warm cream animation paper. The art style, line treatment, color palette, and paper substrate must match the character design shown in the SECOND reference image (the existing canonical character anchor sheet for this person) EXACTLY — this is the same character, drawn in the same hand, just cropped to a portrait bust.
+
+CONTEXT — animation paper substrate (match the SECOND reference):
+Single bust-shot portrait on a sheet of warm cream animation paper. Visible paper grain and tooth. Subtle aging marks, faint dust specks, a few light pencil-smudge marks at the edges. Three evenly-spaced circular hole-punch marks at the bottom edge of the paper. A hand-written production label inside a hand-drawn circle in the top-left corner reading "A-2" — same placement, same loose hand-drawn circle, same pencil weight as the SECOND reference image.
+
+STYLE CLUSTER — PENCIL ANIMATION (must match the SECOND reference exactly):
+Style: Traditional animation pencil test drawing. Hand-drawn graphite pencil lines on warm cream animation paper. Lines are WARM GRAY graphite (NOT black, NOT ink) with natural stroke-weight variation — thicker on contour outlines (~2-3px equivalent), thinner on interior detail (~1px equivalent). Visible faint construction line artifacts beneath the final drawing — center vertical axis of the face, horizontal eye-line, horizontal mouth-line, faint oval guide for the head. Subtle cross-hatching and directional pencil strokes for shading on under-chin shadow, under-hair shadow, and shirt folds. Line confidence reads as a professional animator's hand — fluid, gestural strokes, slight irregularity, occasional retraced overlap. Not stiff, not mechanical, not digital.
+
+Color: Extremely limited, desaturated flat color fills layered OVER the pencil drawing. Pencil lines remain visible THROUGH and ON TOP of the color. Match the SECOND reference's palette:
+- Skin: warm peachy-tan, low saturation
+- Hair: dirty sandy-blonde, slightly cooler on the sides where the fade is shorter
+- Eyebrows + stubble: matching dirty-blonde tone, slightly warmer
+- Shirt: deep desaturated navy / dark teal (same as the t-shirt in the SECOND reference)
+- NO background color — just the cream paper
+
+Paper: warm cream/off-white background (approximately #FAF5E8) with visible paper grain. No flat white anywhere. No pure black anywhere.
+
+IDENTITY ANCHORS (preserve from the FIRST reference photo — these features must read as obviously the same individual):
+- Hair: Dirty blond. Short fade on the sides, longer textured quiff swept up and slightly back on top. Hairline matches photo (slight widow's-peak suggestion).
+- Eyes: LIGHT BLUE eyes — this is a critical identity marker. Eyes are slightly close-set. Engaged with the camera, looking directly at the viewer.
+- Eyebrows: dirty-blond, fairly straight, low-arched.
+- Nose: straight, narrow bridge, slight definition.
+- Facial hair: LIGHT scruffy stubble in dirty-blond — soft mustache, chin scruff, no defined beard line. Light enough that pencil rendering shows it as fine cross-hatched texture, not a solid color block.
+- Mouth: closed, subtle warm smile, slight upward curve at the corners, NO teeth showing.
+- Jawline: defined but not sharp — lean.
+- Ears: visible, in proportion, set close to the head.
+- Neck: lean.
+- Shoulders: lean, narrow, in proportion.
+- Skin: fair with a warm undertone.
+
+CHARACTER STYLE ANCHORS (match the SECOND reference exactly):
+- Head proportions: slightly larger than photorealistic — Disney/Pixar pre-production adjacent. Same head-to-shoulder ratio as the SECOND reference.
+- Eye size + spacing: matches the SECOND reference's stylized rendering, not the photo's true proportions
+- Hair rendering: same loose, textural, slightly tousled treatment as the SECOND reference. Hair strands suggested with directional pencil flicks, not rendered strand-by-strand.
+- Smile: same subtle warm closed-mouth smile as the SECOND reference.
+- Shirt: same deep navy/dark-teal short-sleeved T-shirt as in the SECOND reference. Plain. Subtle pencil-line shading on the shoulder folds, cross-hatching at the collar shadow.
+
+COMPOSITIONAL LAYOUT:
+Single subject, centered on the page. Bust crop — frame from just below the collarbones up to slightly above the highest point of the hair, with comfortable negative space (10-15% of canvas) around the head and shoulders. Subject is in a slight 3/4 angle (~10-15 degrees rotation off center-forward), but eyes are turned to face the viewer directly. NO hands in shot. NO background elements other than the warm paper texture. No environment.
+
+CONSISTENCY CONSTRAINTS:
+The subject must be immediately recognizable as the same person in the FIRST reference photo (someone who knows him should say "that's him") AND must be drawn in the same style/hand as the SECOND reference image (this is the same character, same animator). If there is any tension between the two references: prioritize the SECOND reference's STYLE and the FIRST reference's IDENTITY. The character is the SECOND-reference's character, drawn from the FIRST-reference's face.
+
+TECHNICAL UNIFORMITY:
+- Pencil weight: contour outlines warm-gray graphite, ~2-3px equivalent; interior details ~1px; construction lines barely visible
+- Lines have natural irregularity — slight wobble, varying pressure, occasional retrace
+- Cross-hatching visible on: under-chin shadow, under-jaw line, inside ear, under-hair on forehead, shoulder/neck transition shadow
+- Color is applied flat — no gradients, no airbrush, no soft blends
+- Pencil lines visible THROUGH the flat color in all areas
+
+OUTPUT SPECS + NEGATIVES:
+Output a single warm-paper, pencil-test bust portrait. 3:4 portrait aspect ratio. Image should look like a high-resolution scan of an animator's real pencil drawing on real cream animation paper — analog, warm, crafted, hand-made.
+
+NEGATIVES (must not appear):
+- No vector-clean lines
+- No solid black outlines anywhere
+- No cel shading
+- No anime style (no giant eyes, no pointed chin)
+- No saturated colors
+- No digital painting look
+- No gradient shading or soft blends
+- No airbrush effects
+- No pure white anywhere
+- No pure black anywhere
+- No environment / background elements other than paper
+- No photorealism — this is a stylized pencil drawing, not a portrait painting
+- No full body — head and shoulders only
+- No hands in shot
+- No teeth showing in the smile
+- No glasses (the subject does not wear glasses)

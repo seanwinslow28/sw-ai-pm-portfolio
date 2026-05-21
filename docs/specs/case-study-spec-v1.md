@@ -1,6 +1,6 @@
 # Case-Study Page v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 3 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.3. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The body of each `/work/<slug>` page. Inherits everything from `hero-spec-v1.md` (color, type, motion, cursor) and `projects-section-spec-v1.md` (status labels, View Transition contract, content-collection schema). This file ends at the page footer; the global site chrome lives in `site-chrome-spec-v1.md`.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + `hero-spec-v1.md` + `projects-section-spec-v1.md` open.
 
@@ -12,7 +12,7 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 
 ## 1.1 Changelog
 
-- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
+- **2026-05-17:** Initial draft. Inherits projects-spec §10 (click contract) + §11 (high-level shape sketch). The 4Q block here is canonical — mirrors [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) heading-for-heading. The `SHIPPED` status (added 2026-05-17 to the projects spec for Intent Engineering MCP) is treated as a full citizen here.
 
 ---
 
@@ -86,7 +86,7 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 │  │ frame cleanup  │ clean-frame-v2a.sh   │ rembg / $0      │         │
 │  │ render         │ ffmpeg + libvpx-vp9  │ local / $0      │         │
 │  │ style anchor   │ Seedream 2.0         │ ~$0.40/run      │         │
-│  │ orchestration  │ → /work/superuser…   │ Claude Sonnet…  │         │
+│  │ orchestration  │ → /work/code-brain…   │ Claude Sonnet…  │         │
 │  └────────────────┴──────────────────────┴─────────────────┘         │
 │                                                                      │
 │                                                                      │
@@ -108,7 +108,7 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 │                                                                      │
 │                                                                      │
 │  ─ NEXT / PREV ──────────────────────────────────────────────       │
-│  ← A-? prev project              A-2 SUPERUSER PACK →                │
+│  ← A-? prev project              A-2 CODE BRAIN →                │
 │                                                                      │
 │  ◐ registration mark (page closeout)                                 │
 └──────────────────────────────────────────────────────────────────────┘
@@ -202,7 +202,7 @@ The page is a long-form scroll, not a hero-and-CTA. Recruiter scans the title bl
 
 The rule: **personal warmth lives in the opener and the 4Q's "What did I learn?" kicker. Everything between is evidence.** That's what makes the warmth land — it's earned by the wire-service middle.
 
-**STOP-DOING:** Per PMP §3.4 / roadmap Task 7, the HybridRouter is never framed as "Agent OS" or "runtime architecture" on any case-study page. If the work involves model routing (Superuser Pack, Animation Pipeline), it lives inside the Control Architecture write-up's "Authority" section — *"authority over which brain runs which task"* — and is referenced from the case-study page, not redescribed.
+**STOP-DOING:** Per PMP §3.4 / roadmap Task 7, the HybridRouter is never framed as "Agent OS" or "runtime architecture" on any case-study page. If the work involves model routing (Code Brain, Animation Pipeline), it lives inside the Control Architecture write-up's "Authority" section — *"authority over which brain runs which task"* — and is referenced from the case-study page, not redescribed.
 
 ---
 
@@ -327,12 +327,12 @@ Three columns. Four to seven rows typical. Mono throughout. Paper background, 0.
 | frame cleanup | `clean-frame-v2a.sh` | rembg / $0 |
 | render | ffmpeg + libvpx-vp9 | local / $0 |
 | style anchor | Seedream 2.0 | ~$0.40/run |
-| orchestration | → `/work/superuser-pack` | Claude Sonnet 4.6 (HybridRouter) |
+| orchestration | → `/work/code-brain` | Claude Sonnet 4.6 (HybridRouter) |
 | frame interpolation | RIFE | local GPU / $0 |
 
 ### 8.2 Cross-link rule
 
-When the AGENT/TOOL column references something that has its own case study, the cell becomes an internal link. The mono text gets a 1px underline in `#0A3E42`. The Methods strip emerges as a **methods graph** across the portfolio — claude code superuser pack appears in 3 case studies' methods, animation pipeline appears in 1, etc.
+When the AGENT/TOOL column references something that has its own case study, the cell becomes an internal link. The mono text gets a 1px underline in `#0A3E42`. The Methods strip emerges as a **methods graph** across the portfolio — code brain appears in 3 case studies' methods, animation pipeline appears in 1, etc.
 
 ### 8.3 Source
 
@@ -345,9 +345,9 @@ methods:
     cost: rembg / $0
     link: null
   - task: orchestration
-    tool: Claude Code Superuser Pack
+    tool: Code Brain
     cost: Claude Sonnet 4.6 (HybridRouter)
-    link: /work/superuser-pack
+    link: /work/code-brain
 ```
 
 The MDX body never writes the Methods table inline — it's frontmatter-driven so the cross-link graph stays queryable and uniform.
@@ -360,7 +360,7 @@ The MDX body never writes the Methods table inline — it's frontmatter-driven s
 
 ## 9. 4Q block — the canonical `EXPLANATION.md`
 
-The closer. Sits below Methods, above next/prev. Mirrors [`EXPLANATION-template.md`](../../../claude-code-superuser-pack/vault/40_knowledge/templates/EXPLANATION-template.md) **heading-for-heading**.
+The closer. Sits below Methods, above next/prev. Mirrors [`EXPLANATION-template.md`](../../../code-brain/vault/40_knowledge/templates/EXPLANATION-template.md) **heading-for-heading**.
 
 ### 9.1 The four sections, in order
 
@@ -415,7 +415,7 @@ The 4Q block exists in three places: (1) the artifact's repo (`EXPLANATION.md`),
 Two pills at the bottom of the page body, above the registration mark.
 
 ```
-← A-2 SUPERUSER PACK              A-4 THE BLOCK →
+← A-2 CODE BRAIN              A-4 THE BLOCK →
 ```
 
 | Element | Style |
@@ -558,11 +558,11 @@ Each of the 5 case studies is a single `.mdx` file in `src/content/work/`. Front
   3. An anonymized Slack DM about the alpha channel rub (Apr 23)
   4. The first 146-frame raw cycle (Apr 17) — Polaroid frame
   5. A killed v2 cleanup script — strikethrough X annotation
-**Methods strip:** rembg / ffmpeg+libvpx-vp9 / Seedream 2.0 / Superuser Pack orchestration (cross-link)
-**4Q source:** read from `EXPLANATION.md` in the animation-pipeline repo (or co-located in the superuser-pack working folder if it lives there)
-**[OPEN: confirm where the animation-pipeline EXPLANATION.md lives — superuser-pack repo or its own folder]**
+**Methods strip:** rembg / ffmpeg+libvpx-vp9 / Seedream 2.0 / Code Brain orchestration (cross-link)
+**4Q source:** read from `EXPLANATION.md` in the animation-pipeline repo (or co-located in the code-brain working folder if it lives there)
+**[OPEN: confirm where the animation-pipeline EXPLANATION.md lives — code-brain repo or its own folder]**
 
-### 13.2 `superuser-pack.mdx` — `ACTIVE`
+### 13.2 `code-brain.mdx` — `ACTIVE`
 
 **Hero media:** a looping terminal recording of an agent fleet event firing (Daily Driver morning brief, ~6s loop)
 **Anchor metric:** `16 SKILLS · 14 HOOKS · 8 AGENTS`
@@ -574,7 +574,7 @@ Each of the 5 case studies is a single `.mdx` file in `src/content/work/`. Front
   4. A board excerpt: schedule-recommendations.md update (Mar)
   5. A killed v1 process-inbox cloud-Sonnet approach — strikethrough
 **Methods strip:** Claude Agent SDK / launchd / Ollama (Mac Mini + MBP) / nomic-embed-text / Qwen3-14B
-**4Q source:** read from `EXPLANATION.md` in `~/Code-Brain/claude-code-superuser-pack/`
+**4Q source:** read from `EXPLANATION.md` in `~/Code-Brain/code-brain/`
 **Note on STOP-DOING:** HybridRouter mentioned in Methods strip only. Not in opener. Not in 4Q's Q2 framing.
 
 ### 13.3 `intent-engineering-mcp.mdx` — `SHIPPED`
@@ -686,7 +686,7 @@ Case-study page v1 ships when:
 6. Status-driven page shape: each of the 4 statuses (`ACTIVE` / `SHIPPED` / `PAUSED` / `ARCHIVED`) demonstrably renders differently per §12 (SHIPPED has live block + stamp, PAUSED has return-condition callout, ARCHIVED has frame-the-work preamble + desaturated palette).
 7. Live block: the SHIPPED page (`intent-engineering-mcp`) reads from a real `/api/shipped-stats-intent-engineering-mcp.json` written by the Daily Driver — not hardcoded.
 8. Pencil annotations render with ≤6 per page on desktop, ≤4 on mobile, never adjacent within 200px, anchored via `target` + `offset` (no absolute pixel coords).
-9. Methods strip cross-links work — `Claude Code Superuser Pack` cell on `animation-pipeline` page navigates to `/work/superuser-pack` via View Transition.
+9. Methods strip cross-links work — `Code Brain` cell on `animation-pipeline` page navigates to `/work/code-brain` via View Transition.
 10. Per-artifact permalinks work — `/work/animation-pipeline#artifact-3` scrolls to the third artifact on page load.
 11. Reduced-motion: every animation collapses per §14. The View Transition gracefully disables.
 12. Lighthouse Performance ≥90 (the page is image-heavier than the hero so the threshold is lower), Accessibility ≥95, Best Practices = 100.
@@ -797,12 +797,12 @@ methods:
     cost: ~$0.40 per run
     link: null
   - task: orchestration
-    tool: Claude Code Superuser Pack
+    tool: Code Brain
     cost: Claude Sonnet 4.6
-    link: /work/superuser-pack
+    link: /work/code-brain
 
 # Either explanation_url (preferred) OR four_q must be present:
-explanation_url: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/animation-pipeline/EXPLANATION.md
+explanation_url: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/animation-pipeline/EXPLANATION.md
 # OR:
 # four_q:
 #   what: "..."

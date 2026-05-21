@@ -1,0 +1,126 @@
+---
+/**
+ * Hero — composition wrapper. Layouts the dateline, name, role tag, tagline,
+ * and the absolute-positioned character lane.
+ * Source: hero-spec §2-§6.
+ */
+import Dateline from "./Dateline.astro";
+import CharacterLane from "./CharacterLane.astro";
+
+const NAME = "Sean Winslow";
+const ROLE = "AI PRODUCT MANAGER";
+---
+
+<section class="hero page-sheet">
+  <div class="hero-inner">
+    <Dateline />
+    <h1 class="hero-name">{NAME}</h1>
+    <p class="hero-role">/ {ROLE}</p>
+    <p class="hero-tagline">
+      <span class="line line-1">Product Manager</span>
+      <span class="line line-2">The agents handle the loops.</span>
+      <span class="line line-3">I handle the taste.</span>
+    </p>
+  </div>
+  <CharacterLane />
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 880px;
+    padding: 60px 52px 120px;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 20;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .hero-name {
+    font-family: var(--font-serif);
+    font-size: clamp(56px, 7.2vw, 130px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.8px;
+    color: var(--teal);
+    margin: 0;
+    /* Stagger entrance */
+    opacity: 0;
+    animation: heroNameIn 600ms var(--ease-out) 400ms forwards;
+  }
+  .hero-role {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1.8px;
+    line-height: 1.4;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: heroRoleIn 300ms var(--ease-out) 700ms forwards;
+  }
+  .hero-tagline {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.4vw, 60px);
+    font-weight: 300;
+    line-height: 1.18;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    max-width: 680px;
+    margin-top: 56px;
+  }
+  .hero-tagline .line {
+    display: block;
+    opacity: 0;
+    transform: translateY(28px);
+    animation: heroTaglineIn 700ms var(--ease-out-quart) forwards;
+  }
+  .hero-tagline .line-1 { animation-delay: 900ms; }
+  .hero-tagline .line-2 { animation-delay: 1040ms; }
+  .hero-tagline .line-3 { animation-delay: 1180ms; }
+
+  @keyframes heroNameIn {
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes heroRoleIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes heroTaglineIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 720px;
+      padding: 40px 24px 80px;
+    }
+    .hero-name {
+      font-size: 56px;
+    }
+    .hero-tagline {
+      font-size: 28px;
+      max-width: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-name,
+    .hero-role,
+    .hero-tagline .line {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>

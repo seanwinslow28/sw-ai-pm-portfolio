@@ -1,0 +1,111 @@
+---
+/**
+ * src/layouts/BaseLayout.astro — site shell
+ * Renders skip link, conditional top nav (Phase 3+), <main>, universal footer.
+ * Inline FOUC-prevention script sets the theme cookie before first paint.
+ *
+ * Source: site-chrome-spec-v1.md §3, §12.
+ */
+
+import { ClientRouter } from "astro:transitions";
+import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
+import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE } from "~/lib/site";
+import SkipLink from "~/components/chrome/SkipLink.astro";
+import SiteFooter from "~/components/chrome/SiteFooter.astro";
+import Cursor from "~/components/Cursor.tsx";
+import "~/styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  noChrome?: boolean;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  ogImage = OG_DEFAULT_IMAGE,
+  noChrome = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://seanwinslow.com").toString();
+const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- OG -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- RSS auto-discovery (3 collection feeds — feeds themselves land Phase 3) -->
+    <link rel="alternate" type="application/rss+xml" href="/transactions/rss.xml" title="Sean Winslow — Transactions" />
+    <link rel="alternate" type="application/rss+xml" href="/architecture/rss.xml" title="Sean Winslow — Architecture" />
+    <link rel="alternate" type="application/rss+xml" href="/essays/rss.xml" title="Sean Winslow — Essays" />
+
+    <!-- Preload substrate (texture-spec §3.6 + §4.6) -->
+    <link rel="preload" as="image" href="/assets/textures/paper-tile.png" />
+    <link rel="preload" as="image" href="/assets/textures/tear-edge.png" />
+
+    <!-- Fonts via astro-google-fonts-optimizer (hero-spec §13) -->
+    <GoogleFontsOptimizer
+      url="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    />
+
+    <!-- Inline theme script (FOUC prevention) -->
+    <script is:inline>
+      (function() {
+        var match = document.cookie.match(/sw-theme=(light|dark)/);
+        var theme = match ? match[1] : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
+    <!-- View Transitions -->
+    <ClientRouter />
+  </head>
+  <body>
+    <SkipLink />
+    <Cursor client:load />
+    {/* Sub-page top nav lands in Phase 3 — when noChrome=false. For Phase 2 the home is the only route, so this stays as a stub. */}
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <style is:global>
+      .cursor--hover-name {
+        width: 60px !important;
+        height: 60px !important;
+        margin-left: -30px !important;
+        margin-top: -30px !important;
+      }
+      .cursor--hover-character {
+        /* Future easter egg: pencil-icon cursor. v1 keeps the same dot. */
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+---
+/**
+ * Status pill — site-chrome / projects-spec §3.
+ * 5-value enum: ACTIVE | COMING | PAUSED | ARCHIVED | SHIPPED.
+ */
+interface Props {
+  status: "ACTIVE" | "COMING" | "PAUSED" | "ARCHIVED" | "SHIPPED";
+}
+const { status } = Astro.props;
+
+const colorMap: Record<Props["status"], string> = {
+  ACTIVE: "var(--stamp-amber)",
+  COMING: "var(--stamp-amber)",
+  PAUSED: "var(--ink-secondary)",
+  ARCHIVED: "var(--ink-secondary)",
+  SHIPPED: "var(--success-teal)",
+};
+---
+
+<span class="status-pill" data-status={status} style={`color: ${colorMap[status]};`}>{status}</span>
+
+<style>
+  .status-pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    background-color: var(--paper);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .status-pill[data-status="COMING"] {
+    animation: pillPulse 2s ease-in-out infinite;
+  }
+  @keyframes pillPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status-pill[data-status="COMING"] {
+      animation: none;
+    }
+  }
+</style>

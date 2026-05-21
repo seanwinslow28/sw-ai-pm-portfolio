@@ -1067,7 +1067,7 @@
         { task: "frame cleanup",   tool: "clean-frame-v2a.sh",          cost: "rembg / $0",                       link: null },
         { task: "render",          tool: "ffmpeg + libvpx-vp9",         cost: "local / $0",                       link: null },
         { task: "style anchor",    tool: "Seedream 2.0",                cost: "~$0.40 / run",                     link: null },
-        { task: "orchestration",   tool: "Claude Code Superuser Pack",  cost: "Claude Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "orchestration",   tool: "Code Brain",  cost: "Claude Sonnet 4.6 (HybridRouter)", link: "/work/code-brain" },
         { task: "frame interp",    tool: "RIFE",                        cost: "local GPU / $0",                   link: null },
       ],
       fourq: {
@@ -1076,10 +1076,10 @@
         break: "Three failure modes. (1) Seedream style drift — the in-betweens stop reading as one character; detection: weekly visual diff against the anchor sheet. (2) Alpha-channel regression — h264 keeps creeping back in the ffmpeg flags; detection: the build script greps for h264 and fails loudly. (3) RIFE temporal jitter on slow scenes; detection: cycle-level perceptual hash; jitter > threshold flags the take for re-render.",
         learn: "The pipeline IS the deliverable, not the loop. Once the pipeline holds, every loop after the first is a tax, not a project. The instinct to ship the loop first is wrong; ship the pipeline, the loops fall out.",
       },
-      canonical: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/animation-pipeline/EXPLANATION.md",
+      canonical: "https://github.com/seanwinslow28/code-brain/blob/main/animation-pipeline/EXPLANATION.md",
       navfold: {
         prev: { href: "/work/16bitfit",       label: "A-5 16BITFIT BATTLE MODE" },
-        next: { href: "/work/superuser-pack", label: "A-2 SUPERUSER PACK" },
+        next: { href: "/work/code-brain", label: "A-2 CODE BRAIN" },
       },
     };
 

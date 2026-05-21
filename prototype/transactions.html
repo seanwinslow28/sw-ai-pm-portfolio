@@ -646,7 +646,7 @@
       valueProp: "A typed-edge SQLite layer the nightly synthesizer writes to as a side effect of connection articles. Six relation types turn weekly knowledge-lint contradiction detection into a SQL query instead of an LLM scan.",
       loomCaption: "00:90 — install + nightly synth walkthrough",
       methods: [
-        { task: "edge insertion",      tool: "Claude Code Superuser Pack (synthesizer)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/superuser-pack" },
+        { task: "edge insertion",      tool: "Code Brain (synthesizer)", cost: "Sonnet 4.6 (HybridRouter)", link: "/work/code-brain" },
         { task: "sql query",            tool: "sqlite3",                                   cost: "local / $0",                  link: null },
         { task: "schema enforcement",   tool: "SQLite CHECK constraints",                  cost: "local / $0",                  link: null },
         { task: "contradiction scan",   tool: "weekly knowledge-lint agent",               cost: "Haiku 4.5 / ~$0.04",          link: "/transactions/judge-layer" },
@@ -656,14 +656,14 @@
         why:       "Before Phase D, contradiction detection was an LLM pass over the full vault — 4 minutes, ~$0.30, brittle to prompt drift. After Phase D, contradiction detection is a `SELECT * FROM edges WHERE relation = 'contradicts'` — 30ms, $0, deterministic. The synthesizer already had the relation type in context when writing the connection article; persisting it cost nothing.",
         break:     "The synthesizer can write a wrong relation type and there's no review step yet — Phase E (auto-review by Judge Layer) is the planned mitigation. The CHECK constraints catch bad enum values but not bad semantic mappings.",
         learned:   "The cheapest reasoning edge is the one the agent already labeled while doing something else. Write the graph as a side effect of the artifact you're already producing — don't run a second LLM pass to extract it." },
-      canonicalUrl: "https://github.com/seanwinslow/claude-code-superuser-pack/blob/main/agents-sdk/lib/concept_edges/EXPLANATION.md",
+      canonicalUrl: "https://github.com/seanwinslow28/code-brain/blob/main/agents-sdk/lib/concept_edges/EXPLANATION.md",
       limitations: [
         "Contradiction detection is still rigid; it flags syntactic differences as logical conflicts.",
         "Nightly synthesize takes 4 minutes because it queries the entire graph each run.",
         "No visualization yet — the graph is queryable but not browsable from a UI.",
       ],
       related: {
-        partOf:       { label: "part of",       slug: "/work/superuser-pack",                 title: "Claude Code Superuser Pack (case study)" },
+        partOf:       { label: "part of",       slug: "/work/code-brain",                 title: "Code Brain (case study)" },
         sisterShips:  [
           { slug: "/transactions/knowledge-loop-phase-6",      title: "Knowledge Loop — Phase 6" },
           { slug: "/transactions/vault-synthesizer-eval",      title: "Vault Synthesizer Eval Suite" },

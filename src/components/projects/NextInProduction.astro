@@ -1,0 +1,53 @@
+---
+/**
+ * 6th-tile dashed-border "next in production" card.
+ * Source: projects-spec §4.
+ */
+import nextPiece from "../../../public/api/next-piece.json";
+
+const { title, date_target } = nextPiece;
+
+// Format `2026-06-11` → `~jun 11`
+function formatDate(iso: string): string {
+  const d = new Date(iso + "T00:00:00");
+  const month = d.toLocaleString("en-US", { month: "short" }).toLowerCase();
+  return `~${month} ${d.getDate()}`;
+}
+---
+
+<div class="next-in-production">
+  <h3>next piece in production</h3>
+  <p class="subtitle">check back {formatDate(date_target)}</p>
+</div>
+
+<style>
+  .next-in-production {
+    aspect-ratio: 4 / 5;
+    border: 1.5px dashed rgba(255, 249, 240, 0.4);
+    background: transparent;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 200ms var(--ease-out);
+  }
+  .next-in-production:hover {
+    border-color: rgba(255, 249, 240, 1);
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--paper);
+    margin: 0;
+  }
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.4px;
+    color: var(--stamp-amber);
+    margin: 0;
+  }
+</style>

@@ -1,6 +1,6 @@
 # `/essays/` Route v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 5 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.7. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The `/essays/` route — index, per-essay deep-dive pages, RSS feed. Inherits everything from the four prior locked specs (hero, projects, case-study, about, transactions, architecture).
 > **First occupant:** Access-vs-Meaning Manifesto (Task 13, draft-lock 2026-05-22, publish ~2026-06-19). **The URL in Sean's email signature.** Permanent IA for future thesis-shaped writing.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + the inherited specs open.
@@ -9,7 +9,7 @@
 
 ## 1. The Essays Route, in one sentence
 
-A sober-middle / personal-voice-bookended editorial surface for **thesis-shaped writing** — where the manifesto's quadrantChart and role-map table sit alongside cross-linked artifact references, the canonical Markdown lives upstream in `claude-code-superuser-pack/docs/`, and recruiters who arrive cold from Sean's email signature read the thesis + click straight to the artifacts that back it.
+A sober-middle / personal-voice-bookended editorial surface for **thesis-shaped writing** — where the manifesto's quadrantChart and role-map table sit alongside cross-linked artifact references, the canonical Markdown lives upstream in `code-brain/docs/`, and recruiters who arrive cold from Sean's email signature read the thesis + click straight to the artifacts that back it.
 
 ## 1.1 Changelog
 
@@ -655,7 +655,7 @@ The cross-link graph closes with essays as the fourth surface. Bidirectional rul
 | Same | `/architecture/intent-engineering-mcp/` (if exists) | Architecture writeup's Related block shows same line |
 | `relatedLedgerRow: meaning-over-access` | `/transactions/meaning-over-access/` | Ledger row shows "→ thesis: Access vs Meaning (essay)" |
 | `relatedArchitecture: [vault-scorecard]` | `/architecture/vault-scorecard/` | Architecture writeup shows "← thesis citing this work: Access vs Meaning (essay)" |
-| `relatedCaseStudy: superuser-pack` | `/work/superuser-pack/` | Case-study page shows "← thesis citing this project: Access vs Meaning (essay)" |
+| `relatedCaseStudy: code-brain` | `/work/code-brain/` | Case-study page shows "← thesis citing this project: Access vs Meaning (essay)" |
 | `relatedEssays: [...]` | `/essays/<slug>/` | Both essays' Related blocks show each other |
 
 ### 14.1 Derivation script behavior
@@ -847,8 +847,8 @@ tags:
 excerpt: "I don't think the durable enterprise value is agents clicking around UIs. I think it's the semantic layer: typed work objects, authorization, memory provenance, reviewable decisions."
 
 # --- Canonical sources (fetched at build) ---
-sourceUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/MEANING_OVER_ACCESS.md
-explanationUrl: https://raw.githubusercontent.com/seanwinslow/claude-code-superuser-pack/main/docs/MEANING_OVER_ACCESS_EXPLANATION.md
+sourceUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/MEANING_OVER_ACCESS.md
+explanationUrl: https://raw.githubusercontent.com/seanwinslow28/code-brain/main/docs/MEANING_OVER_ACCESS_EXPLANATION.md
 
 # --- Visual centerpiece ---
 mermaidSource: diagrams/access-meaning-spectrum.mmd
@@ -920,7 +920,7 @@ relatedEssays: []
 crossPostedTo:
   - name: Substack
     url: https://sean.substack.com/p/meaning-over-access
-sourceRepoUrl: https://github.com/seanwinslow/claude-code-superuser-pack
+sourceRepoUrl: https://github.com/seanwinslow28/code-brain
 
 # --- OG ---
 ogImage: /og-cards/essays/meaning-over-access.png
