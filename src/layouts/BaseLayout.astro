@@ -11,6 +11,7 @@ import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
 import SiteFooter from "~/components/chrome/SiteFooter.astro";
+import Cursor from "~/components/Cursor.tsx";
 import "~/styles/global.css";
 
 interface Props {
@@ -79,10 +80,23 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
   </head>
   <body>
     <SkipLink />
+    <Cursor client:load />
     {/* Sub-page top nav lands in Phase 3 — when noChrome=false. For Phase 2 the home is the only route, so this stays as a stub. */}
     <main id="main-content">
       <slot />
     </main>
     <SiteFooter />
+
+    <style is:global>
+      .cursor--hover-name {
+        width: 60px !important;
+        height: 60px !important;
+        margin-left: -30px !important;
+        margin-top: -30px !important;
+      }
+      .cursor--hover-character {
+        /* Future easter egg: pencil-icon cursor. v1 keeps the same dot. */
+      }
+    </style>
   </body>
 </html>
