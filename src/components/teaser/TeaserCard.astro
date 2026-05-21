@@ -1,0 +1,92 @@
+---
+/**
+ * Single teaser card — 3:4 portrait, anchored via CSS custom property `--card-index`.
+ * The card stack's depth math (TeaserSwiper.astro) reads this property to compute
+ * translateZ + translateY in the 3D cascade. See spec §6.1.
+ */
+interface Props {
+  cardIndex: number;
+  src: string;
+  alt: string;
+  style: string;
+  loadingHint: "eager" | "lazy";
+}
+
+const { cardIndex, src, alt, style, loadingHint } = Astro.props;
+---
+
+<article
+  class="teaser-card"
+  style={`--card-index: ${cardIndex};`}
+  data-card-index={cardIndex}
+  role="group"
+  aria-label={`Sean as ${style} — card ${cardIndex + 1} of 10`}
+  tabindex="-1"
+>
+  <img
+    src={src}
+    alt={alt}
+    loading={loadingHint}
+    decoding="async"
+    draggable="false"
+  />
+</article>
+
+<style>
+  .teaser-card {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    background-color: var(--paper);
+    box-shadow:
+      0 1px 2px rgba(10, 62, 66, 0.08),
+      0 4px 12px rgba(10, 62, 66, 0.12);
+    transform-origin: center center;
+    will-change: transform, opacity;
+    /* Depth cascade — z-axis offset + downward translate scale with card-index.
+       Cards behind the front peek down + back. Spec §6.1. */
+    transform:
+      perspective(700px)
+      translateZ(calc(var(--card-z-offset, 12px) * var(--card-index) * -1))
+      translateY(calc(var(--card-y-offset, 7px) * var(--card-index)));
+    z-index: calc(10 - var(--card-index));
+    transition: transform 250ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)), opacity 250ms linear;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  /* The front card is interactive; the rest are decorative cascade. */
+  .teaser-card[data-card-index="0"] {
+    cursor: grab;
+  }
+  .teaser-card[data-card-index="0"].is-dragging {
+    cursor: grabbing;
+    /* During drag, JS writes --swipe-x / --swipe-rotate as inline style */
+    transform:
+      perspective(700px)
+      translateX(var(--swipe-x, 0px))
+      rotate(var(--swipe-rotate, 0deg));
+    transition: none;
+  }
+  .teaser-card[data-card-index="0"].is-flying-out {
+    transition: transform 300ms var(--ease-snap, cubic-bezier(0.23, 1, 0.32, 1)), opacity 300ms linear;
+    transform:
+      perspective(700px)
+      translateX(var(--swipe-fly-x))
+      rotate(var(--swipe-fly-rotate));
+    opacity: 0;
+  }
+
+  .teaser-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .teaser-card:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+</style>
