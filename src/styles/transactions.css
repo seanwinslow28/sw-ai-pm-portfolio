@@ -1,0 +1,10 @@
+/* ----------------------------------------------------------------------
+ * src/styles/transactions.css — page-scoped overrides for /transactions/*
+ *
+ * Most styling is in the component <style> blocks. This file is for
+ * anything that needs to span multiple components or interact with
+ * Astro's <main> wrapper. Kept intentionally small in v1.
+ * ---------------------------------------------------------------------- */
+
+/* Reserve future cross-cutting overrides for the transactions surface. */
+.transactions-surface { /* placeholder for future overrides */ }

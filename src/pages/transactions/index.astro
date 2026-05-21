@@ -1,0 +1,66 @@
+---
+/**
+ * /transactions/ — ALL filter index page.
+ *
+ * Lists every transaction sorted desc by shipped ISO. Bands:
+ *   dateline → page title block → filter pills (ALL active) →
+ *   ledger rows → footer fold.
+ *
+ * Per transactions-spec-v1.md §2.1 + §4.1 + §10.3.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import IndexHeader from "~/components/transactions/IndexHeader.astro";
+import FilterPills from "~/components/transactions/FilterPills.astro";
+import LedgerRow from "~/components/transactions/LedgerRow.astro";
+import FooterFold from "~/components/transactions/FooterFold.astro";
+
+const transactions = (await getCollection("transactions"))
+  .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+
+const count = transactions.length;
+const lastUpdated = transactions[0]?.data.shipped ?? new Date().toISOString().slice(0, 10);
+---
+
+<BaseLayout title="Transactions — Sean Winslow" description="Every shipped artifact across the agent fleet, dated, with the explanation attached.">
+  <IndexHeader count={count} lastUpdatedISO={lastUpdated} />
+  <FilterPills />
+
+  <section class="ledger-list" aria-label="Ledger rows">
+    {count === 0 && (
+      <p class="empty-state">
+        No artifacts on the ledger yet. Check back ~weekly.
+      </p>
+    )}
+    {transactions.map((t) => (
+      <LedgerRow
+        slug={t.slug}
+        shipped={t.data.shipped}
+        surface={t.data.surface}
+        status={t.data.status}
+        title={t.data.title}
+        valueProp={t.data.valueProp}
+      />
+    ))}
+  </section>
+
+  <FooterFold />
+</BaseLayout>
+
+<style>
+  .ledger-list {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .empty-state {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-secondary);
+    padding: 24px 0;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .ledger-list { padding: 0 16px; }
+  }
+</style>
