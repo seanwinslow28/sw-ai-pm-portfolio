@@ -82,7 +82,10 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
 
   .tear-divider {
     display: block;
-    width: 100%;
+    /* Break out of section's horizontal padding so the tear is true full-bleed */
+    width: calc(100% + 104px);
+    margin-left: -52px;
+    margin-right: -52px;
     height: auto;
     position: relative;
     z-index: 12;
@@ -97,6 +100,14 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
     transform: scaleY(-1);
     margin-top: -2px;
     margin-bottom: -80px;
+  }
+  @media (max-width: 640px) {
+    /* Mobile padding is 24px, so the breakout shrinks accordingly */
+    .tear-divider {
+      width: calc(100% + 48px);
+      margin-left: -24px;
+      margin-right: -24px;
+    }
   }
 
   /* Pencil annotation positioning */

@@ -9,7 +9,6 @@ import CharacterLane from "./CharacterLane.astro";
 
 const NAME = "Sean Winslow";
 const ROLE = "AI PRODUCT MANAGER";
-const TAGLINE = "Product Manager. The agents handle the loops. I handle the taste.";
 ---
 
 <section class="hero page-sheet">
@@ -17,7 +16,11 @@ const TAGLINE = "Product Manager. The agents handle the loops. I handle the tast
     <Dateline />
     <h1 class="hero-name">{NAME}</h1>
     <p class="hero-role">/ {ROLE}</p>
-    <p class="hero-tagline">{TAGLINE}</p>
+    <p class="hero-tagline">
+      <span class="line line-1">Product Manager</span>
+      <span class="line line-2">The agents handle the loops.</span>
+      <span class="line line-3">I handle the taste.</span>
+    </p>
   </div>
   <CharacterLane />
 </section>
@@ -26,8 +29,8 @@ const TAGLINE = "Product Manager. The agents handle the loops. I handle the tast
   .hero {
     position: relative;
     overflow: hidden;
-    min-height: 720px;
-    padding: 60px 52px;
+    min-height: 880px;
+    padding: 60px 52px 120px;
   }
   .hero-inner {
     position: relative;
@@ -62,17 +65,23 @@ const TAGLINE = "Product Manager. The agents handle the loops. I handle the tast
   }
   .hero-tagline {
     font-family: var(--font-serif);
-    font-size: clamp(26px, 3.2vw, 56px);
+    font-size: clamp(28px, 3.4vw, 60px);
     font-weight: 300;
-    line-height: 1.22;
+    line-height: 1.18;
     letter-spacing: -0.3px;
     color: var(--ink);
-    max-width: 600px;
+    max-width: 680px;
     margin-top: 56px;
+  }
+  .hero-tagline .line {
+    display: block;
     opacity: 0;
     transform: translateY(28px);
-    animation: heroTaglineIn 700ms var(--ease-out-quart) 900ms forwards;
+    animation: heroTaglineIn 700ms var(--ease-out-quart) forwards;
   }
+  .hero-tagline .line-1 { animation-delay: 900ms; }
+  .hero-tagline .line-2 { animation-delay: 1040ms; }
+  .hero-tagline .line-3 { animation-delay: 1180ms; }
 
   @keyframes heroNameIn {
     to {
@@ -94,21 +103,21 @@ const TAGLINE = "Product Manager. The agents handle the loops. I handle the tast
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 640px;
-      padding: 40px 24px;
+      min-height: 720px;
+      padding: 40px 24px 80px;
     }
     .hero-name {
       font-size: 56px;
     }
     .hero-tagline {
-      font-size: 26px;
+      font-size: 28px;
       max-width: none;
     }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-name,
     .hero-role,
-    .hero-tagline {
+    .hero-tagline .line {
       opacity: 1;
       transform: none;
       animation: none;

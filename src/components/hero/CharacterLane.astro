@@ -51,15 +51,27 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     pointer-events: none;
   }
   .hero-floor-shadow {
+    /* Reference: sw-portfolio-animation-2026/.../hero-image-with-bg000.png —
+       a tight ellipse only under the desk + chair, not a wide swath.
+       Shadow PNG centroid is at 49% of its own width; positioning left:38%
+       puts the dark center at ~65% of lane, aligning with the painted desk. */
     position: absolute;
-    width: 100%;
-    height: 30%;
-    bottom: 0;
-    left: 0;
-    object-fit: cover;
-    object-position: bottom right;
+    width: 55%;
+    height: auto;
+    bottom: -6px;
+    left: 38%;
+    right: auto;
+    object-fit: contain;
+    object-position: center bottom;
     z-index: 18;
     pointer-events: none;
+    opacity: 0.9;
+  }
+  @media (max-width: 1024px) {
+    .hero-floor-shadow {
+      width: 70%;
+      left: 20%;
+    }
   }
   .character-video {
     position: absolute;
