@@ -2,16 +2,22 @@
 /**
  * scripts/fetch_canonical_sources.mjs — canonical 4Q fetcher.
  *
- * Phase 3b scope: walks src/content/work/*.mdx looking for entries that
- * declare `explanation_url:` in frontmatter, fetches the markdown raw
- * via HTTPS, validates against the 4 canonical EXPLANATION headings,
- * writes to src/content/explanations/<slug>.md. ETag-cached so
- * subsequent builds skip unchanged sources.
+ * Phase 3b scope (still active): work collection (`explanation_url` field).
+ * Phase 3c.1 scope (added): transactions collection (`explanationUrl` field).
+ * Phase 3c.2 will add: architecture (`explanationUrl` for 4Q +
+ *   `essaySourceUrl` for the long-form essay body, different outDir)
+ *   and essays (`explanationUrl` for 4Q + `sourceUrl` for the body).
  *
- * Phase 3c extends this to also walk transactions + architecture +
- * essays collections; rename the WALK_COLLECTIONS array to add them.
+ * Walks each collection's MDX files looking for entries that declare
+ * the named URL field, fetches the markdown raw via HTTPS, validates
+ * against the 4 canonical EXPLANATION headings, writes to the per-
+ * collection outDir. ETag-cached via .cache/canonical-sources.lockfile
+ * so subsequent builds skip unchanged sources.
  *
- * Source: case-study-spec-v1.md §9 + §15; BLUEPRINT-COMPLETE.md §3.3.
+ * Graceful no-dir: missing content directories return empty.
+ *
+ * Source: case-study-spec-v1.md §9 + §15; transactions-spec-v1.md §11.1;
+ *         BLUEPRINT-COMPLETE.md §3.3.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -28,9 +34,19 @@ const WALK_COLLECTIONS = [
     urlField: "explanation_url",
     outDir: OUT_DIR,
   },
-  // Phase 3c will add: { name: "transactions", contentDir: ..., urlField: "explanationUrl", outDir: ... }
-  //                   + { name: "architecture", contentDir: ..., urlField: "essaySourceUrl", outDir: ... }
-  //                   + { name: "essays", contentDir: ..., urlField: "sourceUrl", outDir: ... }
+  {
+    name: "transactions",
+    contentDir: path.join(ROOT, "src/content/transactions"),
+    urlField: "explanationUrl",
+    outDir: OUT_DIR,
+  },
+  // Phase 3c.2 will add:
+  //   { name: "architecture", contentDir: .../architecture, urlField: "explanationUrl", outDir: ... }
+  //   + a SECOND walk for architecture's `essaySourceUrl` long-form fetch
+  //     (different outDir: src/content/architecture/essays/)
+  //   + { name: "essays", contentDir: .../essays, urlField: "explanationUrl", outDir: ... }
+  //   + a SECOND walk for essays' `sourceUrl` body fetch
+  //     (different outDir: src/content/essays/essay-bodies/)
 ];
 
 const REQUIRED_HEADINGS = [
@@ -90,7 +106,7 @@ function validateHeadings(slug, text) {
 }
 
 async function walkCollection(coll, cache) {
-  const entries = await fs.readdir(coll.contentDir);
+  const entries = await fs.readdir(coll.contentDir).catch(() => []);
   for (const fname of entries) {
     if (!fname.endsWith(".mdx") && !fname.endsWith(".md")) continue;
     const filePath = path.join(coll.contentDir, fname);
@@ -121,7 +137,7 @@ async function walkCollection(coll, cache) {
 }
 
 async function main() {
-  process.stdout.write("\nfetch_canonical_sources.mjs — Phase 3b scope (work)\n");
+  process.stdout.write("\nfetch_canonical_sources.mjs — Phase 3c.1 scope (work + transactions)\n");
   const cache = await loadCache();
   for (const coll of WALK_COLLECTIONS) {
     process.stdout.write(`\n[${coll.name}]\n`);
