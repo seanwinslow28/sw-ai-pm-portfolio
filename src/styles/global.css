@@ -1,0 +1,175 @@
+/* ----------------------------------------------------------------------
+ * src/styles/global.css — design tokens + base styles + print
+ * Inherits: DESIGN.md (color/type/spacing) + texture-spec (Z-stacking)
+ * ---------------------------------------------------------------------- */
+
+@import "tailwindcss";
+
+/* ===== Design tokens (light mode default) ===== */
+:root {
+  /* Colors — paper layer */
+  --paper: #FFF9F0;
+  --ink: #1A1A1E;
+  --ink-secondary: #546E71;
+  --teal: #0A3E42;
+  --teal-deep: #0c2d2f;
+  --success-teal: #0F6E56;
+  --stamp-amber: #7C2D12;
+  --amber-mid: #FAC775;
+  --amber-warm: #E89060;
+
+  /* Border whispers */
+  --border-paper: rgba(10, 62, 66, 0.15);
+  --border-chrome: rgba(255, 249, 240, 0.18);
+
+  /* Three-layer model — chrome backdrop */
+  --chrome: var(--teal);
+
+  /* Typography */
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-caveat: 'Caveat', cursive;
+
+  /* Spacing scale (DESIGN.md §spacing) */
+  --space-hairline: 4px;
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 60px;
+  --space-xxl: 80px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-snap: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Page-status desaturation (case-study spec §12 hook) */
+  --page-status-desat: 1;
+}
+
+/* ===== Dark mode tokens ===== */
+:root[data-theme="dark"] {
+  --paper: #1A1A1E;
+  --ink: #FFF9F0;
+  --ink-secondary: #A0B5B8;
+  --teal: #2A6E72;
+  --border-paper: rgba(255, 249, 240, 0.15);
+  /* chrome stays the same — see texture-spec §2.4 */
+}
+
+/* ===== Reset (minimal) ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* No smooth-scroll-behavior — leaves Lenis space; we don't use it */
+  font-size: 16px;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--ink);
+  background-color: var(--chrome);
+  /* Three-layer model — body IS the chrome backdrop */
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== Page sheet (the paper layer at Z=10) ===== */
+.page-sheet {
+  position: relative;
+  z-index: 10;
+  background-color: var(--paper);
+  background-image: url('/assets/textures/paper-tile.png');
+  background-size: 1024px 1024px;
+  background-repeat: repeat;
+  background-blend-mode: multiply;
+}
+
+/* ===== Section-scoped splash color (one per section, never two) ===== */
+.section-splash-teal {
+  background-color: var(--teal);
+  color: var(--paper);
+}
+
+/* ===== Type defaults ===== */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px dashed var(--teal);
+  outline-offset: 6px;
+}
+
+/* Screen-reader-only helper */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== Reduced motion baseline ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 200ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Print stylesheet (site-chrome spec §14) ===== */
+@media print {
+  header,
+  footer,
+  .skip-link,
+  .theme-toggle,
+  .character,
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  a[href^="http"]::after,
+  a[href^="mailto"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #546E71;
+  }
+
+  :root {
+    color-scheme: light !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
