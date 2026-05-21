@@ -26,6 +26,7 @@ export function initTeaserSwiper({ container }) {
   let currentDeltaX = 0;
   let rafId = 0;
   let isAutoCompleting = false;
+  let didCommitThisGesture = false;
 
   function frontCard() {
     return cards[cardOrder[0]];
@@ -55,8 +56,9 @@ export function initTeaserSwiper({ container }) {
 
   /** Commit a completed swipe — front card flies out, then becomes back. */
   function commitSwipe(direction) {
-    if (isAutoCompleting) return;
+    if (isAutoCompleting || didCommitThisGesture) return;
     isAutoCompleting = true;
+    didCommitThisGesture = true;
     const card = frontCard();
     const flyX = direction === "right" ? FLY_DISTANCE_PX : -FLY_DISTANCE_PX;
     const flyRotate = direction === "right" ? FLY_ROTATE_DEG : -FLY_ROTATE_DEG;
@@ -109,6 +111,7 @@ export function initTeaserSwiper({ container }) {
     const card = frontCard();
     if (!card.contains(e.target)) return;
     isDragging = true;
+    didCommitThisGesture = false;
     startX = e.clientX;
     currentDeltaX = 0;
     card.classList.add("is-dragging");
@@ -128,10 +131,10 @@ export function initTeaserSwiper({ container }) {
       cancelAnimationFrame(rafId);
       rafId = 0;
     }
-    if (Math.abs(currentDeltaX) > SWIPE_THRESHOLD_PX) {
-      if (!isAutoCompleting) {
-        commitSwipe(currentDeltaX > 0 ? "right" : "left");
-      }
+    if (didCommitThisGesture) {
+      // Auto-completed already during the drag — nothing to do.
+    } else if (Math.abs(currentDeltaX) > SWIPE_THRESHOLD_PX) {
+      commitSwipe(currentDeltaX > 0 ? "right" : "left");
     } else {
       snapBack();
     }
