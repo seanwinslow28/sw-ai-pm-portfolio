@@ -1,0 +1,64 @@
+{
+  "cards": [
+    {
+      "cardIndex": 0,
+      "src": "/assets/teaser-deck/01-photo.webp",
+      "alt": "Sean Winslow, photographed against warm paper, head and shoulders bust, light blue eye contact, subtle warm smile.",
+      "style": "photograph"
+    },
+    {
+      "cardIndex": 1,
+      "src": "/assets/teaser-deck/02-pencil-test.webp",
+      "alt": "Sean as a traditional animation pencil-test sketch on warm cream paper, production label A-2 in the corner.",
+      "style": "pencil test"
+    },
+    {
+      "cardIndex": 2,
+      "src": "/assets/teaser-deck/03-watercolor-ink.webp",
+      "alt": "Sean as a watercolor-and-ink illustration with bold contour line, New Yorker-cartoonist register.",
+      "style": "watercolor + ink"
+    },
+    {
+      "cardIndex": 3,
+      "src": "/assets/teaser-deck/04-bobs-burgers.webp",
+      "alt": "Sean rendered in the Loren Bouchard / Bob's Burgers character-design language — bean-shaped head, dot eyes, bold outline.",
+      "style": "Bob's Burgers"
+    },
+    {
+      "cardIndex": 4,
+      "src": "/assets/teaser-deck/05-shonen-anime.webp",
+      "alt": "Sean as a shōnen anime cel — angular features, spiky hair, reflective highlights, bold outline, flat color.",
+      "style": "shōnen anime"
+    },
+    {
+      "cardIndex": 5,
+      "src": "/assets/teaser-deck/06-classic-nicktoons.webp",
+      "alt": "Sean rendered in classic Nicktoons / Hey Arnold!-adjacent style — flat color, simple features, freckles, oval eyes.",
+      "style": "classic Nicktoons"
+    },
+    {
+      "cardIndex": 6,
+      "src": "/assets/teaser-deck/07-cn-noodle.webp",
+      "alt": "Sean in modern Cartoon Network simplification — big oval eyes, dot pupils, exaggerated noodle proportions.",
+      "style": "Total Drama / CN noodle"
+    },
+    {
+      "cardIndex": 7,
+      "src": "/assets/teaser-deck/08-comic-allred.webp",
+      "alt": "Sean as a Mike Allred-coded comic illustration — pop-art contour outlines, expressive cartoon eyes, watercolor background.",
+      "style": "Allred-coded comic"
+    },
+    {
+      "cardIndex": 8,
+      "src": "/assets/teaser-deck/09-modern-cn.webp",
+      "alt": "Sean in modern Cartoon Network style — almond eyes, light blue iris, clean line work, flat color (Steven Universe-adjacent).",
+      "style": "modern CN"
+    },
+    {
+      "cardIndex": 9,
+      "src": "/assets/teaser-deck/10-pop-art-comic.webp",
+      "alt": "Sean as a pop-art comic illustration — bulging cartoon blue eyes with rim highlights, sketchy ink linework, watercolor color.",
+      "style": "pop-art comic"
+    }
+  ]
+}

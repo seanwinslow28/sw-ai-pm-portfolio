@@ -13,7 +13,6 @@ const work = defineCollection({
     hero_media_type: z.enum(["video", "image"]),
     hero_media_alt: z.string(),
     order: z.number().int().min(1).max(5),
-    // Dates accept either YAML date or string form; coerce to ISO string.
     date_started: z.coerce.string().optional(),
     date_active_through: z.coerce.string().optional(),
     case_study_dateline_pattern: z
@@ -22,4 +21,18 @@ const work = defineCollection({
   }),
 });
 
-export const collections = { work };
+const teaserDeck = defineCollection({
+  type: "data",
+  schema: z.object({
+    cards: z.array(
+      z.object({
+        cardIndex: z.number().int().min(0).max(9),
+        src: z.string(),
+        alt: z.string(),
+        style: z.string(),
+      })
+    ).length(10),
+  }),
+});
+
+export const collections = { work, teaserDeck };
