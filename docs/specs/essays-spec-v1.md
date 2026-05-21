@@ -1,6 +1,6 @@
 # `/essays/` Route v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 5 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.7. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The `/essays/` route — index, per-essay deep-dive pages, RSS feed. Inherits everything from the four prior locked specs (hero, projects, case-study, about, transactions, architecture).
 > **First occupant:** Access-vs-Meaning Manifesto (Task 13, draft-lock 2026-05-22, publish ~2026-06-19). **The URL in Sean's email signature.** Permanent IA for future thesis-shaped writing.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + the inherited specs open.

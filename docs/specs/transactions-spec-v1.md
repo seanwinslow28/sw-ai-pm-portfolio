@@ -1,6 +1,6 @@
 # `/transactions/` Ledger v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 5 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.5. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The `/transactions/` route — index, per-surface filter pages, per-row deep-dive pages, and the RSS feed. Inherits everything from `hero-spec-v1.md` (color, type, motion, cursor), `projects-section-spec-v1.md` (status pill vocabulary, View Transition contract), and `case-study-spec-v1.md` (Methods strip, 4Q block, EXPLANATION fetch contract).
 > **The schema is the surface contract.** Every future ship that produces an `EXPLANATION.md` writes a row through this schema. Get it right once.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + the three inherited specs open.

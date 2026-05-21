@@ -1,6 +1,6 @@
 # Case-Study Page v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 3 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.3. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The body of each `/work/<slug>` page. Inherits everything from `hero-spec-v1.md` (color, type, motion, cursor) and `projects-section-spec-v1.md` (status labels, View Transition contract, content-collection schema). This file ends at the page footer; the global site chrome lives in `site-chrome-spec-v1.md`.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + `hero-spec-v1.md` + `projects-section-spec-v1.md` open.
 

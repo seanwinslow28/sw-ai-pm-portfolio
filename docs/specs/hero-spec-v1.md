@@ -33,7 +33,7 @@ Newsroom dateline above an editorial headline, with Sean working at his desk and
 │                                                │  ░░ companion ░░░ ░░│
 │                                                │ ░░░░ floats   ░░░░░░│
 │  Product Manager.                              │ ░░ here  ▭▭▭▭▭▭▭░░ ░│
-│  The agents handle the math.                   │ ░░░░  ┌─┴───┴─┐ ░░░░│
+│  The agents handle the loops.                  │ ░░░░  ┌─┴───┴─┐ ░░░░│
 │  I handle the taste.                           │ ░░░░  │ desk  │ ░░ ░│
 │                                                │ ░░  ┌─┘       └─┐ ░│
 │                                                │ ░░  │ Sean typing│░│
@@ -131,12 +131,14 @@ Trigger: `DOMContentLoaded`. Total entrance window: 1800ms.
 | t (ms) | Element | Animation | Easing | Duration |
 |---|---|---|---|---|
 | 0 | Hero paper background | Fade from 0 → 1 | linear | 200ms |
+| 0 | **Intro icon cycle** (NEW 2026-05-20) | Starts in the character lane. 8 pencil-test concept icons (loops, terminal, graph, pencil, sticky note, matrix, Claude mascot, coffee) crossfade in sequence. See §7.5 for full spec. WebM `preload="auto"` runs in parallel. | linear crossfades | 4800ms total (600ms per icon: 480ms visible + 120ms crossfade) |
 | 200 | Dateline strip | Type-on, character by character | `cubic-bezier(0.16, 1, 0.3, 1)` | 500ms |
 | 400 | Name (`Sean Winslow`) | Per-character stagger, translateY(24px) → 0 + opacity 0 → 1 | `cubic-bezier(0.16, 1, 0.3, 1)` | 600ms, 18ms/char stagger (target ~600ms total reveal) |
 | 700 | Role tag | Fade + slight translateY(8px) → 0 | `cubic-bezier(0.16, 1, 0.3, 1)` | 300ms |
 | 900 | Tagline | Per-line reveal (1 line desktop, 2-3 mobile); each line translateY(28px) → 0 + opacity. Fixed-px offset (NOT a percentage) so the line doesn't briefly overshoot the line-box at small sizes. Verify in QA that no layout shift fires during the reveal. | `cubic-bezier(0.165, 0.84, 0.44, 1)` | 700ms, 120ms/line stagger |
-| 1300 | Character lane | Opacity 0 → 1 fade-in; the video loop begins playing from frame 1 at this exact moment | `cubic-bezier(0.22, 1, 0.36, 1)` | 600ms fade |
-| 1900 | Hero settled | Loop running on its own clock, dateline static | — | — |
+| ~~1300~~ | ~~Character lane reveal~~ | **SUPERSEDED 2026-05-20** — the character lane is now occupied by the intro icon cycle from t=0 onward. WebM crossfades in at the cycle's end. | — | — |
+| 4800 | **Cycle → WebM crossfade** | Final icon (coffee) fades out as the WebM character animation fades in. If WebM not yet buffered (`video.readyState < 3`), hold icon-8 until `canplay` fires, then crossfade. WebM `.play()` called at start of crossfade. | linear | 300ms |
+| 5100 | Hero settled | WebM looping on its native 3.917s cycle, dateline static, intro cycle DOM removed | — | — |
 
 **The opinionated bit:** Sean and his AI companion are *already there together* when you land. No walk-in, no arrival beat — the loop is the page's heartbeat. Sean types at his desk; the companion floats beside him with a subtle bob (~3.9s/cycle). This is the first 2 seconds that say *this is not a template* — an AI PM whose AI partner is hand-drawn and visibly working with him, looping quietly.
 
@@ -168,7 +170,7 @@ At build time this moves (or copies) to `/public/assets/character/hero-loop.webm
 | Loop | Seamless — frame 1 matches frame 94 |
 | File size | 378KB (well under the <800KB budget) |
 | Path | `/public/assets/character/hero-loop.webm` |
-| Poster image | `/public/assets/character/hero-loop-poster.webp` — frame 1 still |
+| Poster image | **Superseded 2026-05-20:** the single-frame poster is replaced by the intro icon cycle (see §7.5). The `<video poster>` attribute is set to `/assets/hero-icons/icon-1-loop.webp` as a static fallback for environments where the JS-driven cycle doesn't execute (no-JS, very-old browsers, error states). |
 
 **Why WebM with alpha (not MP4):** the paper background (`#FFF9F0`) must show through everywhere the character isn't. MP4/h.264 doesn't carry alpha; the video would render as a rectangle on the page. WebM VP9 with `alpha_mode=1` encodes the alpha channel as a secondary stream. Browser support is universal (Chrome/Edge/Firefox/Safari 16+).
 
@@ -176,14 +178,24 @@ At build time this moves (or copies) to `/public/assets/character/hero-loop.webm
 
 ```html
 <div class="character">
+  <!-- Intro icon cycle (8 stacked WebPs, JS-coordinated crossfades). See §7.5. -->
+  <div class="hero-intro-cycle" aria-hidden="true">
+    <img src="/assets/hero-icons/icon-1-loop.webp" data-cycle-index="0" class="active" />
+    <img src="/assets/hero-icons/icon-2-terminal.webp" data-cycle-index="1" />
+    <!-- ...icons 3-8... -->
+  </div>
+  <!-- WebM character animation. `data-state="pending"` until the cycle completes; JS then sets data-state="active" and calls .play(). -->
   <video
     src="/assets/character/hero-loop.webm"
-    poster="/assets/character/hero-loop-poster.webp"
-    autoplay muted loop playsinline preload="auto"
-    aria-hidden="true">
+    poster="/assets/hero-icons/icon-1-loop.webp"
+    muted loop playsinline preload="auto"
+    aria-hidden="true"
+    data-state="pending">
   </video>
 </div>
 ```
+
+Note: `autoplay` is dropped from the `<video>` attributes — the JS module calls `.play()` at the end of the icon cycle (~t=4800ms) instead. The element is hidden via CSS (`opacity: 0`) until the cycle ends.
 
 CSS for the inner `<video>` element uses `object-fit: contain` and `object-position: bottom right` so the painted character anchors to the bottom-right corner of the lane.
 
@@ -191,7 +203,82 @@ CSS for the inner `<video>` element uses `object-fit: contain` and `object-posit
 
 **Other surfaces:** the longer 9.2s "Sean + companion arrival + departure" loop (220 frames, `sw-portfolio-animation-2026/Portfolio-BG-removal/BG-Removed/character.webm`) is **not** for the hero. It moves to the **animation-pipeline case-study page** (`/work/animation-pipeline`) as that page's hero media — where the longer narrative beat is the case-study artifact itself.
 
-**Fallback:** If `prefers-reduced-motion: reduce`, render the poster image only — no video element mounted.
+**Fallback:** If `prefers-reduced-motion: reduce`, render `icon-7-claude.webp` statically in the character lane — the agent thesis without motion. No video element mounted, no cycle. See §7.5.5 for the full reduced-motion contract.
+
+---
+
+## 7.5 Intro icon cycle (added 2026-05-20)
+
+> **Replaces the single static `hero-loop-poster.webp`** originally specced in §7. The character lane now opens with a 4.8-second cycle of 8 pencil-test concept icons that map Sean's AI PM craft, then crossfades into the WebM character animation. The cycle plays **once per session**.
+
+### 7.5.1 Why a cycle, not a static poster
+
+The original spec called for a single frame-1 still of the WebM as the `<video poster>` — visible until the WebM was ready to play. With modern fast connections that frame would only land for ~200–500ms before being replaced by the moving WebM. The cycle uses that pre-WebM moment as a deliberate intro: 8 small concept icons that say *"Sean is an AI PM"* visually, then the character animation reveals. The first 2 seconds say *this is not a template* — gained by 4.8 seconds of pencil-test concept-iconography before the character even appears.
+
+### 7.5.2 The 8 icons
+
+| # | Icon | Source | Read |
+|---|---|---|---|
+| 1 | Loop arrow | `icon-1-loop` | Direct callback to *"the agents handle the loops"* (the hero tagline itself) |
+| 2 | Terminal cursor | `icon-2-terminal` | Window with hatched title bar, code scribbles, `$` prompt + blinking cursor |
+| 3 | Graph nodes | `icon-3-graph` | Five cross-hatched nodes with arrow edges — agent fleet / orchestration |
+| 4 | Pencil | `icon-4-pencil` | Sharpened graphite tip, wood barrel with grain, pink eraser — the load-bearing motif |
+| 5 | Sticky note | `icon-5-sticky-note` | Yellow, tilted ~12°, curled corner, three scribble lines |
+| 6 | 2×2 matrix | `icon-6-matrix` | Hand-drawn grid, filled circle in top-right quadrant — PM judgment, no text labels |
+| 7 | Claude mascot | `icon-7-claude` | Terracotta body with construction-line guides + hatched square eyes — *"the agents"* made literal |
+| 8 | Coffee cup | `icon-8-coffee` | Ceramic mug with three steam lines + hatched shadow — domestic Sedaris-coded |
+
+Sources committed at [`reference-images/hero-icons/`](../../reference-images/hero-icons/). Phase 2 build converts each PNG to WebP at ≤40KB and places at `src/assets/hero-icons/icon-N-name.webp`.
+
+The cycle reads as a coherent AI PM thesis story: **the agents** (Claude) ↔ **the loops** (loop arrow) ↔ **the fleet** (graph nodes) on one side, **the craft** (pencil, sticky note, matrix) on the other, with **the human at the desk** (coffee cup, terminal) bookending it. Identity told in 8 graphite frames before the character animation reveals.
+
+### 7.5.3 Cycle timing
+
+| Phase | Duration |
+|---|---|
+| Per-icon visible time | 480ms |
+| Per-icon crossfade to next | 120ms |
+| Per-icon total slot | 600ms |
+| **8 icons × 600ms** | **4800ms total cycle** |
+| Final crossfade (icon-8 → WebM) | 300ms |
+| **WebM steady-state begins** | **t = 5100ms** |
+
+### 7.5.4 Implementation
+
+JS-driven cycle of 8 stacked `<img>` elements. Each icon is absolute-positioned inside `.hero-intro-cycle` at the same coordinates; only one has class `active` (opacity 1) at a time. A small Astro `<script>` module at `src/scripts/hero-icon-cycle.js` advances the active class on `setTimeout(600ms)` intervals, crossfading via CSS `transition: opacity 120ms linear`.
+
+**Coordination with WebM load state:**
+- WebM begins preloading at `DOMContentLoaded` via `preload="auto"` (parallel with the cycle)
+- At t=4800ms, the script checks `video.readyState >= 3` (HAVE_FUTURE_DATA)
+- **If ready:** call `video.play()`, set `video.style.opacity = 1`, fade `.hero-intro-cycle` to opacity 0 over 300ms
+- **If not ready:** hold icon-8 visible; register one-shot `canplay` listener; trigger the crossfade when fired
+- After crossfade: remove `.hero-intro-cycle` from the DOM (no longer needed for the session)
+
+**Once-per-session:** set `sessionStorage.setItem('hero-cycle-played', 'true')` after the cycle completes. On subsequent home-page visits within the same session (e.g. visitor navigates to `/work/<slug>` and back), the cycle is SKIPPED — the WebM plays immediately. The visitor sees the cycle exactly once per session.
+
+### 7.5.5 Fallback (`prefers-reduced-motion: reduce`)
+
+- No cycle: `.hero-intro-cycle` is not rendered
+- No WebM: matches the existing §7 fallback contract — the `<video>` element is not mounted
+- Static image only: `icon-7-claude.webp` renders in the character lane at the same position the WebM would occupy
+- The agent thesis is preserved without motion; the page remains accessible
+
+### 7.5.6 Asset budget
+
+| Asset | Format | Max size |
+|---|---|---|
+| 8 source PNGs at [`reference-images/hero-icons/`](../../reference-images/hero-icons/) | PNG, committed | ~500–650KB each (~4.7MB total source) |
+| 8 built WebPs at `src/assets/hero-icons/icon-N-name.webp` | WebP, 80% quality | ≤40KB each |
+| **Total intro cycle (built)** | | **≤320KB** |
+
+The original 30KB single-poster budget is exceeded by ~10×, but: (a) the cycle is one-time-per-session; (b) icons preload in parallel with the WebM rather than serializing; (c) the WebM itself was budgeted at <800KB so the total character-lane weight stays under 1.1MB. Net page-weight delta vs. the original poster: +290KB, within budget for the *"first 2 seconds say this is not a template"* thesis.
+
+### 7.5.7 Accessibility
+
+- The cycle container has `aria-hidden="true"` — the icons are decorative, not informative content. Screen readers skip them entirely.
+- The cycle holds no actionable elements — no clickable icons, no skip-button.
+- Keyboard focus passes through the character lane to the hero's interactive elements (the name link, the dateline if linked).
+- The reduced-motion fallback (§7.5.5) renders a single static icon in place of the cycle — no auto-advancing content for users who'd find that disorienting.
 
 ---
 

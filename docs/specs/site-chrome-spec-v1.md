@@ -1,6 +1,6 @@
 # Site Chrome + Footer v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 5 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.8 (email = `sean@seanwinslow.com`, wordmark = `SW` mono uppercase, sticky-nav on sub-pages, `/contact/` route preserved, "view the source" link included). See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** Global site chrome — the `BaseLayout.astro` shell, top nav, universal footer (which folds in Contact), the `/contact/` minimal route, the 404 page, theme toggle, skip link, meta-tag defaults, RSS auto-discovery, sitemap. Inherits everything from the five prior locked specs.
 > **The smallest of the redesign specs.** Restraint is the principle — this is the part of the site that LITERALLY repeats on every page.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + the five inherited specs open.
@@ -648,7 +648,7 @@ What the chrome explicitly does NOT include:
 
 ## 16. Open questions
 
-**[OPEN-1: Wordmark style (§4, §6)]** — proposed: "SW" in JetBrains Mono uppercase. **Switch only if** Sean prefers the full "Sean Winslow" in Newsreader for stronger identity. **Recommended default:** "SW" mono. The Newsreader wordmark would compete with every page's Newsreader title (case-study `<h1>`, architecture `<h1>`, essay `<h1>` — all Newsreader). The mono wordmark stays in the wire-service register and is recognizable at 14px without crowding. Confirm.
+**~~[OPEN-1: Wordmark style (§4, §6)]~~ — CONFIRMED 2026-05-21.** Wordmark = **"SW" in JetBrains Mono uppercase (weight 700)**, teal `#0A3E42` on warm paper `#FFF9F0`. The same wordmark renders across the nav (§6.1), the universal footer (§7.1), the favicon set (Appendix A — favicon.svg + favicon.ico + apple-touch-icon.png), and the lower-left corner of all 4 OG cards (§12.2). The Newsreader alternative would compete with every page's Newsreader `<h1>` and lose the wire-service register that ties the chrome together. Favicon assets land at [`reference-images/favicon/`](../../reference-images/favicon/); OG cards at [`reference-images/og-cards/`](../../reference-images/og-cards/). Both move to `/public/` at Phase 2 scaffold.
 
 **[OPEN-2: Sticky nav vs. scrolls-away (§6.1)]** — proposed: `position: sticky`. **Switch only if** Sean wants a more mynrd-pure linear-scroll on sub-pages — alternative: `position: relative`, nav scrolls away with the page. **Recommended default:** sticky. Recruiters reading a 2,000-word architecture essay or a long case-study scroll benefit from persistent escape to siblings. Mynrd-pure scrolls-away is the home-page discipline; sub-pages get the pragmatic affordance. Confirm.
 

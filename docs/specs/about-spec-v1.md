@@ -1,6 +1,6 @@
 # About Page v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Revised 2026-05-17 (dog framing → Saturday-morning-canon). Revised 2026-05-18 (lead line: 3-sentence credentials block → single "Raised by..." header; home hero repositioned in lockstep). Revised 2026-05-18 (B-1 two-column timeline → single-column stacked beats with lane-tint; B-4 availability pill + job-hunt copy → "What I'm building toward" + frontmatter-gated recruiter note). Revised 2026-05-18 (three-layer chrome → paper → content substrate externalized to `texture-and-artifacts-spec-v1.md`; torn-paper edge height corrected from 32px to ~200px to reflect the real raster asset). Awaiting Sean's final lock.
+> **Status:** LOCKED 2026-05-20 (with v1 decorative deferrals per §1.2). Prior revisions: Drafted 2026-05-17 → dog-framing → Saturday-morning-canon (2026-05-17) → lead-line consolidated (2026-05-18) → B-1 geometry swap + B-4 evergreen rewrite (2026-05-18) → substrate externalized to texture-spec (2026-05-18) → `math` → `loops` lockstep + §784 photo-rule addendum (2026-05-20). All 6 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.4. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The `/about/` page body. Inherits everything from `hero-spec-v1.md` (color, type, motion, cursor, character) and `projects-section-spec-v1.md` (status pill vocabulary, annotation conventions). Where the **character lives most fully** (hero §11) and where **pencil annotations hit their fullest expression** before propagating site-wide (case-study spec §11).
 > **Contact CTA is OUT OF SCOPE** for this spec. The Contact section is its own surface and folds into [`site-chrome-spec-v1.md`](#) (spec #6). The About page ends at the signature; the page-bottom torn-paper edge transitions into the site-chrome footer where Contact lives.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + `hero-spec-v1.md` + `case-study-spec-v1.md` open.
@@ -18,6 +18,34 @@ A single-column animator's-sketchbook page where Sean's animator-self and PM-sel
 - **2026-05-18 (lead-line + home-hero swap):** After drafting the About body, Sean preferred the single original line ("Raised by Saturday morning cartoons and Vercel deployment logs.") as the About header — the 3-sentence credentials block was retired. In lockstep, the home-hero tagline was repositioned to lead with the PM role explicitly ("Product Manager. The agents handle the math. I handle the taste.") — letting the home page declare the role and the About page do the biographical work. The cross-page rhyme architecture (home "Raised by..." → about "Trained by...") dissolves; the two pages now tell one story in two registers (declarative on home, biographical on About) without rhyming verbatim. PMP §4 updated in lockstep. The "Trained by Looney Tunes..." string is marked SUPERSEDED 2026-05-18 in PMP §4. The bottom-of-page pull quote is updated to echo the new home hero. §7.1 and §7.2 rewritten accordingly. The motion timeline collapses from per-sentence-stagger to a single-line reveal (one beat, not three).
 - **2026-05-17 (revision):** Lead-line + B-3 section revised after Sean's review of v1. The dog framing was killed (it forced an artifact that wasn't load-bearing to Sean's actual personality). The PMP §4 About-page lead row gets updated in lockstep — the locked string moves from the dog deflation to a **compressed-parallel credentials block** that harmonizes with the home-hero tagline ("Raised by..." → "Trained by..."). B-3 transitions from a dog-Polaroid gallery to **Saturday morning canon** — six hand-drawn pencil-test studies of cartoon characters Sean takes as formative, each captioned with the product/craft principle the cartoon taught. Animation-cel frame treatment (with hand-drawn registration pegs) replaces Polaroid framing to signal "cultural-craft reference rendered through Sean's hand" rather than "personal artifact." Five dog-related OPEN questions in §18 are removed; three cartoon-canon OPENs added.
 - **2026-05-17 (initial):** First draft. Honored hero §10's locked "About = paper, no splash" decision. Annotation density cap raised from ≤6 (case-study) to ≤12 (About).
+
+---
+
+## 1.2 Deferral decisions 2026-05-20 (v1 launch shape)
+
+Sean's review of the brainstorming-pass deliverables flagged that the v1 About page should focus on the **story + the animation cels** as the primary visual rhythm. Decorative chrome that competes for the reader's attention is deferred to v2, to be revisited after the live build ships and Sean has time to assess whether the page needs more character.
+
+**Deferred to v2 (NOT in v1 launch DoD):**
+
+| Item | Spec section(s) where the full design intent is preserved | v1 replacement |
+|---|---|---|
+| **5 hand-drawn B-N heading SVGs** (`b1-how-i-got-here.svg`, `b2-why-pm.svg`, `b3-saturday-morning-canon.svg`, `b4-where-im-going.svg`, `b5-proof-points.svg`) | §4, §6, §16, Appendix A | Plain Newsreader headings — same ~48px tall, weight 400, primary teal `#0A3E42`, left-aligned. Same `<h2>` semantic + `aria-label` accessibility. |
+| **Handwritten signature SVG** at page foot | §2 anatomy, §3 vertical budget, §6 motion, §14 vocab #6, §16 build stack, §17 DoD #11 | Omit. Page closes at the pull quote; the pull-quote-to-footer torn-paper edge becomes the page closeout. |
+| **Registration marks** (page closeout bottom-right + 2 corner marks on B-1 beat column) | §2 anatomy, §14 vocab #4 | Omit. |
+| **All pencil-margin annotations** (≤12 desktop / ≤6 mobile, §14's 7-vocabulary system — coffee-ring, curved arrows, rev-scribble, the "this one rewires you" B-3 annotation, etc.) | §2 anatomy, §11.7, §14, §17 DoD #6 + #10 | Omit annotations entirely for v1. **One exception:** the B-3 `break_grid: true` cel-emphasis behavior (§11.3.1) is **preserved** — that's grid geometry, not annotation, so it stays. |
+| **Kid-drawing scan margin artifact** | §14 vocab #5, [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) punch list #10 | Omit. |
+
+**What's kept (the v1 visual rhythm):**
+
+- The character PNG (`about-full-body.png`) in the hero composition (§7)
+- The **B-1 chromatic lane-tint rule** (§9.2.1) — structural, not decorative; encodes the parallel-lineage thesis chromatically. Not on the deferred list.
+- The 6 cartoon cels in B-3 (§11) — Sean's explicit "the cels are enough to break from the constant words"
+- The `CURRENTLY @` stamp (§12)
+- The pull quote at the page foot
+- The daily-dated pulse strip (§8) — load-bearing for the daily-dated-layer thesis
+- All prose content unchanged
+
+**Revisit condition:** Sean reviews the live build post-launch (target: 1-2 weeks after deploy). If the page feels too austere or lacking in character, the deferred items get authored and shipped in v1.1. **The full design intent in §§2-17 below is preserved verbatim for that revisit** — body sections describe the eventual end-state; §17 DoD describes the v1 launch state.
 
 ---
 
@@ -156,7 +184,7 @@ A single-column animator's-sketchbook page where Sean's animator-self and PM-sel
 │                                                                      │
 │                                                                      │
 │  ─── PULL QUOTE ──────────────────────────────────────────────────   │
-│  "Product Manager. The agents handle the math.                       │
+│  "Product Manager. The agents handle the loops.                      │
 │   I handle the taste."                                               │
 │  Newsreader 40px italic, paper-strip background — echoes             │
 │  the home hero tagline (cross-page closeout)                         │
@@ -264,7 +292,7 @@ For B-3 on mobile: vertical stack, not carousel. The dog-Polaroid version of thi
 | **B-3 cartoon lessons** | **Wire-service captions, declarative** | Each lesson opens with a noun (`TIMING.` / `ANTICIPATION.` / `POV.`) followed by a one-line elaboration that maps the cartoon-craft principle to a product-craft principle. Pure declarative voice — no first-person, no comedic move. The lesson IS the move. |
 | **B-4 where I'm going** | **Position-statement / direction-of-craft** | Calm, factual, future-tense. Names the bet (AI-native PM, agent governance, spec-layer ownership) and the problems Sean wants to be in the room for. Reads identically whether Sean is hired or hunting. No "open to opportunities" or "looking for a seat" language — the bet is durable, the availability state is not. The `CURRENTLY @ …` stamp and the conditional italic call-out are the **only** surfaces that carry employment-state signal; the prose body must work without them. |
 | **B-5 proof points** | Wire-service mono | Single-line links. No descriptions. |
-| Pull quote | Editorial (home-hero call-back) | The home-hero tagline (*"Product Manager. The agents handle the math. I handle the taste."*) reproduced verbatim at the page foot, in serif italic. Closes the page with a cross-surface echo to the surface the visitor entered through. |
+| Pull quote | Editorial (home-hero call-back) | The home-hero tagline (*"Product Manager. The agents handle the loops. I handle the taste."*) reproduced verbatim at the page foot, in serif italic. Closes the page with a cross-surface echo to the surface the visitor entered through. |
 
 **The opinionated bit:** the lead line is editorial-as-stat-block, the pulse strip is wire-service, B-1 is wire-service-with-chromatic-braid (the prose is register-neutral; the lane-tint rule carries the lineage signal), B-2 is Sedaris, B-3 is **declarative-wire-service** (a new register on this page — the cartoon-lessons sound like classified ads for product-craft principles), B-4 is position-statement (direction-of-craft, employment-state-neutral), B-5 is wire-service, pull quote is editorial. **Warm and factual alternate by section** — and the new declarative register in B-3 reads as "the canon, plainly stated," which fits the section's authority claim ("here's what taught me to ship").
 
@@ -337,7 +365,7 @@ Raised by Saturday morning cartoons and Vercel deployment logs.
 
 ### 7.2 Why this lead line works
 
-**The line establishes lineage on the page where lineage belongs.** The home hero declares the role (*"Product Manager. The agents handle the math. I handle the taste."*); the About page establishes how the person got that taste. *"Raised by..."* puts both halves of Sean's lineage — Saturday morning cartoons (creative / right-brain) and Vercel deployment logs (technical / left-brain) — in childhood. They're parallel, equal lineage — no timeline, no hierarchy, no "old hobby vs. new career." The line passes the parallel-lineage rule (PMP §3.1) trivially because "raised by" implies both have been there all along.
+**The line establishes lineage on the page where lineage belongs.** The home hero declares the role (*"Product Manager. The agents handle the loops. I handle the taste."*); the About page establishes how the person got that taste. *"Raised by..."* puts both halves of Sean's lineage — Saturday morning cartoons (creative / right-brain) and Vercel deployment logs (technical / left-brain) — in childhood. They're parallel, equal lineage — no timeline, no hierarchy, no "old hobby vs. new career." The line passes the parallel-lineage rule (PMP §3.1) trivially because "raised by" implies both have been there all along.
 
 **It earns the home hero's "taste" claim by showing where the taste came from.** The home hero says *I handle the taste*. About says *here's the lineage that built the taste*. The two pages tell one story across two surfaces — declarative on home, biographical on About — without rhyming verbatim. The mid-page Saturday morning canon section (§11) earns this lineage claim literally by mapping six cartoons to six product/craft principles. By the time the reader leaves the page, the line has been substantiated, not just asserted.
 
@@ -529,20 +557,22 @@ Polaroids in the v1 draft signaled "personal weekend artifact" (the dog). Cartoo
 
 The visual register flips from "personal scrapbook" to "animator's reference library." Different signal, intentionally.
 
-### 11.2 The 6 cartoons (placeholders — Sean writes the canonical list)
+### 11.2 The 6 cartoons (LOCKED 2026-05-21)
 
-The spec locks the format and structural role; the 6 cartoons and their lessons are Sean's. The list below is a placeholder set demonstrating the caption shape:
+The canonical 6. Sean's picks; the lessons map cartoon-craft to product-craft. Asset PNGs live at [`reference-images/about-cartoons/0N-<slug>.png`](../../reference-images/about-cartoons/) and are copied into `src/assets/cartoons/` at Phase 2 scaffold. Frontmatter draft per §11.6 lives at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](../../reference-images/about-cartoons/cartoons-content-collection-draft.md).
 
-| # | Cartoon | Era | Lesson noun | Lesson body (placeholder) |
-|---|---|---|---|---|
-| 1 | Wile E. Coyote / Roadrunner | 1949– | **ANTICIPATION TIMING** | the wind-up sells every gag. ship the wind-up before the deliverable. |
-| 2 | Pinky and the Brain | 1995–98 | **CHARACTER VS SCHEME** | the team that owns the scheme is not always the team that lands it. |
-| 3 | SpongeBob SquarePants | 1999– | **PACING** | when in doubt, cut to the close-up. a slow scene needs a closer camera, not a longer cut. |
-| 4 | Looney Tunes | 1930– | **PHYSICAL COMEDY** | the joke is in the timing, not the gag. agents need beats, not just plans. |
-| 5 | Dexter's Laboratory | 1996–2003 | **SCOPE CREEP** | the experiment that destroys the lab is the one you didn't pre-mortem. |
-| 6 | Hey Arnold! | 1996–2004 | **POV CHARACTER** | the city is a character; so is the codebase. write things from the place that holds them. |
+| # | Cartoon | Era | Studio | Lesson noun | Lesson body | break_grid |
+|---|---|---|---|---|---|---|
+| 1 | Tommy Pickles (Rugrats) | 1991–2004 | Klasky Csupo / Nickelodeon | **THE SCREWDRIVER** | unlock the playpen first. the adventure is downstream. | false |
+| 2 | Ash Ketchum (Pokémon, Indigo League) | 1997– | OLM / TV Tokyo | **THE LONG GAMBIT** | chased the same goal for twenty years before he won. the journey is the artifact; the title is the byproduct. | false |
+| 3 | Rocko (Rocko's Modern Life) | 1993–96 | Joe Murray Productions / Nickelodeon | **THE OUTSIDER** | rocko didn't argue with modernity, he survived it. learn the system before you reform it. | false |
+| 4 | Samurai Jack | 2001–17 | Cartoon Network Studios (Tartakovsky) | **THE CODE** | jack keeps the samurai code in a world of robots. the spec is the code; everything around it is noise. | **true** ⭐ |
+| 5 | Uncle Iroh (Avatar: The Last Airbender) | 2005–08 | Nickelodeon Animation Studio | **WISDOM IN RESTRAINT** | the most experienced person in the room is the one who speaks last. authority is the right not to use it. | false |
+| 6 | Jake the Dog (Adventure Time) | 2010–18 | Cartoon Network Studios (Pendleton Ward) | **SQUASH AND STRETCH** | flexibility under constraint, without losing the character. the spec stretches; the thesis doesn't. | false |
 
-**[OPEN-3: The 6 cartoons + lessons (§11.2)]** — the table above is a placeholder. Sean writes the canonical list (which 6 cartoons, the specific lesson noun and 1-line elaboration for each) in the build session. The spec locks: 6 cels, mono-caption format `LESSON NOUN — body line`, lesson maps cartoon-craft to product-craft.
+**Cel #4 (Samurai Jack) is the `break_grid: true` cel** per §11.3.1 — renders at 1.2× scale spanning two grid columns on desktop. It's the cel the §11.7 annotation arrow targets (deferred to v2 per §1.2; the geometry break carries the emphasis in v1). The block of three cels above (Tommy / Ash / Rocko) and the block of two below (Iroh / Jake) reflow around the doubled-width cel #4 — establishing Jack as the structural anchor and the "rewires-you" lesson the section asks the reader to pause on.
+
+**Bugs Bunny in slot 5 was considered and rejected** during asset authoring (2026-05-21). Bugs read as a composure-under-chaos gag-cartoon lesson; Iroh carries the deeper PM truth Sean wanted in the canon — the person with the most authority and skill choosing not to use them. Generation post-mortem + the original Bugs prompt are preserved in [`reference-images/about-cartoons/GENERATION-PROMPTS.md`](../../reference-images/about-cartoons/GENERATION-PROMPTS.md).
 
 ### 11.3 The cel component (`<CartoonCel />`)
 
@@ -579,9 +609,11 @@ Mobile (§11.5): `break_grid: true` is a no-op (single-column stack already give
 
 1. **Licensing.** Reproducing Warner Bros / Hanna-Barbera / Nickelodeon stills on a public job-hunt portfolio is a real legal-risk surface, especially for derivative use. Pencil-test studies of cartoon characters are Sean's own art (transformative, fair-use-adjacent at worst, original work at best) and carry no licensing risk.
 2. **Craft signal.** Sean is an animator. Pencil-test studies of cartoon characters are **what animators do** — it's how they learn the masters. The cel becomes a craft artifact, not just a reference.
-3. **Visual consistency.** Real stills span 70+ years of art styles (1930s Looney Tunes vs. 2010s SpongeBob). Sean's pencil-test studies render all 6 in one consistent style — the site's pencil-test aesthetic — which keeps the section visually unified.
+3. **Visual consistency.** Real stills span 30+ years of art styles (1990s Rugrats vs. 2010s Adventure Time). Sean's pencil-test studies render all 6 in one consistent style — the site's pencil-test aesthetic — which keeps the section visually unified.
 
-**[OPEN-4: Pencil-test study authorship (§11.4)]** — 6 pencil-test studies need authoring. **Path A:** Sean draws and scans (highest authenticity, ~30 min/study). **Path B:** Seedream 2.0 renders each from a reference + Sean's character style anchor (~5 min/study, less authentic). **Path C:** Hybrid — Sean does the first 2-3 by hand, Seedream produces the rest. Recommended: Path C for v1 (lock the visual language with hand-drawn anchors; backfill with rendered for time). Confirm.
+**Authorship — RESOLVED 2026-05-21.** All 6 pencil-test studies authored via **Google Gemini Nano Banana 2** (`gemini-3.1-flash-image-preview`) through the [`.claude/skills/gemini-pencil-animation-image-gen`](../../.claude/skills/gemini-pencil-animation-image-gen/SKILL.md) skill. The earlier draft of this spec named "Seedream 2.0" — that was incorrect (Seedance 2.0 is Bytedance's video model, not the image generator Sean actually uses on this project). Approach used = **Approach B (style anchor + per-character reference)** — each generation runs with two `--reference` flags: [`reference-images/2D-Character-Sketch-Sean-v1.png`](../../reference-images/2D-Character-Sketch-Sean-v1.png) as the pencil-test style anchor + a character screenshot for identity. Hand-drawn replacements remain available as a v2 enhancement Sean owns if any cel reads as off post-launch — the v1 generations are committed and locked.
+
+Generation post-mortem + per-cel prompts + lessons banked (minimal-prompts-beat-verbose, AI Studio escape hatch, safety-filter mitigations) live in [`reference-images/about-cartoons/GENERATION-PROMPTS.md`](../../reference-images/about-cartoons/GENERATION-PROMPTS.md).
 
 ### 11.5 Mobile
 
@@ -755,22 +787,22 @@ Four mono links, left-aligned:
 About page v1 ships when:
 
 1. The MDX file at `src/content/about/index.mdx` exists with full frontmatter per Appendix B: `lead` (locked, validated), `linkedin_url`, `github_url`, `transactions_url`, `resume_url`, `available` (boolean), `current_company` (string or null), `character_image`, `character_alt`, `beats[]` (6-8 entries with `age` + `year` + `body` + `lane`), and `b3_load_bearing_cel` (1-6).
-2. `scripts/validate_about.mjs` runs in `prebuild` and asserts the `lead:` field matches **the revised PMP §4 string byte-for-byte** (`"Trained by Looney Tunes and Vercel deployment logs. Ships AI-native products. Deploys agent fleets."`). Build fails on drift.
+2. `scripts/validate_about.mjs` runs in `prebuild` and asserts the `lead:` field matches **the locked PMP §4 row 2 string byte-for-byte** (`"Raised by Saturday morning cartoons and Vercel deployment logs."`). Build fails on drift. (The prior `"Trained by Looney Tunes..."` 3-sentence credentials block was SUPERSEDED 2026-05-18 — the validator now reads the new single-line lead.)
 3. The above-the-fold renders the 3-sentence lead as a stat-block + character PNG at the spec'd proportions. The character PNG exists at `/public/assets/character/about-full-body.png`.
 4. The daily-dated pulse strip reads from a real `/api/about-pulse.json` written by the Daily Driver — not hardcoded. Stale-data fallback works. **No `dog_walks` item type in the schema.**
 5. The B-1 stacked-beats section renders 6-8 beats in a single-column layout (same geometry desktop + mobile), each beat showing a JetBrains Mono date line, a Newsreader body, and a left-margin lane-tint rule (3px desktop / 4px mobile). At least 2 of the beats are marked `lane: braided` and render with the amber-to-teal vertical gradient rule.
-6. Each B-1 beat's lane rule reveals via SVG `stroke-dasharray` top-to-bottom on viewport entry, 200ms after the beat body lands. Disabled under reduced motion (rules render solid at final color). At most 1 curved-arrow annotation lands beside a beat in B-1.
+6. Each B-1 beat's lane rule reveals via SVG `stroke-dasharray` top-to-bottom on viewport entry, 200ms after the beat body lands. Disabled under reduced motion (rules render solid at final color). (v1: no annotations beside beats — pencil-margin annotations deferred per §1.2.)
 7. **The B-3 Saturday morning canon renders 6 `<CartoonCel />` entries from `src/content/cartoons/` in a 3×2 grid on desktop, stacks single-column on mobile. Each cel includes: hand-drawn registration pegs (SVG), Sean's pencil-test study (PNG), cartoon name + year strip inside the cel, and a wire-service caption strip below.** No real cartoon stills (licensing); pencil-test studies only.
 8. B-4 renders three surfaces: (a) the `CURRENTLY @ FREE AGENT` / `CURRENTLY @ <COMPANY>` mono stamp top-right, driven by `frontmatter.current_company`; (b) the `WHAT I'M BUILDING TOWARD` heading + 2 paragraphs of direction-of-craft prose, always rendered, employment-state-neutral; (c) the recruiter italic call-out at the bottom, rendered **only** when `frontmatter.available === true`. Flipping `available: false` + setting `current_company` is sufficient to take the page from "available" → "employed" state with zero prose edits. The aging contract in §12.2 is satisfied: a fresh reader cannot tell that any of the section's text was written before or after Sean's last job change.
-9. The B-5 proof points render four mono links with the "rev scribble" annotation on the `/transactions/` link.
-10. Pencil annotations render at the spec'd density cap (≤12 desktop / ≤6 mobile) with the seven vocabularies defined in §14. Never adjacent within 200px (desktop) / 120px (mobile). **One annotation lands in B-3** (curved arrow with "this one rewires you" label, pointing at Sean's chosen most-load-bearing cel).
-11. The handwritten signature SVG draws itself in via `stroke-dasharray` on viewport entry. Disabled under reduced motion.
-12. Hand-drawn heading SVGs (five of them, one per B-N — including `b3-saturday-morning-canon.svg`) render with proper `<h2>` + `aria-label` accessibility.
+9. The B-5 proof points render four mono links. (v1: "rev scribble" annotation on the `/transactions/` link deferred per §1.2.)
+10. **DEFERRED to v2 per §1.2.** ~~Pencil annotations render at the spec'd density cap (≤12 desktop / ≤6 mobile) with the seven vocabularies defined in §14. Never adjacent within 200px (desktop) / 120px (mobile). **One annotation lands in B-3** (curved arrow with "this one rewires you" label, pointing at Sean's chosen most-load-bearing cel).~~ The B-3 cel-grid still preserves the `break_grid: true` cel-emphasis geometry per §11.3.1 — that's grid layout, not annotation.
+11. **DEFERRED to v2 per §1.2.** ~~The handwritten signature SVG draws itself in via `stroke-dasharray` on viewport entry. Disabled under reduced motion.~~ Page closes at the pull quote; the torn-paper edge into the chrome footer is the page closeout.
+12. **v1 substitution per §1.2:** Plain Newsreader headings render at ~48px tall (weight 400, primary teal `#0A3E42`, left-aligned) — one per B-N section — with proper `<h2>` + `aria-label` accessibility. Hand-drawn heading SVGs deferred to v2.
 13. Print stylesheet renders a clean single-column, link-URL-suffixed version of the page on letter paper.
 14. Lighthouse: Accessibility ≥95, Performance ≥90, Best Practices = 100.
 15. Cold-read test: a fresh reader can describe Sean's professional positioning + read at least 3 of the 6 cartoon lessons + name at least one bet from the B-4 "WHAT I'M BUILDING TOWARD" paragraphs within 60 seconds of landing. Re-run on the live build. When `frontmatter.available === true`, the reader should also recall the recruiter italic line ("agent fleet config on second conversation") without prompting; when `available: false`, the reader should NOT mention employment-seeking when summarizing the page.
 
-When all 15 are green, About v1 is locked and we move to `/transactions/` (spec #3).
+When all 15 are green (with #10 + #11 deferred per §1.2 — substitution behavior in #12 satisfies their v1 visual equivalents), About v1 is locked and we move to `/transactions/` (spec #3).
 
 ---
 
@@ -781,7 +813,7 @@ When all 15 are green, About v1 is locked and we move to `/transactions/` (spec 
 - **Contact CTA** — belongs to site-chrome-spec (spec #6). About ends at the signature.
 - **Newsletter signup** — belongs to `/essays/` spec.
 - **Calendly / scheduling embed** — deferred.
-- **A photo of Sean** — anti-character; never on this site.
+- **A photo of Sean** — anti-character; never on this site, except as a single card in the home-page teaser swiper (see [`home-about-teaser-spec-v1.md`](home-about-teaser-spec-v1.md) §3 + §7 + §10). The teaser swiper renders 9 cards — 1 photograph + 8 AI-style variations — so the photo is one register in a character-deck, not a replacement for the character.
 - **"Press / mentions" strip** — premature; revisit if mentions accrue.
 - **Real-time camera / "live workspace" stream** — deferred (the daily-dated pulse strip already carries the daily-dated-layer signal at appropriate fidelity).
 - **A "skills graph"** — luxury-PM template trap; killed.
@@ -793,9 +825,9 @@ When all 15 are green, About v1 is locked and we move to `/transactions/` (spec 
 
 **[OPEN-2: Beat content (§9)]** — 6-8 stacked beats with at least 2 marked `lane: braided`. The component + lane-tint geometry is locked; the prose is not. Sean writes the canonical beats (in MDX frontmatter `beats[]` per Appendix B) in the build session. Recommended: draft 10-12 candidate beats, cut to 6-8 keepers, prioritize beats that braid both threads in a single sentence — those are the load-bearing beats for the parallel-lineage thesis.
 
-**[OPEN-3: The 6 cartoons + lessons (§11.2)]** — Spec locks: 6 cels, mono-caption format `LESSON NOUN — body line`, lesson maps cartoon-craft to product-craft. The placeholder table in §11.2 is illustrative — Sean writes the canonical list (cartoon, year, lesson noun, lesson body) in the build session, ideally with cartoons that are personally formative (Cartoon Network / Nickelodeon / Looney Tunes / etc. per Sean's note).
+**~~[OPEN-3: The 6 cartoons + lessons (§11.2)]~~ — RESOLVED 2026-05-21.** Canon locked: Tommy Pickles / Ash Ketchum / Rocko / Samurai Jack (break_grid) / Uncle Iroh / Jake the Dog. Lesson nouns + bodies in §11.2 table. Bugs Bunny was considered and rejected in favor of Iroh's deeper PM lesson (wisdom in restraint). Sources at [`reference-images/about-cartoons/`](../../reference-images/about-cartoons/); frontmatter draft at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](../../reference-images/about-cartoons/cartoons-content-collection-draft.md).
 
-**[OPEN-4: Pencil-test study authorship (§11.4)]** — Path A (Sean hand-draws all 6), Path B (Seedream renders all 6 from references), Path C (hybrid — Sean does 2-3 by hand to lock visual language, Seedream backfills). **Recommended: Path C** for v1. Confirm path before build.
+**~~[OPEN-4: Pencil-test study authorship (§11.4)]~~ — RESOLVED 2026-05-21.** Approach B used (style anchor + per-character reference, both via Gemini Nano Banana 2 / `gemini-3.1-flash-image-preview`). All 6 cels generated and validated. The spec's earlier "Seedream 2.0" reference was a tooling name error — corrected inline in §11.4. Hand-drawn replacements are a v2 enhancement Sean owns if any v1 cel reads as off post-launch.
 
 **[OPEN-5: "V3 portfolio" strikethrough artifact (§14)]** — does Sean want to surface V3 as a historical artifact with a strikethrough? Transparency-flex move. Default: no — Sean's voice is comedic-confident, not self-flagellating. Confirm.
 

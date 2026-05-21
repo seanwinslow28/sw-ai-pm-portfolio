@@ -229,7 +229,7 @@ Concrete prereqs that must close before code is written.
 
 6. **About page character** — `about-full-body.png` authored via Seedream 2.0 from anchor sheets in `sw-portfolio-animation-2026/anchor-images/`. Sean alone, full-body, no AI companion (about spec OPEN-1 default). ≤800KB, 2x retina source.
 
-7. **Saturday morning canon cels** — 6 pencil-test studies. Per about spec OPEN-4 Path C: Sean draws 2-3 by hand (locks visual language); Seedream backfills the remaining 3-4. Land at `src/assets/cartoons/<name>-study.png`.
+7. ~~**Saturday morning canon cels** — 6 pencil-test studies.~~ **DONE 2026-05-21.** All 6 authored via Gemini Nano Banana 2 / Approach B (style anchor + per-character reference). Canon locked: Tommy Pickles · Ash Ketchum · Rocko · Samurai Jack (`break_grid: true`) · Uncle Iroh · Jake the Dog. Sources at [`reference-images/about-cartoons/`](../../reference-images/about-cartoons/); MDX frontmatter draft at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](../../reference-images/about-cartoons/cartoons-content-collection-draft.md). Bugs Bunny was generated and rejected in favor of Iroh's deeper PM lesson; post-mortem in [`GENERATION-PROMPTS.md`](../../reference-images/about-cartoons/GENERATION-PROMPTS.md). The about spec's "Seedream 2.0" reference was a tooling-name error — corrected to Gemini Nano Banana 2 in §11.4 of the about spec at the same lock.
 
 8. **Five About B-N heading SVGs** — `b1-how-i-got-here.svg`, `b2-why-pm.svg`, `b3-saturday-morning-canon.svg`, `b4-where-im-going.svg`, `b5-proof-points.svg`. Per about spec OPEN-6: Path A (hand-drawn + scanned) or Path B (Seedream); Path C (Caveat font) discouraged.
 
@@ -237,11 +237,11 @@ Concrete prereqs that must close before code is written.
 
 10. **Kid-drawing scan margin artifact** — one per page, B-1 left-column margin (about spec §14 vocabulary 5).
 
-11. **`/public/og-default.png`** (1200×630) — wordmark + hero tagline, manually authored or placeholder (site chrome spec §12.2).
+11. ~~**`/public/og-default.png`** (1200×630) — wordmark + hero tagline.~~ **DONE 2026-05-21.** Authored at [`reference-images/og-cards/og-default.png`](../../reference-images/og-cards/og-default.png) (52KB). Carries the PMP §4 locked meta-description hook ("AI Product Manager. Raised by Saturday morning cartoons and Vercel deployment logs.") + the SW wordmark + the dateline strip register. Moves to `/public/` at Phase 2 scaffold.
 
-12. **Per-page OG cards** — `/public/og-cards/vault-scorecard.png` + `/public/og-cards/vault-knowledge-mcp.png` + `/public/og-cards/essays/meaning-over-access.png`. Static PNG authored per page; satori auto-generation is v2 (architecture spec §17 + essays spec §18).
+12. ~~**Per-page OG cards** — vault-scorecard + vault-knowledge-mcp + essays/meaning-over-access.~~ **DONE 2026-05-21.** All three authored at [`reference-images/og-cards/vault-scorecard.png`](../../reference-images/og-cards/vault-scorecard.png) (46KB), [`reference-images/og-cards/vault-knowledge-mcp.png`](../../reference-images/og-cards/vault-knowledge-mcp.png) (46KB, includes SHIPPED 2026-05-12 stamp), and [`reference-images/og-cards/essays/meaning-over-access.png`](../../reference-images/og-cards/essays/meaning-over-access.png) (44KB). All 1200×630, all under the 200KB budget. Generated deterministically via Python + Pillow + Newsreader/JetBrains Mono TTFs — script preserved at [`scripts/phase-0/generate_og_cards.py`](../../scripts/phase-0/generate_og_cards.py) for future regens. Satori auto-generation remains a v2 enhancement.
 
-13. **Favicon set** — `favicon.svg` + `favicon.ico` + `apple-touch-icon.png` in `/public/` (site chrome spec Appendix A).
+13. ~~**Favicon set** — `favicon.svg` + `favicon.ico` + `apple-touch-icon.png`.~~ **DONE 2026-05-21.** Authored at [`reference-images/favicon/`](../../reference-images/favicon/): hand-authored SVG (SW wordmark, JetBrains Mono 700, teal `#0A3E42` on warm paper `#FFF9F0`) + multi-resolution ICO (16/32/48px raster, 372B) + apple-touch-icon.png (180×180, 4.5KB). Rasters generated via Pillow from the same SW wordmark used in the SVG; script at [`scripts/phase-0/generate_favicons.py`](../../scripts/phase-0/generate_favicons.py). Site-chrome §16 OPEN-1 wordmark question CONFIRMED at the recommended default in lockstep.
 
 **Upstream `EXPLANATION.md` files (gate canonical-source fetch):**
 

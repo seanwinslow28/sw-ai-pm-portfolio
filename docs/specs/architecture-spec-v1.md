@@ -1,6 +1,6 @@
 # `/architecture/` Route v1 — Build Spec
 
-> **Status:** Drafted 2026-05-17. Awaiting Sean's lock.
+> **Status:** LOCKED 2026-05-20. All 5 OPEN-N items resolved to recommended defaults per [`BLUEPRINT-COMPLETE.md`](BLUEPRINT-COMPLETE.md) §4.6. See [CHANGELOG.md](../../CHANGELOG.md) for the lock entry.
 > **Scope:** The `/architecture/` route — index, per-writeup deep-dive pages, RSS feed. Inherits everything from `hero-spec-v1.md`, `projects-section-spec-v1.md`, `case-study-spec-v1.md`, and `transactions-spec-v1.md`.
 > **First occupant:** Vault Scorecard (Task 15, ships 2026-06-03). Second occupant ~1 week later: `vault-knowledge-mcp` (Task 10, ~2026-06-04). Possible third: Control Architecture (Task 14, ~2026-06-10) — see `[OPEN-1]` §16.
 > **Buildable as-is** once locked. Hand to a Claude Code session with this file + the four inherited specs open.
