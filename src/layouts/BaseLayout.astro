@@ -61,6 +61,11 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+    <!-- RSS auto-discovery (3 collection feeds — feeds themselves land Phase 3) -->
+    <link rel="alternate" type="application/rss+xml" href="/transactions/rss.xml" title="Sean Winslow — Transactions" />
+    <link rel="alternate" type="application/rss+xml" href="/architecture/rss.xml" title="Sean Winslow — Architecture" />
+    <link rel="alternate" type="application/rss+xml" href="/essays/rss.xml" title="Sean Winslow — Essays" />
+
     <!-- Preload substrate (texture-spec §3.6 + §4.6) -->
     <link rel="preload" as="image" href="/assets/textures/paper-tile.png" />
     <link rel="preload" as="image" href="/assets/textures/tear-edge.png" />
