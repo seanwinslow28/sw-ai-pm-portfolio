@@ -1,0 +1,82 @@
+---
+/**
+ * <NextPrevNav /> — two pills at the bottom of the case-study body.
+ *
+ * Title-only. Reads from getCollection('work').sort(order); the page
+ * shell computes prev + next with wrap-around at A-1 ↔ A-5.
+ *
+ * Source: case-study-spec-v1.md §10.
+ */
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  prev: CollectionEntry<"work">;
+  next: CollectionEntry<"work">;
+}
+const { prev, next } = Astro.props;
+---
+
+<nav class="next-prev-nav" aria-label="Adjacent case studies">
+  <a href={`/work/${prev.slug}/`} class="nav-pill nav-prev">
+    <span class="arrow" aria-hidden="true">&larr;</span>
+    <span class="frame">{prev.data.frame}</span>
+    <span class="title">{prev.data.title.toUpperCase()}</span>
+  </a>
+  <a href={`/work/${next.slug}/`} class="nav-pill nav-next">
+    <span class="frame">{next.data.frame}</span>
+    <span class="title">{next.data.title.toUpperCase()}</span>
+    <span class="arrow" aria-hidden="true">&rarr;</span>
+  </a>
+</nav>
+
+<style>
+  .next-prev-nav {
+    max-width: 1120px;
+    margin: 56px auto 0;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .nav-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--teal);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .nav-pill:hover,
+  .nav-pill:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+  .nav-pill .arrow { font-size: 18px; transition: transform 200ms var(--ease-out); }
+  .nav-prev:hover .arrow { transform: translateX(-4px); }
+  .nav-next:hover .arrow { transform: translateX(4px); }
+  .nav-pill .frame {
+    font-weight: 500;
+    color: var(--amber-mid);
+    letter-spacing: 1.6px;
+  }
+  .nav-pill .title { color: var(--teal); }
+
+  @media (max-width: 767px) {
+    .next-prev-nav {
+      padding: 0 16px;
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .nav-pill { font-size: 12px; justify-content: center; }
+    .nav-next { justify-content: center; }
+  }
+</style>
