@@ -813,7 +813,7 @@ When all 15 are green (with #10 + #11 deferred per §1.2 — substitution behavi
 - **Contact CTA** — belongs to site-chrome-spec (spec #6). About ends at the signature.
 - **Newsletter signup** — belongs to `/essays/` spec.
 - **Calendly / scheduling embed** — deferred.
-- **A photo of Sean** — anti-character; never on this site, except as a single card in the home-page teaser swiper (see [`home-about-teaser-spec-v1.md`](home-about-teaser-spec-v1.md) §3 + §7 + §10). The teaser swiper renders 9 cards — 1 photograph + 8 AI-style variations — so the photo is one register in a character-deck, not a replacement for the character.
+- **A photo of Sean** — anti-character; never on this site, except as a single card in the home-page teaser swiper (see [`home-about-teaser-spec-v1.md`](home-about-teaser-spec-v1.md) §3 + §7 + §10). The teaser swiper renders 10 cards — 1 photograph + 9 AI-style variations — so the photo is one register in a character-deck, not a replacement for the character.
 - **"Press / mentions" strip** — premature; revisit if mentions accrue.
 - **Real-time camera / "live workspace" stream** — deferred (the daily-dated pulse strip already carries the daily-dated-layer signal at appropriate fidelity).
 - **A "skills graph"** — luxury-PM template trap; killed.
