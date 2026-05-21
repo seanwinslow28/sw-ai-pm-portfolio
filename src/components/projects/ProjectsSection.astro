@@ -82,8 +82,11 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
 
   .tear-divider {
     display: block;
-    /* Break out of section's horizontal padding so the tear is true full-bleed */
+    /* Break out of section's horizontal padding so the tear is true full-bleed.
+       max-width:none defeats Tailwind preflight's img { max-width: 100% }
+       which otherwise clamps the calc() back to the content-box. */
     width: calc(100% + 104px);
+    max-width: none;
     margin-left: -52px;
     margin-right: -52px;
     height: auto;

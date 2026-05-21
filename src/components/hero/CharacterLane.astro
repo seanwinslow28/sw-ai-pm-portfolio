@@ -53,13 +53,15 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
   .hero-floor-shadow {
     /* Reference: sw-portfolio-animation-2026/.../hero-image-with-bg000.png —
        a tight ellipse only under the desk + chair, not a wide swath.
-       Shadow PNG centroid is at 49% of its own width; positioning left:38%
-       puts the dark center at ~65% of lane, aligning with the painted desk. */
+       Shadow PNG centroid is at 49% of its own width; positioning left:18%
+       (width 55%) puts the dark center at ~46% of lane → ~78% of viewport
+       on a 1920 viewport, matching the painted desk's visible position
+       (lane right:-180px bleed places the desk on the right of the viewport). */
     position: absolute;
     width: 55%;
     height: auto;
     bottom: -6px;
-    left: 38%;
+    left: 18%;
     right: auto;
     object-fit: contain;
     object-position: center bottom;
