@@ -1,0 +1,166 @@
+---
+/**
+ * <TitleBlock /> — case-study title block.
+ *
+ * Layout: frame + status pill (top row), title (next), tags + anchor
+ * metric (bottom row, split). Status pill color is driven by frontmatter
+ * status:; the status-driven page-shape desaturation lives on the page
+ * shell (status="PAUSED" or "ARCHIVED" applies a CSS class that drops
+ * the frame number opacity).
+ *
+ * Source: case-study-spec-v1.md §2 + §4 + §5.
+ */
+interface Props {
+  frame: string;       // e.g., "A-1"
+  title: string;
+  status: "ACTIVE" | "COMING" | "PAUSED" | "ARCHIVED" | "SHIPPED";
+  tags: string[];
+  role: string;        // e.g., "pm + builder + operator"
+  dateStarted?: string;
+  dateActiveThrough?: string;
+  anchorMetric: string;
+}
+
+const { frame, title, status, tags, role, dateStarted, dateActiveThrough, anchorMetric } = Astro.props;
+
+const inFlightRange = (() => {
+  if (!dateStarted) return null;
+  const fmt = (iso: string) => {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "2-digit" }).replace("/", "-");
+  };
+  const start = fmt(dateStarted);
+  const end = dateActiveThrough ? fmt(dateActiveThrough) : "now";
+  return `IN FLIGHT ${start} → ${end}`;
+})();
+---
+
+<header class="title-block" data-status={status}>
+  <div class="role-row">
+    <span class="role-pill">ROLE — {role}</span>
+    {inFlightRange && <span class="in-flight">{inFlightRange}</span>}
+  </div>
+  <div class="frame-row">
+    <span class="frame-number">{frame}</span>
+    <span class="bullet" aria-hidden="true">·</span>
+    <span class={`status-pill status-${status.toLowerCase()}`}>{status}</span>
+  </div>
+  <h1 class="case-study-title">{title}</h1>
+  <div class="tag-row">
+    <p class="tags">{tags.join(" · ")}</p>
+    <p class="anchor-metric">◐ {anchorMetric}</p>
+  </div>
+</header>
+
+<style>
+  .title-block {
+    max-width: 1120px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+  }
+
+  .role-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .role-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--stamp-amber);
+    text-transform: uppercase;
+  }
+  .in-flight {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.6px;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+  }
+
+  .frame-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .frame-number {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--amber-mid);
+  }
+  .bullet { color: var(--ink-secondary); }
+  .status-pill {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .status-active   { color: var(--stamp-amber);     border: 0.5px solid var(--stamp-amber); }
+  .status-coming   { color: var(--stamp-amber);     border: 0.5px solid var(--stamp-amber); opacity: 0.85; }
+  .status-shipped  { color: var(--success-teal, #0F6E56); border: 0.5px solid var(--success-teal, #0F6E56); }
+  .status-paused   { color: var(--ink-secondary);   border: 0.5px solid var(--ink-secondary); }
+  .status-archived { color: var(--ink-secondary);   border: 0.5px solid var(--ink-secondary); }
+
+  .case-study-title {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 5.6vw, 84px);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.6px;
+    color: var(--teal);
+    margin: 0 0 16px;
+  }
+
+  .tag-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .tags {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: var(--ink-secondary);
+    text-transform: lowercase;
+    margin: 0;
+  }
+  .anchor-metric {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+    margin: 0;
+    text-align: right;
+  }
+
+  /* Status-driven desaturation per case-study-spec §5 */
+  .title-block[data-status="PAUSED"] .frame-number,
+  .title-block[data-status="ARCHIVED"] .frame-number {
+    color: var(--ink-secondary);
+  }
+  .title-block[data-status="ARCHIVED"] .frame-number {
+    opacity: 0.5;
+  }
+
+  @media (max-width: 767px) {
+    .title-block { padding: 0 16px; }
+    .role-row { flex-direction: column; gap: 6px; }
+    .case-study-title { font-size: clamp(36px, 8vw, 56px); }
+    .tag-row { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .anchor-metric { text-align: left; font-size: 14px; }
+  }
+</style>
