@@ -1,0 +1,73 @@
+---
+/**
+ * <DatelineStrip /> — case-study page dateline.
+ *
+ * Two lines: stamp prefix + body. Mono throughout. Thin rule below.
+ * Locale + date come from frontmatter or computed at build; body is
+ * project-specific authored copy.
+ *
+ * Source: case-study-spec-v1.md §2 + hero-spec-v1.md §8.
+ */
+interface Props {
+  locale?: string;       // default "BOSTON"
+  date?: string;         // ISO yyyy-mm-dd or pretty "MAY 13, 2026"
+  body: string;          // project-specific dateline body
+  bodyLine2?: string;    // optional second line
+}
+
+const today = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric",
+}).toUpperCase();
+
+const { locale = "BOSTON", date, body, bodyLine2 } = Astro.props;
+const datePretty = date ?? today;
+---
+
+<div class="dateline-strip">
+  <p class="dateline-line">
+    <span class="dateline-stamp">{locale}, {datePretty} —</span>
+    <span class="dateline-body">{body}</span>
+  </p>
+  {bodyLine2 && <p class="dateline-line-2">{bodyLine2}</p>}
+  <hr />
+</div>
+
+<style>
+  .dateline-strip {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .dateline-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    line-height: 1.5;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+  .dateline-stamp {
+    font-weight: 500;
+    color: var(--stamp-amber);
+    margin-right: 6px;
+  }
+  .dateline-line-2 {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    line-height: 1.5;
+    color: var(--ink-secondary);
+    margin: 4px 0 0;
+  }
+  hr {
+    border: 0;
+    border-top: 0.5px solid var(--border-paper);
+    margin: 16px 0 0;
+  }
+  @media (max-width: 767px) {
+    .dateline-strip { padding: 0 16px; }
+    .dateline-line, .dateline-line-2 { font-size: 11px; }
+  }
+</style>
