@@ -1,0 +1,95 @@
+---
+/**
+ * <Annotation /> — pencil-margin annotation wrapper.
+ *
+ * Declarative usage in MDX:
+ *   <Annotation type="arrow" label="the one we kept" target="#artifact-3" offsetX={-40} offsetY={8} />
+ *
+ * The page shell wraps the investigation board in a
+ * .annotation-anchor-root container and includes the positioner JS
+ * module. The script computes top/left at runtime via getBoundingClientRect.
+ *
+ * Density rule (case-study-spec §11.2): ≤6 per page desktop, ≤4 mobile.
+ * Enforcement is currently Sean's authoring discipline; a Phase 4
+ * build-time counter could escalate to a warning.
+ *
+ * Source: case-study-spec-v1.md §11.
+ */
+import arrowSvg from "./arrow.svg?raw";
+import strikethroughSvg from "./strikethrough-x.svg?raw";
+import coffeeRingSvg from "./coffee-ring.svg?raw";
+import registrationMarkSvg from "./registration-mark.svg?raw";
+
+interface Props {
+  type: "arrow" | "strikethrough" | "coffee-ring" | "registration-mark";
+  label?: string;
+  target?: string;        // CSS selector, e.g. "#artifact-3"
+  offsetX?: number;       // px offset from target's right edge
+  offsetY?: number;       // px offset from target's top edge
+}
+
+const { type, label, target, offsetX = 0, offsetY = 0 } = Astro.props;
+
+const SVG_MAP = {
+  arrow: arrowSvg,
+  strikethrough: strikethroughSvg,
+  "coffee-ring": coffeeRingSvg,
+  "registration-mark": registrationMarkSvg,
+} as const;
+
+const svgMarkup = SVG_MAP[type];
+---
+
+<span
+  class:list={["annotation", `annotation-${type}`, target && "annotation-anchored"]}
+  data-target={target}
+  data-offset-x={String(offsetX)}
+  data-offset-y={String(offsetY)}
+  aria-hidden="true"
+>
+  <span class="annotation-svg" set:html={svgMarkup} />
+  {label && type === "arrow" && (
+    <span class="annotation-label">{label}</span>
+  )}
+</span>
+
+<style>
+  .annotation {
+    pointer-events: none;
+    color: var(--teal);
+    opacity: 0.7;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .annotation-anchored {
+    position: absolute;
+  }
+  .annotation-svg {
+    display: inline-block;
+    line-height: 0;
+  }
+  .annotation-svg :global(svg) {
+    display: block;
+  }
+  .annotation-arrow .annotation-svg :global(svg) { width: 80px; height: 28px; }
+  .annotation-strikethrough .annotation-svg :global(svg) { width: 80px; height: 80px; color: var(--stamp-amber); opacity: 0.8; }
+  .annotation-coffee-ring .annotation-svg :global(svg) { width: 90px; height: 75px; color: var(--stamp-amber); opacity: 0.3; }
+  .annotation-registration-mark .annotation-svg :global(svg) { width: 24px; height: 24px; color: var(--amber-mid); }
+
+  .annotation-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+    opacity: 0.7;
+    text-transform: lowercase;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .annotation-arrow .annotation-svg :global(svg) { width: 60px; height: 20px; }
+    .annotation-label { font-size: 10px; }
+  }
+</style>
