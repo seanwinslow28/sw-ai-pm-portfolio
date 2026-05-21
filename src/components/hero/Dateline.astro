@@ -1,0 +1,49 @@
+---
+/**
+ * Hero dateline strip — reads /api/dateline.json at build time and renders the
+ * fleet_pulse / ship_log / reading_log / now_line / ledger_row pattern.
+ * Source: hero-spec §8.
+ */
+import datelineData from "../../../public/api/dateline.json";
+
+const { date_display, body } = datelineData;
+---
+
+<div class="dateline-strip">
+  <p class="dateline-line">
+    <span class="stamp">{date_display} —</span>
+    <span class="body">{body}</span>
+  </p>
+  <hr class="dateline-rule" />
+</div>
+
+<style>
+  .dateline-strip {
+    margin-bottom: 30px;
+  }
+  .dateline-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    line-height: 1.4;
+    color: var(--ink-secondary);
+    margin-bottom: 30px;
+  }
+  .stamp {
+    color: var(--stamp-amber);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .dateline-rule {
+    height: 0;
+    border: 0;
+    border-top: 0.5px solid var(--border-paper);
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .dateline-line {
+      font-size: 11px;
+    }
+  }
+</style>

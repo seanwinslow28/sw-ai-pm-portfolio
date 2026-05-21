@@ -1,0 +1,62 @@
+---
+/**
+ * Hero intro icon cycle — 8 stacked WebPs that crossfade in sequence for
+ * 4.8s before the WebM character animation fades in.
+ * Source: hero-spec §7.5.
+ */
+
+const icons = [
+  { src: "/assets/hero-icons/icon-1-loop.webp",        alt: "" },
+  { src: "/assets/hero-icons/icon-2-terminal.webp",    alt: "" },
+  { src: "/assets/hero-icons/icon-3-graph.webp",       alt: "" },
+  { src: "/assets/hero-icons/icon-4-pencil.webp",      alt: "" },
+  { src: "/assets/hero-icons/icon-5-sticky-note.webp", alt: "" },
+  { src: "/assets/hero-icons/icon-6-matrix.webp",      alt: "" },
+  { src: "/assets/hero-icons/icon-7-claude.webp",      alt: "" },
+  { src: "/assets/hero-icons/icon-8-coffee.webp",      alt: "" },
+];
+---
+
+<div class="hero-intro-cycle" aria-hidden="true">
+  {icons.map((icon, i) => (
+    <img
+      src={icon.src}
+      alt={icon.alt}
+      data-cycle-index={i}
+      class={i === 0 ? "active" : ""}
+      loading={i === 0 ? "eager" : "lazy"}
+    />
+  ))}
+</div>
+
+<style>
+  .hero-intro-cycle {
+    position: absolute;
+    inset: 0;
+    z-index: 21;
+    pointer-events: none;
+  }
+  .hero-intro-cycle img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom right;
+    opacity: 0;
+    transition: opacity 120ms linear;
+  }
+  .hero-intro-cycle img.active {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* Static icon-7-claude only (the "agents made literal" frame). */
+    .hero-intro-cycle img {
+      display: none;
+    }
+    .hero-intro-cycle img[data-cycle-index="6"] {
+      display: block;
+      opacity: 1;
+    }
+  }
+</style>

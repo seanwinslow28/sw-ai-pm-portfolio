@@ -1,9 +1,8 @@
 ---
 import BaseLayout from "~/layouts/BaseLayout.astro";
+import Hero from "~/components/hero/Hero.astro";
 ---
-<BaseLayout title="Sean Winslow" noChrome={true}>
-  <section class="page-sheet" style="padding: 80px 24px; min-height: 80vh;">
-    <h1 style="font-family: var(--font-serif); color: var(--teal); font-size: 96px;">Hello, Layout.</h1>
-    <p style="font-family: var(--font-mono); color: var(--ink-secondary);">BaseLayout shell loads with skip link + footer stub. Fonts via Google Fonts Optimizer.</p>
-  </section>
+
+<BaseLayout title="Sean Winslow — AI Product Manager" noChrome={true}>
+  <Hero />
 </BaseLayout>

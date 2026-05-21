@@ -1,0 +1,88 @@
+---
+/**
+ * Hero character lane — flush-right WebM + intro icon cycle + floor shadow.
+ * Source: hero-spec §7, §7.5; texture-spec §5.
+ */
+import HeroIconCycle from "./HeroIconCycle.astro";
+import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
+---
+
+<div class="character" aria-hidden="true">
+  <img
+    class="hero-floor-shadow"
+    src="/assets/textures/hero-floor-shadow.png"
+    alt=""
+    loading="eager"
+    decoding="async"
+  />
+  <HeroIconCycle />
+  <video
+    class="character-video"
+    src={HERO_LOOP_WEBM}
+    poster={HERO_LOOP_POSTER}
+    muted
+    loop
+    playsinline
+    preload="auto"
+    data-state="pending"
+  />
+</div>
+
+<script>
+  import { initHeroIconCycle } from "~/scripts/hero-icon-cycle.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".hero-intro-cycle");
+    const video = document.querySelector(".character-video");
+    if (container && video) {
+      initHeroIconCycle({ container, video });
+    }
+  });
+</script>
+
+<style>
+  .character {
+    position: absolute;
+    width: 1024px;
+    height: 576px;
+    right: -180px;
+    bottom: 80px;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .hero-floor-shadow {
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    bottom: 0;
+    left: 0;
+    object-fit: cover;
+    object-position: bottom right;
+    z-index: 18;
+    pointer-events: none;
+  }
+  .character-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom right;
+    z-index: 20;
+    opacity: 0;
+  }
+  @media (max-width: 1024px) {
+    .character {
+      width: 420px;
+      height: 240px;
+      right: -24px;
+      bottom: -10px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* No video mounted in JS — but we hide it via CSS as a defensive measure. */
+    .character-video {
+      display: none;
+    }
+  }
+</style>
