@@ -11,6 +11,7 @@ import { ClientRouter } from "astro:transitions";
 import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
+import SiteNav from "~/components/chrome/SiteNav.astro";
 import SiteFooter from "~/components/chrome/SiteFooter.astro";
 import Cursor from "~/components/Cursor.tsx";
 import "~/styles/global.css";
@@ -90,7 +91,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
   <body>
     <SkipLink />
     <Cursor client:load />
-    {/* Sub-page top nav lands in Phase 3 — when noChrome=false. For Phase 2 the home is the only route, so this stays as a stub. */}
+    {!noChrome && <SiteNav />}
     <main id="main-content">
       <slot />
     </main>
