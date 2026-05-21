@@ -1,0 +1,65 @@
+---
+/**
+ * <FooterFold /> — "subscribe via RSS" + "view the fleet ↗".
+ *
+ * Renders below the ledger rows on /transactions/ index + per-surface
+ * pages. NOT on the deep-dive — the deep-dive has Next/Prev nav instead.
+ *
+ * Per transactions-spec §2.1 + §10.3.
+ */
+import { FLEET_DASHBOARD_URL } from "~/lib/site";
+---
+
+<aside class="footer-fold" aria-label="Subscribe and external links">
+  <hr class="fold-rule" />
+  <ul>
+    <li>
+      <a href="/transactions/rss.xml" class="fold-link">&rarr; subscribe via RSS</a>
+    </li>
+    <li>
+      <a href={FLEET_DASHBOARD_URL} class="fold-link" rel="noopener external">&rarr; view the fleet &nearr;</a>
+    </li>
+  </ul>
+</aside>
+
+<style>
+  .footer-fold {
+    max-width: 1120px;
+    margin: 80px auto 60px;
+    padding: 0 24px;
+  }
+  .fold-rule {
+    border: none;
+    border-bottom: 0.5px solid var(--border-paper);
+    margin: 0 0 32px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+  }
+  li { margin: 0; }
+  .fold-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .fold-link:hover,
+  .fold-link:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .footer-fold { padding: 0 16px; }
+    ul { flex-direction: column; gap: 16px; }
+  }
+</style>
