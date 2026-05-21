@@ -1,0 +1,136 @@
+---
+/**
+ * Projects section — full-bleed teal splash, torn-paper edges, 3×2 grid.
+ * Source: projects-spec §2, §5, §6, §7.
+ */
+import { getCollection } from "astro:content";
+import ProjectTile from "./ProjectTile.astro";
+import NextInProduction from "./NextInProduction.astro";
+import DatelineLabel from "./DatelineLabel.astro";
+import PencilAnnotation from "./PencilAnnotation.astro";
+
+const work = await getCollection("work");
+const sorted = work.sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="projects section-splash-teal">
+  <img
+    src="/assets/textures/tear-edge.png"
+    class="tear-divider tear-divider--top"
+    alt=""
+    aria-hidden="true"
+  />
+  <div class="projects-inner">
+    <div class="dateline-block">
+      <DatelineLabel />
+      <PencilAnnotation variant="updated-weekly" />
+    </div>
+    <div class="grid">
+      {sorted.map((entry, i) => (
+        <div class="grid-cell">
+          <ProjectTile
+            slug={entry.slug}
+            frame={entry.data.frame}
+            title={entry.data.title}
+            tagline={entry.data.tagline}
+            status={entry.data.status}
+            tags={entry.data.tags}
+            hero_media={entry.data.hero_media}
+            hero_media_type={entry.data.hero_media_type}
+            hero_media_alt={entry.data.hero_media_alt}
+          />
+          {i === 0 && <PencilAnnotation variant="rev-3" />}
+        </div>
+      ))}
+      <div class="grid-cell">
+        <NextInProduction />
+      </div>
+    </div>
+    <PencilAnnotation variant="registration-mark" />
+  </div>
+  <img
+    src="/assets/textures/tear-edge.png"
+    class="tear-divider tear-divider--bottom"
+    alt=""
+    aria-hidden="true"
+  />
+</section>
+
+<style>
+  .projects {
+    position: relative;
+    padding: 80px 52px;
+    background-color: var(--teal);
+    overflow: hidden;
+  }
+  .projects-inner {
+    position: relative;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .dateline-block {
+    position: relative;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 40px;
+  }
+  .grid-cell {
+    position: relative;
+  }
+
+  .tear-divider {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 12;
+    pointer-events: none;
+    user-select: none;
+  }
+  .tear-divider--top {
+    margin-top: -80px;
+    margin-bottom: -2px;
+  }
+  .tear-divider--bottom {
+    transform: scaleY(-1);
+    margin-top: -2px;
+    margin-bottom: -80px;
+  }
+
+  /* Pencil annotation positioning */
+  :global(.dateline-block .annotation--updated-weekly) {
+    top: 8px;
+    left: 200px;
+    width: 220px;
+    height: 60px;
+  }
+  :global(.grid-cell .annotation--rev-3) {
+    top: -8px;
+    right: -8px;
+    width: 60px;
+    height: 40px;
+  }
+  :global(.projects-inner .annotation--registration-mark) {
+    bottom: -20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .projects {
+      padding: 60px 24px;
+    }
+  }
+</style>
