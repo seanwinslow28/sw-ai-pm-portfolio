@@ -1,0 +1,65 @@
+---
+/* Theme toggle — two text labels, vanilla JS click handler. Site-chrome §8.1-§8.4. */
+---
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button type="button" data-theme="light" class="active" aria-label="Light theme">LIGHT</button>
+  <span class="sep" aria-hidden="true">·</span>
+  <button type="button" data-theme="dark" aria-label="Dark theme">DARK</button>
+</div>
+
+<script is:inline>
+  (function() {
+    var toggle = document.querySelector('.theme-toggle');
+    if (!toggle) return;
+    var current = document.documentElement.getAttribute('data-theme') || 'light';
+    toggle.querySelectorAll('[data-theme]').forEach(function(el) {
+      el.classList.toggle('active', el.dataset.theme === current);
+    });
+    toggle.addEventListener('click', function(e) {
+      var target = e.target;
+      if (!target || !target.dataset || !target.dataset.theme) return;
+      var newTheme = target.dataset.theme;
+      document.documentElement.setAttribute('data-theme', newTheme);
+      document.cookie = 'sw-theme=' + newTheme + '; path=/; max-age=31536000; SameSite=Lax';
+      toggle.querySelectorAll('[data-theme]').forEach(function(el) {
+        el.classList.toggle('active', el.dataset.theme === newTheme);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 1.6px;
+  }
+  .theme-toggle button {
+    background: none;
+    border: 0;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-weight: 400;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    transition: color 200ms var(--ease-out), transform 100ms var(--ease-out);
+  }
+  .theme-toggle button.active {
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .theme-toggle button:not(.active):hover {
+    transform: translateY(-1px);
+  }
+  .theme-toggle .sep {
+    color: var(--ink-secondary);
+    padding: 0 4px;
+  }
+</style>
