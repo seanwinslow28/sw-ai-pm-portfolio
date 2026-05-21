@@ -2,17 +2,103 @@
 slug: code-brain
 frame: A-2
 title: Code Brain
+tagline: My second brain has a fleet now.
 status: ACTIVE
 tags:
   - agents
-  - mcp
-  - ai-pm
+  - infrastructure
+  - personal-automation
 hero_media: /assets/projects/code-brain.webp
 hero_media_type: image
-hero_media_alt: A diagram of the Code Brain agent fleet — 3 domains, 14 SDK agents.
+hero_media_alt: A terminal showing the Daily Driver agent firing its morning brief.
 order: 2
-date_started: 2026-02-01
+date_started: 2025-09-01
 case_study_dateline_pattern: fleet_pulse
+
+role: pm + builder + operator
+anchor_metric: "118 SKILLS · 14 HOOKS · 8 AGENTS"
+investigation_order: reverse
+
+methods:
+  - task: agent runtime
+    tool: Claude Agent SDK
+    cost: per-token billing
+    link: null
+  - task: scheduling
+    tool: launchd (macOS)
+    cost: local / $0
+    link: null
+  - task: local model
+    tool: Ollama (Qwen3-14B, nomic-embed-text)
+    cost: local / $0
+    link: null
+  - task: animation pipeline (downstream consumer)
+    tool: Animation Pipeline
+    cost: see case study
+    link: /work/animation-pipeline/
+
+four_q:
+  what: "[PLACEHOLDER — Q1] A personal command-center that runs a small fleet of Claude agents on a daily schedule. Skills + hooks + 8 named agents; the morning Daily Driver writes the portfolio's daily-dated layer."
+  why: "[PLACEHOLDER — Q2] Three options considered: ChatGPT Plus + custom GPTs, Cursor + project rules, or a Claude-Code-native fleet. Chose Claude-Code-native because skills compose better than prompts and because the agent SDK lets a single launchd job orchestrate the whole morning."
+  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) launchd silently failing on first run after a macOS update; 2) the morning agent hitting a tool-call quota; 3) prompt-cache misses cascading across the morning."
+  learn: "[PLACEHOLDER — Q4] The fleet's job isn't to write code. The fleet's job is to keep me thinking about the next problem instead of the last one."
 ---
 
-Placeholder body content. Replaced in Phase 3.
+import Opener from "~/components/case-study/Opener.astro";
+import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
+import PRDDecision from "~/components/artifacts/PRDDecision.astro";
+import SlackQuote from "~/components/artifacts/SlackQuote.astro";
+import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
+import MetricChart from "~/components/artifacts/MetricChart.astro";
+
+<Opener>
+  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] My second brain has a fleet now. The same vault that held meeting notes a year ago is now the runtime for eight named agents that wake up at 08:45 every weekday, read overnight commits, and write the day's brief into the file system before I've opened Slack.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The thesis is small: skills compose better than prompts. The artifacts on this page are the evidence — Sean replaces this paragraph post-plan.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] What's below is the morning. What's not below is the cost — the fleet pays for itself in attention, not money.</p>
+</Opener>
+
+<InvestigationBoard>
+  <MetricChart
+    artifactId="artifact-1"
+    date="MAY 16"
+    chartTitle="Daily Driver fleet runs"
+    yLabel="runs/day"
+    data={[
+      { x: "Apr 1", y: 12 },
+      { x: "Apr 15", y: 24 },
+      { x: "May 1", y: 38 },
+      { x: "May 16", y: 47 },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Morning fleet runs scaling as more skills are wired in.</p>
+  </MetricChart>
+
+  <PRDDecision
+    artifactId="artifact-2"
+    date="MAY 13"
+    prdTitle="Tier 1 retrofit — agent SDK stable"
+    decisionLine="Retrofit all Tier-1 agents to the stable SDK. Hooks lifecycle wired."
+    rationale="The beta SDK shipped breaking changes weekly; Tier 1 ROI requires a stable surface.">
+    <p slot="caption">[PLACEHOLDER CAPTION] Tier 1 retrofit decision. The agent SDK reached 1.0; the fleet retrofitted in a day.</p>
+  </PRDDecision>
+
+  <SlackQuote
+    artifactId="artifact-3"
+    date="APR 28"
+    messages={[
+      { role: "design crit", text: "[PLACEHOLDER DM] how do you measure fleet ROI when most of the value is attention?" },
+      { role: "sean", text: "[PLACEHOLDER REPLY] commit cadence, mostly. and the days I'm not at my desk by 9." },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] DM exchange on fleet ROI; the answer is attention, not throughput.</p>
+  </SlackQuote>
+
+  <BoardArtifact
+    artifactId="artifact-4"
+    date="MAR 20"
+    boardLabel="schedule-recommendations.md — March update"
+    excerpt={`[PLACEHOLDER EXCERPT]
+- 08:45 daily — Daily Driver morning brief
+- 14:00 weekday — Synth agent runs against new commits
+- 22:00 nightly — vault-knowledge-mcp re-index`}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Schedule update from the March cadence review.</p>
+  </BoardArtifact>
+</InvestigationBoard>
