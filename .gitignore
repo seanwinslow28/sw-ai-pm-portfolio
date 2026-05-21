@@ -41,3 +41,6 @@ sw-portfolio-animation-2026/hero-color-final-BG-removed-frames/
 
 # Prebuild canonical-source ETag cache (Phase 3b)
 .cache/
+
+# Phase 3c.1 cross-link graph (derived at prebuild)
+src/content/transactions/.crosslinks.json
