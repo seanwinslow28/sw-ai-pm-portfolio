@@ -56,7 +56,13 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
        Shadow PNG centroid is at 49% of its own width; positioning left:18%
        (width 55%) puts the dark center at ~46% of lane → ~78% of viewport
        on a 1920 viewport, matching the painted desk's visible position
-       (lane right:-180px bleed places the desk on the right of the viewport). */
+       (lane right:-180px bleed places the desk on the right of the viewport).
+
+       TODO(v1.1): shadow still reads slightly off-center to the desk per
+       Sean's 2026-05-21 review. The CSS math lands at ~80% viewport vs the
+       desk's ~78% — close but not pixel-perfect. Tightening requires either
+       (a) re-cropping the shadow PNG so its alpha centroid aligns with the
+       desk-foot center, or (b) per-viewport-width calibration. Deferred. */
     position: absolute;
     width: 55%;
     height: auto;
