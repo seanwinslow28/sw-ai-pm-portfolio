@@ -1,0 +1,9 @@
+{
+  "slug": "intent-engineering-mcp",
+  "updated_at": "2026-05-21T08:45:00-04:00",
+  "items": [
+    { "label": "weekly downloads", "value": "47", "unit": "npm" },
+    { "label": "verified installs", "value": "12", "unit": "MCP registry" },
+    { "label": "stars", "value": "8", "unit": "GitHub" }
+  ]
+}
