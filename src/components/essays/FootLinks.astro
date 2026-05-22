@@ -1,0 +1,62 @@
+---
+/**
+ * <FootLinks /> — 3 foot-of-page links: Substack + canonical source
+ * + canonical EXPLANATION.
+ *
+ * Substack renders from crossPostedTo[].url where name === "Substack".
+ * Other crossPostedTo[] entries render as additional "Read on <name> →"
+ * lines (forward-compatible without schema changes).
+ * Canonical source link renders only when sourceUrl is set + non-null.
+ * Canonical EXPLANATION link renders only when explanationUrl is set + non-null.
+ *
+ * Per essays-spec §2.2 + §16.
+ */
+interface CrossPost { name: string; url: string }
+interface Props {
+  crossPostedTo?: CrossPost[];
+  sourceUrl?: string | null;
+  explanationUrl?: string | null;
+}
+const { crossPostedTo = [], sourceUrl, explanationUrl } = Astro.props;
+
+const showSrc = Boolean(sourceUrl && sourceUrl !== "null");
+const showExpl = Boolean(explanationUrl && explanationUrl !== "null");
+---
+<section class="foot-links" aria-label="External references">
+  {crossPostedTo.map((cp) => (
+    <p class="foot-link">
+      <a href={cp.url} rel="external">&rarr; read on {cp.name} <span aria-hidden="true">&uarr;</span></a>
+    </p>
+  ))}
+  {showSrc && (
+    <p class="foot-link">
+      <a href={sourceUrl!} rel="external">&rarr; read the canonical source on github <span class="info-glyph" aria-hidden="true">&#9432;</span></a>
+    </p>
+  )}
+  {showExpl && (
+    <p class="foot-link">
+      <a href={explanationUrl!} rel="external">&rarr; read the canonical EXPLANATION.md on github <span class="info-glyph" aria-hidden="true">&#9432;</span></a>
+    </p>
+  )}
+</section>
+<style>
+  .foot-links { max-width: 1120px; margin: 32px auto 0; padding: 0 24px; }
+  .foot-link {
+    margin: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+  }
+  .foot-link a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .foot-link a:hover,
+  .foot-link a:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  .foot-link .info-glyph { margin-left: 6px; color: var(--ink-secondary); font-size: 12px; }
+  @media (max-width: 767px) { .foot-links { padding: 0 16px; } }
+</style>
