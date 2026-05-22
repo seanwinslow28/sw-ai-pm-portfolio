@@ -1,0 +1,54 @@
+---
+/**
+ * <BuildingToward /> — "WHAT I'M BUILDING TOWARD" heading + slot.
+ *
+ * Renders the mono section heading + a slot for the 2-paragraph
+ * direction-of-craft prose from the about MDX body. Always rendered
+ * regardless of `available` state per §12.1 surface 2.
+ *
+ * Source: about-spec-v1.md §12.1 + §12.3 + §4 type table.
+ */
+---
+
+<div class="building-toward">
+  <h3 class="building-toward__heading">WHAT I'M BUILDING TOWARD</h3>
+  <div class="building-toward__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .building-toward {
+    max-width: 680px;
+  }
+
+  .building-toward__heading {
+    margin: 0 0 24px 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--stamp-amber);
+    text-transform: uppercase;
+  }
+
+  .building-toward__body :global(p) {
+    margin: 0 0 20px 0;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: -0.1px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .building-toward__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 767px) {
+    .building-toward__body :global(p) {
+      font-size: 18px;
+    }
+  }
+</style>

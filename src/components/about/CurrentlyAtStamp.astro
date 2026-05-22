@@ -1,0 +1,45 @@
+---
+/**
+ * <CurrentlyAtStamp /> — top-right mono stamp on the B-4 section.
+ *
+ * Reads `current_company` from the about MDX frontmatter. When null,
+ * renders `CURRENTLY @ FREE AGENT`. When set, renders
+ * `CURRENTLY @ <COMPANY UPPERCASE>`.
+ *
+ * This is the ONLY surface on the page that carries employment-state
+ * signal in the visible text (the conditional <RecruiterCallout />
+ * is the only other surface that *exists* based on employment state).
+ * The aging contract per §12.2: Sean changes two frontmatter fields
+ * when his job status changes; zero prose edits.
+ *
+ * Source: about-spec-v1.md §12.1 + §12.2.
+ */
+interface Props {
+  currentCompany: string | null;
+}
+
+const { currentCompany } = Astro.props;
+const stampText = currentCompany
+  ? `CURRENTLY @ ${currentCompany.toUpperCase()}`
+  : "CURRENTLY @ FREE AGENT";
+---
+
+<p class="currently-at-stamp" aria-label="Current employment status">
+  {stampText}
+</p>
+
+<style>
+  .currently-at-stamp {
+    display: inline-block;
+    margin: 0;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--stamp-amber);
+    background-color: rgba(124, 45, 18, 0.06);
+    border: 1px solid var(--stamp-amber);
+    border-radius: 2px;
+  }
+</style>
