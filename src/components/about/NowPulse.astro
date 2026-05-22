@@ -1,0 +1,118 @@
+---
+/**
+ * <NowPulse /> — daily-dated pulse strip.
+ *
+ * Reads /public/api/about-pulse.json AT BUILD TIME (Node fs, not
+ * client fetch) and renders the wire-service sentence per §8.2.
+ *
+ * Phase 4 wires the Daily Driver to *write* this file at 08:45 daily;
+ * Phase 3d ships the build-time *read*. The static file already lives
+ * in the repo at public/api/about-pulse.json with the spec §8.1 shape.
+ *
+ * Fallback (per §8.3): if the file is missing or >48h stale, render
+ * the generic line "LAST 24H — quiet day. building."
+ *
+ * Source: about-spec-v1.md §8.
+ */
+import fs from "node:fs";
+import path from "node:path";
+
+interface PulseItem {
+  type: "commits" | "drafts" | "pencil_frames" | "reading" | "fleet_runs";
+  count?: number;
+  label?: string;
+  repo?: string;
+  destination?: string;
+  title?: string;
+  author?: string;
+}
+
+interface PulseData {
+  date_iso: string;
+  items: PulseItem[];
+  updated_at: string;
+}
+
+const JSON_PATH = path.join(process.cwd(), "public/api/about-pulse.json");
+const FALLBACK_LINE = "LAST 24H — quiet day. building.";
+
+function loadPulse(): { line: string; updatedTime: string | null } {
+  try {
+    const raw = fs.readFileSync(JSON_PATH, "utf8");
+    const data = JSON.parse(raw) as PulseData;
+    const dataDate = new Date(data.date_iso);
+    const ageMs = Date.now() - dataDate.getTime();
+    if (ageMs > 48 * 60 * 60 * 1000) {
+      // >48h stale → fallback
+      return { line: FALLBACK_LINE, updatedTime: null };
+    }
+    const phrases = data.items
+      .map((it) => it.label ?? "")
+      .filter((p) => p.length > 0);
+    const updatedTime = new Date(data.updated_at).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const body = phrases.length > 0
+      ? phrases.join(". ") + "."
+      : "quiet day. building.";
+    return {
+      line: `LAST 24H — ${body}`,
+      updatedTime: `updated ${updatedTime} by daily driver.`,
+    };
+  } catch {
+    return { line: FALLBACK_LINE, updatedTime: null };
+  }
+}
+
+const { line, updatedTime } = loadPulse();
+---
+
+<section class="now-pulse" aria-label="Past 24 hours pulse">
+  <p class="now-pulse__body">
+    {line}
+    {updatedTime && <span class="now-pulse__updated"> {updatedTime}</span>}
+  </p>
+</section>
+
+<style>
+  .now-pulse {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px;
+    border-top: 0.5px solid var(--border-paper);
+    border-bottom: 0.5px solid var(--border-paper);
+  }
+
+  .now-pulse__body {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    line-height: 1.6;
+    color: var(--ink-secondary);
+    text-transform: lowercase;
+  }
+
+  /* "LAST 24H —" prefix gets the stamp-amber color via ::first-line trick…
+     except ::first-line is unreliable across wrap widths. Use a flat sentence
+     and live with the secondary-ink color across the body. Spec §4 type table
+     allows the body color; the prefix-amber styling is decorative per §1.2
+     deferral spirit (no annotation chrome v1). */
+
+  .now-pulse__updated {
+    display: inline-block;
+    margin-left: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .now-pulse {
+      padding: 20px;
+    }
+    .now-pulse__body {
+      font-size: 12px;
+    }
+  }
+</style>
