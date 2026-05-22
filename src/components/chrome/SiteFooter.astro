@@ -10,7 +10,6 @@ import {
   COPYRIGHT_YEAR,
   SITE_LOCALE,
 } from "~/lib/site";
-import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <footer class="site-footer">
@@ -45,7 +44,6 @@ import ThemeToggle from "./ThemeToggle.astro";
     </div>
 
     <div class="footer-strip">
-      <ThemeToggle />
       <p class="copyright">© {COPYRIGHT_YEAR} SEAN WINSLOW · {SITE_LOCALE}</p>
     </div>
   </div>
@@ -114,7 +112,7 @@ import ThemeToggle from "./ThemeToggle.astro";
     padding-top: 24px;
     border-top: 0.5px solid var(--border-paper);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
   }
   .copyright {
