@@ -44,3 +44,9 @@ sw-portfolio-animation-2026/hero-color-final-BG-removed-frames/
 
 # Phase 3c.1 cross-link graph (derived at prebuild)
 src/content/transactions/.crosslinks.json
+
+# Phase 3c.2 — fetched at build by scripts/fetch_canonical_sources.mjs
+src/content/architecture/essays/
+src/content/architecture/.crosslinks.json
+src/content/essays/essay-bodies/
+src/content/essays/.crosslinks.json

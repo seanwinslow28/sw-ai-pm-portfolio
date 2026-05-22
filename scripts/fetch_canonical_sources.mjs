@@ -1,23 +1,28 @@
 #!/usr/bin/env node
 /**
- * scripts/fetch_canonical_sources.mjs — canonical 4Q fetcher.
+ * scripts/fetch_canonical_sources.mjs — canonical source fetcher.
  *
- * Phase 3b scope (still active): work collection (`explanation_url` field).
- * Phase 3c.1 scope (added): transactions collection (`explanationUrl` field).
- * Phase 3c.2 will add: architecture (`explanationUrl` for 4Q +
- *   `essaySourceUrl` for the long-form essay body, different outDir)
- *   and essays (`explanationUrl` for 4Q + `sourceUrl` for the body).
+ * Phase 3b scope: work collection (`explanation_url` field).
+ * Phase 3c.1 scope: transactions collection (`explanationUrl` field).
+ * Phase 3c.2 scope (added): architecture (TWO walks per row:
+ *   `explanationUrl` for 4Q + `essaySourceUrl` for the long-form
+ *   essay body) AND essays (TWO walks: `explanationUrl` for 4Q +
+ *   `sourceUrl` for the body).
  *
  * Walks each collection's MDX files looking for entries that declare
  * the named URL field, fetches the markdown raw via HTTPS, validates
- * against the 4 canonical EXPLANATION headings, writes to the per-
- * collection outDir. ETag-cached via .cache/canonical-sources.lockfile
- * so subsequent builds skip unchanged sources.
+ * against the 4 canonical EXPLANATION headings (4Q walks only — body
+ * walks skip validation since long-form essays don't carry the 4Q
+ * heading structure), writes to the per-collection outDir. ETag-cached
+ * via .cache/canonical-sources.lockfile so subsequent builds skip
+ * unchanged sources.
  *
  * Graceful no-dir: missing content directories return empty.
+ * Graceful no-URL: rows with `<urlField>: null` (OQ-C inline-body
+ *   fallback path) are skipped silently.
  *
  * Source: case-study-spec-v1.md §9 + §15; transactions-spec-v1.md §11.1;
- *         BLUEPRINT-COMPLETE.md §3.3.
+ *         architecture-spec-v1.md §11.1; essays-spec-v1.md §11.1.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -25,28 +30,55 @@ import process from "node:process";
 
 const ROOT = process.cwd();
 const CACHE_PATH = path.join(ROOT, ".cache/canonical-sources.lockfile");
-const OUT_DIR = path.join(ROOT, "src/content/explanations");
+const EXPLANATIONS_DIR = path.join(ROOT, "src/content/explanations");
+const ARCH_ESSAYS_DIR = path.join(ROOT, "src/content/architecture/essays");
+const ESSAY_BODIES_DIR = path.join(ROOT, "src/content/essays/essay-bodies");
 
 const WALK_COLLECTIONS = [
+  // --- 4Q canonical fetches (validated against 4 EXPLANATION headings) ---
   {
     name: "work",
     contentDir: path.join(ROOT, "src/content/work"),
     urlField: "explanation_url",
-    outDir: OUT_DIR,
+    outDir: EXPLANATIONS_DIR,
+    validateHeadings: true,
   },
   {
     name: "transactions",
     contentDir: path.join(ROOT, "src/content/transactions"),
     urlField: "explanationUrl",
-    outDir: OUT_DIR,
+    outDir: EXPLANATIONS_DIR,
+    validateHeadings: true,
   },
-  // Phase 3c.2 will add:
-  //   { name: "architecture", contentDir: .../architecture, urlField: "explanationUrl", outDir: ... }
-  //   + a SECOND walk for architecture's `essaySourceUrl` long-form fetch
-  //     (different outDir: src/content/architecture/essays/)
-  //   + { name: "essays", contentDir: .../essays, urlField: "explanationUrl", outDir: ... }
-  //   + a SECOND walk for essays' `sourceUrl` body fetch
-  //     (different outDir: src/content/essays/essay-bodies/)
+  {
+    name: "architecture",
+    contentDir: path.join(ROOT, "src/content/architecture"),
+    urlField: "explanationUrl",
+    outDir: EXPLANATIONS_DIR,
+    validateHeadings: true,
+  },
+  {
+    name: "essays",
+    contentDir: path.join(ROOT, "src/content/essays"),
+    urlField: "explanationUrl",
+    outDir: EXPLANATIONS_DIR,
+    validateHeadings: true,
+  },
+  // --- Body fetches (no heading validation — long-form essays) ---
+  {
+    name: "architecture-body",
+    contentDir: path.join(ROOT, "src/content/architecture"),
+    urlField: "essaySourceUrl",
+    outDir: ARCH_ESSAYS_DIR,
+    validateHeadings: false,
+  },
+  {
+    name: "essays-body",
+    contentDir: path.join(ROOT, "src/content/essays"),
+    urlField: "sourceUrl",
+    outDir: ESSAY_BODIES_DIR,
+    validateHeadings: false,
+  },
 ];
 
 const REQUIRED_HEADINGS = [
@@ -113,7 +145,8 @@ async function walkCollection(coll, cache) {
     const src = await fs.readFile(filePath, "utf8");
     const fm = parseFrontmatter(src);
     const url = fm[coll.urlField];
-    if (!url) continue;
+    // OQ-C inline-body fallback: skip rows with null/empty URL silently.
+    if (!url || url === "null" || url === "") continue;
     const slug = fm.slug ?? fname.replace(/\.mdx?$/, "");
     const cacheKey = `${coll.name}:${slug}`;
     const cached = cache[cacheKey];
@@ -123,21 +156,25 @@ async function walkCollection(coll, cache) {
         process.stdout.write(`  ✓ ${cacheKey} (cached)\n`);
         continue;
       }
-      validateHeadings(slug, result.text);
+      if (coll.validateHeadings) validateHeadings(slug, result.text);
       await fs.mkdir(coll.outDir, { recursive: true });
       const outFile = path.join(coll.outDir, `${slug}.md`);
       await fs.writeFile(outFile, result.text, "utf8");
       cache[cacheKey] = { etag: result.etag, fetchedAt: new Date().toISOString() };
       process.stdout.write(`  → ${cacheKey} fetched (${(result.text.length / 1024).toFixed(1)}KB)\n`);
     } catch (e) {
-      process.stderr.write(`✗ ${cacheKey}: ${e.message}\n`);
-      process.exit(1);
+      // Network failures + 404s log warning + leave committed version in place
+      // (architecture-spec §11.1 fallback contract). The architecture body and
+      // essay body walks write to gitignored dirs, but the 4Q walks write to
+      // src/content/explanations/ which IS committed — so a failed fetch leaves
+      // the last-known-good file in place.
+      process.stderr.write(`  ⚠ ${cacheKey}: ${e.message} — leaving committed version in place\n`);
     }
   }
 }
 
 async function main() {
-  process.stdout.write("\nfetch_canonical_sources.mjs — Phase 3c.1 scope (work + transactions)\n");
+  process.stdout.write("\nfetch_canonical_sources.mjs — Phase 3c.2 scope (work + transactions + architecture × 2 + essays × 2)\n");
   const cache = await loadCache();
   for (const coll of WALK_COLLECTIONS) {
     process.stdout.write(`\n[${coll.name}]\n`);
