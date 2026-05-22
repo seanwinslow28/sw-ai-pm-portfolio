@@ -1,0 +1,106 @@
+---
+/**
+ * <Scoreboard /> — flat comparison table.
+ *
+ * Reads frontmatter scoreboard:{ columns[], rows[]{ label, scores[] } }.
+ * All rows visually identical (no Sean's-vault accent). Mobile keeps
+ * the table — equality of presentation extends to mobile per §7.4.
+ *
+ * Per architecture-spec §7 + §16 (DoD #7).
+ */
+import ScoreSymbol from "./ScoreSymbol.astro";
+
+interface ScoreboardData {
+  columns: string[];
+  rows: Array<{ label: string; scores: Array<"✓" | "✓✓" | "⚠" | "✗"> }>;
+}
+interface Props { data: ScoreboardData }
+const { data } = Astro.props;
+---
+<section class="scoreboard-wrapper" aria-labelledby="scoreboard-heading">
+  <h2 id="scoreboard-heading" class="visually-hidden">Scoreboard</h2>
+  <div class="scoreboard-scroll">
+    <table class="scoreboard">
+      <caption class="visually-hidden">Comparison of systems across {data.columns.length} tests.</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="th-label">&nbsp;</th>
+          {data.columns.map((col) => (
+            <th scope="col" class="th-col">{col}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.rows.map((row) => (
+          <tr>
+            <th scope="row" class="td-label">{row.label}</th>
+            {row.scores.map((s) => (
+              <td class="td-score"><ScoreSymbol symbol={s} /></td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="scoreboard-legend" aria-label="Symbol legend">
+    <ScoreSymbol symbol="✓✓" /> exceeds &middot;
+    <ScoreSymbol symbol="✓" /> passes &middot;
+    <ScoreSymbol symbol="⚠" /> partial &middot;
+    <ScoreSymbol symbol="✗" /> fails
+  </p>
+</section>
+<style>
+  .scoreboard-wrapper {
+    max-width: 1120px;
+    margin: 48px auto;
+    padding: 0 24px;
+  }
+  .scoreboard-scroll { overflow-x: auto; }
+  .scoreboard {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.5px solid rgba(10, 62, 66, 0.15);
+    background: var(--paper);
+  }
+  .scoreboard th, .scoreboard td {
+    border: 0.5px solid rgba(10, 62, 66, 0.10);
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    text-align: center;
+  }
+  .scoreboard .th-col {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .scoreboard .td-label, .scoreboard .th-label {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: var(--ink);
+  }
+  .scoreboard .td-score { vertical-align: middle; }
+  .scoreboard-legend {
+    margin: 16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-secondary);
+    letter-spacing: 0.4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .scoreboard-legend .score-symbol { margin-right: 2px; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  @media (max-width: 767px) {
+    .scoreboard-wrapper { padding: 0 16px; }
+    .scoreboard th, .scoreboard td { padding: 8px 12px; }
+  }
+</style>
