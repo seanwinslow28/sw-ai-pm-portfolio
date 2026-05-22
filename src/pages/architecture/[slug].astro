@@ -1,0 +1,287 @@
+---
+/**
+ * /architecture/<slug>/ — deep-dive page.
+ *
+ * Composes the 11-band layout per architecture-spec §2.2:
+ *   1. Dateline + reading-time strip
+ *   2. Surface + status pills row
+ *   3. Title + tags
+ *   4. Thesis pullquote
+ *   5. Essay body (rendered from fetched essaySourceUrl when present;
+ *      otherwise MDX body via <Content />). Embedded:
+ *        - ER diagram (mermaidSource)
+ *        - Scoreboard (scoreboard frontmatter)
+ *        - HONEST NOTE callouts (honestNotes[])
+ *   6. Try It Yourself callout (optional)
+ *   7. Methods strip (shared component)
+ *   8. 4Q block (shared component) OR inline-body fallback
+ *   9. "Read the canonical →" links (essaySource + EXPLANATION)
+ *  10. Related block
+ *  11. Next/Prev nav + registration mark
+ *
+ * Per architecture-spec §2.2.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import fs from "node:fs/promises";
+import path from "node:path";
+
+import ThesisPullQuote from "~/components/architecture/ThesisPullQuote.astro";
+import ErDiagram from "~/components/architecture/ErDiagram.astro";
+import Scoreboard from "~/components/architecture/Scoreboard.astro";
+import HonestNote from "~/components/architecture/HonestNote.astro";
+import TryItYourself from "~/components/architecture/TryItYourself.astro";
+import RelatedBlock from "~/components/architecture/RelatedBlock.astro";
+import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
+import FourQBlock from "~/components/case-study/FourQBlock.astro";
+
+type Arch = CollectionEntry<"architecture">;
+
+export async function getStaticPaths() {
+  const all = await getCollection("architecture");
+  return all.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+interface Props { entry: Arch }
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+const slug = entry.slug;
+
+// Adjacent writeups (desc shipped)
+const all = (await getCollection("architecture")).sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+const idx = all.findIndex((t) => t.slug === entry.slug);
+const next = idx >= 0 && idx + 1 < all.length ? all[idx + 1] : null;
+const prev = idx > 0 ? all[idx - 1] : null;
+
+// Cross-link graph + title lookup maps
+const ROOT = process.cwd();
+let crosslinks: any = {};
+try {
+  const raw = await fs.readFile(path.join(ROOT, "src/content/architecture/.crosslinks.json"), "utf8");
+  crosslinks = JSON.parse(raw);
+} catch { /* fresh checkout — render without reverse links */ }
+
+const allArch = await getCollection("architecture");
+const titleByArchSlug = Object.fromEntries(allArch.map((a) => [a.slug, a.data.title]));
+
+const allTxn = await getCollection("transactions");
+const titleByTxnSlug = Object.fromEntries(allTxn.map((t) => [t.slug, t.data.title]));
+
+const allWork = await getCollection("work");
+const titleByWorkSlug = Object.fromEntries(allWork.map((w) => [w.slug, w.data.title]));
+
+const allEssays = await getCollection("essays");
+const titleByEssaySlug = Object.fromEntries(allEssays.map((e) => [e.slug, e.data.title]));
+
+// 4Q rendering
+let canonicalMarkdown: string | undefined;
+if (data.explanationUrl) {
+  try {
+    canonicalMarkdown = await fs.readFile(path.join(ROOT, "src/content/explanations", `${slug}.md`), "utf8");
+  } catch { canonicalMarkdown = undefined; }
+}
+const useFourQBlock = Boolean(canonicalMarkdown);
+
+// Long-form essay body (rendered AS the main body when essaySourceUrl is set)
+let essayBodyMarkdown: string | undefined;
+if (data.essaySourceUrl) {
+  try {
+    essayBodyMarkdown = await fs.readFile(path.join(ROOT, "src/content/architecture/essays", `${slug}.md`), "utf8");
+  } catch { essayBodyMarkdown = undefined; }
+}
+
+const pageTitle = `${data.title} — Sean Winslow`;
+const pageDescription = data.lead;
+---
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <article class="arch-deep-dive">
+    <header class="head-band">
+      <p class="dateline">
+        <span class="dateline__city">{data.dateline.split(" — ")[0] ?? data.dateline}</span>
+        <span class="reading-time">{data.readingTime} MIN READ</span>
+      </p>
+      <hr class="dateline-rule" />
+      <p class="pills-row">
+        <span class="pill surface-pill">ARCHITECTURE</span>
+        <span class={`pill status-pill status-${data.status.toLowerCase()}`}>{data.status}</span>
+      </p>
+      <h1 class="page-title" style={`view-transition-name: arch-title-${slug}`}>{data.title}</h1>
+      <p class="tags">
+        {data.tags.map((t, i) => (
+          <>
+            <span>{t}</span>{i < data.tags.length - 1 && <span class="sep" aria-hidden="true"> &middot; </span>}
+          </>
+        ))}
+      </p>
+    </header>
+
+    <ThesisPullQuote text={data.lead} />
+
+    <section class="essay-body">
+      {essayBodyMarkdown ? (
+        <article set:html={essayBodyMarkdown} />
+      ) : (
+        <Content />
+      )}
+    </section>
+
+    {data.mermaidSource && (
+      <ErDiagram source={data.mermaidSource} caption={data.mermaidCaption} />
+    )}
+
+    {data.scoreboard && (
+      <Scoreboard data={data.scoreboard} />
+    )}
+
+    {Array.isArray(data.honestNotes) && data.honestNotes.map((note) => (
+      <HonestNote anchor={note.anchor} body={note.body} />
+    ))}
+
+    {data.tryItYourselfUrl && data.tryItYourselfCommand && (
+      <TryItYourself url={data.tryItYourselfUrl} command={data.tryItYourselfCommand} />
+    )}
+
+    <MethodsStrip methods={data.methods} />
+
+    {useFourQBlock ? (
+      <FourQBlock frame="ARCH" slug={slug} canonicalMarkdown={canonicalMarkdown} explanationUrl={data.explanationUrl ?? undefined} />
+    ) : (
+      <section class="inline-body-4q" aria-labelledby={`4q-${slug}`}>
+        <h2 id={`4q-${slug}`} class="section-heading">&mdash; EXPLANATION &mdash;</h2>
+        <div class="prose">
+          {/* The MDX body's 4 canonical h2 headings render here when no
+              essaySourceUrl was set — the OQ-C inline-body fallback path.
+              When essaySourceUrl IS set, the body above already rendered
+              the long-form essay, so the inline-body 4Q duplicates only
+              when both are absent. */}
+          {!essayBodyMarkdown && <Content />}
+        </div>
+      </section>
+    )}
+
+    <section class="canonical-links">
+      {data.explanationUrl && (
+        <p><a href={data.explanationUrl} rel="external">&rarr; read the canonical EXPLANATION.md on github <span class="info-glyph" aria-hidden="true">&#9432;</span></a></p>
+      )}
+      {data.essaySourceUrl && (
+        <p><a href={data.essaySourceUrl} rel="external">&rarr; read the long-form source on github <span class="info-glyph" aria-hidden="true">&#9432;</span></a></p>
+      )}
+    </section>
+
+    <RelatedBlock
+      slug={slug}
+      relatedLedgerRow={data.relatedLedgerRow}
+      relatedCaseStudy={data.relatedCaseStudy}
+      relatedEssay={data.relatedEssay ?? undefined}
+      relatedArchitecture={data.relatedArchitecture}
+      crosslinks={crosslinks}
+      titleByArchSlug={titleByArchSlug}
+      titleByTxnSlug={titleByTxnSlug}
+      titleByWorkSlug={titleByWorkSlug}
+      titleByEssaySlug={titleByEssaySlug}
+    />
+
+    <nav class="next-prev" aria-label="Adjacent architecture writeups">
+      {next ? (
+        <a href={`/architecture/${next.slug}/`} class="np-link np-prev">
+          &larr; {next.data.shipped.replace(/-/g, ".")} {next.data.title}
+        </a>
+      ) : <span></span>}
+      {prev ? (
+        <a href={`/architecture/${prev.slug}/`} class="np-link np-next">
+          {prev.data.shipped.replace(/-/g, ".")} {prev.data.title} &rarr;
+        </a>
+      ) : <span></span>}
+    </nav>
+
+    <span class="registration-mark" aria-hidden="true">&#9680;</span>
+  </article>
+</BaseLayout>
+<style>
+  .arch-deep-dive { position: relative; padding-bottom: 80px; }
+  .head-band { max-width: 1120px; margin: 0 auto; padding: 60px 24px 0; }
+  .dateline { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 1.6px; color: var(--ink-secondary); margin: 0 0 12px; display: flex; justify-content: space-between; }
+  .dateline__city { color: var(--stamp-amber); }
+  .reading-time { color: var(--ink-secondary); }
+  .dateline-rule { border: none; border-top: 0.5px solid rgba(10, 62, 66, 0.25); margin: 0 0 24px; }
+  .pills-row { display: flex; gap: 12px; margin: 0 0 24px; }
+  .pill { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; }
+  .surface-pill { color: var(--ink); }
+  .status-pill.status-shipped { color: var(--stamp-amber); }
+  .status-pill.status-draft { color: var(--ink-secondary); }
+  .page-title { font-family: var(--font-serif); font-size: clamp(40px, 5vw, 72px); font-weight: 400; letter-spacing: -0.4px; line-height: 1.05; color: var(--teal); margin: 0 0 16px; max-width: 880px; }
+  .tags { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 1.6px; color: var(--ink-secondary); margin: 0 0 24px; }
+  .tags .sep { color: var(--ink-secondary); }
+
+  .essay-body { max-width: 680px; margin: 32px auto; padding: 0 24px; }
+  .essay-body :global(article), .essay-body :global(p) {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: -0.1px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .essay-body :global(h2) {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    color: var(--teal);
+    margin: 48px 0 16px;
+  }
+  .essay-body :global(p) { margin: 0 0 16px; }
+
+  .inline-body-4q { max-width: 1120px; margin: 80px auto 0; padding: 0 24px; }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .prose { max-width: 680px; }
+  .prose :global(h2) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin: 48px 0 12px;
+  }
+  .prose :global(p) {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 16px;
+  }
+
+  .canonical-links { max-width: 1120px; margin: 32px auto 0; padding: 0 24px; }
+  .canonical-links p { margin: 0 0 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 1.0px; color: var(--teal); }
+  .canonical-links a { color: var(--teal); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 160ms var(--ease-out); }
+  .canonical-links a:hover, .canonical-links a:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  .canonical-links .info-glyph { margin-left: 6px; color: var(--ink-secondary); font-size: 12px; }
+
+  .next-prev { max-width: 1120px; margin: 64px auto 0; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .np-link { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 1.0px; color: var(--teal); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 160ms var(--ease-out); }
+  .np-next { text-align: right; }
+  .np-link:hover, .np-link:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  .registration-mark { position: absolute; right: 24px; bottom: 16px; font-size: 18px; color: var(--stamp-amber); opacity: 0.6; }
+
+  @media (max-width: 767px) {
+    .head-band { padding: 40px 16px 0; }
+    .essay-body { padding: 0 16px; }
+    .inline-body-4q { padding: 0 16px; }
+    .canonical-links { padding: 0 16px; }
+    .next-prev { padding: 0 16px; grid-template-columns: 1fr; gap: 8px; }
+    .np-next { text-align: left; }
+    .registration-mark { right: 16px; }
+  }
+</style>
