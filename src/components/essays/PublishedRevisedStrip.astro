@@ -1,0 +1,40 @@
+---
+/**
+ * <PublishedRevisedStrip /> — conditional dual-date strip.
+ *
+ * Renders "PUBLISHED <date> · LAST REVISED <date>" only when
+ * lastRevised is set AND different from published. Per essays-spec
+ * §2.2 + §5.
+ */
+interface Props { published: string; lastRevised?: string | null }
+const { published, lastRevised } = Astro.props;
+const show = Boolean(lastRevised && lastRevised !== published);
+---
+{show ? (
+  <p class="pub-rev-strip">
+    <span class="pub-prefix">PUBLISHED</span> {published}
+    <span class="sep" aria-hidden="true">&middot;</span>
+    <span class="rev-prefix">LAST REVISED</span> {lastRevised}
+  </p>
+) : (
+  <p class="pub-rev-strip">
+    <span class="pub-prefix">PUBLISHED</span> {published}
+  </p>
+)}
+<style>
+  .pub-rev-strip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--ink-secondary);
+    margin: 16px 0 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .pub-prefix { color: var(--stamp-amber); }
+  .rev-prefix { color: var(--ink-secondary); }
+  .sep { color: var(--ink-secondary); }
+</style>

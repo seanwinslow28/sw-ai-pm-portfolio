@@ -1,0 +1,107 @@
+---
+/**
+ * <RoleMap /> — 4-column structured table.
+ *
+ * Columns: Buyer · Position · Vocabulary tell · JD ↗.
+ * Reads frontmatter roleMap{ lastValidated, rows[] }. The validator
+ * (Task 3.2) HEAD-checks every jdUrl + warns on >30-day-old
+ * lastValidated — this component just renders.
+ *
+ * Per essays-spec §9.
+ */
+interface RoleRow { buyer: string; position: string; vocabularyTell: string; jdUrl: string }
+interface Props {
+  lastValidated: string;   // ISO YYYY-MM-DD
+  rows: RoleRow[];
+}
+const { lastValidated, rows } = Astro.props;
+
+const lvDate = new Date(`${lastValidated}T12:00:00Z`);
+const ageDays = Math.floor((Date.now() - lvDate.getTime()) / 86400000);
+const stale = ageDays > 30;
+---
+<section class="role-map" aria-labelledby="rolemap-heading">
+  <h2 id="rolemap-heading" class="visually-hidden">Role map</h2>
+  <div class="role-map__scroll">
+    <table>
+      <caption class="visually-hidden">Buyer roles, market positions, vocabulary tells, and JD links.</caption>
+      <thead>
+        <tr>
+          <th scope="col">BUYER</th>
+          <th scope="col">POSITION</th>
+          <th scope="col">VOCABULARY TELL</th>
+          <th scope="col">JD &uarr;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr>
+            <td class="cell-buyer">{r.buyer}</td>
+            <td class="cell-position">{r.position}</td>
+            <td class="cell-tell">{r.vocabularyTell}</td>
+            <td class="cell-jd">
+              <a href={r.jdUrl} rel="external">link <span aria-hidden="true">&uarr;</span></a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class={stale ? "lv-badge lv-stale" : "lv-badge"}>last validated {lastValidated}{stale && ` (${ageDays} days ago)`}</p>
+</section>
+<style>
+  .role-map { max-width: 1120px; margin: 48px auto; padding: 0 24px; }
+  .role-map__scroll { overflow-x: auto; }
+  .role-map table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.5px solid rgba(10, 62, 66, 0.15);
+    background: var(--paper);
+  }
+  .role-map th, .role-map td {
+    border: 0.5px solid rgba(10, 62, 66, 0.10);
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    text-align: left;
+    vertical-align: top;
+  }
+  .role-map th {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(10, 62, 66, 0.02);
+  }
+  .role-map td {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: var(--ink);
+  }
+  .role-map .cell-jd a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    font-weight: 500;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .role-map .cell-jd a:hover { border-bottom-color: var(--teal); }
+  .lv-badge {
+    margin: 12px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: var(--ink-secondary);
+  }
+  .lv-badge.lv-stale { color: var(--stamp-amber); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  @media (max-width: 767px) {
+    .role-map { padding: 0 16px; }
+    .role-map th, .role-map td { padding: 8px 12px; }
+  }
+</style>
