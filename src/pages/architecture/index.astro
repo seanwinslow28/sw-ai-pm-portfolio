@@ -1,0 +1,87 @@
+---
+/**
+ * /architecture/ — index page.
+ *
+ * Lists every architecture writeup sorted desc by shipped ISO.
+ * Bands: dateline → page title block → writeup rows → footer fold.
+ *
+ * Per architecture-spec §2.1 + §4.1.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import IndexHeader from "~/components/architecture/IndexHeader.astro";
+import WriteupRow from "~/components/architecture/WriteupRow.astro";
+
+const writeups = (await getCollection("architecture"))
+  .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+
+const count = writeups.length;
+const lastUpdated = writeups[0]?.data.shipped ?? new Date().toISOString().slice(0, 10);
+const mostRecentTitle = writeups[0]?.data.title;
+---
+<BaseLayout
+  title="Architecture — Sean Winslow"
+  description="Architectural arguments where the proof is the code, linked."
+>
+  <IndexHeader count={count} lastUpdatedISO={lastUpdated} mostRecentTitle={mostRecentTitle} />
+
+  <section class="writeups-list" aria-label="Architecture writeups">
+    {count === 0 && (
+      <p class="empty-state">No architecture writeups yet. Check back ~weekly.</p>
+    )}
+    {writeups.map((w) => (
+      <WriteupRow
+        slug={w.slug}
+        shipped={w.data.shipped}
+        status={w.data.status}
+        title={w.data.title}
+        lead={w.data.lead}
+      />
+    ))}
+  </section>
+
+  <footer class="footer-fold">
+    <p>
+      <a href="/architecture/rss.xml">&rarr; subscribe via RSS</a>
+      <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+      <a href="/">&rarr; view the fleet <span aria-hidden="true">&uarr;</span></a>
+    </p>
+  </footer>
+</BaseLayout>
+<style>
+  .writeups-list { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .empty-state {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-secondary);
+    padding: 24px 0;
+    text-align: center;
+  }
+  .footer-fold {
+    max-width: 1120px;
+    margin: 80px auto 60px;
+    padding: 0 24px;
+  }
+  .footer-fold p {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .footer-fold a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .footer-fold a:hover, .footer-fold a:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  @media (max-width: 767px) {
+    .writeups-list { padding: 0 16px; }
+    .footer-fold { padding: 0 16px; margin: 56px auto 40px; }
+  }
+</style>
