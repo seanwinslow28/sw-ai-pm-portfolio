@@ -1,0 +1,111 @@
+---
+# --- Lead (LOCKED — byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
+lead: "Raised by Saturday morning cartoons and Vercel deployment logs."
+
+# --- Meta ---
+slug: about
+title: About — Sean Winslow
+description: "Sean Winslow — AI Product Manager. Raised by Saturday morning cartoons and Vercel deployment logs."
+reading_time: 4
+
+# --- Proof-point URLs (B-5) ---
+linkedin_url: https://linkedin.com/in/seanwinslow
+github_url: https://github.com/seanwinslow
+transactions_url: /transactions/
+resume_url: /resume/sean-winslow.pdf
+
+# --- Employment state (drives B-4) ---
+# Flip these two together when employment state changes. Zero prose edits required.
+available: true
+current_company: null
+
+# --- Character (hero band) ---
+character_image: /assets/character/about-full-body.png
+character_alt: A pencil-test rendering of Sean Winslow, full-body — the human-self version of the character that runs the agent fleet.
+
+# --- B-1 stacked beats (7 entries; 4 lane: braided per §9.3 minimum + 3 single-lane for contrast) ---
+beats:
+  - age: 8
+    year: 1998
+    body: "drew a coyote badly. asked dad to deploy a webpage. it was on Geocities."
+    lane: braided
+  - age: 14
+    year: 2004
+    body: "filled six sketchbooks. shipped the school-play site. learned what 'broken' meant."
+    lane: braided
+  - age: 18
+    year: 2008
+    body: "first short film. first festival rejection. learned what a deadline does to a draft."
+    lane: animator
+  - age: 22
+    year: 2012
+    body: "first PRD. first stakeholder loop. discovered the discipline I'd been faking with storyboards had a name."
+    lane: pm
+  - age: 28
+    year: 2018
+    body: "shipped products at scale. drew on the train home. neither half made the other smaller."
+    lane: braided
+  - age: 32
+    year: 2022
+    body: "GPT-4 dropped. saw the agents could draw the keyframes; the in-betweens were always the human job."
+    lane: pm
+  - age: 36
+    year: 2026
+    body: "running an agent fleet. animating again. the same person, finally using both hands."
+    lane: braided
+
+# --- B-3 annotation hook (DEFERRED to v2 per spec §1.2; field retained for v1.1) ---
+b3_load_bearing_cel: 4
+---
+
+import AboutHero from "~/components/about/AboutHero.astro";
+import NowPulse from "~/components/about/NowPulse.astro";
+import Beats from "~/components/about/Beats.astro";
+import CartoonCanon from "~/components/about/CartoonCanon.astro";
+import CurrentlyAtStamp from "~/components/about/CurrentlyAtStamp.astro";
+import BuildingToward from "~/components/about/BuildingToward.astro";
+import RecruiterCallout from "~/components/about/RecruiterCallout.astro";
+import ProofPoints from "~/components/about/ProofPoints.astro";
+import PullQuote from "~/components/about/PullQuote.astro";
+
+<section class="about-section about-section--b2" aria-labelledby="b2-heading">
+  <p class="about-section__frame-prefix">B-2 ·</p>
+  <h2 id="b2-heading" class="about-section__heading" aria-label="B-2: Why a PM, not just a builder">
+    Why a PM, not just a builder
+  </h2>
+
+  I used to think shipping the thing was the whole job. The drawing, the code, the cut — get the artifact out, and the artifact would explain itself. It turns out the artifact never explains itself. The PRD does. The spec does. The note at the top of the file that says *this is what this is and what it is for* does. The thing I was avoiding because I thought it was paperwork was the actual product.
+
+  Building got cheap this year. The agents draw the keyframes now; they write the code; they ship the page. What stayed expensive — what got more expensive — is the part that says *here is what we are doing and why*. Comprehension is the artifact. Governance is the artifact. The spec is the artifact. Everything else is shavings off the side.
+
+  [PLACEHOLDER — Sean rewrites the third paragraph in Sedaris register: a specific, small, true moment when the comprehension thesis clicked. The hyper-specific noun that earns the abstraction. The kind of paragraph the writing-voice-modes skill calls a "Sedaris pivot" — a comedic juxtaposition with no punchline, just two true things sitting next to each other. Keep it to 3-5 sentences.]
+</section>
+
+<CartoonCanon />
+
+<section class="about-section about-section--b4" aria-labelledby="b4-heading">
+  <p class="about-section__frame-prefix">B-4 ·</p>
+  <div class="about-section__b4-header">
+    <h2 id="b4-heading" class="about-section__heading" aria-label="B-4: Where I'm going">
+      Where I'm going
+    </h2>
+    <CurrentlyAtStamp currentCompany={frontmatter.current_company} />
+  </div>
+
+  <BuildingToward>
+    I'm building toward the version of product management that takes AI-native seriously — not as a feature surface but as the substrate. The agents handle the iteration loops; the spec layer is where judgment lives, and the spec layer is where I want to be in the room.
+
+    [PLACEHOLDER — Sean rewrites the second paragraph: name the specific bet (agent governance, the spec-as-source-of-truth, the human-in-the-loop role at the loop's hinge points) and the specific problems Sean wants to be assigned to. Reads identically whether hired or hunting per §12.3 — no "open to opportunities" or "looking for a seat" language. The bet is durable; availability is not.]
+  </BuildingToward>
+
+  <RecruiterCallout visible={frontmatter.available === true} />
+</section>
+
+<ProofPoints
+  linkedinUrl={frontmatter.linkedin_url}
+  githubUrl={frontmatter.github_url}
+  transactionsUrl={frontmatter.transactions_url}
+  resumeUrl={frontmatter.resume_url}
+/>
+
+<PullQuote />

@@ -270,7 +270,9 @@ const about = defineCollection({
     lead: z.string().min(1),
 
     // --- Meta ---
-    slug: z.string(),
+    // (slug is reserved by Astro content collections — auto-derived from filename;
+    // omitted from the schema. The MDX frontmatter may still carry it as a harmless
+    // documentation hint.)
     title: z.string(),
     description: z.string(),
     reading_time: z.number().int().min(1).max(60),
