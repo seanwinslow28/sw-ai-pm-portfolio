@@ -1,0 +1,53 @@
+---
+/* Spec §6.4 — desktop-only swipe affordance. */
+---
+
+<div class="swipe-me" aria-hidden="true">
+  <span class="caption">SWIPE ME</span>
+  <span class="chevron">→</span>
+</div>
+
+<style>
+  .swipe-me {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+    opacity: 0;
+    /* Reveal 1s after section enters viewport — coordinated by AboutTeaser.astro. */
+    animation:
+      swipe-me-fade-in 400ms linear 1000ms forwards,
+      swipe-me-bob 2s ease-in-out 1400ms infinite;
+  }
+
+  .chevron {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  @keyframes swipe-me-fade-in {
+    to { opacity: 1; }
+  }
+  @keyframes swipe-me-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  /* Touch devices: hide entirely. */
+  @media (hover: none) {
+    .swipe-me {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .swipe-me {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

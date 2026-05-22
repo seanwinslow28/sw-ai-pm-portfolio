@@ -1,0 +1,71 @@
+---
+/**
+ * <ErDiagram /> — wrapper for build-time Mermaid SVG output.
+ *
+ * Reads the .mmd source file declared in frontmatter mermaidSource:.
+ * Wraps the raw mermaid code in a fenced block; astro-mermaid renders
+ * to inline SVG at build time. The wrapper just provides the caption
+ * + mobile overflow scroll + fallback <pre> when SVG render fails.
+ *
+ * Per architecture-spec §9 (esp. §9.5 fallback contract).
+ */
+import fs from "node:fs/promises";
+import path from "node:path";
+
+interface Props {
+  source: string;        // inline mermaid OR relative .mmd path from src/content/architecture/
+  caption?: string;
+}
+const { source, caption } = Astro.props;
+
+// Resolve inline-vs-path. Inline iff source contains a newline OR doesn't end in .mmd.
+const isPath = !source.includes("\n") && (source.endsWith(".mmd") || source.includes("/"));
+
+let mermaidBody = source;
+if (isPath) {
+  const ROOT = process.cwd();
+  const mmdPath = path.join(ROOT, "src/content/architecture", source);
+  try {
+    mermaidBody = await fs.readFile(mmdPath, "utf8");
+  } catch {
+    mermaidBody = `erDiagram\n  ERROR ||--|| FALLBACK : "missing .mmd at ${source}"`;
+  }
+}
+---
+<figure class="er-diagram">
+  <div class="er-diagram__svg-wrap">
+    <pre class="mermaid">{mermaidBody}</pre>
+  </div>
+  {caption && <figcaption class="er-diagram__caption">{caption}</figcaption>}
+</figure>
+<style>
+  .er-diagram {
+    margin: 48px auto;
+    max-width: 1120px;
+    padding: 0 24px;
+  }
+  .er-diagram__svg-wrap {
+    background: var(--paper);
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .er-diagram__svg-wrap :global(svg) {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .er-diagram__caption {
+    margin: 16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    color: var(--ink-secondary);
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .er-diagram { padding: 0 16px; }
+    .er-diagram__svg-wrap { padding: 16px; }
+  }
+</style>

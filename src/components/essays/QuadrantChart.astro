@@ -1,0 +1,46 @@
+---
+/**
+ * <QuadrantChart /> — wraps Mermaid quadrantChart SSR output.
+ *
+ * Mirrors <ErDiagram /> shape but reads from src/content/essays/
+ * (different content root). Per essays-spec §8.2 + §8.5.
+ */
+import fs from "node:fs/promises";
+import path from "node:path";
+
+interface Props { source: string; caption?: string }
+const { source, caption } = Astro.props;
+
+const isPath = !source.includes("\n") && (source.endsWith(".mmd") || source.includes("/"));
+let mermaidBody = source;
+if (isPath) {
+  const ROOT = process.cwd();
+  const mmdPath = path.join(ROOT, "src/content/essays", source);
+  try {
+    mermaidBody = await fs.readFile(mmdPath, "utf8");
+  } catch {
+    mermaidBody = `quadrantChart\n  title ERROR\n  x-axis Missing --> Source\n  y-axis Missing --> File`;
+  }
+}
+---
+<figure class="quadrant-chart">
+  <div class="quadrant-chart__svg-wrap">
+    <pre class="mermaid">{mermaidBody}</pre>
+  </div>
+  {caption && <figcaption class="quadrant-chart__caption">{caption}</figcaption>}
+</figure>
+<style>
+  .quadrant-chart { margin: 48px auto; max-width: 1120px; padding: 0 24px; }
+  .quadrant-chart__svg-wrap { background: var(--paper); padding: 24px; overflow-x: auto; }
+  .quadrant-chart__svg-wrap :global(svg) { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .quadrant-chart__caption {
+    margin: 16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    color: var(--ink-secondary);
+    text-align: center;
+  }
+  @media (max-width: 767px) { .quadrant-chart { padding: 0 16px; } .quadrant-chart__svg-wrap { padding: 16px; } }
+</style>

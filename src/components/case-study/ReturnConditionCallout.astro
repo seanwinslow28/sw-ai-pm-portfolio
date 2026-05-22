@@ -1,0 +1,53 @@
+---
+/**
+ * <ReturnConditionCallout /> — PAUSED-status callout.
+ *
+ * Sits below the title block, BEFORE the hero media on PAUSED case
+ * studies. The recruiter sees the return condition explicitly — no
+ * apologetic tone, just "here's what un-pauses it."
+ *
+ * Source: case-study-spec-v1.md §12.3.
+ */
+interface Props {
+  returnCondition: string;   // multiline string from frontmatter
+}
+const { returnCondition } = Astro.props;
+---
+
+<aside class="return-condition" role="note">
+  <p class="callout-label">PAUSED — return condition:</p>
+  <p class="callout-body">{returnCondition}</p>
+</aside>
+
+<style>
+  .return-condition {
+    max-width: 720px;
+    margin: 24px auto 0;
+    padding: 16px 24px;
+    background-color: var(--paper);
+    border: 0.5px solid var(--ink-secondary);
+    border-radius: 2px;
+  }
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-body {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+    white-space: pre-line;
+  }
+  @media (max-width: 767px) {
+    .return-condition { padding: 12px 16px; }
+    .callout-body { font-size: 12px; }
+  }
+</style>

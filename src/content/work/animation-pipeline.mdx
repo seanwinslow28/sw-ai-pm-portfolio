@@ -2,6 +2,7 @@
 slug: animation-pipeline
 frame: A-1
 title: 2D Animation Pipeline
+tagline: Teaching Seedance to draw me, then teaching the pipeline to ship the drawing.
 status: ACTIVE
 tags:
   - animation
@@ -14,6 +15,90 @@ order: 1
 date_started: 2026-03-15
 date_active_through: 2026-06-11
 case_study_dateline_pattern: ship_log
+
+role: pm + builder + operator
+anchor_metric: 220 FRAMES
+investigation_order: reverse
+
+methods:
+  - task: frame cleanup
+    tool: clean-frame-v2a.sh
+    cost: rembg / $0
+    link: null
+  - task: render
+    tool: ffmpeg + libvpx-vp9
+    cost: local / $0
+    link: null
+  - task: style anchor
+    tool: Seedance 2.0
+    cost: ~$0.40 per run
+    link: null
+  - task: orchestration
+    tool: Code Brain
+    cost: Claude Sonnet 4.6
+    link: /work/code-brain/
+
+four_q:
+  what: "[PLACEHOLDER — Q1] A 2D pencil-test animation pipeline that ships consistent character animation from sketch through render via a small fleet of agents."
+  why: "[PLACEHOLDER — Q2] Three options considered: Midjourney for stylization, hand-drawn end-to-end, or a hybrid pipeline. Chose hybrid because the consistency-of-character requirement breaks pure-AI approaches and the volume requirement breaks pure-hand-drawn."
+  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) Seedance drift across long sequences; 2) alpha channel loss in the ffmpeg encode; 3) the render queue silently dropping frames at >150 frames."
+  learn: "[PLACEHOLDER — Q4] The pipeline is the artifact. The character is the test the pipeline has to pass."
 ---
 
-Placeholder body content. Replaced in Phase 3 (case-study spec).
+import Opener from "~/components/case-study/Opener.astro";
+import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
+import PRDDecision from "~/components/artifacts/PRDDecision.astro";
+import SlackQuote from "~/components/artifacts/SlackQuote.astro";
+import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
+import MetricChart from "~/components/artifacts/MetricChart.astro";
+import Annotation from "~/components/annotations/Annotation.astro";
+
+<Opener>
+  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] I taught Seedance to draw me. Then I taught the pipeline to ship the drawing. The character on this page is the test the pipeline has to pass — if a single frame breaks line, the whole short breaks.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The pipeline runs on five agents and one shell script. The script handles frame cleanup; the agents handle the harder calls. Sean writes the prose; Sean replaces this paragraph post-plan.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] What's on the page below is the production thread — what shipped, what was killed, what's still running.</p>
+</Opener>
+
+<InvestigationBoard>
+  <PRDDecision
+    artifactId="artifact-1"
+    date="MAY 15"
+    prdTitle="A-1 Pipeline rev 3 — final cleanup chain"
+    decisionLine="220-frame cycle locks. Move to case-study hero media (not portfolio hero)."
+    rationale="Rev 3 is consistent enough to ship; portfolio hero stays with the 94-frame loop per hero-spec §7.5.">
+    <p slot="caption">[PLACEHOLDER CAPTION] First fully cleaned 220-frame cycle. Alpha holds; line stays consistent; ffmpeg encode passes.</p>
+  </PRDDecision>
+
+  <MetricChart
+    artifactId="artifact-2"
+    date="MAY 6"
+    chartTitle="Render time per frame"
+    yLabel="seconds"
+    data={[
+      { x: "v1", y: 22 },
+      { x: "v1.5", y: 18 },
+      { x: "v2", y: 11 },
+      { x: "v2a", y: 4 },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Render time per frame across pipeline versions. v2a landed the libvpx-vp9 + alpha_mode=1 combo.</p>
+  </MetricChart>
+
+  <SlackQuote
+    artifactId="artifact-3"
+    date="APR 23"
+    messages={[
+      { role: "eng lead", text: "[PLACEHOLDER DM] the alpha channel is the rub. vp9 with alpha_mode=1, not h264." },
+      { role: "sean", text: "[PLACEHOLDER REPLY] tried that yesterday — re-running with the corrected flag." },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Anonymized DM exchange on the alpha-channel encode rub.</p>
+  </SlackQuote>
+
+  <BoardArtifact
+    artifactId="artifact-4"
+    date="APR 17"
+    boardLabel="Production board — first cleaned cycle"
+    ticketKey="A1-014"
+    ticketTitle="Land 146-frame raw cycle with consistent line">
+    <p slot="caption">[PLACEHOLDER CAPTION] First raw cleaned cycle lands. 146 frames at 24fps, alpha clean.</p>
+  </BoardArtifact>
+</InvestigationBoard>

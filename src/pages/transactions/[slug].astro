@@ -1,0 +1,304 @@
+---
+/**
+ * /transactions/<slug>/ — deep-dive page.
+ *
+ * Composes the 13-band layout per transactions-spec §9.1:
+ *   1. Dateline strip                 → <DeepDiveTitleBlock />
+ *   2. Surface + status pills row     → <DeepDiveTitleBlock />
+ *   3. Title                          → <DeepDiveTitleBlock /> (view-transition target)
+ *   4. Tags (optional, deferred v1 — no tags field on schema per §3.3)
+ *   5. Value-prop pull-quote          → <ValuePropPullQuote />
+ *   6. Loom poster (optional)         → <LoomPoster />
+ *   7. Methods strip                  → <MethodsStrip /> (Phase 3b shared component)
+ *   8. EXPLANATION (4Q) block         → <FourQBlock /> (Phase 3b shared component)
+ *   9. "Read the canonical EXPLANATION.md →" link
+ *  10. Limitations block              → <LimitationsBlock />
+ *  11. Related block (conditional)    → <RelatedBlock />
+ *  12. Next/Prev nav                  → inline (small primitive)
+ *  13. Registration mark              → inline span (single-emoji-style closeout)
+ *
+ * Forbidden slug collision: [surface]/ and [slug].astro both resolve under
+ * /transactions/<value>/. Disjoint sets enforced by validator (Task 2.1
+ * forbiddenSlugs); Astro 5 resolves to whichever route's getStaticPaths
+ * declares the value.
+ *
+ * Per transactions-spec-v1.md §2.2 + §9 + §15 + §16.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import fs from "node:fs/promises";
+import path from "node:path";
+
+import DeepDiveTitleBlock from "~/components/transactions/DeepDiveTitleBlock.astro";
+import ValuePropPullQuote from "~/components/transactions/ValuePropPullQuote.astro";
+import LoomPoster from "~/components/transactions/LoomPoster.astro";
+import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
+import FourQBlock from "~/components/case-study/FourQBlock.astro";
+import LimitationsBlock from "~/components/transactions/LimitationsBlock.astro";
+import RelatedBlock from "~/components/transactions/RelatedBlock.astro";
+
+type Txn = CollectionEntry<"transactions">;
+
+export async function getStaticPaths() {
+  const all = await getCollection("transactions");
+  return all.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props { entry: Txn }
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Adjacent transactions (next/prev in desc-shipped order).
+const all = (await getCollection("transactions"))
+  .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+const idx = all.findIndex((t) => t.slug === entry.slug);
+const next = idx >= 0 && idx + 1 < all.length ? all[idx + 1] : null;
+const prev = idx > 0 ? all[idx - 1] : null;
+
+// Load the cross-link graph + a title lookup map.
+const ROOT = process.cwd();
+const crosslinksPath = path.join(ROOT, "src/content/transactions/.crosslinks.json");
+let crosslinks: { transactions?: Record<string, { supersededBy?: string; siblingShips?: string[] }> } = {};
+try {
+  const raw = await fs.readFile(crosslinksPath, "utf8");
+  crosslinks = JSON.parse(raw);
+} catch {
+  // Crosslinks file may be missing on a fresh checkout before prebuild
+  // runs. RelatedBlock degrades gracefully — no reverse-derived rows.
+}
+
+const titleByTxnSlug: Record<string, string> = Object.fromEntries(
+  all.map((t) => [t.slug, t.data.title])
+);
+
+const workCollection = await getCollection("work");
+const titleByWorkSlug: Record<string, string> = Object.fromEntries(
+  workCollection.map((w) => [w.slug, w.data.title])
+);
+
+// Phase 3c.2: title maps for the new collections so RelatedBlock can
+// render forward-declared relatedArchitecture/relatedEssay rows + the
+// reverse-derived namedInEssays[] entries with real titles.
+const archCollection = await getCollection("architecture");
+const titleByArchSlug: Record<string, string> = Object.fromEntries(
+  archCollection.map((a) => [a.slug, a.data.title])
+);
+const essayCollection = await getCollection("essays");
+const titleByEssaySlug: Record<string, string> = Object.fromEntries(
+  essayCollection.map((e) => [e.slug, e.data.title])
+);
+
+const data = entry.data;
+const slug = entry.slug;
+
+// 4Q rendering:
+//   - When explanationUrl is set AND a fetched canonical file exists
+//     at src/content/explanations/<slug>.md, render that.
+//   - Otherwise, the MDX body's inline-body 4Q headings render via
+//     <Content /> (Astro's MDX renderer). FourQBlock is skipped in
+//     that case — the body itself provides the 4 sections.
+let canonicalMarkdown: string | undefined;
+if (data.explanationUrl) {
+  const canonicalPath = path.join(ROOT, "src/content/explanations", `${slug}.md`);
+  try {
+    canonicalMarkdown = await fs.readFile(canonicalPath, "utf8");
+  } catch {
+    canonicalMarkdown = undefined; // fetcher hasn't run yet — render link only
+  }
+}
+
+const useFourQBlock = Boolean(canonicalMarkdown);
+const pageTitle = `${data.title} — Sean Winslow`;
+const pageDescription = data.valueProp;
+
+// EXPLANATION.md link target — either the explanationUrl value (preferred)
+// or, for V3-fallback rows, the repoUrl (or null — link omitted).
+const canonicalLink = data.explanationUrl ?? data.repoUrl ?? null;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <article class="txn-deep-dive">
+    <DeepDiveTitleBlock
+      slug={slug}
+      dateline={data.dateline}
+      surface={data.surface}
+      status={data.status}
+      title={data.title}
+    />
+
+    <ValuePropPullQuote text={data.valueProp} />
+
+    {data.loomUrl && (
+      <LoomPoster
+        loomUrl={data.loomUrl}
+        posterUrl={data.loomPosterUrl}
+        title={data.title}
+      />
+    )}
+
+    <MethodsStrip methods={data.methods} />
+
+    {useFourQBlock ? (
+      <FourQBlock
+        frame="LEDGER"
+        slug={slug}
+        canonicalMarkdown={canonicalMarkdown}
+        explanationUrl={data.explanationUrl}
+      />
+    ) : (
+      <section class="inline-body-4q" aria-labelledby={`4q-${slug}`}>
+        <h2 id={`4q-${slug}`} class="section-heading">─ EXPLANATION ─</h2>
+        <div class="prose">
+          <Content />
+        </div>
+        {canonicalLink && (
+          <p class="canonical-link">
+            <a href={canonicalLink} rel="external">&rarr; read the canonical EXPLANATION.md on github</a>
+            <span class="info-glyph" aria-hidden="true">&#9432;</span>
+          </p>
+        )}
+      </section>
+    )}
+
+    <LimitationsBlock items={data.limitations} />
+
+    <RelatedBlock
+      slug={slug}
+      relatedCaseStudy={data.relatedCaseStudy}
+      relatedTransactions={data.relatedTransactions}
+      relatedEssay={data.relatedEssay}
+      previousVersion={data.previousVersion}
+      relatedArchitecture={data.relatedArchitecture}
+      crosslinks={crosslinks}
+      titleByTxnSlug={titleByTxnSlug}
+      titleByWorkSlug={titleByWorkSlug}
+      titleByArchSlug={titleByArchSlug}
+      titleByEssaySlug={titleByEssaySlug}
+    />
+
+    <nav class="next-prev" aria-label="Adjacent transactions">
+      {next ? (
+        <a href={`/transactions/${next.slug}/`} class="np-link np-prev">
+          &larr; {next.data.shipped.replace(/-/g, ".")} {next.data.title}
+        </a>
+      ) : <span></span>}
+      {prev ? (
+        <a href={`/transactions/${prev.slug}/`} class="np-link np-next">
+          {prev.data.shipped.replace(/-/g, ".")} {prev.data.title} &rarr;
+        </a>
+      ) : <span></span>}
+    </nav>
+
+    <span class="registration-mark" aria-hidden="true">&#9680;</span>
+  </article>
+</BaseLayout>
+
+<style>
+  .txn-deep-dive {
+    position: relative;
+    padding-bottom: 80px;
+  }
+
+  .inline-body-4q {
+    max-width: 1120px;
+    margin: 80px auto 0;
+    padding: 0 24px;
+  }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .prose {
+    max-width: 720px;
+  }
+  .prose :global(h2) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin: 48px 0 12px;
+  }
+  .prose :global(p) {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 16px;
+  }
+  .canonical-link {
+    margin: 32px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+  }
+  .canonical-link a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .canonical-link a:hover,
+  .canonical-link a:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+  .canonical-link .info-glyph {
+    margin-left: 6px;
+    color: var(--ink-secondary);
+    font-size: 12px;
+  }
+
+  .next-prev {
+    max-width: 1120px;
+    margin: 64px auto 0;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .np-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .np-next { text-align: right; }
+  .np-link:hover,
+  .np-link:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  .registration-mark {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    font-size: 18px;
+    color: var(--stamp-amber);
+    opacity: 0.6;
+  }
+
+  @media (max-width: 767px) {
+    .inline-body-4q { padding: 0 16px; }
+    .next-prev { padding: 0 16px; grid-template-columns: 1fr; gap: 8px; }
+    .np-next { text-align: left; }
+    .registration-mark { right: 16px; }
+  }
+</style>

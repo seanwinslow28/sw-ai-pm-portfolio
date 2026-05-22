@@ -1,0 +1,211 @@
+---
+/**
+ * <FourQBlock /> — renders the canonical 4Q closer.
+ *
+ * Source: case-study-spec-v1.md §9.
+ *
+ * Prefers `canonicalMarkdown` (the fetched EXPLANATION.md body from
+ * scripts/fetch_canonical_sources.mjs) when present; falls back to
+ * the `fourQ` frontmatter mirror per spec §9.2 Option B.
+ */
+interface FourQ {
+  what: string;
+  why: string;
+  break: string;
+  learn: string;
+}
+interface Props {
+  frame: string;          // e.g., "A-1"
+  slug: string;
+  fourQ?: FourQ;
+  canonicalMarkdown?: string;
+  explanationUrl?: string;
+}
+
+const { frame, slug, fourQ, canonicalMarkdown, explanationUrl } = Astro.props;
+
+const SECTIONS = [
+  { q: "Q1", title: "What is this?", key: "what" as const },
+  { q: "Q2", title: "Why this approach?", key: "why" as const },
+  { q: "Q3", title: "What would break?", key: "break" as const },
+  { q: "Q4", title: "What did I learn?", key: "learn" as const },
+];
+
+const usingCanonical = Boolean(canonicalMarkdown);
+const usingFrontmatter = Boolean(fourQ);
+const showLink = Boolean(explanationUrl);
+---
+
+<section class="four-q" aria-labelledby={`four-q-${slug}`}>
+  <header class="section-heading-row">
+    <h2 id={`four-q-${slug}`} class="section-heading">
+      ─ 4Q ─
+    </h2>
+    {usingCanonical && (
+      <span class="canonical-marker" aria-label="rendered from canonical EXPLANATION.md">
+        canonical
+      </span>
+    )}
+  </header>
+
+  {usingCanonical && (
+    <article class="four-q-canonical" set:html={canonicalMarkdown} />
+  )}
+
+  {!usingCanonical && usingFrontmatter && (
+    <div class="four-q-frontmatter">
+      {SECTIONS.map(({ q, title, key }) => (
+        <article class="four-q-section" aria-labelledby={`${slug}-${q}`}>
+          <h3 id={`${slug}-${q}`} class="four-q-heading">
+            <span class="frame-prefix">{frame}.{q}</span>{"  "}<span class="four-q-title">{title}</span>
+          </h3>
+          <p class={`four-q-body four-q-body-${key}`}>
+            {fourQ![key]}
+          </p>
+        </article>
+      ))}
+    </div>
+  )}
+
+  {showLink && (
+    <p class="canonical-link">
+      <a href={explanationUrl} rel="external">&rarr; read the canonical EXPLANATION.md</a>
+      <span class="info-glyph" aria-hidden="true">&#9432;</span>
+    </p>
+  )}
+</section>
+
+<style>
+  .four-q {
+    margin: 80px auto 0;
+    max-width: 1120px;
+    padding: 0 24px;
+  }
+
+  .section-heading-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .canonical-marker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    padding: 2px 8px;
+    border: 0.5px solid var(--border-paper);
+    border-radius: 2px;
+  }
+
+  .four-q-frontmatter {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .four-q-section {
+    max-width: 720px;
+  }
+
+  .four-q-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    margin: 0 0 12px;
+    text-transform: uppercase;
+  }
+  .four-q-heading .frame-prefix {
+    font-weight: 500;
+  }
+  .four-q-heading .four-q-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: -0.2px;
+    text-transform: none;
+    color: var(--teal);
+  }
+
+  .four-q-body {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.55;
+    letter-spacing: -0.1px;
+    color: var(--ink);
+    margin: 0;
+  }
+  /* Q1 body is slightly larger per spec §4 type table */
+  .four-q-body-what {
+    font-size: 22px;
+  }
+
+  .four-q-canonical :global(h2) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin: 48px 0 12px;
+  }
+  .four-q-canonical :global(p) {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 720px;
+    margin: 0 0 16px;
+  }
+
+  .canonical-link {
+    margin: 32px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+  }
+  .canonical-link a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .canonical-link a:hover,
+  .canonical-link a:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+  .canonical-link .info-glyph {
+    margin-left: 6px;
+    color: var(--ink-secondary);
+    font-size: 12px;
+  }
+
+  @media (max-width: 767px) {
+    .four-q { padding: 0 16px; }
+    .four-q-body { font-size: 16px; }
+    .four-q-body-what { font-size: 20px; }
+    .four-q-heading .four-q-title { font-size: 20px; }
+  }
+</style>

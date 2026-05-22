@@ -1,0 +1,117 @@
+---
+/**
+ * <RelatedBlock /> — architecture deep-dive Related block.
+ *
+ * Renders:
+ *   - relatedLedgerRow → /transactions/<slug>/
+ *   - relatedCaseStudy → /work/<slug>/
+ *   - relatedEssay     → /essays/<slug>/
+ *   - relatedArchitecture[] → siblings
+ *   - REVERSE: namedInEssays[] auto-rendered from .crosslinks.json
+ *     (essays' plottedArtifacts reverse-derivation)
+ *
+ * Per architecture-spec §14 + §2.2.
+ */
+interface ReverseShape {
+  siblingArchitecture?: string[];
+  namedInEssays?: string[];
+}
+interface Crosslinks {
+  architecture?: Record<string, ReverseShape>;
+}
+interface Props {
+  slug: string;
+  relatedLedgerRow?: string;
+  relatedCaseStudy?: string;
+  relatedEssay?: string;
+  relatedArchitecture?: string[];
+  crosslinks: Crosslinks;
+  titleByArchSlug: Record<string, string>;
+  titleByTxnSlug: Record<string, string>;
+  titleByWorkSlug: Record<string, string>;
+  titleByEssaySlug: Record<string, string>;
+}
+const {
+  slug,
+  relatedLedgerRow,
+  relatedCaseStudy,
+  relatedEssay,
+  relatedArchitecture = [],
+  crosslinks,
+  titleByArchSlug,
+  titleByTxnSlug,
+  titleByWorkSlug,
+  titleByEssaySlug,
+} = Astro.props;
+
+const reverse = crosslinks.architecture?.[slug] ?? {};
+const siblingArch = Array.from(new Set([
+  ...relatedArchitecture,
+  ...(reverse.siblingArchitecture ?? []),
+]));
+const namedInEssays = reverse.namedInEssays ?? [];
+
+const hasAny = Boolean(
+  relatedLedgerRow || relatedCaseStudy || relatedEssay ||
+  siblingArch.length > 0 || namedInEssays.length > 0
+);
+---
+{hasAny && (
+  <section class="related-block" aria-labelledby={`related-${slug}`}>
+    <h2 id={`related-${slug}`} class="section-heading">&mdash; RELATED &mdash;</h2>
+    <ul class="related-list">
+      {relatedLedgerRow && (
+        <li>
+          <a href={`/transactions/${relatedLedgerRow}/`}>&rarr; ledger row: {titleByTxnSlug[relatedLedgerRow] ?? relatedLedgerRow}</a>
+        </li>
+      )}
+      {relatedCaseStudy && (
+        <li>
+          <a href={`/work/${relatedCaseStudy}/`}>&rarr; companion case study: {titleByWorkSlug[relatedCaseStudy] ?? relatedCaseStudy}</a>
+        </li>
+      )}
+      {relatedEssay && (
+        <li>
+          <a href={`/essays/${relatedEssay}/`}>&rarr; companion essay: {titleByEssaySlug[relatedEssay] ?? relatedEssay}</a>
+        </li>
+      )}
+      {siblingArch.map((s) => (
+        <li>
+          <a href={`/architecture/${s}/`}>&harr; sibling architecture: {titleByArchSlug[s] ?? s}</a>
+        </li>
+      ))}
+      {namedInEssays.map((s) => (
+        <li>
+          <a href={`/essays/${s}/`}>&larr; named in: {titleByEssaySlug[s] ?? s} (essay)</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+<style>
+  .related-block { max-width: 1120px; margin: 64px auto 0; padding: 0 24px; }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+  }
+  .related-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .related-list a:hover,
+  .related-list a:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  @media (max-width: 767px) { .related-block { padding: 0 16px; } }
+</style>

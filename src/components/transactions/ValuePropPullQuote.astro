@@ -1,0 +1,49 @@
+---
+/**
+ * <ValuePropPullQuote /> — the 1-sentence editorial pullquote at top of deep-dive.
+ *
+ * Per transactions-spec §2.2 + §5 (type table) + §6 (color rules).
+ */
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+---
+
+<aside class="value-prop-pullquote">
+  <hr class="rule" />
+  <p class="quote">&ldquo;{text}&rdquo;</p>
+  <hr class="rule" />
+</aside>
+
+<style>
+  .value-prop-pullquote {
+    max-width: 1120px;
+    margin: 48px auto 0;
+    padding: 0 24px;
+  }
+  .rule {
+    border: none;
+    border-bottom: 0.5px solid var(--teal);
+    margin: 0 auto;
+    max-width: 680px;
+    opacity: 0.4;
+  }
+  .quote {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 2.4vw, 24px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.2px;
+    line-height: 1.45;
+    color: var(--teal);
+    max-width: 680px;
+    margin: 24px auto;
+    text-align: left;
+  }
+
+  @media (max-width: 767px) {
+    .value-prop-pullquote { padding: 0 16px; }
+    .quote { font-size: 18px; margin: 20px auto; }
+  }
+</style>

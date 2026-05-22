@@ -1,0 +1,63 @@
+---
+/**
+ * <LimitationsBlock /> — "WHAT THIS DOESN'T YET DO" bullets.
+ *
+ * Per transactions-spec §2.2 + §9.1 step 10 + §5 (type table).
+ */
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+
+<section class="limitations" aria-labelledby="limitations-heading">
+  <h2 id="limitations-heading" class="section-heading">─ WHAT THIS DOESN&apos;T YET DO ─</h2>
+  <ul>
+    {items.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
+<style>
+  .limitations {
+    max-width: 1120px;
+    margin: 80px auto 0;
+    padding: 0 24px;
+  }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 680px;
+  }
+  li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    color: var(--ink-secondary);
+    line-height: 1.55;
+    padding-left: 16px;
+    margin: 0 0 12px;
+    position: relative;
+  }
+  li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--ink-secondary);
+  }
+  @media (max-width: 767px) {
+    .limitations { padding: 0 16px; }
+    li { font-size: 12px; }
+  }
+</style>

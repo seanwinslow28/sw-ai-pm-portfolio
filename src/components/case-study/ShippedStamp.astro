@@ -1,0 +1,62 @@
+---
+/**
+ * <ShippedStamp /> — hand-drawn SHIPPED stamp for SHIPPED case studies.
+ *
+ * Baked into the title block top-right per case-study-spec §12.2.
+ * SVG is hand-traced (slightly imperfect rectangles + counterstrokes
+ * to read as inked rubber stamp, not vector-clean type).
+ */
+interface Props {
+  shippedAt: string;   // ISO yyyy-mm-dd
+}
+const { shippedAt } = Astro.props;
+const prettyDate = (() => {
+  const d = new Date(shippedAt);
+  if (Number.isNaN(d.getTime())) return shippedAt;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase();
+})();
+---
+
+<aside class="shipped-stamp" aria-label={`Shipped ${prettyDate}`}>
+  <svg viewBox="0 0 220 80" role="img" aria-hidden="true">
+    <rect x="4" y="4" width="212" height="72" fill="none"
+      stroke="currentColor" stroke-width="2.2"
+      transform="skewX(-3) translate(2 0)" />
+    <rect x="2" y="2" width="216" height="76" fill="none"
+      stroke="currentColor" stroke-width="1.0" opacity="0.45" />
+    <text x="110" y="42" text-anchor="middle"
+      font-family="JetBrains Mono, monospace"
+      font-weight="700" font-size="28" letter-spacing="3.5"
+      fill="currentColor">SHIPPED</text>
+    <text x="110" y="64" text-anchor="middle"
+      font-family="JetBrains Mono, monospace"
+      font-weight="500" font-size="11" letter-spacing="1.8"
+      fill="currentColor">{prettyDate}</text>
+  </svg>
+</aside>
+
+<style>
+  .shipped-stamp {
+    position: absolute;
+    top: 8px;
+    right: 24px;
+    width: 140px;
+    height: auto;
+    color: var(--stamp-amber);
+    opacity: 0.85;
+    transform: rotate(-3deg);
+    pointer-events: none;
+  }
+  .shipped-stamp svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .shipped-stamp {
+      width: 96px;
+      top: 4px;
+      right: 16px;
+    }
+  }
+</style>

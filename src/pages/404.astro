@@ -1,0 +1,96 @@
+---
+/**
+ * /404 — sober wire-service. site-chrome-spec §10.
+ *
+ * Astro renders this at /404.html. Vercel serves it on any unmatched
+ * route. No additional config needed.
+ *
+ * Tone discipline: this is a fact, stated calmly. No "lost in the
+ * wilderness" framing. No "let's get you back on track!" energy.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Not Found — Sean Winslow" description="Nothing at this URL.">
+  <article class="not-found page-sheet">
+    <div class="dateline-strip">BOSTON · 404</div>
+    <hr />
+    <h1>PAGE NOT FOUND</h1>
+    <p>Nothing at this URL.</p>
+    <p><a href="/" class="mono-link">&rarr; HOME</a></p>
+  </article>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dateline-strip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+
+  hr {
+    border: 0;
+    border-top: 0.5px solid var(--border-paper);
+    margin: 8px 0 24px;
+  }
+
+  h1 {
+    font-family: var(--font-mono);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 500;
+    letter-spacing: 2.0px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0;
+    /* Mono register per site-chrome §4 — "PAGE NOT FOUND" reads as
+       newsroom slug, not editorial headline. */
+  }
+
+  p {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.45;
+    letter-spacing: -0.1px;
+    color: var(--ink);
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .mono-link {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+  .mono-link:hover,
+  .mono-link:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .not-found {
+      padding: 48px 16px;
+    }
+  }
+</style>

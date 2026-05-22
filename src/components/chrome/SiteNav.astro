@@ -1,0 +1,137 @@
+---
+/**
+ * src/components/chrome/SiteNav.astro — sticky top nav for every sub-page.
+ *
+ * Renders the SW wordmark (links to /) + 5 sibling tabs. Active-route
+ * highlighting derived from Astro.url.pathname via startsWith() so
+ * /work/animation-pipeline correctly highlights WORK.
+ *
+ * Lives OUTSIDE <main> per site-chrome §6.4 — persists across View
+ * Transitions; only the page content swaps.
+ *
+ * Source: site-chrome-spec-v1.md §6 + §4 (typography).
+ */
+import { WORDMARK } from "~/lib/site";
+
+const pathname = Astro.url.pathname;
+
+const TABS: Array<{ label: string; href: string; matchPrefix: string }> = [
+  { label: "WORK",           href: "/work/",          matchPrefix: "/work/" },
+  { label: "TRANSACTIONS",   href: "/transactions/",  matchPrefix: "/transactions/" },
+  { label: "ARCHITECTURE",   href: "/architecture/",  matchPrefix: "/architecture/" },
+  { label: "ESSAYS",         href: "/essays/",        matchPrefix: "/essays/" },
+  { label: "ABOUT",          href: "/about/",         matchPrefix: "/about/" },
+];
+
+function isActive(matchPrefix: string): boolean {
+  return pathname.startsWith(matchPrefix);
+}
+---
+
+<header class="site-nav-header">
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="/" class="wordmark" aria-label="Sean Winslow — home">{WORDMARK}</a>
+    <ul class="nav-tabs">
+      {TABS.map((tab) => (
+        <li>
+          <a
+            href={tab.href}
+            class={isActive(tab.matchPrefix) ? "tab active" : "tab"}
+            aria-current={isActive(tab.matchPrefix) ? "page" : undefined}
+          >
+            {tab.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--paper);
+    border-bottom: 0.5px solid var(--border-paper);
+    /* Per site-chrome §5: flat — no drop shadow, no backdrop blur. */
+  }
+
+  .site-nav {
+    max-width: 1120px;
+    margin: 0 auto;
+    height: 56px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--teal);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .wordmark:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 4px;
+  }
+
+  .nav-tabs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 24px;
+    row-gap: 4px;
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    line-height: 1;
+    padding: 4px 0;
+    /* 1px stamp-amber bottom border for the active tab. Default state
+       has a transparent border to prevent layout shift on activation. */
+    border-bottom: 1px solid transparent;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  }
+  .tab:hover {
+    color: var(--teal);
+  }
+  .tab.active {
+    color: var(--teal);
+    border-bottom-color: var(--stamp-amber);
+  }
+  .tab:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 4px;
+  }
+
+  /* Mobile: 5 tabs may wrap to 2 lines under ~640px. Smaller horizontal
+     padding + slightly tighter gap. No hamburger per site-chrome §6.3. */
+  @media (max-width: 767px) {
+    .site-nav {
+      height: auto;
+      min-height: 48px;
+      padding: 8px 16px;
+      gap: 12px;
+    }
+    .nav-tabs {
+      gap: 12px 16px;
+    }
+  }
+</style>

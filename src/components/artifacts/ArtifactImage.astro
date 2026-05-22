@@ -1,0 +1,95 @@
+---
+/**
+ * <ArtifactImage /> — Polaroid-framed wrapper for investigation-board artifacts.
+ *
+ * Outer layer for all 4 artifact components (PRDDecision, SlackQuote,
+ * BoardArtifact, MetricChart). Renders the artifact body via slot
+ * inside a Polaroid frame (paper bg + 0.5px amber border + optional
+ * tape SVG at corners), with the caption block beside it (50/50 split
+ * on desktop, stacked on mobile).
+ *
+ * Source: case-study-spec-v1.md §7.1.
+ */
+interface Props {
+  artifactId: string;
+  date: string;          // e.g. "MAY 6" — the caption stamp
+  killed?: boolean;      // true for cut artifacts (§7.5)
+}
+const { artifactId, date, killed = false } = Astro.props;
+const stamp = killed ? "KILLED" : date;
+---
+
+<article id={artifactId} class:list={["artifact", killed && "artifact-killed"]} tabindex="0">
+  <div class="polaroid">
+    <slot name="body" />
+  </div>
+  <aside class="artifact-caption">
+    <p class="caption-stamp">{stamp} —</p>
+    <slot name="caption" />
+  </aside>
+</article>
+
+<style>
+  .artifact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    margin: 0 0 60px;
+    max-width: 1120px;
+  }
+  .artifact:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 8px;
+  }
+
+  .polaroid {
+    position: relative;
+    background-color: var(--paper);
+    border: 0.5px solid var(--amber-mid);
+    box-shadow:
+      0 1px 2px rgba(10, 62, 66, 0.06),
+      0 4px 12px rgba(10, 62, 66, 0.08);
+    padding: 16px;
+    min-height: 180px;
+  }
+
+  .artifact-caption {
+    padding-top: 8px;
+    max-width: 520px;
+  }
+  .caption-stamp {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    color: var(--stamp-amber);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .artifact-caption :global(p),
+  .artifact-caption :global(div) {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.0px;
+    line-height: 1.55;
+    color: var(--ink-secondary);
+    margin: 0 0 8px;
+  }
+
+  .artifact-killed .polaroid {
+    opacity: 0.5;
+  }
+  .artifact-killed .caption-stamp {
+    color: var(--ink-secondary);
+  }
+
+  @media (max-width: 767px) {
+    .artifact {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+  }
+</style>

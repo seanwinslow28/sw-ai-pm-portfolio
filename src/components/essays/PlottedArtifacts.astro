@@ -1,0 +1,81 @@
+---
+/**
+ * <PlottedArtifacts /> — auto-rendered list of cited artifacts.
+ *
+ * Reads frontmatter plottedArtifacts[]: slug. Each slug resolves
+ * via the txnSlugs + archSlugs Sets passed from the page. When a
+ * slug exists on both surfaces, both links render comma-separated.
+ *
+ * Per essays-spec §10.
+ */
+interface Props {
+  slugs: string[];
+  txnSlugs: Set<string>;
+  archSlugs: Set<string>;
+  titleByTxnSlug: Record<string, string>;
+  titleByArchSlug: Record<string, string>;
+}
+const { slugs, txnSlugs, archSlugs, titleByTxnSlug, titleByArchSlug } = Astro.props;
+const rendered = slugs.filter((s) => txnSlugs.has(s) || archSlugs.has(s));
+---
+{rendered.length > 0 && (
+  <section class="plotted-artifacts" aria-labelledby="plotted-heading">
+    <h2 id="plotted-heading" class="section-heading">&mdash; ARTIFACTS PLOTTED ON THE CHART &mdash;</h2>
+    <ul>
+      {rendered.map((s) => {
+        const label = titleByTxnSlug[s] ?? titleByArchSlug[s] ?? s;
+        const links = [];
+        if (txnSlugs.has(s)) links.push({ href: `/transactions/${s}/`, tag: "ledger" });
+        if (archSlugs.has(s)) links.push({ href: `/architecture/${s}/`, tag: "architecture" });
+        return (
+          <li>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+            <span class="label">{label}</span>
+            <span class="dash" aria-hidden="true">&mdash;</span>
+            {links.map((l, i) => (
+              <>
+                <a href={l.href}>{l.href}</a>
+                {i < links.length - 1 && <span class="sep" aria-hidden="true">,</span>}
+              </>
+            ))}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+)}
+<style>
+  .plotted-artifacts { max-width: 1120px; margin: 80px auto 0; padding: 0 24px; }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .plotted-artifacts ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .plotted-artifacts li {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: var(--teal);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .plotted-artifacts .arrow, .plotted-artifacts .dash, .plotted-artifacts .sep { color: var(--ink-secondary); }
+  .plotted-artifacts .label { color: var(--ink); font-weight: 500; }
+  .plotted-artifacts a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .plotted-artifacts a:hover { border-bottom-color: var(--teal); }
+  @media (max-width: 767px) { .plotted-artifacts { padding: 0 16px; } }
+</style>

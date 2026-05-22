@@ -1,0 +1,82 @@
+---
+/**
+ * <BoardArtifact /> — investigation-board artifact: a board excerpt
+ * or single Jira ticket card. Sanitized — project keys redacted,
+ * anonymized assignee.
+ *
+ * Source: case-study-spec-v1.md §7.2.
+ */
+import ArtifactImage from "./ArtifactImage.astro";
+
+interface Props {
+  artifactId: string;
+  date: string;
+  boardLabel: string;      // e.g. "Roadmap Q2 — INTENT-ENG"
+  ticketKey?: string;       // e.g. "INT-127" (redact further as needed)
+  ticketTitle?: string;
+  excerpt?: string;         // free-form board excerpt
+  killed?: boolean;
+}
+const { artifactId, date, boardLabel, ticketKey, ticketTitle, excerpt, killed = false } = Astro.props;
+---
+
+<ArtifactImage artifactId={artifactId} date={date} killed={killed}>
+  <div slot="body" class="board-body">
+    <p class="board-label">{boardLabel}</p>
+    {ticketKey && ticketTitle && (
+      <div class="ticket-card">
+        <p class="ticket-key">{ticketKey}</p>
+        <p class="ticket-title">{ticketTitle}</p>
+      </div>
+    )}
+    {excerpt && <pre class="board-excerpt">{excerpt}</pre>}
+  </div>
+  <slot slot="caption" />
+</ArtifactImage>
+
+<style>
+  .board-body { display: flex; flex-direction: column; gap: 12px; }
+  .board-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    color: var(--stamp-amber);
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .ticket-card {
+    background-color: rgba(10, 62, 66, 0.04);
+    border-left: 2px solid var(--teal);
+    padding: 8px 12px;
+    border-radius: 0 2px 2px 0;
+  }
+  .ticket-key {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+  .ticket-title {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 0;
+  }
+  .board-excerpt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+    white-space: pre-wrap;
+    background: transparent;
+    padding: 0;
+  }
+</style>

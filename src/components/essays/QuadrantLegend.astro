@@ -1,0 +1,87 @@
+---
+/**
+ * <QuadrantLegend /> — wire-service mono table below the chart.
+ *
+ * Each row: short code → human-readable label. When `artifact` is set,
+ * the label links to /transactions/<slug>/ (and to /architecture/<slug>/
+ * when that surface also has the slug, via crosslinks). Null artifact
+ * is the negative-space callout case.
+ *
+ * Per essays-spec §8.4.
+ */
+interface LegendEntry { key: string; label: string; artifact?: string | null }
+interface Props {
+  entries: LegendEntry[];
+  txnSlugs: Set<string>;
+  archSlugs: Set<string>;
+}
+const { entries, txnSlugs, archSlugs } = Astro.props;
+
+function resolveLinks(artifact: string | null | undefined): Array<{ href: string; label: string }> {
+  if (!artifact) return [];
+  const out: Array<{ href: string; label: string }> = [];
+  if (txnSlugs.has(artifact)) out.push({ href: `/transactions/${artifact}/`, label: "ledger" });
+  if (archSlugs.has(artifact)) out.push({ href: `/architecture/${artifact}/`, label: "architecture" });
+  return out;
+}
+---
+<aside class="quadrant-legend" aria-label="Chart legend">
+  <ul>
+    {entries.map((e) => {
+      const links = resolveLinks(e.artifact);
+      return (
+        <li>
+          <span class="key">{e.key}</span>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="label">{e.label}</span>
+          {links.length > 0 && (
+            <span class="links">
+              {links.map((l, i) => (
+                <>
+                  <a href={l.href}>{l.label}</a>
+                  {i < links.length - 1 && <span class="sep" aria-hidden="true">&middot;</span>}
+                </>
+              ))}
+            </span>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+</aside>
+<style>
+  .quadrant-legend {
+    max-width: 680px;
+    margin: 16px auto 32px;
+    padding: 16px 24px;
+    background: rgba(10, 62, 66, 0.02);
+    border: 0.5px solid rgba(10, 62, 66, 0.15);
+  }
+  .quadrant-legend ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .quadrant-legend li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .quadrant-legend .key { color: var(--teal); font-weight: 500; }
+  .quadrant-legend .arrow { color: var(--ink-secondary); }
+  .quadrant-legend .label { flex: 1; }
+  .quadrant-legend .links { display: inline-flex; gap: 6px; align-items: baseline; }
+  .quadrant-legend .links a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .quadrant-legend .links a:hover { border-bottom-color: var(--teal); }
+  .quadrant-legend .sep { color: var(--ink-secondary); font-size: 12px; }
+  @media (max-width: 767px) { .quadrant-legend { padding: 12px 16px; } }
+</style>

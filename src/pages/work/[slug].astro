@@ -1,93 +1,190 @@
 ---
 /**
- * /work/[slug] — View Transition target stub. Phase 3 (case-study spec)
- * builds out the full case-study page; Phase 2 ships only enough to make
- * the tile → page View Transition land somewhere (no 404 on click).
+ * /work/[slug] — case-study page.
+ *
+ * Composes the 6-band chrome around the MDX body per case-study-spec §2:
+ *   dateline → title block → hero media → status preamble (if any) →
+ *   opener → investigation board → Methods strip → 4Q block → next/prev
+ *
+ * The MDX body supplies the opener prose + the investigation-board
+ * artifact components + any pencil-margin annotations. Frontmatter
+ * supplies the chrome and the four_q closer.
+ *
+ * Source: case-study-spec-v1.md §2 + §12.
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "~/layouts/BaseLayout.astro";
 
+import DatelineStrip from "~/components/case-study/DatelineStrip.astro";
+import TitleBlock from "~/components/case-study/TitleBlock.astro";
+import HeroMedia from "~/components/case-study/HeroMedia.astro";
+import Opener from "~/components/case-study/Opener.astro";
+import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
+import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
+import FourQBlock from "~/components/case-study/FourQBlock.astro";
+import NextPrevNav from "~/components/case-study/NextPrevNav.astro";
+
+import ShippedStamp from "~/components/case-study/ShippedStamp.astro";
+import ShippedNow from "~/components/case-study/ShippedNow.astro";
+import ReturnConditionCallout from "~/components/case-study/ReturnConditionCallout.astro";
+import FrameTheWorkPreamble from "~/components/case-study/FrameTheWorkPreamble.astro";
+
+import PRDDecision from "~/components/artifacts/PRDDecision.astro";
+import SlackQuote from "~/components/artifacts/SlackQuote.astro";
+import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
+import MetricChart from "~/components/artifacts/MetricChart.astro";
+import Annotation from "~/components/annotations/Annotation.astro";
+
 export async function getStaticPaths() {
   const work = await getCollection("work");
-  return work.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  const sorted = work.slice().sort((a, b) => a.data.order - b.data.order);
+  return sorted.map((entry, idx) => {
+    const prev = sorted[(idx - 1 + sorted.length) % sorted.length];
+    const next = sorted[(idx + 1) % sorted.length];
+    return {
+      params: { slug: entry.slug },
+      props: { entry, prev, next },
+    };
+  });
 }
 
-const { entry } = Astro.props as { entry: any };
+const { entry, prev, next } = Astro.props as {
+  entry: Awaited<ReturnType<typeof getCollection<"work">>>[number];
+  prev: Awaited<ReturnType<typeof getCollection<"work">>>[number];
+  next: Awaited<ReturnType<typeof getCollection<"work">>>[number];
+};
 const { data } = entry;
+const { Content } = await entry.render();
+
+const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`;
 ---
 
-<BaseLayout title={`${data.title} — Sean Winslow`} description={data.tagline ?? data.hero_media_alt}>
-  <article class="case-study-stub page-sheet">
-    <div class="dateline-strip">BOSTON · {data.title.toUpperCase()} · {data.status}</div>
-    <hr />
-    <div class="hero-media" style={`view-transition-name: hero-media-${entry.slug};`}>
-      <img src={data.hero_media} alt={data.hero_media_alt} />
+<BaseLayout
+  title={`${data.title} — Sean Winslow`}
+  description={data.tagline ?? data.hero_media_alt}
+>
+  <article class={`case-study case-study-${data.status.toLowerCase()}`}>
+    <DatelineStrip body={datelineBody} />
+
+    <div class="title-block-wrap">
+      <TitleBlock
+        frame={data.frame}
+        title={data.title}
+        status={data.status}
+        tags={data.tags}
+        role={data.role}
+        dateStarted={data.date_started}
+        dateActiveThrough={data.date_active_through}
+        anchorMetric={data.anchor_metric}
+      />
+      {data.status === "SHIPPED" && data.shipped_at && (
+        <ShippedStamp shippedAt={data.shipped_at} />
+      )}
     </div>
-    <h1>{data.title}</h1>
-    {data.tagline && <p class="tagline">{data.tagline}</p>}
-    <p class="placeholder-note">Case-study body lands in Phase 3.</p>
-    <p><a href="/" class="mono-link">← HOME</a></p>
+
+    {data.status === "SHIPPED" && data.shipped_stats_endpoint && (
+      <ShippedNow slug={entry.slug} shippedStatsEndpoint={data.shipped_stats_endpoint} />
+    )}
+
+    {data.status === "PAUSED" && data.return_condition && (
+      <ReturnConditionCallout returnCondition={data.return_condition} />
+    )}
+
+    {data.status === "ARCHIVED" && (
+      <FrameTheWorkPreamble>
+        <p>{data.tagline ?? "Two years of B2B and infrastructure work. Frame the work, not the exit."}</p>
+      </FrameTheWorkPreamble>
+    )}
+
+    <HeroMedia
+      slug={entry.slug}
+      heroMedia={data.hero_media}
+      heroMediaType={data.hero_media_type}
+      heroMediaAlt={data.hero_media_alt}
+    />
+
+    <Content
+      components={{
+        Opener,
+        InvestigationBoard,
+        PRDDecision,
+        SlackQuote,
+        BoardArtifact,
+        MetricChart,
+        Annotation,
+      }}
+    />
+
+    <MethodsStrip methods={data.methods} />
+
+    <FourQBlock
+      frame={data.frame}
+      slug={entry.slug}
+      fourQ={data.four_q}
+      explanationUrl={data.explanation_url}
+    />
+
+    <NextPrevNav prev={prev} next={next} />
+
+    {/* Page closeout — registration mark in the bottom-right corner (annotation §11.1) */}
+    <div class="page-closeout">
+      <Annotation type="registration-mark" />
+    </div>
   </article>
+
+  <script>
+    import { initAnnotations } from "~/scripts/annotation-positioner.js";
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initAnnotations);
+    } else {
+      initAnnotations();
+    }
+    document.addEventListener("astro:after-swap", initAnnotations);
+  </script>
 </BaseLayout>
 
 <style>
-  .case-study-stub {
-    padding: 60px 24px;
+  .case-study {
+    background-color: var(--paper);
+    padding: 48px 0 80px;
+    position: relative;
+  }
+  .title-block-wrap {
+    position: relative;
+  }
+
+  /* Status-driven right-margin accent per case-study-spec §5 */
+  .case-study::before {
+    content: "";
+    position: absolute;
+    top: 100px;
+    right: 24px;
+    bottom: 100px;
+    width: 1px;
+    background-color: rgba(10, 62, 66, 0.4);
+    pointer-events: none;
+  }
+  @media (max-width: 1023px) {
+    .case-study::before { display: none; }
+  }
+  .case-study-archived::before { opacity: 0.5; }
+  .case-study-paused::before    { opacity: 0.7; }
+
+  .page-closeout {
     max-width: 1120px;
-    margin: 0 auto;
-    min-height: 80vh;
+    margin: 80px auto 0;
+    padding: 0 24px;
+    height: 24px;
+    position: relative;
   }
-  .dateline-strip {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--ink-secondary);
-    letter-spacing: 1.2px;
-    margin-bottom: 30px;
+  .page-closeout :global(.annotation-registration-mark) {
+    position: absolute;
+    right: 24px;
+    bottom: 0;
   }
-  hr {
-    border: 0;
-    border-top: 0.5px solid var(--border-paper);
-    margin-bottom: 40px;
-  }
-  .hero-media {
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    margin-bottom: 40px;
-  }
-  .hero-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-  h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(40px, 5vw, 72px);
-    font-weight: 400;
-    color: var(--teal);
-    margin-bottom: 16px;
-  }
-  .tagline {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--ink);
-    margin-bottom: 40px;
-  }
-  .placeholder-note {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--ink-secondary);
-    margin-bottom: 60px;
-  }
-  .mono-link {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--teal);
+
+  @media (max-width: 767px) {
+    .case-study { padding: 24px 0 56px; }
+    .page-closeout { padding: 0 16px; }
   }
 </style>

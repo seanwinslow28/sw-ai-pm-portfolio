@@ -1,0 +1,50 @@
+---
+/**
+ * <HonestNote /> — mono callout with stamp-amber prefix.
+ *
+ * Anchored at a section heading by `anchor:` matching honestNotes[].
+ * Per architecture-spec §8 (≤3 per page, load-bearing credibility
+ * signal). Authored in frontmatter; renders inline in essay body
+ * at the matching section heading.
+ */
+interface Props {
+  anchor: string;
+  body: string;
+}
+const { anchor, body } = Astro.props;
+---
+<aside class="honest-note" data-anchor={anchor} aria-label="Honest note">
+  <header class="honest-note__prefix">HONEST NOTE &mdash;</header>
+  <p class="honest-note__body">{body}</p>
+</aside>
+<style>
+  .honest-note {
+    margin: 32px auto;
+    max-width: 680px;
+    padding: 0 0 0 24px;
+    border-left: 1px solid var(--ink-secondary);
+    background: var(--paper);
+  }
+  .honest-note__prefix {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--stamp-amber);
+    margin: 0 0 8px;
+  }
+  .honest-note__body {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    line-height: 1.5;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+  @media (max-width: 767px) {
+    .honest-note { padding-left: 16px; font-size: 13px; }
+    .honest-note__body { font-size: 13px; }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+/**
+ * /essays/ — index page.
+ *
+ * Sorted desc by published ISO. Bands: dateline → title block →
+ * essay rows → footer fold (RSS / Substack / fleet).
+ *
+ * Per essays-spec §2.1 + §4.1.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import IndexHeader from "~/components/essays/IndexHeader.astro";
+import EssayRow from "~/components/essays/EssayRow.astro";
+
+const essays = (await getCollection("essays"))
+  .sort((a, b) => b.data.published.localeCompare(a.data.published));
+
+const count = essays.length;
+const lastPublished = essays[0]?.data.published ?? new Date().toISOString().slice(0, 10);
+
+// Find a Substack URL across all essays for the footer link.
+let substackUrl: string | null = null;
+for (const e of essays) {
+  const cp = (e.data.crossPostedTo ?? []).find((c) => c.name === "Substack");
+  if (cp) { substackUrl = cp.url; break; }
+}
+---
+<BaseLayout
+  title="Essays — Sean Winslow"
+  description="Thesis-shaped writing where the artifacts back the claim."
+>
+  <IndexHeader count={count} lastPublishedISO={lastPublished} />
+
+  <section class="essays-list" aria-label="Essay rows">
+    {count === 0 && (
+      <p class="empty-state">No essays yet. Check back ~quarterly.</p>
+    )}
+    {essays.map((e) => (
+      <EssayRow
+        slug={e.slug}
+        published={e.data.published}
+        status={e.data.status}
+        title={e.data.title}
+        excerpt={e.data.excerpt}
+      />
+    ))}
+  </section>
+
+  <footer class="footer-fold">
+    <p>
+      <a href="/essays/rss.xml">&rarr; subscribe via RSS</a>
+      {substackUrl && (
+        <>
+          <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+          <a href={substackUrl} rel="external">&rarr; read on Substack</a>
+        </>
+      )}
+      <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+      <a href="/">&rarr; view the fleet <span aria-hidden="true">&uarr;</span></a>
+    </p>
+  </footer>
+</BaseLayout>
+<style>
+  .essays-list { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .empty-state { font-family: var(--font-mono); font-size: 13px; color: var(--ink-secondary); padding: 24px 0; text-align: center; }
+  .footer-fold { max-width: 1120px; margin: 80px auto 60px; padding: 0 24px; }
+  .footer-fold p { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 1.0px; color: var(--teal); margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; }
+  .footer-fold a { color: var(--teal); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 160ms var(--ease-out); }
+  .footer-fold a:hover, .footer-fold a:focus-visible { border-bottom-color: var(--teal); outline: none; }
+  @media (max-width: 767px) { .essays-list { padding: 0 16px; } .footer-fold { padding: 0 16px; margin: 56px auto 40px; } }
+</style>

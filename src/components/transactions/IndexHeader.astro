@@ -1,0 +1,125 @@
+---
+/**
+ * <IndexHeader /> — page title block above the filter pills.
+ *
+ * Renders dateline strip → h1 → Newsreader subhead → mono metadata strip.
+ * Per transactions-spec §2.1 + §5 (type table) + §10.3 (RSS link).
+ *
+ * The dateline body is build-time-rendered for v1 (count + most-recent
+ * surface) — Phase 4 swaps in the Daily Driver's `ledger_total` pattern
+ * when the agent's filesystem-read step lands.
+ */
+interface Props {
+  count: number;
+  lastUpdatedISO: string;          // "2026-05-21"
+  surface?: string;                // when set, this is a per-surface index page
+  hookText?: string;               // optional subhead override (defaults below)
+}
+
+const {
+  count,
+  lastUpdatedISO,
+  surface,
+  hookText = "Every shipped artifact, dated, with the explanation attached.",
+} = Astro.props;
+
+// Dateline body for the index page (build-time rendered per blueprint §3.3
+// "build-time render, not Daily Driver write" — same primitive as
+// /architecture/ + /essays/ index pages).
+const month = new Date(`${lastUpdatedISO}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toUpperCase();
+const datelineBody = surface
+  ? `BOSTON, ${month} — ${count} ${surface} artifact${count === 1 ? "" : "s"}.`
+  : `BOSTON, ${month} — ${count} artifact${count === 1 ? "" : "s"} on the ledger.`;
+
+const heading = surface ? `Transactions / ${surface}` : "Transactions";
+---
+
+<header class="index-header">
+  <p class="dateline">{datelineBody}</p>
+  <hr class="dateline-rule" />
+
+  <h1 class="page-title">{heading}</h1>
+  <p class="page-hook">{hookText}</p>
+
+  <p class="metadata-strip">
+    <span class="meta-count">{count} ARTIFACT{count === 1 ? "" : "S"}</span>
+    <span class="meta-sep">·</span>
+    <span class="meta-updated">UPDATED {lastUpdatedISO}</span>
+    <span class="meta-sep">·</span>
+    <a href="/transactions/rss.xml" class="meta-rss">RSS &rarr;</a>
+  </p>
+</header>
+
+<style>
+  .index-header {
+    max-width: 1120px;
+    margin: 60px auto 0;
+    padding: 0 24px;
+  }
+
+  .dateline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+  .dateline-rule {
+    border: none;
+    border-bottom: 0.5px solid var(--border-paper);
+    margin: 16px 0 40px;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(56px, 6vw, 96px);
+    font-weight: 400;
+    letter-spacing: -0.6px;
+    color: var(--teal);
+    margin: 0 0 16px;
+    line-height: 1.05;
+  }
+
+  .page-hook {
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 1.8vw, 20px);
+    font-weight: 300;
+    letter-spacing: -0.1px;
+    color: var(--ink);
+    margin: 0 0 32px;
+    max-width: 680px;
+  }
+
+  .metadata-strip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .meta-sep { color: var(--border-paper); }
+  .meta-rss {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .meta-rss:hover,
+  .meta-rss:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .index-header { padding: 0 16px; margin-top: 40px; }
+    .page-title { font-size: clamp(40px, 9vw, 56px); }
+  }
+</style>

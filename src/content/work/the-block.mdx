@@ -2,18 +2,94 @@
 slug: the-block
 frame: A-4
 title: The Block — Campus + RevOps
+tagline: Two products, one institutional research firm, two years.
 status: ARCHIVED
 tags:
-  - pm
   - b2b
-  - crypto
+  - revops
+  - product
 hero_media: /assets/projects/the-block.webp
 hero_media_type: image
-hero_media_alt: A sanitized product screenshot from The Block.
+hero_media_alt: A sanitized screenshot of the Campus research surface.
 order: 4
-date_started: 2024-09-01
-date_active_through: 2026-05-04
-case_study_dateline_pattern: now_line
+date_started: 2024-02-01
+date_active_through: 2026-02-01
+
+role: pm + product partner
+anchor_metric: "2024 – 2026 · TWO PRODUCTS · ONE FIRM"
+investigation_order: forward
+
+archived_reference_url: https://www.theblockcrypto.com/post/example-placeholder
+
+methods:
+  - task: institutional research
+    tool: Campus (B2B platform)
+    cost: SaaS
+    link: null
+  - task: revenue operations
+    tool: Internal RevOps system
+    cost: internal
+    link: null
+  - task: data partnerships
+    tool: redacted partner stack
+    cost: enterprise
+    link: null
+
+four_q:
+  what: "[PLACEHOLDER — Q1] Two years of B2B product work for an institutional crypto-research firm. Campus is a research platform; RevOps is the internal product that supports the broader Block business."
+  why: "[PLACEHOLDER — Q2] Three options considered for the Campus thesis. Sean adjudicates the framing post-plan; this stub frames the work, not the exit."
+  break: "[PLACEHOLDER — Q3] Three failure modes existed at scale and were managed. Sean lists them post-plan."
+  learn: "[PLACEHOLDER — Q4] B2B research is a relationship product. The infrastructure has to disappear; the relationship has to remain."
 ---
 
-Placeholder body content. Replaced in Phase 3.
+import Opener from "~/components/case-study/Opener.astro";
+import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
+import PRDDecision from "~/components/artifacts/PRDDecision.astro";
+import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
+import MetricChart from "~/components/artifacts/MetricChart.astro";
+
+<Opener>
+  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] Two years of B2B and infrastructure work for an institutional research firm. Campus is a research platform; RevOps is the internal product that supports the broader business. Sean writes the real opener post-plan.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The arc was build → grow → hand off. The artifacts on this page are sanitized — project keys redacted, screenshots sanitized.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] The work is real and shippable; the framing is "this was the work," not "this is why it ended."</p>
+</Opener>
+
+<InvestigationBoard>
+  <BoardArtifact
+    artifactId="artifact-1"
+    date="2024"
+    boardLabel="Campus product launch — Q1 2024"
+    excerpt="[PLACEHOLDER EXCERPT] Campus v1 ships to a small set of institutional customers. Onboarding runs through the partnerships team.">
+    <p slot="caption">[PLACEHOLDER CAPTION] Campus v1 launch. The first surface that B2B customers used directly.</p>
+  </BoardArtifact>
+
+  <PRDDecision
+    artifactId="artifact-2"
+    date="2025 Q1"
+    prdTitle="Subscription tier structure"
+    decisionLine="[PLACEHOLDER] Tier structure locked at 3 levels — research-only, research+data, research+data+API."
+    rationale="[PLACEHOLDER] The 3-tier structure mapped customer segments cleanly.">
+    <p slot="caption">[PLACEHOLDER CAPTION] Subscription tier decision. The 3-tier model held for the remainder of the arc.</p>
+  </PRDDecision>
+
+  <BoardArtifact
+    artifactId="artifact-3"
+    date="2025 Q2"
+    boardLabel="RevOps internal launch">
+    <p slot="caption">[PLACEHOLDER CAPTION] RevOps internal product launches to the partnerships + research teams.</p>
+  </BoardArtifact>
+
+  <MetricChart
+    artifactId="artifact-4"
+    date="2025-2026"
+    chartTitle="Institutional subscriber growth"
+    yLabel="subscribers"
+    data={[
+      { x: "2024 Q2", y: 18 },
+      { x: "2024 Q4", y: 42 },
+      { x: "2025 Q2", y: 87 },
+      { x: "2025 Q4", y: 134 },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Subscriber growth across the arc. Numbers are illustrative; final figures sanitized.</p>
+  </MetricChart>
+</InvestigationBoard>

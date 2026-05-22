@@ -1,0 +1,163 @@
+---
+/**
+ * <LoomPoster /> — optional editorial Loom video embed.
+ *
+ * Renders only when loomUrl is present. Poster click opens a native
+ * <dialog> with the Loom iframe. Strict 1-Loom max per row
+ * (transactions-spec §19 OPEN-5 RESOLVED).
+ *
+ * Per transactions-spec §9.1 step 6 + §16 (a11y).
+ */
+interface Props {
+  loomUrl: string;
+  posterUrl?: string;             // optional editorial poster image
+  title: string;                  // for the aria-label + dialog title
+}
+const { loomUrl, posterUrl, title } = Astro.props;
+
+// Convert https://www.loom.com/share/<id> to https://www.loom.com/embed/<id>
+function toEmbedUrl(url: string): string {
+  return url.replace("/share/", "/embed/");
+}
+const embedUrl = toEmbedUrl(loomUrl);
+const dialogId = `loom-dialog-${title.toLowerCase().replace(/[^\w]+/g, "-").slice(0, 32)}`;
+---
+
+<section class="loom-section">
+  <button
+    type="button"
+    class="loom-trigger"
+    aria-label={`Play Loom video: ${title}`}
+    data-dialog-id={dialogId}
+  >
+    {posterUrl
+      ? <img src={posterUrl} alt="" class="loom-poster" loading="lazy" />
+      : <span class="loom-poster-fallback" aria-hidden="true">▶ Loom</span>
+    }
+    <span class="loom-play" aria-hidden="true">▶</span>
+  </button>
+
+  <dialog id={dialogId} class="loom-dialog" aria-label={`Loom video: ${title}`}>
+    <form method="dialog" class="loom-close-form">
+      <button type="submit" class="loom-close" aria-label="Close video">&times;</button>
+    </form>
+    <iframe
+      src={embedUrl}
+      allow="fullscreen"
+      allowfullscreen
+      class="loom-iframe"
+      title={`Loom video: ${title}`}
+    ></iframe>
+  </dialog>
+</section>
+
+<script>
+  // Wire up trigger → dialog.showModal() + restore focus on close.
+  document.querySelectorAll<HTMLButtonElement>(".loom-trigger").forEach((trigger) => {
+    const dialogId = trigger.dataset.dialogId;
+    if (!dialogId) return;
+    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+    if (!dialog) return;
+    trigger.addEventListener("click", () => {
+      dialog.showModal();
+    });
+    dialog.addEventListener("close", () => {
+      trigger.focus();
+    });
+  });
+</script>
+
+<style>
+  .loom-section {
+    max-width: 880px;
+    margin: 64px auto 0;
+    padding: 0 24px;
+  }
+  .loom-trigger {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--ink);
+    border: 0.5px solid var(--border-paper);
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    transition: opacity 160ms var(--ease-out);
+  }
+  .loom-trigger:hover { opacity: 0.92; }
+  .loom-trigger:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 4px;
+  }
+  .loom-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .loom-poster-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 18px;
+    letter-spacing: 1.2px;
+  }
+  .loom-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--paper);
+    font-size: 48px;
+    pointer-events: none;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  .loom-dialog {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    max-width: 90vw;
+    width: 960px;
+  }
+  .loom-dialog::backdrop {
+    background-color: rgba(0,0,0,0.7);
+  }
+  .loom-iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+  }
+  .loom-close-form { margin: 0; }
+  .loom-close {
+    position: absolute;
+    top: -32px;
+    right: -8px;
+    background: transparent;
+    border: none;
+    color: var(--paper);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+  }
+  .loom-close:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 767px) {
+    .loom-section { padding: 0 16px; margin-top: 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loom-trigger { transition: none; }
+  }
+</style>

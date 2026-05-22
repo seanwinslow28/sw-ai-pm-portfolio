@@ -1,0 +1,96 @@
+---
+/**
+ * <FilterPills /> — static surface filter row.
+ *
+ * Six pills as real <a> elements pointing at per-surface SSG routes.
+ * Active pill detected by Astro.url.pathname matching.
+ *
+ * Per transactions-spec §7.1 + §7.2 + §16 (a11y).
+ */
+interface Props {
+  activeSurface?: string;   // "fleet" | "pipeline" | "product" | "writing" | "infra" | undefined (ALL)
+}
+
+const { activeSurface } = Astro.props;
+
+const PILLS: Array<{ label: string; href: string; surface?: string }> = [
+  { label: "ALL",       href: "/transactions/" },
+  { label: "fleet",     href: "/transactions/fleet/",     surface: "fleet" },
+  { label: "pipeline",  href: "/transactions/pipeline/",  surface: "pipeline" },
+  { label: "product",   href: "/transactions/product/",   surface: "product" },
+  { label: "writing",   href: "/transactions/writing/",   surface: "writing" },
+  { label: "infra",     href: "/transactions/infra/",     surface: "infra" },
+];
+
+function isActive(pillSurface: string | undefined): boolean {
+  // ALL is active when no surface is set; per-surface pills are active when their key matches.
+  if (pillSurface === undefined) return activeSurface === undefined;
+  return activeSurface === pillSurface;
+}
+---
+
+<nav class="filter-pills" aria-label="Filter by surface">
+  <ul>
+    {PILLS.map((pill) => (
+      <li>
+        <a
+          href={pill.href}
+          class={isActive(pill.surface) ? "pill active" : "pill"}
+          aria-current={isActive(pill.surface) ? "page" : undefined}
+        >
+          {pill.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .filter-pills {
+    max-width: 1120px;
+    margin: 48px auto 32px;
+    padding: 0 24px;
+  }
+  .filter-pills ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    row-gap: 12px;
+    align-items: baseline;
+  }
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1.4px;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    line-height: 1;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  }
+  /* "ALL" pill is uppercase per spec §2.1; surface pills stay lowercase. */
+  .pill:first-of-type,
+  .pill[href="/transactions/"] {
+    text-transform: uppercase;
+  }
+  .pill:hover { color: var(--teal); }
+  .pill.active {
+    font-weight: 500;
+    color: var(--teal);
+    border-bottom-color: var(--stamp-amber);
+  }
+  .pill:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .filter-pills { padding: 0 16px; margin: 32px auto 24px; }
+    .filter-pills ul { gap: 16px; }
+  }
+</style>

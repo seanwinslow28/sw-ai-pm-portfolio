@@ -1,0 +1,177 @@
+---
+/**
+ * <LedgerRow /> — single ledger row.
+ *
+ * Desktop: 60px tall, grid (120px dateline | 80px surface | 96px status | 1fr title+valueProp | 24px glyph).
+ * Mobile: 80px tall, stacked (surface+status+dateline / title+glyph / valueProp).
+ *
+ * View Transition: shares `view-transition-name: ledger-title-<slug>`
+ * with the deep-dive <h1>, so the row title morphs into the page title
+ * on navigation.
+ *
+ * Per transactions-spec §8.1 + §8.2 + §8.3 + §15 + §16.
+ */
+interface Props {
+  slug: string;
+  shipped: string;               // ISO YYYY-MM-DD
+  surface: string;               // "fleet" | "pipeline" | "product" | "writing" | "infra"
+  status: string;                // "ACTIVE" | "SHIPPED" | "PAUSED" | "ARCHIVED"
+  title: string;
+  valueProp: string;
+}
+
+const { slug, shipped, surface, status, title, valueProp } = Astro.props;
+
+// Dateline format: "MAY 13, 2026"
+const datelineLabel = new Date(`${shipped}T12:00:00Z`)
+  .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+  .toUpperCase();
+
+const ariaLabel = `View transaction: ${title}, shipped ${shipped}`;
+const statusClass = `status-pill status-${status.toLowerCase()}`;
+---
+
+<a href={`/transactions/${slug}/`} class="ledger-row" aria-label={ariaLabel}>
+  <span class="row-dateline" aria-hidden="true">{datelineLabel}</span>
+  <span class="surface-pill" aria-hidden="true">{surface}</span>
+  <span class={statusClass} aria-hidden="true">{status}</span>
+  <span class="row-body">
+    <span class="row-title" style={`view-transition-name: ledger-title-${slug}`}>
+      {title}
+    </span>
+    <span class="row-valueprop">{valueProp}</span>
+  </span>
+  <span class="row-glyph" aria-hidden="true">&rarr;</span>
+</a>
+
+<style>
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 120px 80px 96px 1fr 24px;
+    column-gap: 16px;
+    align-items: center;
+    min-height: 60px;
+    padding: 12px 24px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--border-paper);
+    transition: background-color 200ms var(--ease-out);
+  }
+  .ledger-row:hover {
+    background-color: rgba(10, 62, 66, 0.04);
+  }
+  .ledger-row:hover .row-title {
+    box-shadow: inset 0 -1px 0 0 var(--teal);
+  }
+  .ledger-row:hover .row-glyph {
+    transform: translateX(4px);
+  }
+  .ledger-row:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: -2px;
+  }
+
+  .row-dateline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: var(--stamp-amber);
+  }
+  /* Year portion of the dateline reads less prominently */
+  .row-dateline {
+    /* No CSS-only year-recolor; the dateline as one block in v1. */
+  }
+
+  .surface-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 3px 8px;
+    background-color: var(--paper);
+    justify-self: start;
+  }
+
+  .status-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    background-color: var(--paper);
+    justify-self: start;
+  }
+  .status-active   { color: var(--stamp-amber);     border: 1px solid var(--stamp-amber); }
+  .status-shipped  { color: var(--success-teal);    border: 1px solid var(--success-teal); }
+  .status-paused   { color: var(--ink-secondary);   border: 1px solid var(--ink-secondary); }
+  .status-archived { color: var(--ink-secondary);   border: 1px solid var(--ink-secondary); opacity: 0.7; }
+
+  .row-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .row-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+    line-height: 1.2;
+    transition: box-shadow 200ms var(--ease-out);
+  }
+  .row-valueprop {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    color: var(--ink-secondary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .row-glyph {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-secondary);
+    transition: transform 200ms var(--ease-out);
+    justify-self: end;
+  }
+
+  @media (max-width: 767px) {
+    .ledger-row {
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "surface  status   dateline"
+        "title    title    glyph"
+        "valueprop valueprop valueprop";
+      row-gap: 8px;
+      min-height: 80px;
+      padding: 12px 16px;
+    }
+    .row-dateline { grid-area: dateline; justify-self: end; font-size: 11px; }
+    .surface-pill { grid-area: surface; }
+    .status-pill { grid-area: status; }
+    .row-body { display: contents; }
+    .row-title { grid-area: title; font-size: 18px; }
+    .row-valueprop { grid-area: valueprop; white-space: normal; }
+    .row-glyph { grid-area: glyph; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ledger-row,
+    .row-title,
+    .row-glyph { transition: none; }
+    .ledger-row:hover .row-title { box-shadow: none; }
+    .ledger-row:hover .row-glyph { transform: none; }
+  }
+</style>

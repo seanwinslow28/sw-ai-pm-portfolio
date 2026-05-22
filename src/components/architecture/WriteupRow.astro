@@ -1,0 +1,105 @@
+---
+/**
+ * <WriteupRow /> — single row on the /architecture/ index.
+ *
+ * Dateline + status pill + title + 1-line lead. View transition
+ * seam `arch-title-<slug>` shared with deep-dive <h1>.
+ *
+ * Per architecture-spec §2.1 + §5 + §15.
+ */
+interface Props {
+  slug: string;
+  shipped: string;     // ISO YYYY-MM-DD
+  status: string;      // "DRAFT" | "SHIPPED"
+  title: string;
+  lead: string;
+}
+const { slug, shipped, status, title, lead } = Astro.props;
+const datelineLabel = new Date(`${shipped}T12:00:00Z`)
+  .toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })
+  .toUpperCase();
+const statusClass = `status-pill status-${status.toLowerCase()}`;
+const ariaLabel = `Read architecture writeup: ${title}, shipped ${shipped}`;
+---
+<a href={`/architecture/${slug}/`} class="writeup-row" aria-label={ariaLabel}>
+  <span class="row-dateline" aria-hidden="true">{datelineLabel}</span>
+  <span class={statusClass} aria-hidden="true">{status}</span>
+  <span class="row-body">
+    <span class="row-title" style={`view-transition-name: arch-title-${slug}`}>{title}</span>
+    <span class="row-lead">{lead}</span>
+  </span>
+  <span class="row-glyph" aria-hidden="true">&rarr;</span>
+</a>
+<style>
+  .writeup-row {
+    display: grid;
+    grid-template-columns: 120px 96px 1fr 24px;
+    column-gap: 16px;
+    align-items: start;
+    min-height: 140px;
+    padding: 24px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--border-paper);
+    transition: background-color 200ms var(--ease-out);
+  }
+  .writeup-row:hover { background-color: rgba(10, 62, 66, 0.04); }
+  .writeup-row:hover .row-title { box-shadow: inset 0 -1px 0 0 var(--teal); }
+  .writeup-row:hover .row-glyph { transform: translateX(4px); }
+  .writeup-row:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+  .row-dateline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--stamp-amber);
+    line-height: 1.4;
+    padding-top: 4px;
+  }
+  .status-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 3px 8px;
+    align-self: start;
+    justify-self: start;
+    margin-top: 2px;
+  }
+  .status-pill.status-shipped { color: var(--stamp-amber); border-color: var(--stamp-amber); }
+  .status-pill.status-draft { color: var(--ink-secondary); border-color: var(--ink-secondary); }
+  .row-body { display: flex; flex-direction: column; gap: 8px; }
+  .row-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+    color: var(--ink);
+    transition: box-shadow 160ms var(--ease-out);
+  }
+  .row-lead {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.1px;
+    line-height: 1.4;
+    color: var(--ink-secondary);
+    max-width: 60ch;
+  }
+  .row-glyph {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-secondary);
+    align-self: center;
+    transition: transform 200ms var(--ease-out);
+  }
+  @media (max-width: 767px) {
+    .writeup-row { grid-template-columns: 1fr; min-height: auto; padding: 20px 16px; gap: 8px; }
+    .row-glyph { display: none; }
+    .row-title { font-size: 20px; }
+  }
+</style>

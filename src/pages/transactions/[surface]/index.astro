@@ -1,0 +1,89 @@
+---
+/**
+ * /transactions/<surface>/ — per-surface SSG page.
+ *
+ * One static output per surface enum value (5 total). Filters the
+ * collection to entries with matching `surface`. Empty state per spec §7.3.
+ *
+ * Per transactions-spec-v1.md §7 + §16.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import IndexHeader from "~/components/transactions/IndexHeader.astro";
+import FilterPills from "~/components/transactions/FilterPills.astro";
+import LedgerRow from "~/components/transactions/LedgerRow.astro";
+import FooterFold from "~/components/transactions/FooterFold.astro";
+
+const SURFACE_ENUM = ["fleet", "pipeline", "product", "writing", "infra"] as const;
+type Surface = typeof SURFACE_ENUM[number];
+
+export async function getStaticPaths() {
+  return [
+    { params: { surface: "fleet" } },
+    { params: { surface: "pipeline" } },
+    { params: { surface: "product" } },
+    { params: { surface: "writing" } },
+    { params: { surface: "infra" } },
+  ];
+}
+
+const { surface } = Astro.params as { surface: Surface };
+
+const all = await getCollection("transactions");
+const filtered = all
+  .filter((t) => t.data.surface === surface)
+  .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+
+const count = filtered.length;
+const lastUpdated = filtered[0]?.data.shipped ?? new Date().toISOString().slice(0, 10);
+
+const pageTitle = `Transactions / ${surface} — Sean Winslow`;
+const pageDescription = `Every shipped ${surface} artifact, dated, with the explanation attached.`;
+
+// Empty-state next-ship date — spec §7.3 says pulls from next-piece.json
+// filtered to rows whose target surface matches. v1 simplification: a
+// generic "Check back soon" message; per-surface next-ship lookup arrives
+// post-Phase 4 when Daily Driver populates next-piece.json with surface tags.
+const emptyMessage = `No artifacts in ${surface} yet. Check back soon.`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <IndexHeader count={count} lastUpdatedISO={lastUpdated} surface={surface} />
+  <FilterPills activeSurface={surface} />
+
+  <section class="ledger-list" aria-label={`${surface} ledger rows`}>
+    {count === 0 && (
+      <p class="empty-state">{emptyMessage}</p>
+    )}
+    {filtered.map((t) => (
+      <LedgerRow
+        slug={t.slug}
+        shipped={t.data.shipped}
+        surface={t.data.surface}
+        status={t.data.status}
+        title={t.data.title}
+        valueProp={t.data.valueProp}
+      />
+    ))}
+  </section>
+
+  <FooterFold />
+</BaseLayout>
+
+<style>
+  .ledger-list {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .empty-state {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-secondary);
+    padding: 48px 0;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    .ledger-list { padding: 0 16px; }
+  }
+</style>

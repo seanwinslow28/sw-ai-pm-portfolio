@@ -1,0 +1,144 @@
+---
+/**
+ * /contact — minimal route preserving V3 SEO. site-chrome-spec §9.
+ *
+ * The page exists primarily to preserve V3-bridge bookmarks pointing at
+ * /contact/; the meaningful surface is the chrome footer's Contact
+ * column below.
+ *
+ * What's killed (vs. V3): the <form>, the "Let's talk!" energy, the
+ * "What's on your mind?" placeholder, the "Send Message" button, the
+ * SVG social-row icons.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "~/lib/site";
+---
+
+<BaseLayout title="Contact — Sean Winslow" description="Email me at sean@seanwinslow.com.">
+  <article class="contact-page page-sheet">
+    <div class="dateline-strip">BOSTON · CONTACT</div>
+    <hr />
+    <h1>Contact</h1>
+    <p class="body">
+      Email me at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
+    </p>
+    <ul class="contact-links">
+      <li>
+        <span class="prefix">&rarr;</span>
+        email &middot; <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </li>
+      <li>
+        <span class="prefix">&rarr;</span>
+        <a href={LINKEDIN_URL} rel="me">linkedin.com/in/seanwinslow</a>
+        <span class="glyph">&#x2197;</span>
+      </li>
+      <li>
+        <span class="prefix">&rarr;</span>
+        <a href={GITHUB_URL} rel="me">github.com/seanwinslow</a>
+        <span class="glyph">&#x2197;</span>
+      </li>
+    </ul>
+  </article>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .dateline-strip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+
+  hr {
+    border: 0;
+    border-top: 0.5px solid var(--border-paper);
+    margin: 8px 0 16px;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+    color: var(--teal);
+    margin: 0;
+  }
+
+  .body {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.45;
+    letter-spacing: -0.1px;
+    color: var(--ink);
+    margin: 0;
+    max-width: 680px;
+  }
+  .body a {
+    color: var(--teal);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .contact-links {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .contact-links li {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+  }
+  .contact-links .prefix {
+    color: var(--ink-secondary);
+    margin-right: 4px;
+  }
+  .contact-links .glyph {
+    color: var(--ink-secondary);
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .contact-links a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .contact-links a:hover,
+  .contact-links a:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .contact-page {
+      padding: 48px 16px;
+    }
+    .body {
+      font-size: 18px;
+    }
+    .contact-links li {
+      font-size: 13px;
+    }
+  }
+</style>

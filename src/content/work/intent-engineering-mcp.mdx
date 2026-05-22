@@ -15,6 +15,90 @@ order: 3
 date_started: 2026-04-20
 date_active_through: 2026-05-12
 case_study_dateline_pattern: ship_log
+
+role: pm + builder + operator
+anchor_metric: "0.1.0 · NPM + MCP REGISTRY · 2026-05-12"
+investigation_order: forward
+
+shipped_at: 2026-05-12
+shipped_stats_endpoint: /api/shipped-stats-intent-engineering-mcp.json
+
+methods:
+  - task: protocol implementation
+    tool: MCP SDK
+    cost: open-source / $0
+    link: null
+  - task: registry verification
+    tool: DNS-verified MCP registry
+    cost: registry / $0
+    link: null
+  - task: package publish
+    tool: npm
+    cost: free tier
+    link: null
+  - task: development
+    tool: Claude Code
+    cost: per-token billing
+    link: null
+
+four_q:
+  what: "[PLACEHOLDER — Q1] A Model Context Protocol server that exposes intent-engineering tools to Claude Desktop. Shipped to npm and the MCP registry on May 12, 2026."
+  why: "[PLACEHOLDER — Q2] Three options considered: ship as a standalone tool, bake into a larger MCP, or ship as a registered server. Chose registered server because DNS-verified registry adoption was the right scope-cut signal."
+  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) Claude Desktop's MCP client revs faster than the server; 2) DNS verification expiring; 3) npm registry vetting failing on first publish."
+  learn: "[PLACEHOLDER — Q4] It shipped 13 days early because the design was right. What got cut was right too — the embed page is a future spec, not v1."
 ---
 
-Placeholder body content. Replaced in Phase 3.
+import Opener from "~/components/case-study/Opener.astro";
+import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
+import PRDDecision from "~/components/artifacts/PRDDecision.astro";
+import SlackQuote from "~/components/artifacts/SlackQuote.astro";
+import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
+import MetricChart from "~/components/artifacts/MetricChart.astro";
+
+<Opener>
+  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] It shipped on May 12. Thirteen days early. The cut list is on this page, alongside what stayed.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] Intent Engineering MCP is a Model Context Protocol server that does one thing — Sean replaces this sentence post-plan with the actual one-line value claim. The interesting part is what was cut from the scope to ship early.</p>
+  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] It's installed by a small but real set of developers — see the LIVE block above. The chart below is the build-size journey; the cut decisions are alongside.</p>
+</Opener>
+
+<InvestigationBoard>
+  <BoardArtifact
+    artifactId="artifact-1"
+    date="APR 24"
+    boardLabel="MCP protocol implementation — spec lock"
+    excerpt="[PLACEHOLDER EXCERPT] tools/list + tools/call wired against the SDK. registry verification block opens.">
+    <p slot="caption">[PLACEHOLDER CAPTION] Spec lock on the protocol surface. Two MCP tools, registered.</p>
+  </BoardArtifact>
+
+  <PRDDecision
+    artifactId="artifact-2"
+    date="APR 30"
+    prdTitle="Cut decision: keep registry verification"
+    decisionLine="Keep the DNS-verified registry block. Defer the embed page to a separate future spec."
+    rationale="Verification is load-bearing for adoption trust; the embed is retrospective polish.">
+    <p slot="caption">[PLACEHOLDER CAPTION] The big scope cut. Verification stayed; the embed page got deferred.</p>
+  </PRDDecision>
+
+  <MetricChart
+    artifactId="artifact-3"
+    date="MAY 1"
+    chartTitle="Build size vs feature count"
+    yLabel="KB"
+    data={[
+      { x: "v0.0.1", y: 320 },
+      { x: "v0.0.5", y: 290 },
+      { x: "v0.0.8", y: 240 },
+      { x: "v0.1.0", y: 180 },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] Build size shrank as features got cut to the load-bearing core.</p>
+  </MetricChart>
+
+  <SlackQuote
+    artifactId="artifact-4"
+    date="MAY 14"
+    messages={[
+      { role: "customer", text: "[PLACEHOLDER DM] install worked first try. how do I configure the verification block?" },
+    ]}>
+    <p slot="caption">[PLACEHOLDER CAPTION] First post-ship customer DM. Install friction was lower than expected.</p>
+  </SlackQuote>
+</InvestigationBoard>

@@ -1,0 +1,188 @@
+---
+/**
+ * <RelatedBlock /> — auto-rendered cross-link block.
+ *
+ * Reads frontmatter cross-link fields + the derived crosslinks.json
+ * (Phase 3c.1 derive_crosslinks.mjs writes
+ * src/content/transactions/.crosslinks.json) and renders 3-5 max
+ * link rows. No author maintenance — the graph self-heals.
+ *
+ * Per transactions-spec §9.1 step 11 + §14 + §16.
+ */
+interface CrosslinkData {
+  transactions?: Record<string, { supersededBy?: string; siblingShips?: string[]; namedInEssays?: string[] }>;
+}
+interface Props {
+  slug: string;
+  relatedCaseStudy?: string;
+  relatedTransactions?: string[];
+  relatedEssay?: string;
+  previousVersion?: string;
+  relatedArchitecture?: string | string[];
+  crosslinks: CrosslinkData;
+  titleByTxnSlug: Record<string, string>;  // {phase-d-typed-edges: "Phase D — Typed Reasoning Edges"}
+  titleByWorkSlug: Record<string, string>; // {code-brain: "Code Brain"}
+  titleByArchSlug?: Record<string, string>;
+  titleByEssaySlug?: Record<string, string>;
+}
+const {
+  slug,
+  relatedCaseStudy,
+  relatedTransactions = [],
+  relatedEssay,
+  previousVersion,
+  relatedArchitecture,
+  crosslinks,
+  titleByTxnSlug,
+  titleByWorkSlug,
+  titleByArchSlug = {},
+  titleByEssaySlug = {},
+} = Astro.props;
+
+const reverse = crosslinks.transactions?.[slug] ?? {};
+
+// Build the row list. Each row is { href, label } — rendered as
+// "→ <category>: <linked title>".
+const rows: Array<{ href: string; category: string; label: string }> = [];
+
+if (relatedCaseStudy && titleByWorkSlug[relatedCaseStudy]) {
+  rows.push({
+    href: `/work/${relatedCaseStudy}/`,
+    category: "part of",
+    label: titleByWorkSlug[relatedCaseStudy],
+  });
+}
+
+// Siblings: union of declared + reverse-derived
+const siblings = new Set<string>([
+  ...(relatedTransactions ?? []),
+  ...(reverse.siblingShips ?? []),
+]);
+siblings.delete(slug); // never link to self
+for (const sib of siblings) {
+  if (titleByTxnSlug[sib]) {
+    rows.push({
+      href: `/transactions/${sib}/`,
+      category: "sister ship",
+      label: titleByTxnSlug[sib],
+    });
+  }
+}
+
+// previousVersion (forward) and supersededBy (reverse, derived)
+if (previousVersion && titleByTxnSlug[previousVersion]) {
+  rows.push({
+    href: `/transactions/${previousVersion}/`,
+    category: "supersedes",
+    label: titleByTxnSlug[previousVersion],
+  });
+}
+if (reverse.supersededBy && titleByTxnSlug[reverse.supersededBy]) {
+  rows.push({
+    href: `/transactions/${reverse.supersededBy}/`,
+    category: "superseded by",
+    label: titleByTxnSlug[reverse.supersededBy],
+  });
+}
+
+// Architecture (forward-declared; no consumer page until Phase 3c.2,
+// so the link target may 404. v1 still renders the row — when 3c.2
+// ships, the link lights up automatically.)
+const archSlugs = Array.isArray(relatedArchitecture)
+  ? relatedArchitecture
+  : relatedArchitecture
+    ? [relatedArchitecture]
+    : [];
+for (const arch of archSlugs) {
+  rows.push({
+    href: `/architecture/${arch}/`,
+    category: "architecture writeup",
+    label: titleByArchSlug[arch] ?? arch,
+  });
+}
+
+// Essay (forward-declared)
+if (relatedEssay) {
+  rows.push({
+    href: `/essays/${relatedEssay}/`,
+    category: "essay",
+    label: titleByEssaySlug[relatedEssay] ?? relatedEssay,
+  });
+}
+
+// Phase 3c.2: namedInEssays[] reverse-derived from essays' plottedArtifacts.
+// Each entry → "← named in: <essay title> (essay)" row.
+for (const essaySlug of reverse.namedInEssays ?? []) {
+  rows.push({
+    href: `/essays/${essaySlug}/`,
+    category: "← named in",
+    label: titleByEssaySlug[essaySlug] ?? essaySlug,
+  });
+}
+
+const hasRows = rows.length > 0;
+---
+
+{hasRows && (
+  <section class="related" aria-labelledby="related-heading">
+    <h2 id="related-heading" class="section-heading">─ RELATED ─</h2>
+    <ul>
+      {rows.map((row) => (
+        <li>
+          <span class="row-category">&rarr; {row.category}:</span>{" "}
+          <a href={row.href} class="row-link">{row.label}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .related {
+    max-width: 1120px;
+    margin: 64px auto 0;
+    padding: 0 24px;
+  }
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--teal);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 680px;
+  }
+  li {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .row-category { color: var(--ink-secondary); font-weight: 400; }
+  .row-link {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .row-link:hover,
+  .row-link:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .related { padding: 0 16px; }
+    li { font-size: 13px; }
+  }
+</style>

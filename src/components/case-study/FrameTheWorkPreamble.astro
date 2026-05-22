@@ -1,0 +1,51 @@
+---
+/**
+ * <FrameTheWorkPreamble /> — ARCHIVED-status preamble.
+ *
+ * One short paragraph that opens with the work, never with the
+ * exit/layoff. Sits before the opener proper, frames "this was the
+ * work" — not "this is why it ended."
+ *
+ * The MDX page provides the content via slot; this component is the
+ * styled wrapper.
+ *
+ * Source: case-study-spec-v1.md §12.4.
+ */
+---
+
+<aside class="frame-the-work" role="note">
+  <p class="archived-stamp">ARCHIVED — framing the work</p>
+  <div class="preamble-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .frame-the-work {
+    max-width: 720px;
+    margin: 24px auto 0;
+    padding: 16px 0 24px;
+    border-bottom: 0.5px solid var(--border-paper);
+  }
+  .archived-stamp {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    opacity: 0.7;
+  }
+  .preamble-body :global(p) {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+  }
+  @media (max-width: 767px) {
+    .preamble-body :global(p) { font-size: 16px; }
+  }
+</style>
