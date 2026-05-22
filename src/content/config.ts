@@ -247,4 +247,70 @@ const teaserDeck = defineCollection({
   }),
 });
 
-export const collections = { work, teaserDeck, transactions, architecture, essays };
+// ============================================================
+// Phase 3d — about + cartoons collections
+// Source: about-spec-v1.md Appendix B (about) + §11.6 (cartoons).
+// `about` is a singleton — exactly one entry at src/content/about/index.mdx.
+// `cartoons` is a 6-entry collection consumed by <CartoonCanon />.
+// ============================================================
+
+const LANE_ENUM = ["animator", "pm", "braided"] as const;
+
+const aboutBeat = z.object({
+  age: z.number().int().min(0).max(100),
+  year: z.number().int().min(1900).max(2100),
+  body: z.string().min(1),
+  lane: z.enum(LANE_ENUM),
+});
+
+const about = defineCollection({
+  type: "content",
+  schema: z.object({
+    // --- Lead (locked, byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
+    lead: z.string().min(1),
+
+    // --- Meta ---
+    slug: z.string(),
+    title: z.string(),
+    description: z.string(),
+    reading_time: z.number().int().min(1).max(60),
+
+    // --- Proof-point URLs (B-5) ---
+    linkedin_url: z.string().url(),
+    github_url: z.string().url(),
+    transactions_url: z.string(),                            // internal route — not URL-validated
+    resume_url: z.string(),                                  // internal route — not URL-validated
+
+    // --- Employment state (drives B-4) ---
+    available: z.boolean(),
+    current_company: z.string().nullable(),
+
+    // --- Character (hero band) ---
+    character_image: z.string(),
+    character_alt: z.string(),
+
+    // --- B-1 stacked beats (6-8 entries; validator-side rule: ≥2 lane: braided) ---
+    beats: z.array(aboutBeat).min(6).max(8),
+
+    // --- B-3 annotation hook (deferred to v2 per spec §1.2; field retained for v1.1) ---
+    b3_load_bearing_cel: z.number().int().min(1).max(6),
+  }),
+});
+
+const cartoons = defineCollection({
+  type: "content",
+  schema: z.object({
+    order: z.number().int().min(1).max(6),
+    name: z.string(),
+    year_range: z.string(),
+    studio: z.string(),
+    image: z.string(),
+    image_alt: z.string(),
+    lesson_noun: z.string(),
+    lesson_body: z.string(),
+    angle: z.number().min(-1.5).max(1.5).optional(),
+    break_grid: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, teaserDeck, transactions, architecture, essays, about, cartoons };
