@@ -1,0 +1,76 @@
+---
+/**
+ * <TryItYourself /> — teal-wash callout with bash code snippet.
+ *
+ * Per architecture-spec §10. Renders only when tryItYourselfUrl set.
+ * The teal wash distinguishes it from HonestNote (paper bg, no fill).
+ *
+ * Code rendered via Astro's built-in <Code /> component (Shiki),
+ * bash lexer. No line numbers — brevity is the signal (§10.4).
+ */
+import { Code } from "astro:components";
+
+interface Props {
+  url: string;
+  command: string;
+}
+const { url, command } = Astro.props;
+---
+<aside class="try-it" aria-label="Try it yourself">
+  <header class="try-it__prefix">TRY IT YOURSELF &mdash;</header>
+  <Code code={command} lang="bash" theme="github-light" />
+  <p class="try-it__link">
+    <a href={url} rel="external">&rarr; view the fixture on github</a>
+  </p>
+</aside>
+<style>
+  .try-it {
+    margin: 48px auto;
+    max-width: 680px;
+    padding: 20px 24px;
+    border-left: 1px solid var(--teal);
+    background: rgba(10, 62, 66, 0.04);
+  }
+  .try-it__prefix {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--stamp-amber);
+    margin: 0 0 12px;
+  }
+  .try-it :global(pre) {
+    margin: 0;
+    padding: 12px;
+    background: var(--paper);
+    border: 0.5px solid rgba(10, 62, 66, 0.15);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+  .try-it__link {
+    margin: 12px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+  }
+  .try-it__link a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .try-it__link a:hover,
+  .try-it__link a:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+  @media (max-width: 767px) {
+    .try-it { padding: 16px; }
+  }
+</style>
