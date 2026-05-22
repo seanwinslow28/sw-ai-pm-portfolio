@@ -1,55 +1,23 @@
 #!/usr/bin/env node
 /**
- * scripts/derive_crosslinks.mjs — cross-link graph derivator.
+ * scripts/derive_crosslinks.mjs — 4-way cross-link graph derivator.
  *
- * Phase 3b scope (still active): work collection's methods[].link
- *   cross-references to other /work/<slug>/ pages.
+ * Phase 3b scope: work collection's methods[].link cross-references.
+ * Phase 3c.1 scope: transactions bidirectional graph (work ⇄ transactions
+ *   + transaction siblings + previousVersion + forward-declared
+ *   relatedArchitecture / relatedEssay slots).
+ * Phase 3c.2 scope (added): architecture + essays passes; closes the
+ *   4-way graph. Essays' plottedArtifacts reverse-renders onto every
+ *   cited ledger row + architecture writeup as `namedInEssays[]`.
  *
- * Phase 3c.1 scope (added): transactions collection bidirectional graph.
- *   Walks src/content/transactions/*.mdx, reads:
- *     - methods[].link (same as work — internal /work/<slug> links)
- *     - relatedCaseStudy (string → /work/<slug>)
- *     - relatedTransactions (string[] → /transactions/<slug>)
- *     - relatedEssay (string → /essays/<slug>; forward-declared, consumer
- *       arrives in Phase 3c.2 — validation is permissive in 3c.1)
- *     - previousVersion (string → /transactions/<slug>)
- *     - relatedArchitecture (string | string[] → /architecture/<slug>;
- *       forward-declared, consumer arrives in Phase 3c.2)
+ *   Writes:
+ *     - src/content/transactions/.crosslinks.json  (extended: namedInEssays[] per row)
+ *     - src/content/architecture/.crosslinks.json  (NEW)
+ *     - src/content/essays/.crosslinks.json        (NEW; mostly empty in v1 — no reverse links flow INTO essays)
  *
- *   Writes src/content/transactions/.crosslinks.json with reverse-lookup
- *   tables:
- *     {
- *       transactions: {
- *         "<slug>": {
- *           supersededBy?: "<slug>",   // reverse of previousVersion
- *           siblingShips?: ["<slug>"], // reverse of relatedTransactions
- *         }
- *       },
- *       byCaseStudy: { "<work-slug>": ["<txn-slug>", ...] },
- *         // forward-declared; consumer is case-study page Related block (post-plan)
- *       byArchitecture: { "<arch-slug>": ["<txn-slug>", ...] },
- *         // forward-declared; consumer is Phase 3c.2 architecture Related block
- *       byEssay: { "<essay-slug>": ["<txn-slug>", ...] },
- *         // forward-declared; consumer is Phase 3c.2 essay Related block
- *     }
- *
- *   The deep-dive page's <RelatedBlock /> (Task 4.6) reads this file to
- *   render the forward direction (transactions → other surfaces). The
- *   reverse direction lights up automatically when each consumer surface
- *   imports the same JSON.
- *
- * Phase 3c.2 will add: architecture + essays collections (the four-way
- *   bidirectional close — essays' plottedArtifacts auto-reverse-renders
- *   "← named in: <essay title>" on every cited ledger row + architecture
- *   writeup).
- *
- * Validator behavior on dangling slugs: build fails with a clear message
- * naming the offending file, field, slug value, and (when Levenshtein
- * distance ≤2) the closest matching real slug. Per transactions-spec §11.1
- * error message contract.
- *
- * Source: case-study-spec-v1.md §8.2 + transactions-spec-v1.md §11.1 +
- *         §14 + BLUEPRINT-COMPLETE.md §3.3.
+ * Source: case-study-spec-v1.md §8.2; transactions-spec-v1.md §11.1 + §14;
+ *         architecture-spec-v1.md §14 + §11.1;
+ *         essays-spec-v1.md §10 + §14.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -58,7 +26,11 @@ import process from "node:process";
 const ROOT = process.cwd();
 const WORK_DIR = path.join(ROOT, "src/content/work");
 const TXN_DIR = path.join(ROOT, "src/content/transactions");
-const CROSSLINKS_OUT = path.join(TXN_DIR, ".crosslinks.json");
+const ARCH_DIR = path.join(ROOT, "src/content/architecture");
+const ESSAY_DIR = path.join(ROOT, "src/content/essays");
+const TXN_CROSSLINKS_OUT = path.join(TXN_DIR, ".crosslinks.json");
+const ARCH_CROSSLINKS_OUT = path.join(ARCH_DIR, ".crosslinks.json");
+const ESSAY_CROSSLINKS_OUT = path.join(ESSAY_DIR, ".crosslinks.json");
 
 function parseFrontmatterBlock(src) {
   const m = src.match(/^---\n([\s\S]+?)\n---/);
@@ -86,10 +58,6 @@ function extractMethodsLinks(fm) {
   return links;
 }
 
-/**
- * Extracts a scalar field's value from a frontmatter block. Returns
- * null when absent. Strips surrounding quotes. Ignores comments.
- */
 function extractScalar(fm, field) {
   const re = new RegExp(`^${field}:\\s*(.+?)\\s*$`, "m");
   const match = fm.match(re);
@@ -99,11 +67,6 @@ function extractScalar(fm, field) {
   return val;
 }
 
-/**
- * Extracts a list-of-strings field from a frontmatter block. Returns
- * empty array when absent. Supports both `field:` followed by indented
- * `- entry` lines and the inline `field: [a, b]` form.
- */
 function extractStringList(fm, field) {
   const lines = fm.split("\n");
   const list = [];
@@ -111,7 +74,6 @@ function extractStringList(fm, field) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (new RegExp(`^${field}:\\s*\\[`).test(line)) {
-      // Inline form: field: [a, b, c]
       const inlineMatch = line.match(new RegExp(`^${field}:\\s*\\[(.+)\\]`));
       if (inlineMatch) {
         return inlineMatch[1]
@@ -132,14 +94,31 @@ function extractStringList(fm, field) {
   return list;
 }
 
-/**
- * Extracts a string | string[] union field (used for relatedArchitecture).
- * Returns array of slugs (single-string input wrapped to length-1 array).
- */
 function extractStringOrList(fm, field) {
   const scalar = extractScalar(fm, field);
   if (scalar !== null) return [scalar];
   return extractStringList(fm, field);
+}
+
+/**
+ * Extracts the `quadrantLegend[].artifact` slugs from an essays MDX
+ * frontmatter. Returns the list of artifact slugs (skipping null entries).
+ */
+function extractQuadrantLegendArtifacts(fm) {
+  const lines = fm.split("\n");
+  const artifacts = [];
+  let inLegend = false;
+  for (const line of lines) {
+    if (/^quadrantLegend:/.test(line)) { inLegend = true; continue; }
+    if (inLegend && /^\w+:/.test(line)) { inLegend = false; }
+    if (!inLegend) continue;
+    const m = line.match(/^\s+artifact:\s*(.+)$/);
+    if (m) {
+      const val = m[1].trim().replace(/^["']|["']$/g, "");
+      if (val && val !== "null") artifacts.push(val);
+    }
+  }
+  return artifacts;
 }
 
 function levenshtein(a, b) {
@@ -178,24 +157,44 @@ async function readSlugSet(dir) {
 }
 
 async function main() {
-  process.stdout.write("\nderive_crosslinks.mjs — Phase 3c.1 scope (work + transactions bidirectional)\n");
+  process.stdout.write("\nderive_crosslinks.mjs — Phase 3c.2 scope (4-way close: work + transactions + architecture + essays)\n");
 
+  // ----- Phase 3c.2: forward-declared sets are now REAL -----
   const workSlugs = await readSlugSet(WORK_DIR);
   const txnSlugs = await readSlugSet(TXN_DIR);
-  // Forward-declared; not yet validated against real dirs in Phase 3c.1.
-  // Phase 3c.2 swaps these to readSlugSet() calls on real dirs.
-  const archSlugs = new Set();   // /architecture/ — arrives in Phase 3c.2
-  const essaySlugs = new Set();  // /essays/ — arrives in Phase 3c.2
+  const archSlugs = await readSlugSet(ARCH_DIR);
+  const essaySlugs = await readSlugSet(ESSAY_DIR);
 
   const errors = [];
-  const txnEntries = await fs.readdir(TXN_DIR).catch(() => []);
 
-  const reverseTxns = new Map();   // txnSlug → { supersededBy, siblingShips: [] }
-  const byCaseStudy = new Map();   // workSlug → [txnSlug]
-  const byArchitecture = new Map();// archSlug → [txnSlug] (forward-declared)
-  const byEssay = new Map();       // essaySlug → [txnSlug] (forward-declared)
+  // ----- Transactions reverse tables (extended with namedInEssays) -----
+  const reverseTxns = new Map();   // txnSlug → { supersededBy, siblingShips: [], namedInEssays: [] }
+  const byCaseStudy = new Map();
+  const byArchitecture = new Map();
+  const byEssay = new Map();
+  // Helper to safely append to an array property on the reverse map.
+  function appendReverse(map, key, prop, value) {
+    if (!map.has(key)) map.set(key, {});
+    const obj = map.get(key);
+    obj[prop] = obj[prop] ?? [];
+    if (!obj[prop].includes(value)) obj[prop].push(value);
+  }
 
-  // --- Pass 1: work collection (Phase 3b methods cross-links — unchanged) ---
+  // ----- Architecture reverse tables -----
+  const reverseArch = new Map();   // archSlug → { siblingArchitecture: [], namedInEssays: [] }
+  const archByLedger = new Map();  // txnSlug → [archSlug]
+  const archByCaseStudy = new Map();
+  const archByEssay = new Map();
+
+  // ----- Essays reverse tables -----
+  // Essays in v1 receive cross-links mostly OUTBOUND (plottedArtifacts +
+  // relatedLedgerRow + relatedArchitecture + relatedCaseStudy). The few
+  // inbound paths are essay-to-essay via relatedEssays[].
+  const reverseEssays = new Map(); // essaySlug → { siblingEssays: [] }
+
+  // ============================================================
+  // Pass 1: work collection (Phase 3b methods cross-links — unchanged)
+  // ============================================================
   process.stdout.write("\n[work] methods cross-links\n");
   const workEntries = await fs.readdir(WORK_DIR).catch(() => []);
   let totalWork = 0;
@@ -209,7 +208,7 @@ async function main() {
     for (const link of links) {
       totalWork++;
       const t = link.match(/^\/work\/([\w-]+)\/?$/);
-      if (!t) continue; // external links allowed
+      if (!t) continue;
       const targetSlug = t[1];
       if (!workSlugs.has(targetSlug)) {
         errors.push(`work/${slug}: methods cross-link to /work/${targetSlug}/ — no such slug.${suggestion(targetSlug, [...workSlugs])}`);
@@ -219,8 +218,11 @@ async function main() {
     }
   }
 
-  // --- Pass 2: transactions collection cross-links + reverse graph ---
+  // ============================================================
+  // Pass 2: transactions cross-links + reverse graph (Phase 3c.1 unchanged)
+  // ============================================================
   process.stdout.write("\n[transactions] cross-links + bidirectional graph\n");
+  const txnEntries = await fs.readdir(TXN_DIR).catch(() => []);
   let totalTxn = 0;
   for (const fname of txnEntries) {
     if (!fname.endsWith(".mdx") && !fname.endsWith(".md")) continue;
@@ -229,7 +231,6 @@ async function main() {
     const fm = parseFrontmatterBlock(src);
     if (!fm) continue;
 
-    // methods[].link → /work/<slug>
     for (const link of extractMethodsLinks(fm)) {
       totalTxn++;
       const t = link.match(/^\/work\/([\w-]+)\/?$/);
@@ -242,7 +243,6 @@ async function main() {
       }
     }
 
-    // relatedCaseStudy → /work/<slug>
     const relCs = extractScalar(fm, "relatedCaseStudy");
     if (relCs) {
       totalTxn++;
@@ -255,27 +255,17 @@ async function main() {
       }
     }
 
-    // relatedTransactions[] → /transactions/<slug> (sibling ships, bidirectional)
     for (const sib of extractStringList(fm, "relatedTransactions")) {
       totalTxn++;
       if (!txnSlugs.has(sib)) {
         errors.push(`transactions/${slug}: relatedTransactions "${sib}" → /transactions/${sib}/ — no such slug.${suggestion(sib, [...txnSlugs])}`);
       } else {
         process.stdout.write(`  ✓ ${slug} ↔ /transactions/${sib}/ (sibling)\n`);
-        if (!reverseTxns.has(sib)) reverseTxns.set(sib, { siblingShips: [] });
-        const rt = reverseTxns.get(sib);
-        rt.siblingShips = rt.siblingShips ?? [];
-        if (!rt.siblingShips.includes(slug)) rt.siblingShips.push(slug);
-        // The forward direction is also tracked so the source row's
-        // Related block can render its declared siblings.
-        if (!reverseTxns.has(slug)) reverseTxns.set(slug, { siblingShips: [] });
-        const fwd = reverseTxns.get(slug);
-        fwd.siblingShips = fwd.siblingShips ?? [];
-        if (!fwd.siblingShips.includes(sib)) fwd.siblingShips.push(sib);
+        appendReverse(reverseTxns, sib, "siblingShips", slug);
+        appendReverse(reverseTxns, slug, "siblingShips", sib);
       }
     }
 
-    // previousVersion → /transactions/<slug> (supersedes / superseded-by)
     const prev = extractScalar(fm, "previousVersion");
     if (prev) {
       totalTxn++;
@@ -283,50 +273,230 @@ async function main() {
         errors.push(`transactions/${slug}: previousVersion "${prev}" → /transactions/${prev}/ — no such slug.${suggestion(prev, [...txnSlugs])}`);
       } else {
         process.stdout.write(`  ✓ ${slug} → /transactions/${prev}/ (supersedes)\n`);
-        // Forward direction: this row knows it supersedes prev.
-        // Reverse direction: prev gains supersededBy = slug.
         if (!reverseTxns.has(prev)) reverseTxns.set(prev, {});
         reverseTxns.get(prev).supersededBy = slug;
       }
     }
 
-    // relatedArchitecture (string | string[]) → /architecture/<slug>
-    // Forward-declared in Phase 3c.1; archSlugs is empty so validation
-    // permits any value (warning rather than error).
+    // relatedArchitecture — NOW REAL (archSlugs populated from disk)
     for (const archSlug of extractStringOrList(fm, "relatedArchitecture")) {
       totalTxn++;
-      if (archSlugs.size > 0 && !archSlugs.has(archSlug)) {
-        errors.push(`transactions/${slug}: relatedArchitecture "${archSlug}" → /architecture/${archSlug}/ — no such slug.${suggestion(archSlug, [...archSlugs])}`);
+      if (!archSlugs.has(archSlug)) {
+        // Phase 3c.2 still permits forward declaration when archSlugs is
+        // empty (zero architecture MDXs in v1.x), but warns when archSlugs
+        // is populated and the slug doesn't resolve.
+        if (archSlugs.size > 0) {
+          errors.push(`transactions/${slug}: relatedArchitecture "${archSlug}" → /architecture/${archSlug}/ — no such slug.${suggestion(archSlug, [...archSlugs])}`);
+        } else {
+          process.stdout.write(`  ✓ ${slug} → /architecture/${archSlug}/ (forward-declared; archSlugs empty)\n`);
+        }
       } else {
-        process.stdout.write(`  ✓ ${slug} → /architecture/${archSlug}/ (forward-declared; consumer in Phase 3c.2)\n`);
-        if (!byArchitecture.has(archSlug)) byArchitecture.set(archSlug, []);
-        byArchitecture.get(archSlug).push(slug);
+        process.stdout.write(`  ✓ ${slug} → /architecture/${archSlug}/\n`);
       }
+      if (!byArchitecture.has(archSlug)) byArchitecture.set(archSlug, []);
+      byArchitecture.get(archSlug).push(slug);
     }
 
-    // relatedEssay → /essays/<slug> (forward-declared)
     const relEssay = extractScalar(fm, "relatedEssay");
     if (relEssay) {
       totalTxn++;
-      if (essaySlugs.size > 0 && !essaySlugs.has(relEssay)) {
-        errors.push(`transactions/${slug}: relatedEssay "${relEssay}" → /essays/${relEssay}/ — no such slug.${suggestion(relEssay, [...essaySlugs])}`);
+      if (!essaySlugs.has(relEssay)) {
+        if (essaySlugs.size > 0) {
+          errors.push(`transactions/${slug}: relatedEssay "${relEssay}" → /essays/${relEssay}/ — no such slug.${suggestion(relEssay, [...essaySlugs])}`);
+        } else {
+          process.stdout.write(`  ✓ ${slug} → /essays/${relEssay}/ (forward-declared; essaySlugs empty)\n`);
+        }
       } else {
-        process.stdout.write(`  ✓ ${slug} → /essays/${relEssay}/ (forward-declared; consumer in Phase 3c.2)\n`);
-        if (!byEssay.has(relEssay)) byEssay.set(relEssay, []);
-        byEssay.get(relEssay).push(slug);
+        process.stdout.write(`  ✓ ${slug} → /essays/${relEssay}/\n`);
+      }
+      if (!byEssay.has(relEssay)) byEssay.set(relEssay, []);
+      byEssay.get(relEssay).push(slug);
+    }
+  }
+
+  // ============================================================
+  // Pass 3: architecture cross-links + reverse graph (NEW)
+  // ============================================================
+  process.stdout.write("\n[architecture] cross-links + bidirectional graph\n");
+  const archEntries = await fs.readdir(ARCH_DIR).catch(() => []);
+  let totalArch = 0;
+  for (const fname of archEntries) {
+    if (!fname.endsWith(".mdx") && !fname.endsWith(".md")) continue;
+    const slug = extractSlug(fname);
+    const src = await fs.readFile(path.join(ARCH_DIR, fname), "utf8");
+    const fm = parseFrontmatterBlock(src);
+    if (!fm) continue;
+
+    // methods[].link → /work/<slug>
+    for (const link of extractMethodsLinks(fm)) {
+      totalArch++;
+      const t = link.match(/^\/work\/([\w-]+)\/?$/);
+      if (!t) continue;
+      const target = t[1];
+      if (!workSlugs.has(target)) {
+        errors.push(`architecture/${slug}: methods cross-link to /work/${target}/ — no such slug.${suggestion(target, [...workSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /work/${target}/ (methods)\n`);
+      }
+    }
+
+    // relatedLedgerRow → /transactions/<slug> (closes the arch ⇄ txn loop)
+    const relLed = extractScalar(fm, "relatedLedgerRow");
+    if (relLed) {
+      totalArch++;
+      if (!txnSlugs.has(relLed)) {
+        errors.push(`architecture/${slug}: relatedLedgerRow "${relLed}" → /transactions/${relLed}/ — no such slug.${suggestion(relLed, [...txnSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /transactions/${relLed}/\n`);
+        if (!archByLedger.has(relLed)) archByLedger.set(relLed, []);
+        archByLedger.get(relLed).push(slug);
+      }
+    }
+
+    // relatedCaseStudy → /work/<slug>
+    const relCs = extractScalar(fm, "relatedCaseStudy");
+    if (relCs) {
+      totalArch++;
+      if (!workSlugs.has(relCs)) {
+        errors.push(`architecture/${slug}: relatedCaseStudy "${relCs}" → /work/${relCs}/ — no such slug.${suggestion(relCs, [...workSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /work/${relCs}/\n`);
+        if (!archByCaseStudy.has(relCs)) archByCaseStudy.set(relCs, []);
+        archByCaseStudy.get(relCs).push(slug);
+      }
+    }
+
+    // relatedEssay → /essays/<slug>
+    const relEss = extractScalar(fm, "relatedEssay");
+    if (relEss) {
+      totalArch++;
+      if (!essaySlugs.has(relEss)) {
+        if (essaySlugs.size > 0) {
+          errors.push(`architecture/${slug}: relatedEssay "${relEss}" → /essays/${relEss}/ — no such slug.${suggestion(relEss, [...essaySlugs])}`);
+        } else {
+          process.stdout.write(`  ✓ ${slug} → /essays/${relEss}/ (forward-declared; essaySlugs empty)\n`);
+        }
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /essays/${relEss}/\n`);
+      }
+      if (!archByEssay.has(relEss)) archByEssay.set(relEss, []);
+      archByEssay.get(relEss).push(slug);
+    }
+
+    // relatedArchitecture[] (sibling architecture writeups)
+    for (const sib of extractStringList(fm, "relatedArchitecture")) {
+      totalArch++;
+      if (!archSlugs.has(sib)) {
+        errors.push(`architecture/${slug}: relatedArchitecture "${sib}" → /architecture/${sib}/ — no such slug.${suggestion(sib, [...archSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} ↔ /architecture/${sib}/ (sibling)\n`);
+        appendReverse(reverseArch, sib, "siblingArchitecture", slug);
+        appendReverse(reverseArch, slug, "siblingArchitecture", sib);
       }
     }
   }
 
+  // ============================================================
+  // Pass 4: essays cross-links + reverse graph (NEW)
+  // Essays are the source of the most reverse links: every plottedArtifact
+  // slug gets "← named in: <essay title>" reverse-rendered on its txn +
+  // architecture surfaces.
+  // ============================================================
+  process.stdout.write("\n[essays] cross-links + 4-way close\n");
+  const essayEntries = await fs.readdir(ESSAY_DIR).catch(() => []);
+  let totalEssay = 0;
+  for (const fname of essayEntries) {
+    if (!fname.endsWith(".mdx") && !fname.endsWith(".md")) continue;
+    const slug = extractSlug(fname);
+    const src = await fs.readFile(path.join(ESSAY_DIR, fname), "utf8");
+    const fm = parseFrontmatterBlock(src);
+    if (!fm) continue;
+
+    // plottedArtifacts[] → reverse "← named in: <slug>" onto txn + arch surfaces
+    const plotted = extractStringList(fm, "plottedArtifacts");
+    // ALSO pick up the quadrantLegend[].artifact slugs (they're a superset
+    // in v1 but explicit plottedArtifacts wins when both exist).
+    const legendArtifacts = extractQuadrantLegendArtifacts(fm);
+    const allArtifactSlugs = Array.from(new Set([...plotted, ...legendArtifacts]));
+    for (const artifactSlug of allArtifactSlugs) {
+      totalEssay++;
+      const onTxn = txnSlugs.has(artifactSlug);
+      const onArch = archSlugs.has(artifactSlug);
+      if (!onTxn && !onArch) {
+        errors.push(`essays/${slug}: plottedArtifacts entry "${artifactSlug}" does not resolve to /transactions/${artifactSlug}/ or /architecture/${artifactSlug}/ (no MDX at either).${suggestion(artifactSlug, [...txnSlugs, ...archSlugs])}`);
+        continue;
+      }
+      if (onTxn) {
+        process.stdout.write(`  ✓ ${slug} → /transactions/${artifactSlug}/ (plotted artifact)\n`);
+        appendReverse(reverseTxns, artifactSlug, "namedInEssays", slug);
+      }
+      if (onArch) {
+        process.stdout.write(`  ✓ ${slug} → /architecture/${artifactSlug}/ (plotted artifact)\n`);
+        appendReverse(reverseArch, artifactSlug, "namedInEssays", slug);
+      }
+    }
+
+    // relatedLedgerRow → /transactions/<slug>
+    const relLed = extractScalar(fm, "relatedLedgerRow");
+    if (relLed) {
+      totalEssay++;
+      if (!txnSlugs.has(relLed)) {
+        errors.push(`essays/${slug}: relatedLedgerRow "${relLed}" → /transactions/${relLed}/ — no such slug.${suggestion(relLed, [...txnSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /transactions/${relLed}/\n`);
+        appendReverse(reverseTxns, relLed, "namedInEssays", slug);
+      }
+    }
+
+    // relatedCaseStudy → /work/<slug>
+    const relCs = extractScalar(fm, "relatedCaseStudy");
+    if (relCs) {
+      totalEssay++;
+      if (!workSlugs.has(relCs)) {
+        errors.push(`essays/${slug}: relatedCaseStudy "${relCs}" → /work/${relCs}/ — no such slug.${suggestion(relCs, [...workSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /work/${relCs}/\n`);
+      }
+    }
+
+    // relatedArchitecture[] → /architecture/<slug>
+    for (const archSlug of extractStringList(fm, "relatedArchitecture")) {
+      totalEssay++;
+      if (!archSlugs.has(archSlug)) {
+        errors.push(`essays/${slug}: relatedArchitecture "${archSlug}" → /architecture/${archSlug}/ — no such slug.${suggestion(archSlug, [...archSlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} → /architecture/${archSlug}/\n`);
+        appendReverse(reverseArch, archSlug, "namedInEssays", slug);
+      }
+    }
+
+    // relatedEssays[] (sibling essays)
+    for (const sib of extractStringList(fm, "relatedEssays")) {
+      totalEssay++;
+      if (!essaySlugs.has(sib)) {
+        errors.push(`essays/${slug}: relatedEssays "${sib}" → /essays/${sib}/ — no such slug.${suggestion(sib, [...essaySlugs])}`);
+      } else {
+        process.stdout.write(`  ✓ ${slug} ↔ /essays/${sib}/ (sibling)\n`);
+        appendReverse(reverseEssays, sib, "siblingEssays", slug);
+        appendReverse(reverseEssays, slug, "siblingEssays", sib);
+      }
+    }
+  }
+
+  // ============================================================
+  // Halt on errors
+  // ============================================================
   if (errors.length > 0) {
     process.stderr.write(`\n✗ ${errors.length} cross-link errors:\n`);
     for (const e of errors) process.stderr.write(`  - ${e}\n`);
     process.exit(1);
   }
 
-  // --- Write the reverse-lookup JSON ---
-  const out = {
-    schemaVersion: "phase-3c.1",
+  // ============================================================
+  // Write the three per-collection crosslinks files
+  // ============================================================
+  const txnOut = {
+    schemaVersion: "phase-3c.2",
     generatedAt: new Date().toISOString(),
     transactions: Object.fromEntries(reverseTxns),
     byCaseStudy: Object.fromEntries(byCaseStudy),
@@ -334,10 +504,31 @@ async function main() {
     byEssay: Object.fromEntries(byEssay),
   };
   await fs.mkdir(TXN_DIR, { recursive: true });
-  await fs.writeFile(CROSSLINKS_OUT, JSON.stringify(out, null, 2), "utf8");
-  process.stdout.write(`\n  wrote ${path.relative(ROOT, CROSSLINKS_OUT)}\n`);
+  await fs.writeFile(TXN_CROSSLINKS_OUT, JSON.stringify(txnOut, null, 2), "utf8");
+  process.stdout.write(`\n  wrote ${path.relative(ROOT, TXN_CROSSLINKS_OUT)}\n`);
 
-  process.stdout.write(`\ndone. validated ${totalWork + totalTxn} cross-links (${totalWork} work + ${totalTxn} transactions).\n`);
+  const archOut = {
+    schemaVersion: "phase-3c.2",
+    generatedAt: new Date().toISOString(),
+    architecture: Object.fromEntries(reverseArch),
+    byLedger: Object.fromEntries(archByLedger),
+    byCaseStudy: Object.fromEntries(archByCaseStudy),
+    byEssay: Object.fromEntries(archByEssay),
+  };
+  await fs.mkdir(ARCH_DIR, { recursive: true });
+  await fs.writeFile(ARCH_CROSSLINKS_OUT, JSON.stringify(archOut, null, 2), "utf8");
+  process.stdout.write(`  wrote ${path.relative(ROOT, ARCH_CROSSLINKS_OUT)}\n`);
+
+  const essayOut = {
+    schemaVersion: "phase-3c.2",
+    generatedAt: new Date().toISOString(),
+    essays: Object.fromEntries(reverseEssays),
+  };
+  await fs.mkdir(ESSAY_DIR, { recursive: true });
+  await fs.writeFile(ESSAY_CROSSLINKS_OUT, JSON.stringify(essayOut, null, 2), "utf8");
+  process.stdout.write(`  wrote ${path.relative(ROOT, ESSAY_CROSSLINKS_OUT)}\n`);
+
+  process.stdout.write(`\ndone. validated ${totalWork + totalTxn + totalArch + totalEssay} cross-links (${totalWork} work + ${totalTxn} transactions + ${totalArch} architecture + ${totalEssay} essays).\n`);
 }
 
 main().catch((e) => {
