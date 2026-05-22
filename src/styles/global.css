@@ -162,3 +162,19 @@ a:focus-visible {
     color: black !important;
   }
 }
+
+/* ===== Hero icon-cycle pre-paint suppression (Phase 3e Bug 2) =====
+ * When sessionStorage["hero-cycle-played"] === "true", BaseLayout's
+ * inline <script> sets data-hero-cycle-played="true" on <html> BEFORE
+ * first paint. This rule then hides the icon container synchronously
+ * — no flash of icon-6/icon-7 on bfcache restore or SPA navigation
+ * back to /.
+ * Sister behavior: hero-icon-cycle.js's existence check skips the
+ * cycle entirely when the container is display:none.
+ */
+html[data-hero-cycle-played="true"] .hero-intro-cycle {
+  display: none !important;
+}
+html[data-hero-cycle-played="true"] .character-video {
+  opacity: 1 !important;
+}
