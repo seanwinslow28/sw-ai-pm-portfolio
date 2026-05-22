@@ -27,9 +27,21 @@ import {
       <section aria-labelledby="footer-subscribe-heading">
         <h2 id="footer-subscribe-heading" class="col-heading">SUBSCRIBE</h2>
         <ul class="link-list">
-          <li><span class="prefix">→</span> <a href="/transactions/rss.xml">transactions / rss</a></li>
-          <li><span class="prefix">→</span> <a href="/architecture/rss.xml">architecture / rss</a></li>
-          <li><span class="prefix">→</span> <a href="/essays/rss.xml">essays / rss</a></li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/transactions/">transactions</a>
+            <a href="/transactions/rss.xml" class="rss-tag" aria-label="Transactions RSS feed">rss</a>
+          </li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/architecture/">architecture</a>
+            <a href="/architecture/rss.xml" class="rss-tag" aria-label="Architecture RSS feed">rss</a>
+          </li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/essays/">essays</a>
+            <a href="/essays/rss.xml" class="rss-tag" aria-label="Essays RSS feed">rss</a>
+          </li>
           <li><span class="prefix">→</span> <a href={SUBSTACK_URL}>read on substack</a> <span class="glyph">↗</span></li>
         </ul>
       </section>
@@ -106,6 +118,24 @@ import {
   .link-list a:focus-visible {
     text-decoration: underline;
     text-underline-offset: 4px;
+  }
+  .link-list .rss-tag {
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--ink-secondary);
+    background-color: rgba(10, 62, 66, 0.06);
+    border-radius: 2px;
+    text-transform: lowercase;
+    transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+  .link-list .rss-tag:hover,
+  .link-list .rss-tag:focus-visible {
+    color: var(--teal);
+    background-color: rgba(10, 62, 66, 0.12);
+    text-decoration: none;
   }
   .footer-strip {
     margin-top: 48px;
