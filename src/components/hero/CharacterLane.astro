@@ -68,23 +68,19 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     pointer-events: none;
   }
   .hero-floor-shadow {
-    /* Reference: sw-portfolio-animation-2026/.../hero-image-with-bg000.png —
-       a tight ellipse only under the desk + chair, not a wide swath.
-       Shadow PNG centroid is at 49% of its own width. Per Sean's 2026-05-21
-       review, the desk's painted center sits at ~78% of viewport on a 1920
-       viewport — the original `left: 18%; width: 55%` rule landed at ~80%.
-       Below 1280px viewports the lane scales down and the offset diverges
-       further. The breakpoint table below nudges the centroid back toward
-       the desk-foot on each viewport class.
+    /* Calibrated 2026-05-22 (Phase 3e Bug 9) via Playwright at 3 viewport
+       classes — 1920, 1440, 1024. Source PNG centroid is at 49% of its
+       own width; values below align the centroid with the visual center
+       of the desk legs at each viewport.
 
-       Re-cropping the source PNG would be cleaner long-term but blocks on
-       Procreate-substrate work that's deferred indefinitely per the
-       texture-spec deferral table. Per-viewport calibration is the v1 fix. */
+       Re-cropping the source PNG would be cleaner long-term but blocks
+       on Procreate-substrate work deferred indefinitely per texture-spec.
+       Per-viewport calibration remains the v1 fix. */
     position: absolute;
     width: 55%;
     height: auto;
-    bottom: -6px;
-    left: 16%;        /* was 18% — shifts the shadow ~2% leftward at >=1280px */
+    bottom: -16px;
+    left: 22%;
     right: auto;
     object-fit: contain;
     object-position: center bottom;
@@ -92,17 +88,19 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     pointer-events: none;
     opacity: 0.9;
   }
-  /* Mid-viewport (≥1280 ≤1599): same nudge holds. */
-  /* Wide viewport (≥1600): the lane sits further right; shadow needs ~1% more leftward shift. */
+  /* Wide viewport (≥1600): the lane sits further right; nudge slightly left. */
   @media (min-width: 1600px) {
     .hero-floor-shadow {
-      left: 15%;
+      left: 20%;
+      bottom: -16px;
     }
   }
+  /* Tablet / small desktop (≤1024): lane scales down; bigger shadow + nudge. */
   @media (max-width: 1024px) {
     .hero-floor-shadow {
       width: 70%;
-      left: 20%;
+      left: 26%;
+      bottom: -16px;
     }
   }
   .character-video {
