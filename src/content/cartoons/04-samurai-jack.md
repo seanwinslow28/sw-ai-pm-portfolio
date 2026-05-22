@@ -8,5 +8,5 @@ image_alt: pencil-test study of Samurai Jack standing in a calm ready stance wit
 lesson_noun: THE CODE
 lesson_body: jack keeps the samurai code in a world of robots. the spec is the code; everything around it is noise.
 angle: 0.0
-break_grid: true
+break_grid: false
 ---
