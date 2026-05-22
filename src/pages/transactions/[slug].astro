@@ -79,6 +79,18 @@ const titleByWorkSlug: Record<string, string> = Object.fromEntries(
   workCollection.map((w) => [w.slug, w.data.title])
 );
 
+// Phase 3c.2: title maps for the new collections so RelatedBlock can
+// render forward-declared relatedArchitecture/relatedEssay rows + the
+// reverse-derived namedInEssays[] entries with real titles.
+const archCollection = await getCollection("architecture");
+const titleByArchSlug: Record<string, string> = Object.fromEntries(
+  archCollection.map((a) => [a.slug, a.data.title])
+);
+const essayCollection = await getCollection("essays");
+const titleByEssaySlug: Record<string, string> = Object.fromEntries(
+  essayCollection.map((e) => [e.slug, e.data.title])
+);
+
 const data = entry.data;
 const slug = entry.slug;
 
@@ -163,6 +175,8 @@ const canonicalLink = data.explanationUrl ?? data.repoUrl ?? null;
       crosslinks={crosslinks}
       titleByTxnSlug={titleByTxnSlug}
       titleByWorkSlug={titleByWorkSlug}
+      titleByArchSlug={titleByArchSlug}
+      titleByEssaySlug={titleByEssaySlug}
     />
 
     <nav class="next-prev" aria-label="Adjacent transactions">

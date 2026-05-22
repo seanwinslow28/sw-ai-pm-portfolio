@@ -10,7 +10,7 @@
  * Per transactions-spec §9.1 step 11 + §14 + §16.
  */
 interface CrosslinkData {
-  transactions?: Record<string, { supersededBy?: string; siblingShips?: string[] }>;
+  transactions?: Record<string, { supersededBy?: string; siblingShips?: string[]; namedInEssays?: string[] }>;
 }
 interface Props {
   slug: string;
@@ -22,6 +22,8 @@ interface Props {
   crosslinks: CrosslinkData;
   titleByTxnSlug: Record<string, string>;  // {phase-d-typed-edges: "Phase D — Typed Reasoning Edges"}
   titleByWorkSlug: Record<string, string>; // {code-brain: "Code Brain"}
+  titleByArchSlug?: Record<string, string>;
+  titleByEssaySlug?: Record<string, string>;
 }
 const {
   slug,
@@ -33,6 +35,8 @@ const {
   crosslinks,
   titleByTxnSlug,
   titleByWorkSlug,
+  titleByArchSlug = {},
+  titleByEssaySlug = {},
 } = Astro.props;
 
 const reverse = crosslinks.transactions?.[slug] ?? {};
@@ -93,7 +97,7 @@ for (const arch of archSlugs) {
   rows.push({
     href: `/architecture/${arch}/`,
     category: "architecture writeup",
-    label: arch,  // titleByArchSlug not available in 3c.1 — slug is sufficient placeholder
+    label: titleByArchSlug[arch] ?? arch,
   });
 }
 
@@ -102,7 +106,17 @@ if (relatedEssay) {
   rows.push({
     href: `/essays/${relatedEssay}/`,
     category: "essay",
-    label: relatedEssay,
+    label: titleByEssaySlug[relatedEssay] ?? relatedEssay,
+  });
+}
+
+// Phase 3c.2: namedInEssays[] reverse-derived from essays' plottedArtifacts.
+// Each entry → "← named in: <essay title> (essay)" row.
+for (const essaySlug of reverse.namedInEssays ?? []) {
+  rows.push({
+    href: `/essays/${essaySlug}/`,
+    category: "← named in",
+    label: titleByEssaySlug[essaySlug] ?? essaySlug,
   });
 }
 
