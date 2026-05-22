@@ -111,6 +111,23 @@ Five statuses. No others. The status is the second-strongest signal on the tile 
 
 All media: object-fit cover. Tile is 400×500px (4:5 portrait). Videos are <2MB encoded, looped, no audio, autoplay-friendly.
 
+### 3.5 The `/work/` index page (Phase 3e — added 2026-05-22)
+
+The home page's Projects section (§3.1–§3.4) is one of two surfaces over the `work` content collection. The other is `/work/` — a catalog-style index page that lists the same 5 case studies as row entries (not tiles).
+
+**Why both surfaces:**
+
+- **Home grid** is the first-impression register: tiles + media + frame numbers, optimized for the recruiter who lands on `/` cold and scans.
+- **`/work/` index** is the catalog register: dateline header + row list + tagline + tags + status, optimized for the recruiter who arrives via the nav from another sub-page (`/transactions/`, `/architecture/`, `/about/`) and expects parity with those catalog surfaces.
+
+**File:** `src/pages/work/index.astro` (lands Phase 3e).
+
+**Shape:** Mirrors `/essays/index.astro` and `/transactions/index.astro` — dateline strip + `<h1>` + lead paragraph + row list sorted ascending by `data.order` (A-1 → A-5) + footer fold (transactions / about / view the fleet). No `<ProjectsSection />` re-render — the row format is row-list, not tile-grid, by design.
+
+**Click contract:** Each row links to `/work/<slug>/` (same target as the home grid tiles). Astro View Transitions morph the row title into the case-study `<h1>` via the existing `view-transition-name: hero-title-<slug>` lock (case-study-spec §15).
+
+**Spec lineage:** The original projects-section-spec didn't anticipate a `/work/` index because the home grid was intended as the primary surface. Phase 3e elevated `/work/` to a first-class catalog surface alongside `/transactions/`, `/architecture/`, `/essays/` because the top nav already promised the route and recruiters expected the index to exist. The home grid remains the marketing surface; `/work/` is the IA-completeness surface.
+
 ---
 
 ## 4. The Sixth Tile — "Next in Production"
