@@ -1,0 +1,93 @@
+---
+/**
+ * <Beats /> — B-1 section: stacked beats with chromatic lane-tint rule.
+ *
+ * Reads `beats[]` from the parent about MDX frontmatter and renders
+ * one <BeatRow /> per entry. Single column on all viewports —
+ * the parallel-lineage signal lives in the per-beat lane-rule color,
+ * not column position.
+ *
+ * The wrapping <section> carries an aria-label so screen readers
+ * announce "How I got here" when entering the band. The H2 above
+ * is plain Newsreader per about-spec §1.2 v1 substitution (hand-drawn
+ * heading SVG deferred to v2).
+ *
+ * Source: about-spec-v1.md §9.
+ */
+import BeatRow from "./BeatRow.astro";
+
+interface BeatFrontmatter {
+  age: number;
+  year: number;
+  body: string;
+  lane: "animator" | "pm" | "braided";
+}
+
+interface Props {
+  beats: BeatFrontmatter[];
+}
+
+const { beats } = Astro.props;
+---
+
+<section class="beats" aria-labelledby="b1-heading">
+  <p class="beats__frame-prefix">B-1 ·</p>
+  <h2 id="b1-heading" class="beats__heading" aria-label="B-1: How I got here">
+    How I got here
+  </h2>
+  <div class="beats__list">
+    {beats.map((beat, index) => (
+      <BeatRow
+        age={beat.age}
+        year={beat.year}
+        body={beat.body}
+        lane={beat.lane}
+        index={index}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .beats {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .beats__frame-prefix {
+    margin: 0 0 8px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--amber-mid);
+  }
+
+  .beats__heading {
+    margin: 0 0 60px 0;
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+    color: var(--teal);
+  }
+
+  .beats__list {
+    padding-left: 28px;       /* room for the lane-rule SVGs that absolute-position at left: -28px */
+  }
+
+  @media (max-width: 767px) {
+    .beats {
+      padding: 0 20px;
+    }
+    .beats__heading {
+      font-size: 36px;
+      margin-bottom: 40px;
+    }
+    .beats__list {
+      padding-left: 22px;
+    }
+  }
+</style>
