@@ -31,13 +31,30 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
 <script>
   import { initHeroIconCycle } from "~/scripts/hero-icon-cycle.js";
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function tryInit() {
     const container = document.querySelector(".hero-intro-cycle");
     const video = document.querySelector(".character-video");
     if (container && video) {
       initHeroIconCycle({ container, video });
     }
-  });
+  }
+
+  // (1) Fresh page-load path
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", tryInit);
+  } else {
+    tryInit();
+  }
+
+  // (2) bfcache restore path — fires on back/forward navigation that
+  // restored the page from the browser's back-forward cache. The
+  // sessionStorage flag is already set, so initHeroIconCycle's
+  // once-per-session bypass kicks in and immediately reveals the WebM.
+  window.addEventListener("pageshow", tryInit);
+
+  // (3) Astro View Transitions path — fires after each ClientRouter
+  // swap. /about/ → / via the SW wordmark goes through here.
+  document.addEventListener("astro:page-load", tryInit);
 </script>
 
 <style>
