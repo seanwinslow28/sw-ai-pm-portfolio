@@ -1,0 +1,123 @@
+---
+/**
+ * <CartoonCanon /> — B-3 grid wrapper.
+ *
+ * Reads getCollection("cartoons").sort(order) and renders one
+ * <CartoonCel /> per entry. Desktop: 3×2 grid (Cel 4 spans 2 columns
+ * if break_grid: true, pushing the surrounding cels to reflow).
+ * Mobile: single-column stack, break_grid is a no-op.
+ *
+ * The H2 heading is plain Newsreader 48px per spec §1.2 v1
+ * substitution (hand-drawn heading SVG deferred to v2).
+ *
+ * Source: about-spec-v1.md §11.
+ */
+import { getCollection } from "astro:content";
+import CartoonCel from "./CartoonCel.astro";
+
+const cels = (await getCollection("cartoons")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="cartoon-canon" aria-labelledby="b3-heading">
+  <p class="cartoon-canon__frame-prefix">B-3 ·</p>
+  <h2 id="b3-heading" class="cartoon-canon__heading" aria-label="B-3: Saturday morning canon">
+    Saturday morning canon
+  </h2>
+  <div class="cartoon-canon__grid">
+    {cels.map((cel) => (
+      <CartoonCel
+        name={cel.data.name}
+        yearRange={cel.data.year_range}
+        studio={cel.data.studio}
+        image={cel.data.image}
+        imageAlt={cel.data.image_alt}
+        lessonNoun={cel.data.lesson_noun}
+        lessonBody={cel.data.lesson_body}
+        angle={cel.data.angle ?? 0}
+        breakGrid={cel.data.break_grid}
+        order={cel.data.order}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .cartoon-canon {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .cartoon-canon__frame-prefix {
+    margin: 0 0 8px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--amber-mid);
+  }
+
+  .cartoon-canon__heading {
+    margin: 0 0 60px 0;
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+    color: var(--teal);
+  }
+
+  .cartoon-canon__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 280px));
+    column-gap: 40px;
+    row-gap: 60px;
+    justify-content: center;
+  }
+
+  @media (max-width: 1023px) and (min-width: 768px) {
+    .cartoon-canon__grid {
+      grid-template-columns: repeat(2, minmax(0, 280px));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cartoon-canon {
+      padding: 0 20px;
+    }
+    .cartoon-canon__heading {
+      font-size: 36px;
+      margin-bottom: 40px;
+    }
+    .cartoon-canon__grid {
+      grid-template-columns: 1fr;
+      row-gap: 48px;
+      justify-content: center;
+      justify-items: center;
+    }
+  }
+</style>
+
+<script>
+  // IntersectionObserver — fade + scale cels in as they enter the viewport.
+  // 100ms stagger between cels (handled via per-cel transitionDelay).
+  const cels = document.querySelectorAll<HTMLElement>(".cartoon-cel");
+  const observer = new IntersectionObserver((entries) => {
+    let staggerIndex = 0;
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        const target = entry.target as HTMLElement;
+        target.style.transitionDelay = `${staggerIndex * 100}ms`;
+        target.classList.add("is-revealed");
+        observer.unobserve(target);
+        staggerIndex++;
+      }
+    }
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.15 });
+
+  for (const cel of cels) {
+    observer.observe(cel);
+  }
+</script>
