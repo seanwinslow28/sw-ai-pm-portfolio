@@ -48,16 +48,6 @@
   --page-status-desat: 1;
 }
 
-/* ===== Dark mode tokens ===== */
-:root[data-theme="dark"] {
-  --paper: #1A1A1E;
-  --ink: #FFF9F0;
-  --ink-secondary: #A0B5B8;
-  --teal: #2A6E72;
-  --border-paper: rgba(255, 249, 240, 0.15);
-  /* chrome stays the same — see texture-spec §2.4 */
-}
-
 /* ===== Reset (minimal) ===== */
 *,
 *::before,
@@ -151,7 +141,6 @@ a:focus-visible {
   header,
   footer,
   .skip-link,
-  .theme-toggle,
   .character,
   [aria-hidden="true"] {
     display: none !important;
