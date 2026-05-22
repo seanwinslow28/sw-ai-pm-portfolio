@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "node scripts/validate_content.mjs && node scripts/fetch_canonical_sources.mjs && node scripts/derive_crosslinks.mjs",
+    "prebuild": "node scripts/validate_content.mjs && node scripts/fetch_canonical_sources.mjs && node scripts/derive_crosslinks.mjs && node scripts/validate_about.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "validate": "node scripts/validate_content.mjs",
     "fetch-canonical": "node scripts/fetch_canonical_sources.mjs",
-    "derive-crosslinks": "node scripts/derive_crosslinks.mjs"
+    "derive-crosslinks": "node scripts/derive_crosslinks.mjs",
+    "validate-about": "node scripts/validate_about.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
