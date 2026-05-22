@@ -1,0 +1,157 @@
+/* ----------------------------------------------------------------------
+ * src/styles/about.css — /about/ page-scoped layout polish + print
+ * Loaded by src/pages/about.astro.
+ * Per about-spec §3 vertical budget + §16 build-stack print row.
+ * ---------------------------------------------------------------------- */
+
+/* ===== Section spacing (vertical budget per §3) ===== */
+
+.about-page {
+  position: relative;
+}
+
+.about-page__band {
+  padding-top: 60px;
+}
+
+.about-page__band--hero {
+  padding-top: 60px;
+}
+
+.about-page__band--pulse {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.about-page__band--beats,
+.about-page__band--b2,
+.about-page__band--canon,
+.about-page__band--b4,
+.about-page__band--b5 {
+  padding-top: 100px;
+}
+
+.about-page__band--pull-quote {
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+
+/* ===== B-2 + B-4 section heading styles (shared with Beats / CartoonCanon / ProofPoints) ===== */
+
+.about-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.about-section__frame-prefix {
+  margin: 0 0 8px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+  color: var(--amber-mid);
+}
+
+.about-section__heading {
+  margin: 0 0 32px 0;
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  line-height: 1.1;
+  color: var(--teal);
+}
+
+.about-section--b2 {
+  max-width: 680px;
+}
+
+.about-section--b2 p {
+  margin: 0 0 24px 0;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.about-section--b2 p:last-child {
+  margin-bottom: 0;
+}
+
+.about-section--b4 .about-section__b4-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.about-section--b4 .about-section__heading {
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .about-page__band--beats,
+  .about-page__band--b2,
+  .about-page__band--canon,
+  .about-page__band--b4,
+  .about-page__band--b5 {
+    padding-top: 60px;
+  }
+
+  .about-page__band--pull-quote {
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  .about-section {
+    padding: 0 20px;
+  }
+
+  .about-section__heading {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .about-section--b2 p {
+    font-size: 18px;
+  }
+}
+
+/* ===== Print stylesheet — §16 build-stack print row ===== */
+
+@media print {
+  .about-page {
+    background: none;
+  }
+
+  /* Single column — disable any grid layouts */
+  .cartoon-canon__grid {
+    display: block;
+  }
+
+  .cartoon-cel {
+    transform: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 32px;
+  }
+
+  /* Print the link URL after each proof-point link (handled in ProofPoints scoped CSS).
+     The dateline strip + pulse strip + recruiter callout retain their wire-service
+     styling; the editorial sections retain their type scale. */
+
+  .recruiter-callout {
+    border: 1px solid var(--ink);
+    background: none;
+  }
+
+  .pull-quote {
+    background: none;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+}
