@@ -1,0 +1,60 @@
+---
+/**
+ * <PullQuote /> — closing pull quote.
+ *
+ * Echoes the home-hero tagline verbatim per spec §2 anatomy +
+ * §7.2 ("Cross-page closeout via pull quote"). The visitor's
+ * last beat on /about/ is a callback to the page they entered
+ * through.
+ *
+ * The string is LOCKED in the component — it's the home-hero
+ * tagline reproduced byte-identical, and PMP §4 row 1 is the
+ * source of truth. If PMP §4 row 1 changes, update both here
+ * and in src/components/hero/Hero.astro in lockstep.
+ *
+ * Per about-spec §1.2: this is also where the v1 page closes
+ * (no signature SVG, no registration mark — both deferred to
+ * v2). The torn-paper edge into the chrome footer follows.
+ *
+ * Source: about-spec-v1.md §2 anatomy + §7.2 + §1.2 + §4
+ * type table (pull-quote row).
+ */
+---
+
+<section class="pull-quote" aria-label="Closing pull quote">
+  <blockquote class="pull-quote__body">
+    "Product Manager. The agents handle the loops. I handle the taste."
+  </blockquote>
+</section>
+
+<style>
+  .pull-quote {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    background-color: rgba(10, 62, 66, 0.04);
+    border-top: 0.5px solid var(--border-paper);
+    border-bottom: 0.5px solid var(--border-paper);
+    text-align: center;
+  }
+
+  .pull-quote__body {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+    color: var(--teal);
+  }
+
+  @media (max-width: 767px) {
+    .pull-quote {
+      padding: 32px 20px;
+    }
+    .pull-quote__body {
+      font-size: clamp(24px, 5vw, 32px);
+    }
+  }
+</style>
