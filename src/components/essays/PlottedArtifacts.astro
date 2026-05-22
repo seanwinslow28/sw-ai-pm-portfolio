@@ -24,7 +24,7 @@ const rendered = slugs.filter((s) => txnSlugs.has(s) || archSlugs.has(s));
     <ul>
       {rendered.map((s) => {
         const label = titleByTxnSlug[s] ?? titleByArchSlug[s] ?? s;
-        const links: Array<{ href: string; tag: string }> = [];
+        const links = [];
         if (txnSlugs.has(s)) links.push({ href: `/transactions/${s}/`, tag: "ledger" });
         if (archSlugs.has(s)) links.push({ href: `/architecture/${s}/`, tag: "architecture" });
         return (
