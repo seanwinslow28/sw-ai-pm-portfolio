@@ -1,0 +1,223 @@
+---
+/**
+ * /work/ — index page.
+ *
+ * Lists the 5 case studies in `order` (A-1 → A-5). Bands:
+ *   dateline → page title block → work rows → footer fold (transactions / about).
+ *
+ * Mirrors /essays/index.astro structure (essays-spec §2.1 shape) but
+ * reads from the existing `work` content collection (the same collection
+ * that powers <ProjectsSection /> on the home page).
+ *
+ * Spec context: projects-section-spec-v1.md §3.5 (added 2026-05-22 in
+ * Phase 3e plan §9.1) — the /work/ index is the catalog-surface twin
+ * of the home Projects grid; they share the same data but render in
+ * different registers (grid on home, row-list on the index).
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const work = (await getCollection("work")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const count = work.length;
+---
+
+<BaseLayout
+  title="Work — Sean Winslow"
+  description="Five case studies running across the agent fleet — animation pipeline, code-brain, intent engineering MCP, The Block, 16BitFit Battle Mode."
+>
+  <article class="work-index page-sheet">
+    <header class="index-header">
+      <p class="dateline">BOSTON · {count} CASE {count === 1 ? "STUDY" : "STUDIES"}</p>
+      <h1>Work</h1>
+      <p class="lead">
+        Five case studies. Five frames. The agents handle the loops; the loops are sequenced by frame number.
+      </p>
+    </header>
+
+    <section class="work-list" aria-label="Case studies">
+      {work.map((entry) => (
+        <a href={`/work/${entry.slug}/`} class="work-row" aria-label={`Case study: ${entry.data.title}`}>
+          <div class="row-meta">
+            <span class="frame">{entry.data.frame}</span>
+            <span class="status" data-status={entry.data.status}>{entry.data.status}</span>
+          </div>
+          <h2 class="row-title">{entry.data.title}</h2>
+          {entry.data.tagline && <p class="row-tagline">{entry.data.tagline}</p>}
+          <p class="row-tags">{entry.data.tags.join(" · ")}</p>
+          <span class="row-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </section>
+
+    <footer class="footer-fold">
+      <p>
+        <a href="/transactions/">→ transactions ledger</a>
+        <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+        <a href="/about/">→ about</a>
+        <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+        <a href="/">→ view the fleet <span aria-hidden="true">↑</span></a>
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-index {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+  }
+
+  .index-header {
+    margin-bottom: 60px;
+  }
+  .dateline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin: 0 0 16px 0;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+    color: var(--teal);
+    margin: 0 0 24px 0;
+  }
+  .lead {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.45;
+    letter-spacing: -0.1px;
+    color: var(--ink);
+    max-width: 680px;
+    margin: 0;
+  }
+
+  .work-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 0.5px solid var(--border-paper);
+  }
+
+  .work-row {
+    position: relative;
+    display: block;
+    padding: 32px 24px 32px 0;
+    border-bottom: 0.5px solid var(--border-paper);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 160ms var(--ease-out);
+  }
+  .work-row:hover {
+    background-color: rgba(10, 62, 66, 0.03);
+  }
+  .work-row:focus-visible {
+    outline: 2px dashed var(--teal);
+    outline-offset: 4px;
+  }
+
+  .row-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+  }
+  .frame {
+    color: var(--amber-mid);
+  }
+  .status {
+    color: var(--ink-secondary);
+  }
+  .status[data-status="SHIPPED"] { color: var(--success-teal); }
+  .status[data-status="ACTIVE"]  { color: var(--teal); }
+  .status[data-status="PAUSED"]  { color: var(--stamp-amber); }
+  .status[data-status="ARCHIVED"] { color: var(--ink-secondary); }
+  .status[data-status="COMING"]  { color: var(--ink-secondary); }
+
+  .row-title {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+    margin: 0 0 8px 0;
+  }
+  .row-tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--ink-secondary);
+    margin: 0 0 12px 0;
+    max-width: 720px;
+  }
+  .row-tags {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+  .row-arrow {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--teal);
+    transition: transform 160ms var(--ease-out);
+  }
+  .work-row:hover .row-arrow {
+    transform: translateX(4px);
+  }
+
+  .footer-fold {
+    margin-top: 80px;
+  }
+  .footer-fold p {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.0px;
+    color: var(--teal);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .footer-fold a {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms var(--ease-out);
+  }
+  .footer-fold a:hover,
+  .footer-fold a:focus-visible {
+    border-bottom-color: var(--teal);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    .work-index { padding: 48px 16px 40px; }
+    .index-header { margin-bottom: 40px; }
+    .work-row { padding: 24px 24px 24px 0; }
+    .row-arrow { top: 24px; }
+    .footer-fold { margin-top: 56px; }
+  }
+</style>

@@ -10,7 +10,6 @@ import {
   COPYRIGHT_YEAR,
   SITE_LOCALE,
 } from "~/lib/site";
-import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <footer class="site-footer">
@@ -20,17 +19,29 @@ import ThemeToggle from "./ThemeToggle.astro";
         <h2 id="footer-contact-heading" class="col-heading">CONTACT</h2>
         <ul class="link-list">
           <li><span class="prefix">→</span> email · <a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
-          <li><span class="prefix">→</span> <a href={LINKEDIN_URL} rel="me">linkedin.com/in/seanwinslow</a> <span class="glyph">↗</span></li>
-          <li><span class="prefix">→</span> <a href={GITHUB_URL} rel="me">github.com/seanwinslow</a> <span class="glyph">↗</span></li>
+          <li><span class="prefix">→</span> <a href={LINKEDIN_URL} rel="me">linkedin.com/in/sean-winslow-204390a5</a> <span class="glyph">↗</span></li>
+          <li><span class="prefix">→</span> <a href={GITHUB_URL} rel="me">github.com/seanwinslow28</a> <span class="glyph">↗</span></li>
         </ul>
       </section>
 
       <section aria-labelledby="footer-subscribe-heading">
         <h2 id="footer-subscribe-heading" class="col-heading">SUBSCRIBE</h2>
         <ul class="link-list">
-          <li><span class="prefix">→</span> <a href="/transactions/rss.xml">transactions / rss</a></li>
-          <li><span class="prefix">→</span> <a href="/architecture/rss.xml">architecture / rss</a></li>
-          <li><span class="prefix">→</span> <a href="/essays/rss.xml">essays / rss</a></li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/transactions/">transactions</a>
+            <a href="/transactions/rss.xml" class="rss-tag" aria-label="Transactions RSS feed">rss</a>
+          </li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/architecture/">architecture</a>
+            <a href="/architecture/rss.xml" class="rss-tag" aria-label="Architecture RSS feed">rss</a>
+          </li>
+          <li>
+            <span class="prefix">→</span>
+            <a href="/essays/">essays</a>
+            <a href="/essays/rss.xml" class="rss-tag" aria-label="Essays RSS feed">rss</a>
+          </li>
           <li><span class="prefix">→</span> <a href={SUBSTACK_URL}>read on substack</a> <span class="glyph">↗</span></li>
         </ul>
       </section>
@@ -45,7 +56,6 @@ import ThemeToggle from "./ThemeToggle.astro";
     </div>
 
     <div class="footer-strip">
-      <ThemeToggle />
       <p class="copyright">© {COPYRIGHT_YEAR} SEAN WINSLOW · {SITE_LOCALE}</p>
     </div>
   </div>
@@ -109,12 +119,30 @@ import ThemeToggle from "./ThemeToggle.astro";
     text-decoration: underline;
     text-underline-offset: 4px;
   }
+  .link-list .rss-tag {
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--ink-secondary);
+    background-color: rgba(10, 62, 66, 0.06);
+    border-radius: 2px;
+    text-transform: lowercase;
+    transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+  .link-list .rss-tag:hover,
+  .link-list .rss-tag:focus-visible {
+    color: var(--teal);
+    background-color: rgba(10, 62, 66, 0.12);
+    text-decoration: none;
+  }
   .footer-strip {
     margin-top: 48px;
     padding-top: 24px;
     border-top: 0.5px solid var(--border-paper);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
   }
   .copyright {

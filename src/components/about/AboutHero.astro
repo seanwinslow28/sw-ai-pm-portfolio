@@ -1,0 +1,109 @@
+---
+/**
+ * <AboutHero /> — above-the-fold lead-line + character PNG.
+ *
+ * 2-column grid (lead left, character right) at desktop; stacks
+ * on mobile (character above, lead below).
+ *
+ * The lead line is the byte-locked PMP §4 row 2 string. Read from
+ * the about MDX frontmatter `lead:` field (validated upstream by
+ * scripts/validate_about.mjs).
+ *
+ * The character is a static PNG (NOT the hero WebM). Above-the-fold
+ * motion would compete with the lead line; the WebM lives on the
+ * home hero + animation-pipeline case study per spec §7.4.
+ *
+ * Source: about-spec-v1.md §7.
+ */
+interface Props {
+  lead: string;
+  characterImage: string;
+  characterAlt: string;
+}
+
+const { lead, characterImage, characterAlt } = Astro.props;
+---
+
+<section class="about-hero" aria-label="Lead line and character">
+  <div class="about-hero__lead-col">
+    <p class="about-hero__lead">{lead}</p>
+  </div>
+  <div class="about-hero__character-col">
+    <img
+      class="about-hero__character"
+      src={characterImage}
+      alt={characterAlt}
+      loading="eager"
+      decoding="async"
+      width="640"
+      height="640"
+    />
+  </div>
+</section>
+
+<style>
+  .about-hero {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 60px;
+    align-items: center;
+    min-height: 640px;
+  }
+
+  .about-hero__lead-col {
+    max-width: 720px;
+  }
+
+  .about-hero__lead {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 4.5vw, 72px);
+    font-weight: 300;
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .about-hero__character-col {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .about-hero__character {
+    display: block;
+    max-height: 640px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: bottom right;
+  }
+
+  @media (max-width: 767px) {
+    .about-hero {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 0 20px;
+      min-height: auto;
+    }
+    .about-hero__lead-col {
+      order: 2;
+      max-width: 100%;
+    }
+    .about-hero__character-col {
+      order: 1;
+      justify-content: center;
+    }
+    .about-hero__character {
+      max-height: 360px;
+      object-position: bottom center;
+    }
+    .about-hero__lead {
+      font-size: clamp(28px, 7vw, 44px);
+    }
+  }
+</style>

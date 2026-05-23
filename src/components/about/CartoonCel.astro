@@ -1,0 +1,233 @@
+---
+/**
+ * <CartoonCel /> — one entry in the Saturday morning canon.
+ *
+ * Composition (top to bottom inside the cel frame):
+ *   1. Registration peg SVG (top, 2 circles + 1 trapezoidal notch + 1 tick)
+ *   2. Pencil-test study PNG (centered, breathing room above/below)
+ *   3. Cel name + year strip (mono, bottom-left inside the cel)
+ *
+ * Below the cel (separate element, NOT inside the white frame):
+ *   4. Caption strip — lesson noun (mono stamp-amber) + lesson body
+ *      (mono secondary-ink).
+ *
+ * The whole cel rotates ±1.5° per the `angle` frontmatter field
+ * (Cel 4 / Samurai Jack gets 0.0 explicitly so the break-grid
+ * geometry stays visually anchored — surrounding cels tilt around it).
+ *
+ * Cel 4's `break_grid: true` per §11.3.1 — handled by the parent
+ * <CartoonCanon /> grid via `style="--grid-span: 2; --cel-scale: 1.2"`
+ * applied to the cel's container.
+ *
+ * Source: about-spec-v1.md §11.3 + §11.3.1 + §11.5.
+ */
+interface Props {
+  name: string;
+  yearRange: string;
+  studio: string;
+  image: string;
+  imageAlt: string;
+  lessonNoun: string;
+  lessonBody: string;
+  angle: number;          // pre-resolved by parent (default 0)
+  breakGrid: boolean;
+  order: number;          // 1-6, used for aria-labelledby
+}
+
+const {
+  name,
+  yearRange,
+  studio: _studio,        // not rendered in v1 (lives in MDX for archival; cel slate shows name + year only)
+  image,
+  imageAlt,
+  lessonNoun,
+  lessonBody,
+  angle,
+  breakGrid,
+  order,
+} = Astro.props;
+
+const celId = `cartoon-${order}`;
+const containerClass = breakGrid ? "cartoon-cel cartoon-cel--break-grid" : "cartoon-cel";
+---
+
+<article class={containerClass} aria-labelledby={celId} style={`--cel-angle: ${angle}deg`}>
+  <div class="cartoon-cel__frame">
+    <svg
+      class="cartoon-cel__pegs"
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 120 16"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <circle cx="20" cy="8" r="4" fill="none" stroke="#FAC775" stroke-width="1.2" />
+      <path
+        d="M 50 4 L 70 4 L 73 12 L 47 12 Z"
+        fill="none"
+        stroke="#FAC775"
+        stroke-width="1.2"
+      />
+      <line x1="80" y1="4" x2="80" y2="12" stroke="#FAC775" stroke-width="1.2" />
+      <circle cx="100" cy="8" r="4" fill="none" stroke="#FAC775" stroke-width="1.2" />
+    </svg>
+    <img
+      class="cartoon-cel__study"
+      src={image}
+      alt={imageAlt}
+      loading="lazy"
+      decoding="async"
+    />
+    <p class="cartoon-cel__slate">
+      <span class="cartoon-cel__name" id={celId}>{name}</span>
+      <span class="cartoon-cel__year"> · {yearRange}</span>
+    </p>
+  </div>
+  <p class="cartoon-cel__caption">
+    <span class="cartoon-cel__lesson-noun">{lessonNoun} —</span>
+    <span class="cartoon-cel__lesson-body">{lessonBody}</span>
+  </p>
+</article>
+
+<style>
+  .cartoon-cel {
+    display: flex;
+    flex-direction: column;
+    transform: rotate(var(--cel-angle, 0deg));
+  }
+
+  .cartoon-cel--break-grid {
+    grid-column: span 2;
+    /* Cel scales to 1.2× via the frame's max-width; angle stays at 0.0
+       per the locked MDX frontmatter so the geometry break carries the
+       emphasis. */
+  }
+
+  .cartoon-cel__frame {
+    position: relative;
+    width: 280px;
+    height: 320px;
+    background-color: #FFFFFF;
+    border: 0.5px solid var(--border-paper);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cartoon-cel--break-grid .cartoon-cel__frame {
+    width: 336px;
+    height: 384px;
+  }
+
+  .cartoon-cel__pegs {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 16px;
+  }
+
+  .cartoon-cel__study {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 220px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .cartoon-cel--break-grid .cartoon-cel__study {
+    width: 240px;
+    height: 264px;
+  }
+
+  .cartoon-cel__slate {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink);
+  }
+
+  .cartoon-cel__name {
+    font-weight: 500;
+    letter-spacing: 1.2px;
+  }
+
+  .cartoon-cel__year {
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    color: var(--ink-secondary);
+  }
+
+  .cartoon-cel__caption {
+    margin: 16px 0 0 0;
+    max-width: 280px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.8px;
+  }
+
+  .cartoon-cel--break-grid .cartoon-cel__caption {
+    max-width: 336px;
+  }
+
+  .cartoon-cel__lesson-noun {
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    color: var(--stamp-amber);
+  }
+
+  .cartoon-cel__lesson-body {
+    font-weight: 400;
+    color: var(--ink-secondary);
+  }
+
+  /* Cel entrance: fade + slight scale per §6 motion timeline.
+     Triggered by an IntersectionObserver in <CartoonCanon />'s script. */
+  .cartoon-cel {
+    opacity: 0;
+    transform: rotate(var(--cel-angle, 0deg)) scale(0.97);
+    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(.cartoon-cel.is-revealed) {
+    opacity: 1;
+    transform: rotate(var(--cel-angle, 0deg)) scale(1);
+  }
+
+  @media (max-width: 767px) {
+    .cartoon-cel {
+      width: 100%;
+      align-items: center;
+    }
+    .cartoon-cel--break-grid {
+      grid-column: span 1;     /* break-grid is a no-op on mobile per §11.3.1 */
+    }
+    .cartoon-cel--break-grid .cartoon-cel__frame {
+      width: 280px;
+      height: 320px;
+    }
+    .cartoon-cel--break-grid .cartoon-cel__study {
+      width: 200px;
+      height: 220px;
+    }
+    .cartoon-cel--break-grid .cartoon-cel__caption {
+      max-width: 280px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cartoon-cel {
+      opacity: 1;
+      transform: rotate(var(--cel-angle, 0deg));
+      transition: none;
+    }
+  }
+</style>

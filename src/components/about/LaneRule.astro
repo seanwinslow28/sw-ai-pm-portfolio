@@ -1,0 +1,97 @@
+---
+/**
+ * <LaneRule /> — chromatic left-margin rule for one B-1 beat.
+ *
+ * Rendered as an inline SVG <line> (NOT CSS border-left) per
+ * about-spec §9.2.1. Stroke color per `lane` prop:
+ *   - animator → solid amber #FAC775
+ *   - pm       → solid teal  #0A3E42
+ *   - braided  → vertical linearGradient amber → teal (#FAC775 → #0A3E42)
+ *
+ * Stroke width is 3px desktop / 4px mobile (§9.2 + §9.5).
+ *
+ * The reveal animation lerps `stroke-dasharray` from "0 9999" to
+ * "9999 0" on viewport entry, 200ms AFTER the beat body lands
+ * (§6 motion timeline). The lerp is driven by a CSS keyframe
+ * triggered by adding the `is-revealed` class via the parent
+ * <BeatRow />'s IntersectionObserver. Reduced motion: the rule
+ * renders solid at final color (no draw-in) per §15.
+ *
+ * Source: about-spec-v1.md §9.2 + §9.2.1 + §9.3 + §6 + §15.
+ */
+interface Props {
+  lane: "animator" | "pm" | "braided";
+  slug: string;            // unique id for the per-beat linearGradient (only used when lane === "braided")
+}
+
+const { lane, slug } = Astro.props;
+const gradientId = `braid-${slug}`;
+---
+
+<svg
+  class={`lane-rule lane-rule--${lane}`}
+  aria-hidden="true"
+  focusable="false"
+  preserveAspectRatio="none"
+>
+  {lane === "braided" && (
+    <defs>
+      <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FAC775" />
+        <stop offset="100%" stop-color="#0A3E42" />
+      </linearGradient>
+    </defs>
+  )}
+  <line
+    x1="50%"
+    y1="0"
+    x2="50%"
+    y2="100%"
+    stroke={
+      lane === "animator" ? "#FAC775" :
+      lane === "pm" ? "#0A3E42" :
+      `url(#${gradientId})`
+    }
+    stroke-width="3"
+    stroke-linecap="butt"
+    class="lane-rule__stroke"
+  />
+</svg>
+
+<style>
+  .lane-rule {
+    position: absolute;
+    left: -28px;                /* ~16px to the left of the date line, inset from edge */
+    top: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .lane-rule__stroke {
+    stroke-dasharray: 9999;
+    stroke-dashoffset: 9999;
+    transition: stroke-dashoffset 500ms cubic-bezier(0.22, 1, 0.36, 1) 200ms;
+  }
+
+  /* When the parent .beat-row gains .is-revealed, the lane rule draws in */
+  :global(.beat-row.is-revealed) .lane-rule__stroke {
+    stroke-dashoffset: 0;
+  }
+
+  @media (max-width: 767px) {
+    .lane-rule {
+      left: -22px;
+    }
+    .lane-rule__stroke {
+      stroke-width: 4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lane-rule__stroke {
+      transition: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

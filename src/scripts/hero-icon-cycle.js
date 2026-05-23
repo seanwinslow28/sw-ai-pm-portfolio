@@ -13,6 +13,11 @@ const SESSION_KEY = "hero-cycle-played";
 export function initHeroIconCycle({ container, video }) {
   if (!container || !video) return;
 
+  // Idempotency guard: if a previous init already started the cycle
+  // on this container, the dataset flag is set — bail.
+  if (container.dataset.cycleInitialized === "true") return;
+  container.dataset.cycleInitialized = "true";
+
   // Reduced motion: skip the cycle entirely. The CSS keeps icon-7 visible.
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion) return;

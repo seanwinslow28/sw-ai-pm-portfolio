@@ -601,6 +601,8 @@ Each cel is 280×320px on desktop, contained in a 3×2 CSS Grid (`grid-template-
 
 One cel — the cel Sean considers most load-bearing (the cel the §11.7 annotation arrows at) — sets `break_grid: true` in its frontmatter. That cel renders at **1.2× scale** (336×384 instead of 280×320) and **spans two grid columns** on desktop, pushing the cels around it to reflow. The §11.7 annotation arrow + the geometric break work in concert: typography flags the cel, geometry confirms it. Without the break, all 6 cels read at identical visual weight despite the annotation calling one out — the bento-box quality the spec was trying to dodge.
 
+> **Phase 3e (2026-05-22) — v1 default: all 6 cels ship `break_grid: false`.** On review, the 1.2×-scale Samurai Jack cel was orphaning Jake-the-Dog in a single-cel row 3. Sean's call: scale Jack to match the rest. The CSS path (`.cartoon-cel--break-grid` rules + the schema field's default `false`) stays in place as dead code for v1.1 emphasis if/when a future cel warrants it; v1 ships a uniform 3×2 grid.
+
 Mobile (§11.5): `break_grid: true` is a no-op (single-column stack already gives every cel equal width). The visual emphasis comes from the annotation alone on mobile.
 
 ### 11.4 Why pencil-test studies, not real cartoon stills

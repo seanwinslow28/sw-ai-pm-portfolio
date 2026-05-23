@@ -307,6 +307,8 @@ The portfolio's thesis is comprehension + transparency. Showing the portfolio's 
 
 ## 8. The theme toggle
 
+> **Phase 3e (2026-05-22) — DEVIATION: dark mode removed entirely.** The toggle was deleted, the `:root[data-theme="dark"]` token block was deleted, and the FOUC-prevention cookie reader in `BaseLayout.astro` was deleted. The V3 bridge `sw-theme` cookie may still exist in legacy browsers but is no longer read or honored. Sections §8.1–§8.6 below remain as historical reference for the rationale; do not implement them. Re-introducing dark mode would require a fresh design pass — the warm-paper torn-paper texture and the hero animation aren't currently dark-mode-compatible. See CHANGELOG for the bug context.
+
 ### 8.1 Visual
 
 ```

@@ -7,11 +7,11 @@
  */
 
 export const EMAIL = "sean@seanwinslow.com";
-export const LINKEDIN_URL = "https://linkedin.com/in/seanwinslow";
-export const GITHUB_URL = "https://github.com/seanwinslow";
-export const SUBSTACK_URL = "https://sean.substack.com";
+export const LINKEDIN_URL = "https://www.linkedin.com/in/sean-winslow-204390a5";
+export const GITHUB_URL = "https://github.com/seanwinslow28";
+export const SUBSTACK_URL = "https://substack.com/@seanpwins";
 export const FLEET_DASHBOARD_URL = "https://fleet.seanwinslow.com";
-export const SITE_REPO_URL = "https://github.com/seanwinslow/sw-portfolio";
+export const SITE_REPO_URL = "https://github.com/seanwinslow28/sw-ai-pm-portfolio";
 
 export const SITE_NAME = "Sean Winslow";
 export const SITE_DESCRIPTION = "AI Product Manager. Raised by Saturday morning cartoons and Vercel deployment logs.";

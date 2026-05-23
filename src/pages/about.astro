@@ -1,0 +1,69 @@
+---
+/**
+ * /about/ — Sean's human-self surface.
+ *
+ * Composes the 10-band anatomy from about-spec §2 top to bottom:
+ *   1. (BaseLayout dateline / nav / etc. — chrome is on)
+ *   2. AboutHero      — lead + character PNG
+ *   3. NowPulse       — daily-dated pulse strip
+ *   4. Beats          — B-1 stacked beats with lane-tint rule
+ *   5. (MDX body: B-2 thesis prose section)
+ *   6. CartoonCanon   — B-3 Saturday morning canon (rendered from MDX body)
+ *   7. (MDX body: B-4 building-toward prose section with CurrentlyAtStamp + RecruiterCallout)
+ *   8. ProofPoints    — B-5 four links (rendered from MDX body)
+ *   9. PullQuote      — closing serif italic (rendered from MDX body)
+ *
+ * Pre-MDX bands (hero + pulse + beats) are assembled here so the
+ * <Beats /> component can read the typed beats[] array from the
+ * collection entry's frontmatter without going through MDX's
+ * generic <slot />. Post-pulse content (B-2 through pull quote)
+ * is composed in the MDX body so prose authoring + component
+ * rendering interleave naturally.
+ *
+ * The page renders with FULL site chrome (nav + footer) — NOT
+ * noChrome={true} (that's home-only per BaseLayout convention).
+ *
+ * Source: about-spec-v1.md §2 anatomy + §3 vertical budget + §16.
+ */
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import AboutHero from "~/components/about/AboutHero.astro";
+import NowPulse from "~/components/about/NowPulse.astro";
+import Beats from "~/components/about/Beats.astro";
+import "~/styles/about.css";
+
+const aboutEntries = await getCollection("about");
+const aboutEntry = aboutEntries[0];
+if (!aboutEntry) {
+  throw new Error("src/content/about/index.mdx missing — Phase 3d Task 8.2 should have shipped it");
+}
+
+const { Content, headings: _headings } = await aboutEntry.render();
+const fm = aboutEntry.data;
+
+const pageDescription = fm.description;
+---
+
+<BaseLayout title={fm.title} description={pageDescription} ogImage="/og-default.png">
+  <main id="main" class="about-page page-sheet">
+    <div class="about-page__band about-page__band--hero">
+      <AboutHero
+        lead={fm.lead}
+        characterImage={fm.character_image}
+        characterAlt={fm.character_alt}
+      />
+    </div>
+
+    <div class="about-page__band about-page__band--pulse">
+      <NowPulse />
+    </div>
+
+    <div class="about-page__band about-page__band--beats">
+      <Beats beats={fm.beats} />
+    </div>
+
+    <div class="about-page__mdx">
+      <Content frontmatter={fm} />
+    </div>
+  </main>
+</BaseLayout>

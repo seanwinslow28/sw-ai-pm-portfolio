@@ -1,0 +1,58 @@
+---
+/**
+ * <RecruiterCallout /> — B-4 conditional italic.
+ *
+ * Renders ONLY when `available` is true per about MDX frontmatter.
+ * When `available` is false, the component returns null (no markup).
+ *
+ * Copy is LOCKED in the component (NOT a prop) so it can be
+ * referenced from PMP §4 in lockstep with the other locked copy
+ * if Sean wants to surface it there for cross-page consistency.
+ *
+ * Visual sibling to <NowPulse /> — paper-strip background, 0.5px
+ * teal dividers top + bottom, single line of Newsreader italic.
+ *
+ * Source: about-spec-v1.md §12.1 surface 3 + §12.5.
+ */
+interface Props {
+  visible: boolean;
+}
+
+const { visible } = Astro.props;
+---
+
+{visible && (
+  <aside class="recruiter-callout" aria-label="Note to hiring contacts">
+    <p class="recruiter-callout__body">
+      if you're hiring around this, my agent fleet config goes out on second conversation.
+    </p>
+  </aside>
+)}
+
+<style>
+  .recruiter-callout {
+    margin: 32px 0 0 0;
+    padding: 16px 0;
+    max-width: 680px;
+    border-top: 0.5px solid var(--border-paper);
+    border-bottom: 0.5px solid var(--border-paper);
+    background-color: rgba(10, 62, 66, 0.04);
+  }
+
+  .recruiter-callout__body {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.1px;
+    line-height: 1.5;
+    color: var(--teal);
+  }
+
+  @media (max-width: 767px) {
+    .recruiter-callout__body {
+      font-size: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+/**
+ * <ProofPoints /> — B-5 four-link block.
+ *
+ * Mono links, left-aligned, one per line. No descriptions.
+ * The arrow prefix is rendered as a static "→" character (no
+ * pseudo-element trickery — keeps the print stylesheet honest).
+ *
+ * The "rev scribble" annotation on the /transactions/ link is
+ * DEFERRED to v2 per spec §1.2. v1 ships four clean links.
+ *
+ * Source: about-spec-v1.md §13 + §4 type table.
+ */
+interface Props {
+  linkedinUrl: string;
+  githubUrl: string;
+  transactionsUrl: string;
+  resumeUrl: string;
+}
+
+const { linkedinUrl, githubUrl, transactionsUrl, resumeUrl } = Astro.props;
+---
+
+<section class="proof-points" aria-labelledby="b5-heading">
+  <p class="proof-points__frame-prefix">B-5 ·</p>
+  <h2 id="b5-heading" class="proof-points__heading" aria-label="B-5: Proof points">
+    Proof points
+  </h2>
+  <ul class="proof-points__list">
+    <li>
+      <a href={linkedinUrl} class="proof-points__link">
+        <span class="proof-points__arrow" aria-hidden="true">→</span>
+        linkedin.com/in/sean-winslow-204390a5
+      </a>
+    </li>
+    <li>
+      <a href={githubUrl} class="proof-points__link">
+        <span class="proof-points__arrow" aria-hidden="true">→</span>
+        github.com/seanwinslow28
+      </a>
+    </li>
+    <li>
+      <a href={transactionsUrl} class="proof-points__link">
+        <span class="proof-points__arrow" aria-hidden="true">→</span>
+        seanwinslow.com/transactions
+      </a>
+    </li>
+    <li>
+      <a href={resumeUrl} class="proof-points__link">
+        <span class="proof-points__arrow" aria-hidden="true">→</span>
+        resume.pdf
+      </a>
+    </li>
+  </ul>
+</section>
+
+<style>
+  .proof-points {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .proof-points__frame-prefix {
+    margin: 0 0 8px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    color: var(--amber-mid);
+  }
+
+  .proof-points__heading {
+    margin: 0 0 32px 0;
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+    color: var(--teal);
+  }
+
+  .proof-points__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .proof-points__list li {
+    margin: 0 0 12px 0;
+  }
+
+  .proof-points__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: var(--teal);
+    text-decoration: none;
+    transition: text-decoration-color 200ms;
+  }
+
+  .proof-points__link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .proof-points__arrow {
+    display: inline-block;
+    width: 12px;
+  }
+
+  @media (max-width: 767px) {
+    .proof-points {
+      padding: 0 20px;
+    }
+    .proof-points__heading {
+      font-size: 36px;
+      margin-bottom: 24px;
+    }
+    .proof-points__link {
+      font-size: 13px;
+    }
+  }
+
+  @media print {
+    .proof-points__link::after {
+      content: " (" attr(href) ")";
+      font-weight: 400;
+      color: var(--ink-secondary);
+    }
+  }
+</style>
