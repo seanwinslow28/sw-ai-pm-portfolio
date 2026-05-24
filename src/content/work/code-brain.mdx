@@ -38,10 +38,10 @@ methods:
     link: /work/animation-pipeline/
 
 four_q:
-  what: "[PLACEHOLDER — Q1] A personal command-center that runs a small fleet of Claude agents on a daily schedule. Skills + hooks + 8 named agents; the morning Daily Driver writes the portfolio's daily-dated layer."
-  why: "[PLACEHOLDER — Q2] Three options considered: ChatGPT Plus + custom GPTs, Cursor + project rules, or a Claude-Code-native fleet. Chose Claude-Code-native because skills compose better than prompts and because the agent SDK lets a single launchd job orchestrate the whole morning."
-  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) launchd silently failing on first run after a macOS update; 2) the morning agent hitting a tool-call quota; 3) prompt-cache misses cascading across the morning."
-  learn: "[PLACEHOLDER — Q4] The fleet's job isn't to write code. The fleet's job is to keep me thinking about the next problem instead of the last one."
+  what: "A personal command-center built on the Claude Agent SDK and scheduled through launchd. 118 skills compose into 8 named agents, governed by 14 lifecycle hooks. The Daily Driver agent wakes at 08:45 and writes the portfolio's daily-dated layer before I open Slack."
+  why: "Three options considered: ChatGPT Plus with custom GPTs, Cursor with project rules, or a Claude-Code-native fleet. Chose Claude-Code-native because skills compose better than prompts and because the Agent SDK lets a single launchd job orchestrate an entire morning across local and cloud models."
+  break: "Three named failure modes. First, launchd silently failing on the first run after a macOS update. Second, the morning agent saturating its tool-call quota mid-brief. Third, prompt-cache misses cascading across the day's runs and tripling the token bill."
+  learn: "The fleet's job isn't to write code. The fleet's job is to keep me thinking about the next problem instead of the last one."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -52,9 +52,9 @@ import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
 import MetricChart from "~/components/artifacts/MetricChart.astro";
 
 <Opener>
-  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] My second brain has a fleet now. The same vault that held meeting notes a year ago is now the runtime for eight named agents that wake up at 08:45 every weekday, read overnight commits, and write the day's brief into the file system before I've opened Slack.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The thesis is small: skills compose better than prompts. The artifacts on this page are the evidence — Sean replaces this paragraph post-plan.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] What's below is the morning. What's not below is the cost — the fleet pays for itself in attention, not money.</p>
+  <p>At 08:45 every weekday, a launchd job on a Mac Mini in my apartment wakes up a Claude agent named Daily Driver. It reads last night's git commits, scans the vault for anything I touched, opens four JSON files in the portfolio repo, and writes the day's dateline into them before the coffee finishes brewing. I used to call this folder my second brain. The folder did not change. The folder has a fleet now.</p>
+  <p>The vault was a Markdown graveyard for two years. Meeting notes, half-written essays, a 4,000-word file called "thoughts-on-pacing.md" that I have never re-opened. Then the Claude Agent SDK shipped, and the same folder started hosting things that ran on a clock. 118 skills now compose into 8 named agents the way recipes compose into a kitchen. The Daily Driver writes the morning brief. Vault Synth runs against new commits at 14:00. Process Inbox triages overnight email before I've made eye contact with a single human. None of them are mine in any honest sense. I named them, scheduled them, and they out-produced me by Tuesday of week one.</p>
+  <p>The fleet replaced the guy who organized media files in a basement for nine years. Same hands, different tools. He's still in the basement. The basement just has a Mac Mini in it now. What's below is the morning ritual. The bill isn't in dollars.</p>
 </Opener>
 
 <InvestigationBoard>
@@ -69,7 +69,7 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
       { x: "May 1", y: 38 },
       { x: "May 16", y: 47 },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Morning fleet runs scaling as more skills are wired in.</p>
+    <p slot="caption">Daily Driver fleet runs per day, April through mid-May. Curve tracks new skills landing in the vault.</p>
   </MetricChart>
 
   <PRDDecision
@@ -78,27 +78,18 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
     prdTitle="Tier 1 retrofit — agent SDK stable"
     decisionLine="Retrofit all Tier-1 agents to the stable SDK. Hooks lifecycle wired."
     rationale="The beta SDK shipped breaking changes weekly; Tier 1 ROI requires a stable surface.">
-    <p slot="caption">[PLACEHOLDER CAPTION] Tier 1 retrofit decision. The agent SDK reached 1.0; the fleet retrofitted in a day.</p>
+    <p slot="caption">Tier-1 retrofit decision when the Agent SDK reached 1.0. Eight named agents migrated in a single day.</p>
   </PRDDecision>
 
-  <SlackQuote
-    artifactId="artifact-3"
-    date="APR 28"
-    messages={[
-      { role: "design crit", text: "[PLACEHOLDER DM] how do you measure fleet ROI when most of the value is attention?" },
-      { role: "sean", text: "[PLACEHOLDER REPLY] commit cadence, mostly. and the days I'm not at my desk by 9." },
-    ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] DM exchange on fleet ROI; the answer is attention, not throughput.</p>
-  </SlackQuote>
+  {/* artifact cut per spec §11.4 — no real DM available */}
 
   <BoardArtifact
     artifactId="artifact-4"
     date="MAR 20"
     boardLabel="schedule-recommendations.md — March update"
-    excerpt={`[PLACEHOLDER EXCERPT]
-- 08:45 daily — Daily Driver morning brief
-- 14:00 weekday — Synth agent runs against new commits
+    excerpt={`- 08:45 daily — Daily Driver morning brief
+- 14:00 weekday — Vault Synth runs against new commits
 - 22:00 nightly — vault-knowledge-mcp re-index`}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Schedule update from the March cadence review.</p>
+    <p slot="caption">Schedule excerpt from the March cadence review. Three fixed windows; everything else fires on demand.</p>
   </BoardArtifact>
 </InvestigationBoard>
