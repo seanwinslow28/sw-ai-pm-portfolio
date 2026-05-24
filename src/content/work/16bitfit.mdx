@@ -38,10 +38,10 @@ methods:
     link: /work/animation-pipeline/
 
 four_q:
-  what: "[PLACEHOLDER — Q1] A 16-bit fitness battle game with AI-generated sprites. The battle mode is the build target; the pipeline is the artifact."
-  why: "[PLACEHOLDER — Q2] Three options considered for the sprite pipeline. Chose AI-generated + manual cleanup hybrid because the volume target was incompatible with full-hand pixel art."
-  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) sprite consistency across animation cycles; 2) Phaser performance with large sprite atlases; 3) the gameplay loop being uninteresting without the visual polish."
-  learn: "[PLACEHOLDER — Q4] Pausing was right. The return condition is the animation pipeline shipping; until then, the game can't inherit a tested production system."
+  what: "A 16-bit fitness battle game with AI-generated sprites. The fight loop is the build target. The sprite pipeline behind it is the artifact, and right now the artifact is further along than the game."
+  why: "The volume target — a few hundred frames across a roster of fighters and idle cycles — was incompatible with hand pixel-art on a one-person budget. Three pipeline approaches got considered: full-hand pixel-art (cut on volume), full-generative without cleanup (cut on consistency across cycles), and AI-generated with a manual cleanup pass (kept). The third one is the production system the animation pipeline case study is also using; the game was supposed to be the second project that inherited it."
+  break: "Three named failure modes. One, sprite identity drift between animation cycles — the fighter's silhouette wandering by a pixel or two between idle and punch, which reads as flicker. Two, Phaser performance under large sprite atlases at 60fps on mid-range mobile. Three, the gameplay loop not carrying its own weight without the visual polish layer — the fight mechanics being interesting enough to play before the sprites get pretty."
+  learn: "Pausing was right. The return condition is the animation pipeline shipping its first full short; until then, the game can't inherit a tested production system, and any sprite work I do now is a duplicate run of work happening one repo over. Sequencing the bets — pipeline first, then the game that consumes it — was a PM call I almost didn't make on a project where I'm the only stakeholder."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -51,9 +51,9 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
 import SlackQuote from "~/components/artifacts/SlackQuote.astro";
 
 <Opener>
-  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] I built the pipeline before I built the game on purpose. The pipeline is the test, the game is the application. Right now the pipeline is at 47%; the game is on the shelf with a clear return condition.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The return condition is above the hero media. The pause is deliberate. Sean writes the real prose post-plan.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] What's below is the pipeline's progress and the gameplay-loop work that was killed when the pause landed.</p>
+  <p>I had every intention of making a 16-bit fitness game where you punch your way through a roster of cartoon brutes between sets of actual pushups. I had the fighter sketches, the punch-frame storyboards, a Phaser project with a working hit-stun timer, and the kind of unearned optimism that comes from picking a side project with a name as pleased with itself as "16BitFit." What I did not have, three months in, was a sprite pipeline I could trust to produce the same fighter twice in a row.</p>
+  <p>So I looked at the two unfinished bets on the desk and picked one. The pipeline went one way. The game went on the shelf with a date on it. The pipeline became the case study. A system that spits out the same fighter through idle, punch, hurt, and KO — same hairline, same belt buckle, same stupid grin — turns out to be more interesting than the game it was feeding. The game is going to inherit a tested production system. It is not going to inherit a half-built one I duct-taped to itself at 11pm.</p>
+  <p>What got cut when the pause landed: a v1 gameplay loop that wasn't carrying its own weight without the polish layer, a Phaser atlas-streaming experiment I'd talked myself into mid-scope-creep, and an evening I would have spent angrily exporting frames I knew weren't right yet. What's below is the pipeline's progress through May, the pause decision, and the gameplay-loop work that got marked KILLED with no hard feelings.</p>
 </Opener>
 
 <InvestigationBoard>
@@ -67,33 +67,33 @@ import SlackQuote from "~/components/artifacts/SlackQuote.astro";
       { x: "Apr", y: 38 },
       { x: "May", y: 64 },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Sprite generation across pipeline iterations. The pipeline is the load-bearing artifact.</p>
+    <p slot="caption">MAR–MAY — sprite frames generated by the pipeline across three iteration cycles. 12 → 38 → 64. The pipeline is the load-bearing artifact, not the game it was supposed to feed.</p>
   </MetricChart>
 
   <BoardArtifact
     artifactId="artifact-2"
     date="APR 2"
     boardLabel="Pause decision board"
-    excerpt="[PLACEHOLDER EXCERPT] Pause game work; continue pipeline work. Return when animation pipeline ships first full short.">
-    <p slot="caption">[PLACEHOLDER CAPTION] The pause decision. Pipeline continues; gameplay-loop work pauses.</p>
+    excerpt="DECISION — pause game work; continue pipeline work. Return condition: animation pipeline ships first full short. Rationale: the game can't inherit a production system that isn't tested yet.">
+    <p slot="caption">APR 2 — the pause decision, written in plain language. Pipeline work continues; gameplay work waits for the system to inherit.</p>
   </BoardArtifact>
 
   <SlackQuote
     artifactId="artifact-3"
     date="MAR 12"
     messages={[
-      { role: "design crit", text: "[PLACEHOLDER DM] Phaser scope creep again?" },
-      { role: "sean", text: "[PLACEHOLDER REPLY] yeah. pausing game; pipeline keeps going." },
+      { role: "design crit", text: "atlas streaming for a fitness game? what are we doing here." },
+      { role: "sean", text: "fair. pausing the game. pipeline keeps going — that's the artifact." },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] The scope-creep exchange that triggered the pause decision.</p>
+    <p slot="caption">MAR 12 — the scope-creep exchange that triggered the pause decision. Three weeks before it was formally written up.</p>
   </SlackQuote>
 
   <BoardArtifact
     artifactId="artifact-4"
     date="MAR 5"
     boardLabel="Killed: v1 gameplay loop"
-    excerpt="[PLACEHOLDER EXCERPT] v1 gameplay loop killed. The fight loop wasn't carrying its own weight without the polish layer."
+    excerpt="KILLED — v1 gameplay loop. The fight loop wasn't carrying its own weight without the polish layer. Decision: rebuild the loop after the pipeline ships and sprites stop drifting between cycles."
     killed={true}>
-    <p slot="caption">[PLACEHOLDER CAPTION] The killed v1 gameplay loop. Pipeline-first is the new bet.</p>
+    <p slot="caption">MAR 5 — the v1 fight loop, marked KILLED. Pipeline-first is the new bet; the loop rebuilds after the sprites stabilize.</p>
   </BoardArtifact>
 </InvestigationBoard>
