@@ -1,0 +1,45 @@
+An editorial illustration of a software terminal pane rendered on warm cream paper, with a small pencil-test marginalia character in the top-right corner.
+
+Composition: 4:5 portrait, 800×1000 pixels.
+
+The terminal pane occupies the central area of the upper 75% of the image (the upper 800×750 zone). The terminal pane is approximately 680px wide × 360px tall, centered horizontally with about 60px of cream margin on each side, positioned roughly in the vertical middle of the upper zone.
+
+Terminal pane styling:
+- Sharp rectangular block. NO rounded corners. NO macOS Terminal.app chrome. NO traffic-light buttons. NO header bar.
+- Background INSIDE the pane: warm cream #FFF9F0 (same as the page paper — this is a paper-on-paper editorial rendering, NOT a dark terminal).
+- Top edge of the pane: a thin 0.5pt horizontal rule in teal #0A3E42 spanning the full pane width.
+- Bottom edge of the pane: a matching thin 0.5pt horizontal rule in teal #0A3E42.
+
+Content inside the pane, rendered in JetBrains Mono font at approximately 16pt visual size, left-aligned with ~24px left padding, line-height 1.4:
+  Line 1: $ npm install @swins/intent-engineering-mcp
+  Line 2: added 1 package in 1.2s
+  Line 3: ✓ DNS-verified registry · 2026-05-12
+  Line 4: ✓ Claude Desktop MCP server registered
+
+- Lines 1 and 2 in ink primary #1A1A1E.
+- The two ✓ checkmarks on lines 3 and 4 are in stamp amber #7C2D12. The text after each checkmark is in ink primary #1A1A1E.
+- Text must be crisp and fully legible. The exact strings above are mandatory and must appear character-for-character.
+
+Below the terminal pane, with about 48px of cream paper gap, a small two-line MCP-tool-call indicator block, JetBrains Mono ~13pt, left-aligned with the terminal pane:
+  Line 1: tools/list ↩ 2 tools
+  Line 2: intent.draw_up ✓
+
+The ↩ glyph and the trailing ✓ on line 2 are in stamp amber #7C2D12; the rest is ink primary #1A1A1E.
+
+In the top-right corner of the image (in the cream margin OUTSIDE the terminal pane), a small pencil-test marginalia illustration: a slim, casually-drawn human male figure (~140px tall), drawn in rough pencil-test register, shown in profile from the side, holding a pencil with his right hand and drawing a small ✓ check mark in the air. Hand-drawn imperfection — soft pencil construction lines, slight rough edges, no clean inks. Reads as a quick annotation in the margin.
+
+Background of the entire image: warm cream paper #FFF9F0 with a very subtle paper-fiber texture. Slight warm vignette acceptable but not required.
+
+Palette (strict): ink primary #1A1A1E (most text, pencil-test character), paper cream #FFF9F0 (background, terminal-pane interior), teal #0A3E42 (top and bottom rules of the terminal pane only), stamp amber #7C2D12 (the two checkmarks in the terminal, the ↩ glyph and ✓ checkmark in the MCP indicator block, the small pencil-test ✓ being drawn by the character). NO other colors. NO dark substrates. NO neon. NO gradients.
+
+The bottom 250px of the image (the lowest quarter) must be visually quiet — clean cream paper with no terminal content, no character, no rules. This zone will be overlaid by a metadata strip in HTML.
+
+NEGATIVES (must not appear):
+- NO macOS, Windows, Linux, or any OS chrome on the terminal.
+- NO traffic-light close/minimize/maximize buttons.
+- NO baked-in project title, tagline, URL, or branding (the project name, "Intent Engineering MCP", and the tagline "Drawing up agents to act with intent." must NOT appear anywhere in the image — these render in HTML).
+- NO full-color terminal.
+- NO dark-substrate terminal (this terminal is on cream paper, not on a black or navy background).
+- NO photorealistic terminal — the rendering is editorial / paper-on-paper, not a literal screenshot.
+- NO additional human characters beyond the corner marginalia figure.
+- NO watermarks or signatures.
