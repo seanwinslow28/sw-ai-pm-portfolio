@@ -85,6 +85,8 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
   }
   .grid-cell {
     position: relative;
+    min-width: 0; /* grid children default to min-width:auto; this prevents tile content from blowing out the column */
+    overflow: hidden;
   }
 
   .tear-divider {
