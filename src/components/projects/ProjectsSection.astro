@@ -62,7 +62,13 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
     z-index: 11;
     padding: 80px 52px;
     background-color: var(--teal);
-    overflow: hidden;
+    /* overflow:hidden removed Phase 3e hotfix — was clipping the bottom tear's
+       alpha-feathered edge at the projects/about-teaser seam, creating a hard
+       hairline. Without it the cream tear bleeds onto the cream about-teaser
+       below (z-index: 11 still keeps the section above about-teaser's z-10),
+       so the alpha-feathered fluff fibers blend cream-on-cream and the seam
+       reads as one continuous torn page. The grid + dateline + annotations are
+       all max-width-constrained inside .projects-inner so nothing else escapes. */
   }
   .projects-inner {
     position: relative;
