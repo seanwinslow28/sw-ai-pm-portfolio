@@ -23,28 +23,30 @@ const lastUpdated = transactions[0]?.data.shipped ?? new Date().toISOString().sl
 ---
 
 <BaseLayout title="Transactions — Sean Winslow" description="Every shipped artifact across the agent fleet, dated, with the explanation attached.">
-  <IndexHeader count={count} lastUpdatedISO={lastUpdated} />
-  <FilterPills />
+  <div class="page-sheet">
+    <IndexHeader count={count} lastUpdatedISO={lastUpdated} />
+    <FilterPills />
 
-  <section class="ledger-list" aria-label="Ledger rows">
-    {count === 0 && (
-      <p class="empty-state">
-        No artifacts on the ledger yet. Check back ~weekly.
-      </p>
-    )}
-    {transactions.map((t) => (
-      <LedgerRow
-        slug={t.slug}
-        shipped={t.data.shipped}
-        surface={t.data.surface}
-        status={t.data.status}
-        title={t.data.title}
-        valueProp={t.data.valueProp}
-      />
-    ))}
-  </section>
+    <section class="ledger-list" aria-label="Ledger rows">
+      {count === 0 && (
+        <p class="empty-state">
+          No artifacts on the ledger yet. Check back ~weekly.
+        </p>
+      )}
+      {transactions.map((t) => (
+        <LedgerRow
+          slug={t.slug}
+          shipped={t.data.shipped}
+          surface={t.data.surface}
+          status={t.data.status}
+          title={t.data.title}
+          valueProp={t.data.valueProp}
+        />
+      ))}
+    </section>
 
-  <FooterFold />
+    <FooterFold />
+  </div>
 </BaseLayout>
 
 <style>

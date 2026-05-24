@@ -1,0 +1,44 @@
+An editorial pencil-and-ink illustration of a hand-drawn knowledge graph on warm cream paper, with a slim casual male character standing inside the graph holding a single labeled thread.
+
+The human character is sourced from the attached reference image: a slim, casually-drawn male figure in pencil-test register. He appears in the lower-center of the upper image zone, three-quarter view, looking upward at the nodes above him. He is mid-figure (waist up), approximately 220px tall in the final image.
+
+Composition: 4:5 portrait, 800×1000 pixels.
+
+The upper 75% of the image (800×750 zone) holds the knowledge graph and the character. Bottom 25% (800×250) is visually quiet clean cream paper for metadata-strip overlay.
+
+The knowledge graph:
+- 7 nodes drawn as rough-ink circles, scattered across the upper 60% of the upper zone (so the lower-third stays clearer for the character). Each circle is approximately 80–100px in diameter, hand-drawn with a slight imperfect outline.
+- Each circle labeled in small JetBrains Mono text, approximately 11pt visual size, ink primary #1A1A1E, with one concept name centered inside or just below the circle. The 7 labels (in this layout):
+  - Top-left (around 15% from left, 15% from top): `token-waste`
+  - Top-center (around 50% from left, 8% from top): `comprehension-audit`
+  - Top-right (around 85% from left, 15% from top): `daily-note-generation`
+  - Mid-left (around 12% from left, 40% from top): `prompt-caching`
+  - Mid-right (around 88% from left, 40% from top): `boundary-objects`
+  - Lower-left (around 25% from left, 60% from top): `liveness-tokens`
+  - Lower-right (around 75% from left, 60% from top): `restatement-bias`
+
+- Nodes connected by curved rough-ink edges. Approximately 8–10 edges total, forming a slightly tangled but readable graph. Each edge has a tiny mono label sitting on or near the curve in ink-secondary #546E71, approximately 8pt visual size, with one of: `supports`, `contradicts`, `extends`, or `restates`. Distribute the four edge labels reasonably across the edges (no single label dominates).
+
+- ONE specific edge is rendered slightly heavier in ink than the others. This heavier edge — call it "the thread" — visibly passes through EXACTLY 3 of the 7 nodes in this order: `token-waste` → `boundary-objects` → `daily-note-generation`. The thread enters `token-waste` from the bottom (from the character's hand), passes through `boundary-objects`, and continues to `daily-note-generation`, then trails off the top of the frame. The thread itself is drawn in stamp amber #7C2D12, while all other edges are in ink primary #1A1A1E.
+
+The human character: in the lower-center of the upper image zone, mid-figure, three-quarter view, looking upward at the graph. His RIGHT HAND is raised to about shoulder height, holding the start of the thread (the amber curve) between thumb and forefinger. The thread visibly emerges from his hand and curves up into the `token-waste` node above him.
+
+Background of the image: warm cream paper #FFF9F0 with subtle paper-fiber texture. At the EDGES of the image (left, top, right margins, NOT bottom), very faint marginalia — small handwritten arrows, a few struck-out words in tiny ink-secondary text — barely legible, just enough to suggest a working notebook page. The center of the image (where the graph and character live) is clear.
+
+Below the graph and character (still in the upper-75% zone), clean cream paper down to the metadata-strip safe zone — no nodes, no edges, no marginalia in this lower region.
+
+Style: pencil-and-ink editorial, hand-drawn throughout. Same register as the reference image. Rough construction lines on the character, imperfect circle outlines on the nodes, slightly tangled but readable edges.
+
+Palette (strict): ink primary #1A1A1E (pencil lines on the character, ink edges, node outlines, node labels), paper cream #FFF9F0 (background), ink-secondary #546E71 (edge labels, marginalia at edges), stamp amber #7C2D12 (the thread — the one heavier curve passing through 3 nodes — and ONLY this). NO other colors.
+
+The bottom 250px must be visually quiet — no nodes, no character feet, no edges.
+
+NEGATIVES:
+- NO clean vector graphics. The graph must look hand-drawn.
+- NO full-color rendering.
+- NO Claude mascot or AI companion character.
+- NO baked-in project title (the words "Code Brain" or the tagline must NOT appear).
+- NO photorealism.
+- NO Sean's pencil-test character outside the graph — he is inside the graph (holding the thread), not standing beside it.
+- NO more than one amber thread. Exactly ONE heavier amber curve passes through exactly 3 nodes.
+- NO watermarks or signatures.

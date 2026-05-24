@@ -10,7 +10,7 @@ tags:
   - pipeline
 hero_media: /assets/projects/animation-pipeline.webp
 hero_media_type: image
-hero_media_alt: A pencil-test frame from Sean's portfolio short, mid-walk.
+hero_media_alt: A vertical strip of four pencil-test animation frames showing a Claude mascot walk cycle, labeled contact, recoil, passing, and high-point.
 order: 1
 date_started: 2026-03-15
 date_active_through: 2026-06-11
@@ -39,10 +39,10 @@ methods:
     link: /work/code-brain/
 
 four_q:
-  what: "[PLACEHOLDER — Q1] A 2D pencil-test animation pipeline that ships consistent character animation from sketch through render via a small fleet of agents."
-  why: "[PLACEHOLDER — Q2] Three options considered: Midjourney for stylization, hand-drawn end-to-end, or a hybrid pipeline. Chose hybrid because the consistency-of-character requirement breaks pure-AI approaches and the volume requirement breaks pure-hand-drawn."
-  break: "[PLACEHOLDER — Q3] Three named failure modes: 1) Seedance drift across long sequences; 2) alpha channel loss in the ffmpeg encode; 3) the render queue silently dropping frames at >150 frames."
-  learn: "[PLACEHOLDER — Q4] The pipeline is the artifact. The character is the test the pipeline has to pass."
+  what: "A 2D pencil-test animation pipeline. Sketch goes in one end; a 24fps WebM with a clean alpha channel comes out the other. A small fleet of agents and one shell script handle the frames between."
+  why: "Three options on the table: Midjourney for stylization, hand-drawn end to end, or a hybrid pipeline anchored on the character. Pure AI broke on character consistency across long sequences. Pure hand-drawn broke on volume. The hybrid kept the character locked and the frame count tractable."
+  break: "Three named failure modes. Seedance drifts the character on sequences longer than ~120 frames. The ffmpeg encode silently strips the alpha channel if libvpx-vp9 is configured for h264 defaults. The render queue drops frames past 150 without an exception — a length check on the output catches it."
+  learn: "The pipeline is the artifact. The character is the test the pipeline has to pass."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -54,9 +54,9 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
 import Annotation from "~/components/annotations/Annotation.astro";
 
 <Opener>
-  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] I taught Seedance to draw me. Then I taught the pipeline to ship the drawing. The character on this page is the test the pipeline has to pass — if a single frame breaks line, the whole short breaks.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The pipeline runs on five agents and one shell script. The script handles frame cleanup; the agents handle the harder calls. Sean writes the prose; Sean replaces this paragraph post-plan.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] What's on the page below is the production thread — what shipped, what was killed, what's still running.</p>
+  <p>I taught Seedance to draw me. Then I taught the pipeline to ship the drawing. The guy walking across the top of this page is the unit test. If a single frame breaks the line — if the jaw drifts, if the alpha channel leaks, if the encode quietly swaps in the wrong colorspace — the whole short breaks with it.</p>
+  <p>The system is five agents and one shell script. The script cleans the frames. The agents make the harder calls: when the character has drifted enough to re-anchor, when an encode pass needs a re-run, when a 146-frame raw cycle is close enough to ship and when it isn't. I write the prompts. Seedance draws the model sheet. The pipeline does everything between sketch and render that I used to do by hand at New York Life, in a windowless basement, with three monitors and a copy of After Effects that crashed every fourth save.</p>
+  <p>What's below is the production thread. What shipped, what was killed, what's still running. The 9.2-second loop at the top is rev 3 of the cleanup chain. Rev 1 took twenty-two seconds per frame and lost the alpha. Rev 2a takes four seconds per frame and holds the alpha through every encode. That's the whole job.</p>
 </Opener>
 
 <InvestigationBoard>
@@ -66,7 +66,7 @@ import Annotation from "~/components/annotations/Annotation.astro";
     prdTitle="A-1 Pipeline rev 3 — final cleanup chain"
     decisionLine="220-frame cycle locks. Move to case-study hero media (not portfolio hero)."
     rationale="Rev 3 is consistent enough to ship; portfolio hero stays with the 94-frame loop per hero-spec §7.5.">
-    <p slot="caption">[PLACEHOLDER CAPTION] First fully cleaned 220-frame cycle. Alpha holds; line stays consistent; ffmpeg encode passes.</p>
+    <p slot="caption">MAY 15 — first fully cleaned 220-frame cycle. Alpha holds; line stays consistent; ffmpeg encode passes.</p>
   </PRDDecision>
 
   <MetricChart
@@ -80,17 +80,17 @@ import Annotation from "~/components/annotations/Annotation.astro";
       { x: "v2", y: 11 },
       { x: "v2a", y: 4 },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Render time per frame across pipeline versions. v2a landed the libvpx-vp9 + alpha_mode=1 combo.</p>
+    <p slot="caption">MAY 6 — render time per frame, v1 through v2a. v2a is the libvpx-vp9 + alpha_mode=1 combination.</p>
   </MetricChart>
 
   <SlackQuote
     artifactId="artifact-3"
     date="APR 23"
     messages={[
-      { role: "eng lead", text: "[PLACEHOLDER DM] the alpha channel is the rub. vp9 with alpha_mode=1, not h264." },
-      { role: "sean", text: "[PLACEHOLDER REPLY] tried that yesterday — re-running with the corrected flag." },
+      { role: "eng lead", text: "the alpha channel is the rub. vp9 with alpha_mode=1, not h264." },
+      { role: "sean", text: "tried that yesterday — re-running with the corrected flag." },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Anonymized DM exchange on the alpha-channel encode rub.</p>
+    <p slot="caption">APR 23 — anonymized DM. The alpha-channel encode rub, named and fixed in two messages.</p>
   </SlackQuote>
 
   <BoardArtifact
@@ -99,6 +99,6 @@ import Annotation from "~/components/annotations/Annotation.astro";
     boardLabel="Production board — first cleaned cycle"
     ticketKey="A1-014"
     ticketTitle="Land 146-frame raw cycle with consistent line">
-    <p slot="caption">[PLACEHOLDER CAPTION] First raw cleaned cycle lands. 146 frames at 24fps, alpha clean.</p>
+    <p slot="caption">APR 17 — first raw cleaned cycle lands. 146 frames at 24fps, alpha clean.</p>
   </BoardArtifact>
 </InvestigationBoard>

@@ -153,6 +153,7 @@ This system explicitly rejects the design-system-viewer template (V3 "Iterative 
 - One splash color per section. Never two.
 - The hand-drawn character anchors every key surface. Lose the character, lose the system.
 - Every dated string on the site is *real and dated* — never streaming, never invented.
+- **Light mode only.** Dark mode was tried (Phase 3 prototypes) and killed in Phase 3e (CHANGELOG 2026-05-22). The warm-cream paper texture, the hand-drawn character lane, and the torn-paper edges all read awful against an inverted ink/cream palette. There is no `data-theme="dark"` override, no `ThemeToggle` component, no `prefers-color-scheme` auto-switch. The system ships one register: cream paper, ink type, teal chrome. Auto-switch and a manual toggle were both deferred indefinitely.
 
 ## 2. Colors: The Pencil-Test-on-Paper Palette
 
@@ -217,7 +218,15 @@ Tinted neutrals built around a deep teal anchor with two earned warm accents and
 
 ## 4. Elevation
 
-**This system is flat by default.** There are no decorative shadows, no glass-card blurs, no scroll-driven elevation animations. Depth on this site is conveyed through the three-layer Z-stacking model (chrome → paper → content) and through hand-authored torn-paper PNG edges that reveal the lower layer through alpha. Where shadow is used, it's ambient and atmospheric — supporting the physicality of the paper sheets, never decorating components.
+**This system is flat by default.** There are no decorative shadows, no glass-card blurs, no scroll-driven elevation animations. Depth on this site is conveyed through the three-layer Z-stacking model (chrome → paper → splash → tear) and through hand-authored torn-paper PNG edges that reveal the lower layer through alpha. Where shadow is used, it's ambient and atmospheric — supporting the physicality of the paper sheets, never decorating components.
+
+### Z-Stacking (the literal stacking-context map)
+- **Z=0 — Chrome.** `body { background-color: var(--teal); }`. The persistent book-cover backdrop. Never has its own `z-index` value.
+- **Z=10 — Paper sheets.** `.page-sheet { z-index: 10; }`. Every catalog-surface body (`/transactions/`, `/architecture/`, `/essays/`, `/about/`, `/contact/`, `/404`), every deep-dive article, every home-page band that needs cream paper underfoot (`AboutTeaser`, the hero). The home grid puts each band in its own page-sheet stacking context.
+- **Z=11 — Splash sections.** `.projects { z-index: 11; }`. The single full-bleed teal-splash block on the home page sits *above* the cream `.about-teaser` below it so the splash's bottom torn-paper edge can visually bleed cream-on-cream into the next section. Splash sections *don't* use `overflow: hidden` — the tear has to escape the section's bounds to land on the next paper sheet (see §5 Torn-Paper Divider). Any future splash section follows the same Z=11 rule.
+- **Z=12 — Torn-paper edges.** `.tear-divider { z-index: 12; }`. Lifts the tear above its sibling content within the splash section's stacking context so the tear renders on top of the splash bg, then bleeds onto the paper below via its alpha-feathered edge. Sister rule: the tear lives *inside* the splash section so it inherits the splash's z=11 in the global page stack.
+- **Z=20 — Hero content layer.** `.hero-inner { z-index: 20; }`. Keeps the hero text above the absolute-positioned character lane within the hero's own stacking context.
+- **Z=30 — Site footer.** `.site-footer { z-index: 30; }`. Footer always wins against any unexpected paint order in the bands above it.
 
 ### Shadow Vocabulary
 - **Floor Shadow** (`box-shadow: 0 4px 24px rgba(10, 62, 66, 0.18)` on the hero character's standing surface; or a baked-in PNG underlay for the character lane): The illusion that the illustrated character is standing on the page, not floating above it. The only shadow that earns its place on the hero.
@@ -302,8 +311,9 @@ The visual signature of the system. A high-resolution PNG-with-alpha of a real t
 
 - **Source:** Photograph of real torn cream cardstock, recolored to `#FFF9F0` in Procreate post-import.
 - **Why raster, not SVG:** SVG paths and `clip-path: polygon()` produce mathematical jagged lines; only a raster photograph captures the fluff fibers that read as physical paper. The fluff is the load-bearing detail.
-- **Placement:** Negative-margin pulls the edge up to overlap the adjoining section by 16px so the seam reads as one continuous torn page.
+- **Placement:** Negative-margin pulls the edge into the adjoining section so the seam reads as one continuous torn page. Current implementation uses `margin-top: -80px` for the top variant and `margin-bottom: -80px` for the bottom variant (the home `.projects` splash) — large enough that the tear's alpha-feathered fluff lands well inside the next section.
 - **One asset, two orientations:** Flip vertically via CSS (`transform: scaleY(-1)`) for top-edge variant vs. bottom-edge variant. Don't author two PNGs.
+- **No `overflow: hidden` on the parent splash.** The tear has to escape the splash section's bounding box so its alpha-feathered edge lands on the next paper sheet. Adding `overflow: hidden` to a splash section clips the alpha-fade and creates a hard hairline seam at the cut — the exact bug Phase 3e fixed. Keep splash sections un-clipped; constrain their inner content via a `.*-inner` `max-width` wrapper instead.
 
 ### The Character Lane (Signature Component)
 The hero's right-margin character lane carries Sean's hand-drawn pencil-test self typing at a desk, with a pencil-test Claude companion floating beside him. The single most load-bearing element on the home page.

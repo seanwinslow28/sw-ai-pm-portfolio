@@ -1,0 +1,36 @@
+A vertical strip of 4 stacked pencil-test animation frames showing a walk cycle of a soft, rounded peach-colored AI companion character.
+
+The character is sourced from the attached turnaround reference: a short, stout, friendly character with a rounded square body, two small ear-knobs on the sides of the head, simple dot eyes, soft expression, and four small leg-stubs. Use the 3/4 FRONT pose as the base, animated through a walk cycle.
+
+NO human character in this image. The AI companion is the only character. Sean's human pencil-test character does NOT appear in this tile.
+
+Composition: 4:5 portrait, 800×1000 pixels.
+
+The upper 75% of the image (800×750 zone) contains the 4 frames stacked vertically. Each frame is approximately 800px wide × 180px tall, separated from the next by a thin hand-ruled horizontal hairline in ink primary #1A1A1E. Each frame contains exactly one rendering of the AI companion character.
+
+The 4 frames render the classic 4-key walk cycle, top to bottom:
+- Frame 01 (top): CONTACT. The front leg-stub is forward and just making contact with the ground, weight transferring forward. The body leans slightly forward.
+- Frame 02: RECOIL. Weight settling onto the front leg-stub. The body compresses slightly downward. The back leg-stub is lifting.
+- Frame 03: PASSING. Mid-stride. Both leg-stubs nearly under the body, the body at its highest point above the ground line. The back leg is swinging through to become the next front leg.
+- Frame 04 (bottom): HIGH-POINT. The (new) front leg-stub is reaching forward, the (now) back leg-stub is pushing off the ground. Body leaning forward into the next contact.
+
+Style: traditional 2D animation pencil-test register. Rough construction lines visible — circle for the body, light guidelines, soft pencil shading. Inked details are minimal — just enough to suggest finish, not a clean final render. Looks like a working page from an animator's flipbook or a Disney production sketch. Each frame should have slight imperfections — a hairline that's not perfectly horizontal, a leg-stub that's drawn a touch differently across frames (because it's hand-drawn, not vector).
+
+Each frame is annotated:
+- Top-left of each frame: a small JetBrains Mono frame number in stamp amber #7C2D12, approximately 11pt visual size. Top-down: 01, 02, 03, 04.
+- Bottom-right of each frame: a small JetBrains Mono pose label in ink-secondary #546E71, approximately 10pt visual size. Top-down: contact, recoil, passing, high-point.
+
+Background of each frame: warm cream paper #FFF9F0 with subtle paper-fiber texture. The cream is the substrate — the frames are not on a separate background.
+
+Below frame 04, the bottom 250px of the image is clean cream paper with NO content. This is the metadata-strip safe zone — must be visually quiet.
+
+Palette (strict): ink primary #1A1A1E (pencil construction lines, frame dividers, inked details on the character), paper cream #FFF9F0 (background), stamp amber #7C2D12 (frame numbers ONLY), ink-secondary #546E71 (pose labels ONLY), peach (the character's body color, sourced from the anchor reference). NO other colors.
+
+NEGATIVES:
+- NO Sean's human pencil-test character. The AI companion is alone.
+- NO full-color rendering of the character — keep the peach body color from the anchor, do not over-saturate.
+- NO clean vector lines or digital flat rendering.
+- NO baked-in project title or tagline. The text "Animation Pipeline" and the tagline must NOT appear in the image.
+- NO photorealism. This is a pencil-test, not a render.
+- NO dope-sheet grid behind the frames — just frames on cream paper, separated by hand-ruled hairlines.
+- NO watermarks or signatures.

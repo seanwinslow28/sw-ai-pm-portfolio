@@ -29,36 +29,38 @@ for (const e of essays) {
   title="Essays — Sean Winslow"
   description="Thesis-shaped writing where the artifacts back the claim."
 >
-  <IndexHeader count={count} lastPublishedISO={lastPublished} />
+  <div class="page-sheet">
+    <IndexHeader count={count} lastPublishedISO={lastPublished} />
 
-  <section class="essays-list" aria-label="Essay rows">
-    {count === 0 && (
-      <p class="empty-state">No essays yet. Check back ~quarterly.</p>
-    )}
-    {essays.map((e) => (
-      <EssayRow
-        slug={e.slug}
-        published={e.data.published}
-        status={e.data.status}
-        title={e.data.title}
-        excerpt={e.data.excerpt}
-      />
-    ))}
-  </section>
-
-  <footer class="footer-fold">
-    <p>
-      <a href="/essays/rss.xml">&rarr; subscribe via RSS</a>
-      {substackUrl && (
-        <>
-          <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
-          <a href={substackUrl} rel="external">&rarr; read on Substack</a>
-        </>
+    <section class="essays-list" aria-label="Essay rows">
+      {count === 0 && (
+        <p class="empty-state">No essays yet. Check back ~quarterly.</p>
       )}
-      <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
-      <a href="/">&rarr; view the fleet <span aria-hidden="true">&uarr;</span></a>
-    </p>
-  </footer>
+      {essays.map((e) => (
+        <EssayRow
+          slug={e.slug}
+          published={e.data.published}
+          status={e.data.status}
+          title={e.data.title}
+          excerpt={e.data.excerpt}
+        />
+      ))}
+    </section>
+
+    <footer class="footer-fold">
+      <p>
+        <a href="/essays/rss.xml">&rarr; subscribe via RSS</a>
+        {substackUrl && (
+          <>
+            <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+            <a href={substackUrl} rel="external">&rarr; read on Substack</a>
+          </>
+        )}
+        <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+        <a href="/">&rarr; view the fleet <span aria-hidden="true">&uarr;</span></a>
+      </p>
+    </footer>
+  </div>
 </BaseLayout>
 <style>
   .essays-list { max-width: 1120px; margin: 0 auto; padding: 0 24px; }

@@ -17,7 +17,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 CARDS = [
     "01-photo.png",
     "02-pencil-test.png",
-    "03-watercolor-ink.png",
+    "03-comic-book.png",
     "04-bobs-burgers.png",
     "05-shonen-anime.png",
     "06-classic-nicktoons.png",

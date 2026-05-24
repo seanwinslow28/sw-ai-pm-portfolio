@@ -48,26 +48,28 @@ const emptyMessage = `No artifacts in ${surface} yet. Check back soon.`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <IndexHeader count={count} lastUpdatedISO={lastUpdated} surface={surface} />
-  <FilterPills activeSurface={surface} />
+  <div class="page-sheet">
+    <IndexHeader count={count} lastUpdatedISO={lastUpdated} surface={surface} />
+    <FilterPills activeSurface={surface} />
 
-  <section class="ledger-list" aria-label={`${surface} ledger rows`}>
-    {count === 0 && (
-      <p class="empty-state">{emptyMessage}</p>
-    )}
-    {filtered.map((t) => (
-      <LedgerRow
-        slug={t.slug}
-        shipped={t.data.shipped}
-        surface={t.data.surface}
-        status={t.data.status}
-        title={t.data.title}
-        valueProp={t.data.valueProp}
-      />
-    ))}
-  </section>
+    <section class="ledger-list" aria-label={`${surface} ledger rows`}>
+      {count === 0 && (
+        <p class="empty-state">{emptyMessage}</p>
+      )}
+      {filtered.map((t) => (
+        <LedgerRow
+          slug={t.slug}
+          shipped={t.data.shipped}
+          surface={t.data.surface}
+          status={t.data.status}
+          title={t.data.title}
+          valueProp={t.data.valueProp}
+        />
+      ))}
+    </section>
 
-  <FooterFold />
+    <FooterFold />
+  </div>
 </BaseLayout>
 
 <style>

@@ -10,7 +10,7 @@ tags:
   - product
 hero_media: /assets/projects/the-block.webp
 hero_media_type: image
-hero_media_alt: A sanitized screenshot of the Campus research surface.
+hero_media_alt: A hand-drawn pencil-and-ink diagram of a 3-tier customer matrix — research-only, research + data, and research + data + API — with a pencil-test character in the right margin pointing at the middle tier.
 order: 4
 date_started: 2024-02-01
 date_active_through: 2026-02-01
@@ -36,10 +36,10 @@ methods:
     link: null
 
 four_q:
-  what: "[PLACEHOLDER — Q1] Two years of B2B product work for an institutional crypto-research firm. Campus is a research platform; RevOps is the internal product that supports the broader Block business."
-  why: "[PLACEHOLDER — Q2] Three options considered for the Campus thesis. Sean adjudicates the framing post-plan; this stub frames the work, not the exit."
-  break: "[PLACEHOLDER — Q3] Three failure modes existed at scale and were managed. Sean lists them post-plan."
-  learn: "[PLACEHOLDER — Q4] B2B research is a relationship product. The infrastructure has to disappear; the relationship has to remain."
+  what: "Two products inside one institutional research firm, across a 2024 – 2026 arc. Campus was the B2B research surface customers logged into. RevOps was the internal product that kept the revenue engine — pricing, renewals, partner data — from running on a Notion doc and three people's memory."
+  why: "Three thesis options sat on the table for Campus: a closed research-only product, a data-first product with research bolted on, and a research-first product with data and API as paid layers. We chose research-first with tiered data and API access. The bet was that the relationship sat with the analysts; the platform's job was to compound that relationship, not replace it."
+  break: "Three failure modes were live at scale and managed weekly: data-partnership renewals (a single vendor pulling a feed could shrink a tier overnight), RevOps automation slipping out of sync with the renewal calendar, and the onboarding bottleneck where every institutional account needed a human handshake before the product could carry the weight."
+  learn: "B2B research is a relationship product. The infrastructure has to disappear; the relationship has to remain."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -49,9 +49,9 @@ import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
 import MetricChart from "~/components/artifacts/MetricChart.astro";
 
 <Opener>
-  <p>[PLACEHOLDER OPENER — paragraph 1 of 3] Two years of B2B and infrastructure work for an institutional research firm. Campus is a research platform; RevOps is the internal product that supports the broader business. Sean writes the real opener post-plan.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 2 of 3] The arc was build → grow → hand off. The artifacts on this page are sanitized — project keys redacted, screenshots sanitized.</p>
-  <p>[PLACEHOLDER OPENER — paragraph 3 of 3] The work is real and shippable; the framing is "this was the work," not "this is why it ended."</p>
+  <p>Two years at a research firm whose customers ran money for a living and whose product was, depending on the day, a Snowflake share, a PDF, or a phone call returned within the hour. Campus was the surface the customers logged into — research, data, an API for the desks that wanted to wire it into their own models. RevOps was the other half of the building: the internal product that priced the tiers, tracked the renewals, kept the partner data legible to the analysts who didn't want to think about plumbing. Two products, one firm, the same calendar.</p>
+  <p>The job was build it, ship it, then write it down carefully enough that the building kept running after I stopped being in it. 2024 was Campus v1 going out to a small set of institutional accounts through the partnerships team. 2025 was the tier structure locking and RevOps coming online inside the building. 2026 was the handoff doc, the runbooks, the institutional knowledge moved from people's heads into the system. The screenshots on this page have project keys redacted and customer names anonymized.</p>
+  <p>The firm restructured around me; the products didn't. This page is about the products.</p>
 </Opener>
 
 <InvestigationBoard>
@@ -59,24 +59,24 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
     artifactId="artifact-1"
     date="2024"
     boardLabel="Campus product launch — Q1 2024"
-    excerpt="[PLACEHOLDER EXCERPT] Campus v1 ships to a small set of institutional customers. Onboarding runs through the partnerships team.">
-    <p slot="caption">[PLACEHOLDER CAPTION] Campus v1 launch. The first surface that B2B customers used directly.</p>
+    excerpt="Campus v1 ships to a small set of institutional customers. Onboarding runs through the partnerships team.">
+    <p slot="caption">2024 — Campus v1 launch. First B2B surface customers logged into directly.</p>
   </BoardArtifact>
 
   <PRDDecision
     artifactId="artifact-2"
     date="2025 Q1"
     prdTitle="Subscription tier structure"
-    decisionLine="[PLACEHOLDER] Tier structure locked at 3 levels — research-only, research+data, research+data+API."
-    rationale="[PLACEHOLDER] The 3-tier structure mapped customer segments cleanly.">
-    <p slot="caption">[PLACEHOLDER CAPTION] Subscription tier decision. The 3-tier model held for the remainder of the arc.</p>
+    decisionLine="Tier structure locked at 3 levels — research-only, research + data, research + data + API."
+    rationale="The 3-tier model mapped to the customer segments already showing up in renewals: analysts who wanted the reports, desks that wanted the underlying data, and quant teams that wanted both wired into their own systems.">
+    <p slot="caption">2025 Q1 — subscription tier decision. The 3-tier model held for the remainder of the arc.</p>
   </PRDDecision>
 
   <BoardArtifact
     artifactId="artifact-3"
     date="2025 Q2"
     boardLabel="RevOps internal launch">
-    <p slot="caption">[PLACEHOLDER CAPTION] RevOps internal product launches to the partnerships + research teams.</p>
+    <p slot="caption">2025 Q2 — RevOps internal product goes live to the partnerships and research teams.</p>
   </BoardArtifact>
 
   <MetricChart
@@ -90,6 +90,8 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
       { x: "2025 Q2", y: 87 },
       { x: "2025 Q4", y: 134 },
     ]}>
-    <p slot="caption">[PLACEHOLDER CAPTION] Subscriber growth across the arc. Numbers are illustrative; final figures sanitized.</p>
+    <p slot="caption">2024 – 2026 — institutional subscriber growth across the arc. Figures sanitized; trajectory directional.</p>
   </MetricChart>
+
+  {/* artifact cut per spec §11.4 — customer DMs are confidential; no public-ready DM available */}
 </InvestigationBoard>

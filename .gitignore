@@ -50,3 +50,9 @@ src/content/architecture/essays/
 src/content/architecture/.crosslinks.json
 src/content/essays/essay-bodies/
 src/content/essays/.crosslinks.json
+
+# Tile generation working files (raw before crop+convert)
+assets/tile-generation/raw/
+
+# llm-council CLI session cache
+docs/writing-council/.sessions/
