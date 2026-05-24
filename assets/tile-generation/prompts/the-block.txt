@@ -1,0 +1,36 @@
+An editorial hand-drawn diagram of a 3-tier customer-structure matrix on warm cream paper, with a small pencil-test human male character annotating it from the right margin.
+
+The human character is sourced from the attached reference image: a slim, casually-drawn male figure in pencil-test register. Mid-figure (waist up), about 200px tall in the final image. Drawn in pencil-test register matching the reference exactly.
+
+Composition: 4:5 portrait, 800×1000 pixels.
+
+The upper 75% of the image (800×750 zone) holds the matrix and the character. Bottom 25% (800×250) is visually quiet clean cream paper for metadata-strip overlay.
+
+The matrix:
+- Three stacked horizontal bands, each spanning the full image width MINUS a 100px right margin reserved for the human character. So each band is approximately 700px wide, starting at the left edge.
+- From top to bottom, the bands are different heights, growing taller:
+  - TIER 1 (top band, ~120px tall): On the left, label `RESEARCH-ONLY` in JetBrains Mono ~14pt, ink primary #1A1A1E. On the right side of the band (within the 700px width), a single hand-drawn document icon — a rectangle with three short horizontal lines suggesting text, drawn in rough pencil-and-ink, about 60px tall.
+  - TIER 2 (middle band, ~200px tall): Label `RESEARCH + DATA` on the left. On the right, TWO stacked icons: the same document icon (top) plus a hand-drawn data-table icon (a small 3×3 grid of cells, rough), each about 55px tall, stacked vertically with a small gap.
+  - TIER 3 (bottom band, ~280px tall): Label `RESEARCH + DATA + API` on the left. On the right, THREE icons stacked vertically: the document icon, the data-table icon, and a hand-drawn API-node icon (a small circle with three short lines radiating out to three smaller circles, suggesting connections), each about 60px tall.
+
+The bands are separated from each other by thin hand-drawn horizontal rules in ink primary #1A1A1E. The bands are NOT clean vector — they have hand-drawn imperfections: a hairline that visibly wavers, an icon that is slightly off-center inside its band, the right edges of the bands not perfectly aligned. The whole matrix looks like the artist drew it in pencil and ink on the back of a partnership-deck slide, not like a designed infographic.
+
+The human character: drawn in the rightmost 100px column of the image, vertically centered on the matrix (around the boundary between Tier 2 and Tier 3). In profile, facing LEFT (toward the matrix). Holding a pencil in his right hand at shoulder height, the pencil pointing toward the Tier 2 band. Mid-figure (waist up). Soft pencil construction lines, rough sketch, same register as the reference image.
+
+Below the matrix, in the upper-75% zone, a single thin hand-drawn horizontal rule in ink-secondary #546E71 spanning the full image width, then clean cream paper down to the metadata-strip safe zone.
+
+Style: pencil-and-ink editorial, slightly muted compared to other tiles in the set. This represents an ARCHIVED project — the register stays cool. NO stamp amber on this tile. NO warm accents.
+
+Palette (strict): ink primary #1A1A1E (matrix lines, labels, icons, character), paper cream #FFF9F0 (background), ink-secondary #546E71 (the single horizontal rule below the matrix, any subtle structural lines or icon details). NO amber, NO teal, NO additional warms.
+
+The bottom 250px must be visually quiet — clean cream paper.
+
+NEGATIVES:
+- NO full-color rendering.
+- NO clean vector graphics. Hand-drawn imperfection is mandatory.
+- NO baked-in project title (the words "The Block" or "Campus + RevOps" must NOT appear in the image).
+- NO Claude mascot character.
+- NO photorealistic rendering.
+- NO institutional or partnership-deck logos.
+- NO color icons — all icons rendered in ink-only.
+- NO watermarks or signatures.
