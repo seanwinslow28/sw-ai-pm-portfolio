@@ -53,3 +53,6 @@ src/content/essays/.crosslinks.json
 
 # Tile generation working files (raw before crop+convert)
 assets/tile-generation/raw/
+
+# llm-council CLI session cache
+docs/writing-council/.sessions/
