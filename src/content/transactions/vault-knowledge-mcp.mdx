@@ -45,12 +45,12 @@ A Model Context Protocol that exposes Sean's vault as a queryable agent surface.
 
 ## Why this approach?
 
-[PLACEHOLDER — Q2] The vault is the only PM vault that passes all five Nate-tests. The MCP wraps it. Recruiter from Glean lands on /architecture/vault-knowledge-mcp/ → reads the scoreboard → clicks through to the ledger row → sees the ship date. The two surfaces close the loop: architecture argues, ledger ships.
+The vault is the only PM vault that passes all five Nate-tests. The MCP wraps it. Recruiter from Glean lands on /architecture/vault-knowledge-mcp/ → reads the scoreboard → clicks through to the ledger row → sees the ship date. The two surfaces close the loop: architecture argues, ledger ships.
 
 ## What would break?
 
-[PLACEHOLDER — Q3] If the MCP HTTP transport spec revs between design-lock and ship, the design re-opens. If concept_edges hits the 47-edge production limit (likely), the read-layer paginates or the vault sharding strategy lands first.
+If the MCP HTTP transport spec revs between design-lock and ship, the design re-opens. If concept_edges hits the 47-edge production limit (likely), the read-layer paginates or the vault sharding strategy lands first.
 
 ## What did I learn?
 
-[PLACEHOLDER — Q4] Design-lock is the artifact, not the code. Locking the design on May 21 with a June 4 ship target gives 14 days of runway — enough for a real implementation cycle without scope drift. The pattern: lock at T-14, ship at T-0.
+Design-lock is the artifact, not the code. Locking the design on May 21 with a June 4 ship target gives 14 days of runway — enough for a real implementation cycle without scope drift. The pattern: lock at T-14, ship at T-0.

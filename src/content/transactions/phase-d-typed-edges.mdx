@@ -42,12 +42,12 @@ The fourth phase of the knowledge loop. Instead of just storing notes, the syste
 
 ## Why this approach?
 
-[PLACEHOLDER — Q2] Weekly lints were getting too expensive. Passing 100 pages of text to Claude and asking "are there contradictions?" cost $4 every Sunday. The redesign uses the LLM to structure the edges once during nightly synthesis, then the weekly lint runs `SELECT * FROM edges WHERE type='contradicts'`. Don't optimize prematurely, but do optimize when the pattern is proven.
+Weekly lints were getting too expensive. Passing 100 pages of text to Claude and asking "are there contradictions?" cost $4 every Sunday. The redesign uses the LLM to structure the edges once during nightly synthesis, then the weekly lint runs `SELECT * FROM edges WHERE type='contradicts'`. Don't optimize prematurely, but do optimize when the pattern is proven.
 
 ## What would break?
 
-[PLACEHOLDER — Q3] If the LLM hallucinates an edge type that isn't in the enum, the SQLite insert throws an error and the nightly job fails. This happened twice before strict schema enforcement (`CHECK type IN ('supports', 'contradicts', ...)`). The second failure mode is graph drift: an edge inserted in 2026-04 referencing concepts that were later renamed leaves dangling references — the schema doesn't enforce referential integrity across concept renames.
+If the LLM hallucinates an edge type that isn't in the enum, the SQLite insert throws an error and the nightly job fails. This happened twice before strict schema enforcement (`CHECK type IN ('supports', 'contradicts', ...)`). The second failure mode is graph drift: an edge inserted in 2026-04 referencing concepts that were later renamed leaves dangling references — the schema doesn't enforce referential integrity across concept renames.
 
 ## What did I learn?
 
-[PLACEHOLDER — Q4] LLMs are great at identifying relationships, but terrible at scanning large graphs repeatedly. Use the LLM to structure the data once, then use traditional code (SQL) to query it. The cost curve flipped from O(reads × LLM calls) to O(writes × LLM calls + reads × $0).
+LLMs are great at identifying relationships, but terrible at scanning large graphs repeatedly. Use the LLM to structure the data once, then use traditional code (SQL) to query it. The cost curve flipped from O(reads × LLM calls) to O(writes × LLM calls + reads × $0).
