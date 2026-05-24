@@ -33,9 +33,11 @@ __pycache__/
 
 # Animation working directories (hundreds of MB of intermediate frames — keep local only)
 sw-portfolio-animation-2026/FULL CLEAN/
+sw-portfolio-animation-2026/FULL CLEAN.zip
 sw-portfolio-animation-2026/Portfolio-BG-removal/
 sw-portfolio-animation-2026/loop-1/
 sw-portfolio-animation-2026/loop-2/
+sw-portfolio-animation-2026/loop-3-hero-shoulder/
 sw-portfolio-animation-2026/hero-color-final-RAW-frames/
 sw-portfolio-animation-2026/hero-color-final-BG-removed-frames/
 
