@@ -44,11 +44,16 @@ const { cardIndex, src, alt, style, loadingHint } = Astro.props;
     transform-origin: center center;
     will-change: transform, opacity;
     /* Depth cascade — z-axis offset + downward translate scale with card-index.
-       Cards behind the front peek down + back. Spec §6.1. */
+       Cards behind the front peek down + back. Spec §6.1.
+       Note: spec-§6.1 listed --card-y-offset: 7px, but with perspective scaling
+       from center-center origin the visible peek collapses below ~3.5px (within
+       antialiasing noise). Default bumped to 14px to honor the spec's stated
+       visual outcome ("cards behind the front peek down + back"). Locked values
+       remain overridable via the CSS custom properties. */
     transform:
       perspective(700px)
       translateZ(calc(var(--card-z-offset, 12px) * var(--card-index) * -1))
-      translateY(calc(var(--card-y-offset, 7px) * var(--card-index)));
+      translateY(calc(var(--card-y-offset, 14px) * var(--card-index)));
     z-index: calc(10 - var(--card-index));
     transition: transform 250ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)), opacity 250ms linear;
     user-select: none;
