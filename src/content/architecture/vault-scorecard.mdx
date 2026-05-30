@@ -11,7 +11,7 @@ tags:
   - obsidian
   - linear
 
-lead: "Three passes, two failures, and the failures are where vault-knowledge-mcp and the Judge Layer are going next."
+lead: "Five structural tests. Four knowledge systems. Three passes, two losses to Linear — and one of the two closers is already on disk."
 
 methods:
   - task: persistent state
@@ -31,16 +31,14 @@ methods:
     cost: ~$0.10
     link: null
 
-# OQ-C inline-body fallback: both URLs null until Sean ships the
-# upstream VAULT_AS_AGENT_INFRASTRUCTURE.md + _EXPLANATION.md
-# sources to the code-brain repo. The validator (Task 3.2) accepts
-# this row because the MDX body below carries the 4 canonical h2
-# headings (inline-body 4Q detection).
-essaySourceUrl: null
-explanationUrl: null
+# OQ-C resolved 2026-05-29: the upstream sources shipped to code-brain
+# main, so both URLs now point at the live files. The MDX body below
+# still carries the 4 canonical h2 headings as an inline-body 4Q fallback.
+essaySourceUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md
+explanationUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md
 
 mermaidSource: diagrams/concept-edges-erd.mmd
-mermaidCaption: "concept_edges schema — 6 relation types, validated against 47 production edges."
+mermaidCaption: "concept_edges schema — six relation types enforced by a SQL CHECK constraint, scored against 632 production edges (2026-05-29)."
 
 scoreboard:
   columns: ["STATE", "VERBS", "OWN", "PERM", "AUDIT"]
@@ -56,11 +54,11 @@ scoreboard:
 
 honestNotes:
   - anchor: ownership
-    body: "Linear is genuinely better here. That gap is exactly why vault-knowledge-mcp matters — it's the first step toward giving the vault Linear-grade ownership semantics on the axes that matter for agent control."
+    body: "Linear is genuinely better here, and I'm not going to dress that up. Its assignee, creator, and watchers model is semantic and queryable in ways a folder of files never will be. That gap is the whole reason vault-knowledge-mcp exists — it ships ownership as a typed edge (created_by, concept → person), the first real step onto the axis where Linear beats me."
   - anchor: permissions
-    body: "Filesystem permissions only. POSIX read/write + git remotes. Linear's RBAC is the upgrade path."
+    body: "Filesystem permissions only — POSIX read/write and git remotes. Linear was built multi-tenant; the vault was built single-player, and on permissions that's decisive. But the closer is already on disk, not a someday: the Judge Layer — a control-plane interceptor with typed action proposals, declarative policy, and an append-only decision ledger. I won't pretend it's full RBAC yet. It's the primitive underneath it. The rest is rollout."
 
-relatedLedgerRow: vault-knowledge-mcp
+relatedLedgerRow: vault-scorecard
 relatedCaseStudy: code-brain
 relatedEssay: null
 relatedArchitecture: []
@@ -76,16 +74,16 @@ tryItYourselfCommand: |
 
 ## What is this?
 
-A 5-test scoreboard that scores knowledge systems on the axes that matter when an agent has to act on the vault, not just read it: Persistent State, Defined Verbs, Ownership, Permissions, and a Queryable Audit History. Notion, Obsidian (default), Linear, and Sean's vault each get a row. Three passes, two failures — and the two failures are the architectural argument for what ships next.
+A five-test scoreboard that scores knowledge systems on the axes that matter when an agent has to *act* on the vault, not just read it: Persistent State, Defined Verbs, Ownership, Permissions, and a Queryable Audit History. Notion, Obsidian (default), Linear, and Sean's vault each get a row. Three passes, two failures — and the two failures are the architectural argument for what ships next. Every cell is backed by live telemetry from `vault/.vault-index.db`: 632 typed edges across ~110 nodes, six SQL-enforced relations, 15,582 indexed chunks, regenerable with `scripts/generate_schema.py`.
 
 ## Why this approach?
 
-Most "PM tools" discourse is about how nice the editing surface feels. That's a content question. The agent question is structural: does the system have *typed edges* the agent can query without scanning, does the agent have *defined verbs* it can call without a free-form LLM bridge, does it have an *audit history* a reviewer can replay? Vault Scorecard is the diagnostic that turns the structural question into a single visible result. Comparison is the discipline — equality of presentation across all four systems is the honesty signal. The reader reaches the conclusion from the symbols, not from a `Sean's-vault-highlighted-row` accent.
+Most "PM tools" discourse is about how nice the editing surface feels. That's a content question. The agent question is structural: does the system have *typed edges* the agent can query without scanning, *defined verbs* it can call without a free-form LLM bridge, an *audit history* a reviewer can replay? The scorecard turns that structural question into a single visible result, and scoring against Nate Jones's published tests means citing an external standard instead of grading my own homework. Comparison is the discipline — equal presentation across all four systems is the honesty signal. The reader reaches the conclusion from the symbols, not from a highlighted "Sean's-vault" row.
 
 ## What would break?
 
-Three named failure modes: (1) the synthetic public vault fixture drifts from the production schema as `concept_edges` evolves — mitigation is the `scripts/generate_schema.py` build step that re-emits the ER diagram from the live SQLite file on every synthesis run; (2) the Notion/Obsidian/Linear rows go stale as those products ship features (Linear's recent RBAC additions push its OWN/PERM scores higher; the next Notion AI release may flip its STATE score) — mitigation is a quarterly rescore commit; (3) recruiters who arrive expecting a `Notion-killer` pitch bounce because the scoreboard is honest about Linear-better axes — that's the intended cost. The page filters for the audience that values calibration over salesmanship.
+Three named failure modes: (1) the synthetic public vault fixture drifts from the production schema as `concept_edges` evolves — mitigated by the `scripts/generate_schema.py` step that re-emits the ER diagram and stats from the live SQLite file (the edge count already moved 478 → 632 in nine days, which is why the numbers are regenerated, not hand-typed); (2) the Notion/Obsidian/Linear rows go stale as those products ship features — mitigated by a quarterly rescore; (3) recruiters expecting a "Notion-killer" pitch bounce because the scoreboard is honest about the axes where Linear wins — that's the intended cost. The page filters for the audience that values calibration over salesmanship.
 
 ## What did I learn?
 
-Equality of presentation IS the credibility signal. The temptation was to highlight Sean's-vault row, or wash the passing cells in success green, or stack the columns in Sean's order. Resisting that produced a scoreboard a Linear PM could read without rolling their eyes. The two `HonestNote` callouts (Ownership + Permissions, both Linear-better) were the load-bearing part of getting that read — the mono register switch inside Newsreader essay prose signals "I am the author stepping outside the argument to calibrate it," which is what Tier-1 recruiters detect for.
+Equality of presentation *is* the credibility signal. The temptation was to highlight Sean's-vault row, wash the passing cells in success green, or stack the columns in my order. Resisting that produced a scoreboard a Linear PM could read without rolling their eyes. The two honest-note callouts — Ownership and Permissions, both Linear-better — are the load-bearing part of earning that read. And the most useful loss to name turned out to be the one whose fix already exists: the closer for the permissions gap, the Judge Layer, was already built and tested, which reframed that "failure" from a someday into a rollout.

@@ -1,21 +1,19 @@
 erDiagram
-    CONCEPT ||--o{ EDGE : "source of"
-    CONCEPT ||--o{ EDGE : "target of"
-    EDGE }o--|| RELATION_TYPE : "typed by"
-    EDGE {
+    Concept ||--o{ ConceptEdge : "from_slug"
+    Concept ||--o{ ConceptEdge : "to_slug"
+    ConceptEdge {
         int id PK
-        int source_concept_id FK
-        int target_concept_id FK
-        string relation_type
-        timestamp created_at
+        text from_slug FK
+        text to_slug FK
+        text relation "enum: supports | contradicts | evolved_into | supersedes | depends_on | related_to"
+        real confidence "0..1, NULL when classifier-undecided"
+        text valid_until "ISO 8601, NULL when current"
+        text classifier_version
+        text source_synth_run
+        text created_at "ISO 8601"
     }
-    CONCEPT {
-        int id PK
-        string name
-        string vault_path
-        timestamp last_synthesized
-    }
-    RELATION_TYPE {
-        string name PK
-        string description
+    Concept {
+        text slug PK
+        text title
+        text body
     }
