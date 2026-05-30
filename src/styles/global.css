@@ -154,7 +154,7 @@ a:focus-visible {
   }
 
   :root {
-    color-scheme: light !important;
+    color-scheme: light;  /* !important dropped per site-chrome-prose-locked-2026-05-28 §3.2 — no dark mode to override */
   }
 
   body {

@@ -9,7 +9,7 @@
 
 import { ClientRouter } from "astro:transitions";
 import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
-import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE } from "~/lib/site";
+import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE, RSS_FEEDS } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
 import SiteNav from "~/components/chrome/SiteNav.astro";
 import SiteFooter from "~/components/chrome/SiteFooter.astro";
@@ -62,10 +62,15 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- RSS auto-discovery (3 collection feeds — feeds themselves land Phase 3) -->
-    <link rel="alternate" type="application/rss+xml" href="/transactions/rss.xml" title="Sean Winslow — Transactions" />
-    <link rel="alternate" type="application/rss+xml" href="/architecture/rss.xml" title="Sean Winslow — Architecture" />
-    <link rel="alternate" type="application/rss+xml" href="/essays/rss.xml" title="Sean Winslow — Essays" />
+    <!-- RSS auto-discovery — staged via RSS_FEEDS (site-chrome-prose-locked-2026-05-28 §2.4) -->
+    {RSS_FEEDS.map((feed) => (
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        href={feed.url}
+        title={`Sean Winslow — ${feed.surface.charAt(0).toUpperCase() + feed.surface.slice(1)}`}
+      />
+    ))}
 
     <!-- Preload substrate (texture-spec §3.6 + §4.6) -->
     <link rel="preload" as="image" href="/assets/textures/paper-tile.png" />

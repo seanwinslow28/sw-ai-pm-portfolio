@@ -6,6 +6,8 @@
 **Authors:** Sean + Claude (Sonnet 4.6), brainstorm session 2026-05-28 (continued from the essays lock earlier this session — Workstream D Phase 4 of the writing-council pass; final lock-doc in the Workstream D sequence).
 **Build environment:** MBP (this doc authored on MBP — no MDX edits committed here to avoid Github conflicts; Sean applies on Mac Mini).
 
+> **⚠️ EMAIL OVERRIDE (applied 2026-05-30, SHIP-PLAN-2026-05-29 D4):** The locked email below — `sean@seanwinslow.com` — is **superseded by `sean.winslow28@gmail.com`**. The `EMAIL` constant in `src/lib/site.ts` now holds the gmail address; the footer Contact column, `/contact/`, and every `mailto:` read from it. Every `sean@seanwinslow.com` string in this doc is historical; do not re-apply it.
+
 ---
 
 ## ⚠️ Apply order — read before Mac Mini work
@@ -116,7 +118,7 @@ JetBrains Mono 14px weight 500 (700 per the §16 OPEN-1 confirmation 2026-05-21 
 External links (linkedin + github) get the `↗` glyph (mono 12px secondary ink, 4px left margin per spec §7.5). The `email · ` prefix on the first link distinguishes it from a bare URL — mirrors the `→ email` shape Sean uses across his other surfaces.
 
 URLs resolve from `src/lib/site.ts`:
-- `EMAIL = "sean@seanwinslow.com"`
+- `EMAIL = "sean.winslow28@gmail.com"`  <!-- D4 override 2026-05-30 (was sean@seanwinslow.com) -->
 - `LINKEDIN_URL = "https://linkedin.com/in/seanwinslow"`
 - `GITHUB_URL = "https://github.com/seanwinslow"`
 
@@ -367,7 +369,7 @@ The full spec amendment table is §3.1 above (14+ sections covering Phase 3). Tw
 | §16 OPEN-2 (sticky vs scrolls-away nav) | Open question | Resolved: locked sticky (`position: sticky`) per spec recommended default. No change to spec body needed; just mark OPEN-2 as resolved in §16. |
 | §16 OPEN-3 (`/contact/` route preservation) | Open question | Resolved: minimal page kept per Phase 1 §1.8. Mark OPEN-3 as resolved. Re-assess in 6 months — if `/contact/` gets <5 hits/month after crossover, drop the route per the spec's own guidance. |
 | §16 OPEN-4 ("view the source" link) | Open question — confirm portfolio repo public at crossover | Resolved: confirmed 2026-05-28 (Sean: "This works now, we're good"). Mark OPEN-4 as resolved. |
-| §16 OPEN-5 (email constant) | Open question | Resolved: `sean@seanwinslow.com` per Phase 1 §1.4. Mark OPEN-5 as resolved. (OPEN-1 already resolved in §16 per the 2026-05-21 wordmark confirmation.) |
+| §16 OPEN-5 (email constant) | Open question | Resolved: `sean.winslow28@gmail.com` per SHIP-PLAN-2026-05-29 D4 (2026-05-30 override of the prior `sean@seanwinslow.com`). Mark OPEN-5 as resolved. (OPEN-1 already resolved in §16 per the 2026-05-21 wordmark confirmation.) |
 | §7 (footer structure) | Single static SUBSCRIBE column with 3 RSS feed links + 1 Substack link | Amend to describe the F-2 staging mechanism per Phase 2 §2.2-§2.5. Reference: `RSS_FEEDS` + `EXTERNAL_SUBSCRIBE_LINKS` arrays in `site.ts`. |
 | §12.2 per-page OG overrides | (no change needed) | No change |
 | §13.1 sitemap | (no change needed) | No change |

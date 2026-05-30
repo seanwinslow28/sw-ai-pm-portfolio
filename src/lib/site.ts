@@ -6,7 +6,10 @@
  * Source: docs/specs/site-chrome-spec-v1.md §11.
  */
 
-export const EMAIL = "sean@seanwinslow.com";
+// Email overridden per SHIP-PLAN-2026-05-29 D4 (supersedes the locked
+// sean@seanwinslow.com — lock record updated in site-chrome-prose-locked-2026-05-28,
+// BLUEPRINT-COMPLETE OPEN-5, and CLAUDE.md Locked decisions).
+export const EMAIL = "sean.winslow28@gmail.com";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/sean-winslow-204390a5";
 export const GITHUB_URL = "https://github.com/seanwinslow28";
 export const SUBSTACK_URL = "https://substack.com/@seanpwins";
@@ -27,3 +30,24 @@ export const HERO_LOOP_POSTER = "/assets/hero-icons/icon-1-loop.webp";
 
 /* OG defaults */
 export const OG_DEFAULT_IMAGE = "/og-default.png";
+
+/**
+ * RSS feeds rendered in the chrome footer's SUBSCRIBE column + BaseLayout <head>
+ * auto-discovery tags (F-2 staging mechanism, site-chrome-prose-locked-2026-05-28 §2).
+ * Stage by uncommenting entries as each surface ships a populated RSS endpoint.
+ * v1 launch = transactions + architecture (both live; Gate A green). Essays stays
+ * staged out until its 2026-06-19 publish day (status: DRAFT → PUBLISHED + uncomment).
+ */
+export const RSS_FEEDS = [
+  { surface: "transactions", url: "/transactions/rss.xml", label: "transactions / rss" },
+  { surface: "architecture", url: "/architecture/rss.xml", label: "architecture / rss" },
+  // { surface: "essays",       url: "/essays/rss.xml",       label: "essays / rss" },  // uncomment on 2026-06-19 publish day
+] as const;
+
+/**
+ * External subscribe affordances rendered alongside the RSS feeds in the chrome
+ * footer's SUBSCRIBE column. Substack is the only external entry at v1.
+ */
+export const EXTERNAL_SUBSCRIBE_LINKS = [
+  { name: "Substack", url: SUBSTACK_URL, label: "read on substack" },
+] as const;

@@ -70,7 +70,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 - **5 projects:** 2D Animation Pipeline, Code Brain, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
 - **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. No top nav on home (`noChrome={true}` per site-chrome spec).
-- **Email constant:** `sean@seanwinslow.com` (the portfolio's own domain; lives in `src/lib/site.ts`).
+- **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
 - **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
 
 ## File map

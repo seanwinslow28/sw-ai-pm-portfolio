@@ -192,7 +192,7 @@ Fully locked. A-3 status amendment (COMING → SHIPPED) executed inline 2026-05-
 | OPEN-2 | §16 sticky nav vs. scrolls-away | `position: sticky`. Recruiters reading long architecture essays / case studies benefit from persistent escape to siblings. Mynrd-pure scrolls-away is the home-page discipline; sub-pages get the pragmatic affordance. | Sean wants mynrd-pure linear-scroll on sub-pages |
 | OPEN-3 | §16 `/contact/` route preservation | Keep the minimal page. 80 lines of Astro costs less than a recruiter hitting a 404 from a V3-bridge bookmark. Reassess at 6 months — if <5 hits/month, drop. | — |
 | OPEN-4 | §16 "view the source" link in footer | Include, pointing at `github.com/seanwinslow/sw-portfolio`. Comprehension-first thesis is undermined by hiding the portfolio's own source. | Sean doesn't want the portfolio repo public at crossover |
-| OPEN-5 | §16 email constant | `sean@seanwinslow.com`. The chrome footer + `/contact/` + every `mailto:` link reads from this one constant. | Sean prefers `sean.winslow28@gmail.com` per personal env, or a separate portfolio-inbound alias — one-character edit later |
+| OPEN-5 | §16 email constant | **RESOLVED (SHIP-PLAN-2026-05-29 D4): `sean.winslow28@gmail.com`** (supersedes `sean@seanwinslow.com`). The chrome footer + `/contact/` + every `mailto:` link reads from this one constant in `src/lib/site.ts`. | — |
 
 ### 4.9 PMP §10 cross-cutting open decisions
 

@@ -4,11 +4,12 @@ import {
   EMAIL,
   LINKEDIN_URL,
   GITHUB_URL,
-  SUBSTACK_URL,
   FLEET_DASHBOARD_URL,
   SITE_REPO_URL,
   COPYRIGHT_YEAR,
   SITE_LOCALE,
+  RSS_FEEDS,
+  EXTERNAL_SUBSCRIBE_LINKS,
 } from "~/lib/site";
 ---
 
@@ -27,22 +28,16 @@ import {
       <section aria-labelledby="footer-subscribe-heading">
         <h2 id="footer-subscribe-heading" class="col-heading">SUBSCRIBE</h2>
         <ul class="link-list">
-          <li>
-            <span class="prefix">→</span>
-            <a href="/transactions/">transactions</a>
-            <a href="/transactions/rss.xml" class="rss-tag" aria-label="Transactions RSS feed">rss</a>
-          </li>
-          <li>
-            <span class="prefix">→</span>
-            <a href="/architecture/">architecture</a>
-            <a href="/architecture/rss.xml" class="rss-tag" aria-label="Architecture RSS feed">rss</a>
-          </li>
-          <li>
-            <span class="prefix">→</span>
-            <a href="/essays/">essays</a>
-            <a href="/essays/rss.xml" class="rss-tag" aria-label="Essays RSS feed">rss</a>
-          </li>
-          <li><span class="prefix">→</span> <a href={SUBSTACK_URL}>read on substack</a> <span class="glyph">↗</span></li>
+          {RSS_FEEDS.map((feed) => (
+            <li>
+              <span class="prefix">→</span>
+              <a href={`/${feed.surface}/`}>{feed.surface}</a>
+              <a href={feed.url} class="rss-tag" aria-label={`${feed.surface} RSS feed`}>rss</a>
+            </li>
+          ))}
+          {EXTERNAL_SUBSCRIBE_LINKS.map((link) => (
+            <li><span class="prefix">→</span> <a href={link.url}>{link.label}</a> <span class="glyph">↗</span></li>
+          ))}
         </ul>
       </section>
 
