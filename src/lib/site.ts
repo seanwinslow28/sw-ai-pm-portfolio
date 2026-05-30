@@ -6,8 +6,8 @@
  * Source: docs/specs/site-chrome-spec-v1.md §11.
  */
 
-// Email overridden per SHIP-PLAN-2026-05-29 D4 (supersedes the locked
-// sean@seanwinslow.com — lock record updated in site-chrome-prose-locked-2026-05-28,
+// Email set per SHIP-PLAN-2026-05-29 D4 (supersedes the prior seanwinslow.com
+// address — lock record updated in site-chrome-prose-locked-2026-05-28,
 // BLUEPRINT-COMPLETE OPEN-5, and CLAUDE.md Locked decisions).
 export const EMAIL = "sean.winslow28@gmail.com";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/sean-winslow-204390a5";
