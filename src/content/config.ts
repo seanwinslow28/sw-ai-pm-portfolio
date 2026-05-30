@@ -210,7 +210,8 @@ const essays = defineCollection({
         buyer: z.string(),
         position: z.string(),
         vocabularyTell: z.string(),
-        jdUrl: z.string().url(),
+        jdUrl: z.string().url().optional(),        // Option A (essays-prose-locked-2026-05-28 §2.2.6): was required; now optional
+        isNegativeSpace: z.boolean().optional(),   // NEW — marks the access-side contrast row (no JD; renders italic + em-dash)
       })).min(2).max(8),
     }).optional(),
 
