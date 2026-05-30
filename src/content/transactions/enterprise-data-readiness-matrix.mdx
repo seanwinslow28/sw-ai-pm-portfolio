@@ -1,0 +1,42 @@
+---
+title: "Enterprise Data Readiness Matrix"
+dateline: "BOSTON, MAY 29, 2026"
+shipped: "2026-05-29"
+
+surface: infra
+status: SHIPPED
+
+valueProp: "A pre-deployment rubric scoring whether a customer's data layer can carry an AI agent — five dimensions, Green/Yellow/Red, floor-rule scoring. Closes the 'enterprise data readiness' gap named in 85% of Tier-1 AI PM JDs."
+
+methods:
+  - task: dimension synthesis
+    tool: 4-panel deep research (Gemini DR-Max)
+    cost: research / $7
+    link: null
+  - task: rubric design
+    tool: Green/Yellow/Red floor-rule model
+    cost: portfolio time
+    link: null
+  - task: worked example
+    tool: fictional F500 + 90-day remediation plan
+    cost: portfolio time
+    link: null
+  - task: 4Q writeup
+    tool: EXPLANATION.md
+    cost: portfolio time
+    link: https://github.com/seanwinslow28/enterprise-data-readiness-matrix/blob/main/EXPLANATION.md
+
+limitations:
+  - "It's a readiness diagnostic, not a remediation engine — the customer's data team still owns the migration work; the PM owns the gate and the sequencing."
+  - "The Green/Yellow/Red thresholds are practitioner judgment calls; two PMs could score the same customer slightly differently. The worked example exists partly to calibrate where the lines sit."
+
+explanationUrl: https://github.com/seanwinslow28/enterprise-data-readiness-matrix/blob/main/EXPLANATION.md
+repoUrl: https://github.com/seanwinslow28/enterprise-data-readiness-matrix
+
+relatedTransactions: []
+# surface: chose "infra" (data-infrastructure readiness). If the portfolio
+# groups written strategic frameworks under "writing", switch this — flagged
+# for Sean in the ship kickoff.
+---
+
+The defining barrier to production AI in 2026 isn't model intelligence — it's data readiness. This rubric is the diagnostic an AI platform PM runs on a customer's data layer *before* a launch date goes on a slide: five dimensions (canonical entity IDs, lineage/provenance, freshness, governance/eligibility, dedup/embedding hygiene), each scored Green/Yellow/Red, with a floor rule (the weakest dimension sets the deployment posture). It ships with a worked example — the matrix applied end-to-end to a fictional Fortune 500 publisher, scored, with a dated 90-day Red→Yellow→Green remediation plan. Grounded in a 4-panel deep-research read of mid-2026 enterprise AI PM hiring criteria; the Green-state examples come from the five readiness problems I had to solve on my own agent fleet's knowledge base before it would produce citable output.

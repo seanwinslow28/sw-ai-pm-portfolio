@@ -18,6 +18,11 @@ const essays = (await getCollection("essays"))
 const count = essays.length;
 const lastPublished = essays[0]?.data.published ?? new Date().toISOString().slice(0, 10);
 
+// Footer-fold staging per essays-prose-locked-2026-05-28 §1.5: the "subscribe via RSS"
+// affordance only surfaces once at least one essay is PUBLISHED (the RSS feed is empty
+// until then). v1 launches with the manifesto staged DRAFT → 2 affordances.
+const hasPublishedEssay = essays.some((e) => e.data.status === "PUBLISHED");
+
 // Find a Substack URL across all essays for the footer link.
 let substackUrl: string | null = null;
 for (const e of essays) {
@@ -49,10 +54,14 @@ for (const e of essays) {
 
     <footer class="footer-fold">
       <p>
-        <a href="/essays/rss.xml">&rarr; subscribe via RSS</a>
+        {hasPublishedEssay && (
+          <>
+            <a href="/essays/rss.xml">&rarr; subscribe via RSS</a>
+            <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
+          </>
+        )}
         {substackUrl && (
           <>
-            <span aria-hidden="true" class="sep">&nbsp;&nbsp;&nbsp;</span>
             <a href={substackUrl} rel="external">&rarr; read on Substack</a>
           </>
         )}

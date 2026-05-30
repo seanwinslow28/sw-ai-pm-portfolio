@@ -253,14 +253,17 @@ def card_vault_scorecard():
         hook_size=32,
     )
 
-def card_vault_knowledge_mcp():
+def card_intent_engineering_mcp():
+    # Fix #2 (IMPLEMENTATION-PROMPT §5): this card was always Intent Engineering
+    # MCP content but mis-filed as vault-knowledge-mcp.png with a wrong URL.
+    # Output → intent-engineering-mcp.png; URL → /work/intent-engineering-mcp/.
     draw_card(
-        out_path=os.path.join(OUT_DIR, "vault-knowledge-mcp.png"),
+        out_path=os.path.join(OUT_DIR, "intent-engineering-mcp.png"),
         dateline="Boston · Case Study · 2026",
         title="Intent Engineering MCP",
         hook="Drawing up agents to act with intent.",
         url_line="seanwinslow.com",
-        slug_line="/work/vault-knowledge-mcp/",
+        slug_line="/work/intent-engineering-mcp/",
         splash=SPLASH_AMBER,
         stamp_text="SHIPPED 2026-05-12",
         title_size=72,
@@ -271,7 +274,7 @@ def card_essay_meaning_over_access():
     draw_card(
         out_path=os.path.join(ESSAYS_OUT, "meaning-over-access.png"),
         dateline="Boston · Essay · 2026",
-        title="Access vs Meaning",
+        title="Access Over Meaning",
         hook="I bet on meaning, not access.",
         url_line="seanwinslow.com",
         slug_line="/essays/meaning-over-access/",
@@ -285,6 +288,6 @@ if __name__ == "__main__":
     print("Generating OG cards (1200×630)...")
     card_default()
     card_vault_scorecard()
-    card_vault_knowledge_mcp()
+    card_intent_engineering_mcp()
     card_essay_meaning_over_access()
     print("Done.")

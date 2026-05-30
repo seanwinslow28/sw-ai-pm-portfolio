@@ -293,7 +293,7 @@ Push when all commits land cleanly + dev QA passes (§7 below).
 Run `npm run dev` and confirm each surface renders the locked content. Hit every route:
 
 ### Home + About
-- [ ] `/` renders hero tagline `Product Manager. The agents handle the loops. I handle the taste.` + no nav chrome (`noChrome={true}`)
+- [ ] `/` renders hero tagline `The agents handle the loops. I handle the taste.` (D8 2026-05-30 dropped the `Product Manager.` line) + enlarged `/ AI PRODUCT MANAGER` role tag + no nav chrome (`noChrome={true}`)
 - [ ] `/about/` renders B-1 beats (6 entries, color rhythm `gradient → amber → amber → gradient → gradient → gradient`) + B-2 prose (3 paragraphs, ends "The sentence was the product.") + B-4 prose (2 paragraphs, opens "Building got cheap. Comprehension didn't.") + NO recruiter italic + tagline `Raised by Saturday morning cartoons and Vercel deployment logs.`
 
 ### Case studies (all 5)

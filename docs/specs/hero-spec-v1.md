@@ -29,12 +29,12 @@ Newsroom dateline above an editorial headline, with Sean working at his desk and
 │  ──────────────────────────────────────────────────────────────      │
 │                                                                      │
 │  Sean Winslow                                                        │
-│  / AI PRODUCT MANAGER                          ╭──◾◾◾─────────┐ ─ ─ ─│
+│  / AI PRODUCT MANAGER  (enlarged — D8)         ╭──◾◾◾─────────┐ ─ ─ ─│
 │                                                │  ░░ companion ░░░ ░░│
 │                                                │ ░░░░ floats   ░░░░░░│
-│  Product Manager.                              │ ░░ here  ▭▭▭▭▭▭▭░░ ░│
-│  The agents handle the loops.                  │ ░░░░  ┌─┴───┴─┐ ░░░░│
-│  I handle the taste.                           │ ░░░░  │ desk  │ ░░ ░│
+│  The agents handle the loops.                  │ ░░ here  ▭▭▭▭▭▭▭░░ ░│
+│  I handle the taste.                           │ ░░░░  ┌─┴───┴─┐ ░░░░│
+│  (D8: "Product Manager." line dropped)         │ ░░░░  │ desk  │ ░░ ░│
 │                                                │ ░░  ┌─┘       └─┐ ░│
 │                                                │ ░░  │ Sean typing│░│
 │  ╲╱╲╱╲╱╲ torn-paper edge ╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲ │ ░░  └───────────┘ ░│
@@ -47,6 +47,25 @@ Newsroom dateline above an editorial headline, with Sean working at his desk and
 ```
 
 Four elements. No nav. No CTA. No subtitle. The dateline is the only thing above the name; the tagline is the only thing below the role. The right side of the hero is owned entirely by the character lane.
+
+> ### ⚠️ AMENDMENT 2026-05-30 — Issue B loading choreography (D6) + hero-title (D8)
+>
+> Per SHIP-PLAN-2026-05-29 §S2 (D6 + D8). This block supersedes the relevant parts of §4 (tagline), §6 (motion timeline phase 0), and §7.5 / §7.5.5 (intro icon cycle). CHANGELOG entry logged 2026-05-30.
+>
+> **(a) Hero title (D8).** The tagline drops its first line — `Product Manager.` is removed (the role already sits in the `/ AI PRODUCT MANAGER` tag directly above the tagline, so the line was redundant). New tagline:
+> > The agents handle the loops.
+> > I handle the taste.
+>
+> The `/ AI PRODUCT MANAGER` role tag is **enlarged** (from mono 14px to a larger, immediately-readable size — ~18–20px with preserved tracking) so the role reads at a glance during the recruiter 5-second scan. CLAUDE.md "Locked decisions" hero tagline updated to drop the `Product Manager.` prefix.
+>
+> **(b) Loading choreography (D6) — additive full-viewport overlay, NOT a lane cycle.** The §7.5 intro-icon-cycle (8 icons crossfading *inside the character lane*) is replaced by an **additive, full-viewport loading overlay**:
+> - A fixed, full-viewport cream `#FFF9F0` field renders on top of the hero on first paint.
+> - A single transparent (background-removed) icon, centered, cycles the 8 frames from `public/assets/hero-icons/loading/*.webp` (normalized onto a consistent transparent square canvas) per the §6 cycle timing.
+> - The overlay then **fades out**, revealing the hero — which has been rendered underneath from first paint (the overlay is additive, never gating). This is the reduced-motion safety win: no JS-gated reveal can strand a blank hero.
+> - **Once per session** via `sessionStorage` — the overlay mounts only on the first visit of a session.
+> - **Reduced-motion / no-JS:** the overlay does **NOT** mount; the hero shows immediately; **no `<video>` is present in the DOM** (preserve commit `ad64ce1`'s reduced-motion contract). Re-verified with Playwright: `document.querySelector(".character-video")` → `null` AND hero visible immediately when the overlay is suppressed.
+>
+> Source icons: `reference-images/hero-icons/background-removed/` (8 transparent PNGs) → Pillow-normalized → WebP at `public/assets/hero-icons/loading/`.
 
 **Right-margin character lane** — anchored flush right with a negative right offset (lane width 1024px, `right: -180px`). The painted character is pushed visually flush against the right edge of the viewport; the empty whitespace band on the right side of the 1280×720 source canvas extends past the viewport and gets clipped by `overflow: hidden`. The lane sits with its bottom ~80px above the torn-paper edge.
 

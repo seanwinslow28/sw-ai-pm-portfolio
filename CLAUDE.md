@@ -52,7 +52,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 | About page full-body character | **LOCKED 2026-05-20** at [`reference-images/about-full-body.png`](reference-images/about-full-body.png) — V1 of Sean's drawn canonical character (matches `2D-Character-Sketch-Sean-v1.png` palette) |
 | Hero intro icon cycle (replaces static hero-loop-poster) | **LOCKED 2026-05-20** — 8 pencil-test icons at [`reference-images/hero-icons/`](reference-images/hero-icons/) (loop, terminal, graph, pencil, sticky note, matrix, Claude mascot, coffee). 4.8s cycle plays once-per-session before WebM crossfades in. See hero-spec §7.5. |
 | Saturday-morning cartoon cels (about §11) | **LOCKED 2026-05-21** — 6 pencil-test cels at [`reference-images/about-cartoons/`](reference-images/about-cartoons/) (Tommy Pickles · Ash Ketchum · Rocko · Samurai Jack `break_grid:true` · Uncle Iroh · Jake the Dog). MDX frontmatter draft at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](reference-images/about-cartoons/cartoons-content-collection-draft.md). Authored via Gemini Nano Banana 2 / Approach B (style anchor + per-character reference). |
-| OG cards | **LOCKED 2026-05-21** — 4 cards (1200×630, ≤55KB each) at [`reference-images/og-cards/`](reference-images/og-cards/): og-default · vault-scorecard · vault-knowledge-mcp (with SHIPPED 2026-05-12 stamp) · essays/meaning-over-access. Generated via Python + Pillow + Newsreader/JetBrains Mono TTFs; script at [`scripts/phase-0/generate_og_cards.py`](scripts/phase-0/generate_og_cards.py). |
+| OG cards | **LOCKED 2026-05-21; S4 fixes 2026-05-30** — 4 cards (1200×630, ≤55KB each), authored at [`reference-images/og-cards/`](reference-images/og-cards/) and served from `public/` (`og-default.png` + `public/og-cards/`): og-default · vault-scorecard · intent-engineering-mcp (with SHIPPED 2026-05-12 stamp) · essays/meaning-over-access ("Access Over Meaning"). Generated via Python + Pillow + Newsreader/JetBrains Mono TTFs; script at [`scripts/phase-0/generate_og_cards.py`](scripts/phase-0/generate_og_cards.py). The dedicated vault-knowledge-mcp OG card is **deferred** until that surface ships (~6/4) with its own title-lock. |
 | Favicon set | **LOCKED 2026-05-21** — SW wordmark, JetBrains Mono 700, teal `#0A3E42` on warm paper `#FFF9F0`. SVG source + multi-res ICO (16/32/48) + apple-touch-icon.png (180×180) at [`reference-images/favicon/`](reference-images/favicon/). Raster script at [`scripts/phase-0/generate_favicons.py`](scripts/phase-0/generate_favicons.py). |
 | The build | Not started — **all specs locked, all Phase 0 assets authored**; Astro 5 scaffold is the next session. |
 
@@ -60,7 +60,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 
 ## Locked decisions (quick reference)
 
-- **Hero tagline:** "Product Manager. The agents handle the loops. I handle the taste."
+- **Hero tagline:** "The agents handle the loops. I handle the taste." (D8 2026-05-30 dropped the redundant "Product Manager." line — role lives in the enlarged `/ AI PRODUCT MANAGER` tag.)
 - **About header:** "Raised by Saturday morning cartoons and Vercel deployment logs."
 - **Home About teaser editorial line:** "A man, a pencil, an agent fleet. Same person, different tools."
 - **Intent Engineering MCP tile + case-study hero:** "Drawing up agents to act with intent."
@@ -70,7 +70,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 - **5 projects:** 2D Animation Pipeline, Code Brain, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
 - **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. No top nav on home (`noChrome={true}` per site-chrome spec).
-- **Email constant:** `sean@seanwinslow.com` (the portfolio's own domain; lives in `src/lib/site.ts`).
+- **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
 - **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
 
 ## File map

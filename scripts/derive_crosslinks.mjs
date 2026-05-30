@@ -11,9 +11,9 @@
  *   cited ledger row + architecture writeup as `namedInEssays[]`.
  *
  *   Writes:
- *     - src/content/transactions/.crosslinks.json  (extended: namedInEssays[] per row)
- *     - src/content/architecture/.crosslinks.json  (NEW)
- *     - src/content/essays/.crosslinks.json        (NEW; mostly empty in v1 — no reverse links flow INTO essays)
+ *     - src/content/transactions/_crosslinks.json  (extended: namedInEssays[] per row)
+ *     - src/content/architecture/_crosslinks.json  (NEW)
+ *     - src/content/essays/_crosslinks.json        (NEW; mostly empty in v1 — no reverse links flow INTO essays)
  *
  * Source: case-study-spec-v1.md §8.2; transactions-spec-v1.md §11.1 + §14;
  *         architecture-spec-v1.md §14 + §11.1;
@@ -28,9 +28,10 @@ const WORK_DIR = path.join(ROOT, "src/content/work");
 const TXN_DIR = path.join(ROOT, "src/content/transactions");
 const ARCH_DIR = path.join(ROOT, "src/content/architecture");
 const ESSAY_DIR = path.join(ROOT, "src/content/essays");
-const TXN_CROSSLINKS_OUT = path.join(TXN_DIR, ".crosslinks.json");
-const ARCH_CROSSLINKS_OUT = path.join(ARCH_DIR, ".crosslinks.json");
-const ESSAY_CROSSLINKS_OUT = path.join(ESSAY_DIR, ".crosslinks.json");
+const CACHE_DIR = path.join(ROOT, ".cache");
+const TXN_CROSSLINKS_OUT = path.join(CACHE_DIR, "transactions-crosslinks.json");
+const ARCH_CROSSLINKS_OUT = path.join(CACHE_DIR, "architecture-crosslinks.json");
+const ESSAY_CROSSLINKS_OUT = path.join(CACHE_DIR, "essays-crosslinks.json");
 
 function parseFrontmatterBlock(src) {
   const m = src.match(/^---\n([\s\S]+?)\n---/);
@@ -503,7 +504,7 @@ async function main() {
     byArchitecture: Object.fromEntries(byArchitecture),
     byEssay: Object.fromEntries(byEssay),
   };
-  await fs.mkdir(TXN_DIR, { recursive: true });
+  await fs.mkdir(CACHE_DIR, { recursive: true });
   await fs.writeFile(TXN_CROSSLINKS_OUT, JSON.stringify(txnOut, null, 2), "utf8");
   process.stdout.write(`\n  wrote ${path.relative(ROOT, TXN_CROSSLINKS_OUT)}\n`);
 
@@ -515,7 +516,6 @@ async function main() {
     byCaseStudy: Object.fromEntries(archByCaseStudy),
     byEssay: Object.fromEntries(archByEssay),
   };
-  await fs.mkdir(ARCH_DIR, { recursive: true });
   await fs.writeFile(ARCH_CROSSLINKS_OUT, JSON.stringify(archOut, null, 2), "utf8");
   process.stdout.write(`  wrote ${path.relative(ROOT, ARCH_CROSSLINKS_OUT)}\n`);
 
@@ -524,7 +524,6 @@ async function main() {
     generatedAt: new Date().toISOString(),
     essays: Object.fromEntries(reverseEssays),
   };
-  await fs.mkdir(ESSAY_DIR, { recursive: true });
   await fs.writeFile(ESSAY_CROSSLINKS_OUT, JSON.stringify(essayOut, null, 2), "utf8");
   process.stdout.write(`  wrote ${path.relative(ROOT, ESSAY_CROSSLINKS_OUT)}\n`);
 

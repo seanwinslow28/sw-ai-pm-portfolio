@@ -10,7 +10,7 @@ tags:
   - infrastructure
 hero_media: /assets/projects/intent-engineering-mcp.webp
 hero_media_type: image
-hero_media_alt: An editorial terminal pane on cream paper showing npm install @swins/intent-engineering-mcp resolving with DNS-verified registry success, beside a small pencil-test character drawing a check mark in the margin.
+hero_media_alt: "A pencil-test illustration on cream paper: a child sits cross-legged in a glowing camping tent at night, drawing in a spiral sketchbook. A small red pixel-art creature hovers off the page as its sketched pixel form takes shape on the paper; a lantern and a pine forest sit beyond the tent flaps."
 order: 3
 date_started: 2026-04-20
 date_active_through: 2026-05-12
@@ -25,21 +25,25 @@ shipped_stats_endpoint: /api/shipped-stats-intent-engineering-mcp.json
 
 methods:
   - task: protocol implementation
-    tool: MCP SDK
+    tool: TypeScript MCP SDK
     cost: open-source / $0
+    link: null
+  - task: transport
+    tool: stdio
+    cost: local / $0
     link: null
   - task: registry verification
     tool: DNS-verified MCP registry
-    cost: registry / $0
+    cost: free
     link: null
   - task: package publish
     tool: npm
     cost: free tier
     link: null
-  - task: development
+  - task: development environment
     tool: Claude Code
     cost: per-token billing
-    link: null
+    link: /work/code-brain
 
 four_q:
   what: "An MCP server that exposes a small set of intent-engineering tools — structured prompt scaffolds, intent templates, an audit step — to any client that speaks the protocol. It runs locally, ships on npm, and is listed in the DNS-verified MCP registry as of May 12, 2026."
@@ -55,42 +59,56 @@ import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
 import MetricChart from "~/components/artifacts/MetricChart.astro";
 
 <Opener>
-  <p>It shipped on May 12, thirteen days before the date I'd circled on the calendar, which is the kind of sentence I have wanted to write about my own work since roughly 2013. The thing on the other end of the ship-early was a single-purpose Model Context Protocol server that lives on npm under `@swins/intent-engineering-mcp`, runs locally, and gives any MCP client a small handful of intent-engineering tools — structured prompt scaffolds, intent templates, an audit step — the kind of thing I had been quietly copy-pasting into my own terminals at five in the morning for months before it occurred to me that this might be a package.</p>
-  <p>The reason it shipped early is that I cut the most exciting thing in the spec. The original v1 had an embedded tool-call demo right here on this page — you would click a button, the page would fire a real MCP call, and the response would render inline. I loved it. I cut it on April 30, on purpose, on the calendar, the way you cut a scene from a script that's slowing the second act, and slid the work to a separate future spec where it is currently gathering dust instead of breaking production.</p>
-  <p>What stayed is the load-bearing part — the DNS-verified registry listing, the npm publish, the install verification block, the small set of tools that actually do the job. The live block above this paragraph reads the install counts off the registry every morning at 08:45. The investigation board below is the build calendar with the cut decision sitting visibly in the middle of it. The point of this page is the cut decision, not the ship date. The ship date was just the receipt.</p>
+  <p>It shipped on May 12, 13 days early. <code>@swins/intent-engineering-mcp</code> — a single-purpose Model Context Protocol server that lives on npm, runs locally, and gives any MCP client a small set of intent-engineering tools: prompt scaffolds, intent templates, an audit step. The kind of thing I had been hand-rolling into terminals for months before it occurred to me that this might be a package.</p>
+  <p>The reason it shipped early is that I cut the most exciting thing in the spec. The v1 had an embedded tool-call demo right here on this page — click a button, fire a real MCP call, render the response inline. I loved it. I cut it on April 30, the way you cut a scene that's slowing the second act, and slid it to a separate future spec where it is currently gathering dust instead of breaking production.</p>
+  <p>What stayed is the load-bearing part — the DNS-verified registry listing, the npm publish, the install verification block, the handful of tools that actually do the job. The live block above this paragraph reads the install counts at 08:30 every morning. The investigation board below is the build calendar with the cut sitting visibly in the middle. The point of this page is the cut decision, not the ship date. The ship date was just the receipt.</p>
 </Opener>
 
 <InvestigationBoard>
   <BoardArtifact
     artifactId="artifact-1"
     date="APR 24"
-    boardLabel="MCP protocol implementation — spec lock"
-    excerpt="tools/list + tools/call wired against the SDK. registry verification block opens.">
-    <p slot="caption">APR 24 — protocol surface specced and locked: two MCP tools, registered against the SDK.</p>
+    boardLabel="MCP protocol surface — 3-tool spec lock"
+    excerpt="tools/list + tools/call wired against the SDK. The three tools — audit_intent_spec, generate_intent_spec_scaffold, assess_retrofit_level — registered at this spec lock. Stdio transport only; no Streamable HTTP, no SSE.">
+    <p slot="caption">APR 24 — protocol surface specced + locked at three tools. Stdio transport only; the small surface is the discipline.</p>
   </BoardArtifact>
 
   <PRDDecision
     artifactId="artifact-2"
     date="APR 30"
-    prdTitle="Cut decision: keep registry verification"
-    decisionLine="Keep the DNS-verified registry block. Defer the embed page to a separate future spec."
-    rationale="Verification is load-bearing for adoption trust; the embed is retrospective polish.">
-    <p slot="caption">APR 30 — the cut that saved the ship date: registry verification stayed, the embedded tool-call demo moved to a future spec.</p>
+    prdTitle="Cut decision — keep registry verification, defer embed"
+    decisionLine="Keep the DNS-verified registry block as v0.1.0's load-bearing trust signal. Defer the embedded tool-call demo to a separate future spec."
+    rationale="Verification is load-bearing for adoption trust; installs without it are taken on faith. The embed is retrospective polish — exciting, but the kind of exciting that slows the ship. Cut on purpose, on the calendar, before it cost the date.">
+    <p slot="caption">APR 30 — the cut that saved the ship date. Registry verification stays; embedded tool-call demo moves to a future spec.</p>
   </PRDDecision>
 
-  <MetricChart
+  <PRDDecision
     artifactId="artifact-3"
-    date="MAY 1"
-    chartTitle="Build size vs feature count"
-    yLabel="KB"
-    data={[
-      { x: "v0.0.1", y: 320 },
-      { x: "v0.0.5", y: 290 },
-      { x: "v0.0.8", y: 240 },
-      { x: "v0.1.0", y: 180 },
-    ]}>
-    <p slot="caption">MAY 1 — build size traced from 320KB at v0.0.1 to 180KB at v0.1.0 as scope shrank to the load-bearing core.</p>
-  </MetricChart>
+    date="MAY 8"
+    prdTitle="Validation checklist canonicalized at 25 items"
+    decisionLine="Scope-lock prose realigns to SKILL.md, not the other way around. 40-item reference reconciled to the canonical 25 across 7 sub-sections."
+    rationale="Source-of-truth discipline (scope-lock §3): SKILL.md is canonical. The earlier 40-item figure was paraphrased into scope-lock without verification. validation_score output reads X/25, not X/40. No Zod schema change.">
+    <p slot="caption">MAY 8 — validation count reconciliation. 40 → 25 items; spec realigns to the canonical SKILL.md instead of the other way around.</p>
+  </PRDDecision>
 
-  {/* artifact cut per spec §11.4 — no real DM available */}
+  <BoardArtifact
+    artifactId="artifact-4"
+    date="MAY 12"
+    boardLabel="@swins/intent-engineering-mcp@0.1.0 — npm + MCP registry publish"
+    excerpt="npm publish lands at v0.1.0. MCP registry listing live under com.seanwinslow/intent-engineering with DNS-verified namespace. Thirteen days earlier than the date circled on the calendar.">
+    <p slot="caption">MAY 12 — package publishes to npm. DNS-verified registry listing live under com.seanwinslow/intent-engineering. Thirteen days early.</p>
+  </BoardArtifact>
+
+  <MetricChart
+    artifactId="artifact-5"
+    date="MAY 13"
+    chartTitle="Scale audit — 118 first-party skills by retrofit level"
+    yLabel="% of skills"
+    data={[
+      { x: "L1-mvr",        y: 24 },
+      { x: "L2-structured", y: 36 },
+      { x: "L3-full",       y: 40 },
+    ]}>
+    <p slot="caption">MAY 13 — post-ship scale audit: assess_retrofit_level runs against 118 first-party skills in under a second, zero parse errors. The dogfood test on the canonical intent-engineering SKILL.md scores 23/25 with zero anti-patterns. The tool eats its own dog food.</p>
+  </MetricChart>
 </InvestigationBoard>

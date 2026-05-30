@@ -31,21 +31,21 @@ limitations:
 
 relatedCaseStudy: code-brain
 relatedTransactions: []
-relatedArchitecture: vault-knowledge-mcp
-# ↑ Forward-declared. Architecture page at /architecture/vault-knowledge-mcp/
-#   ships in Phase 3c.2. derive_crosslinks.mjs accepts the forward-declared
-#   slug (archSlugs is empty in 3c.1; validation permits any value).
+relatedArchitecture: vault-scorecard
+# ↑ Points at the scorecard architecture page (/architecture/vault-scorecard/) —
+#   the prior-art doc this MCP self-justifies against. The MCP's own architecture
+#   writeup can take the vault-knowledge-mcp arch slug when it ships.
 
 repoUrl: https://github.com/seanwinslow28/code-brain
 ---
 
 ## What is this?
 
-A Model Context Protocol that exposes Sean's vault as a queryable agent surface. Design-locked May 21, 2026; ship-target ~June 4. The architecture argument lives at `/architecture/vault-knowledge-mcp/` (Phase 3c.2). This row tracks the *shipped artifact* — the MCP transport + tool surface — not the thesis.
+A Model Context Protocol that exposes Sean's vault as a queryable agent surface. Design-locked May 21, 2026; ship-target ~June 4. The architecture argument lives at `/architecture/vault-scorecard/` (Phase 3c.2). This row tracks the *shipped artifact* — the MCP transport + tool surface — not the thesis.
 
 ## Why this approach?
 
-The vault is the only PM vault that passes all five Nate-tests. The MCP wraps it. Recruiter from Glean lands on /architecture/vault-knowledge-mcp/ → reads the scoreboard → clicks through to the ledger row → sees the ship date. The two surfaces close the loop: architecture argues, ledger ships.
+The vault is the only PM vault that passes the agent-infrastructure tests. The MCP wraps it. Recruiter from Glean lands on /architecture/vault-scorecard/ → reads the scoreboard → clicks through to the ledger row → sees the ship date. The two surfaces close the loop: architecture argues, ledger ships.
 
 ## What would break?
 

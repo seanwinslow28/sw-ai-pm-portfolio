@@ -2,7 +2,7 @@
 slug: code-brain
 frame: A-2
 title: Code Brain
-tagline: My second brain has a fleet now.
+tagline: A second brain that grew a third one for itself.
 status: ACTIVE
 tags:
   - agents
@@ -10,13 +10,13 @@ tags:
   - personal-automation
 hero_media: /assets/projects/code-brain.webp
 hero_media_type: image
-hero_media_alt: A pencil-and-ink concept graph with seven hand-drawn nodes labeled with PM vault concepts, an amber thread passing through three of them, held by a pencil-test character standing at the bottom of the graph.
+hero_media_alt: "A pencil-test illustration on cream paper: a figure seen from behind hunched over a glowing laptop at a night desk, an amber desk lamp lighting scattered notes, a window opening onto a starry city skyline, a plant-topped bookshelf behind. Four small mascot helpers sit in the corners, linked by a thin amber thread."
 order: 2
-date_started: 2025-09-01
+date_started: 2026-02-06
 case_study_dateline_pattern: fleet_pulse
 
 role: pm + builder + operator
-anchor_metric: "118 SKILLS · 14 HOOKS · 8 AGENTS"
+anchor_metric: "OVERNIGHT FLEET · LAUNCHD-NATIVE"
 investigation_order: reverse
 
 methods:
@@ -28,9 +28,17 @@ methods:
     tool: launchd (macOS)
     cost: local / $0
     link: null
-  - task: local model
-    tool: Ollama (Qwen3-14B, nomic-embed-text)
+  - task: local inference (heavy)
+    tool: qwen3.6_35b-a3b-32k on MBP via Ollama
     cost: local / $0
+    link: null
+  - task: multi-CLI critic
+    tool: Codex CLI + Anti-Gravity CLI in parallel
+    cost: $0 incremental (subscriptions absorb)
+    link: null
+  - task: local-cloud routing
+    tool: HybridRouter (qwen3.6_35b-a3b-32k → Sonnet 4.6 fallback)
+    cost: per-token (capped)
     link: null
   - task: animation pipeline (downstream consumer)
     tool: Animation Pipeline
@@ -38,7 +46,7 @@ methods:
     link: /work/animation-pipeline/
 
 four_q:
-  what: "A personal command-center built on the Claude Agent SDK and scheduled through launchd. 118 skills compose into 8 named agents, governed by 14 lifecycle hooks. The Daily Driver agent wakes at 08:45 and writes the portfolio's daily-dated layer before I open Slack."
+  what: "Code Brain is a personal command center built on Claude Code, sized to fit a PM with a writing habit and an animation pipeline running one repo over. An Obsidian vault with a fleet of SDK agents on macOS launchd. Three machines orchestrating local and cloud models. A knowledge loop that flushes session content overnight, turns it into concepts, critiques them across Codex CLI and Anti-Gravity CLI in parallel, and lands the expansions in the vault by morning. The roster turns over weekly because the working method does. The Daily Driver agent writes this portfolio's daily-dated layer at 08:30 before the workday starts."
   why: "Three options considered: ChatGPT Plus with custom GPTs, Cursor with project rules, or a Claude-Code-native fleet. Chose Claude-Code-native because skills compose better than prompts and because the Agent SDK lets a single launchd job orchestrate an entire morning across local and cloud models."
   break: "Three named failure modes. First, launchd silently failing on the first run after a macOS update. Second, the morning agent saturating its tool-call quota mid-brief. Third, prompt-cache misses cascading across the day's runs and tripling the token bill."
   learn: "The fleet's job isn't to write code. The fleet's job is to keep me thinking about the next problem instead of the last one."
@@ -52,44 +60,56 @@ import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
 import MetricChart from "~/components/artifacts/MetricChart.astro";
 
 <Opener>
-  <p>At 08:45 every weekday, a launchd job on a Mac Mini in my apartment wakes up a Claude agent named Daily Driver. It reads last night's git commits, scans the vault for anything I touched, opens four JSON files in the portfolio repo, and writes the day's dateline into them before the coffee finishes brewing. I used to call this folder my second brain. The folder did not change. The folder has a fleet now.</p>
-  <p>The vault was a Markdown graveyard for two years. Meeting notes, half-written essays, a 4,000-word file called "thoughts-on-pacing.md" that I have never re-opened. Then the Claude Agent SDK shipped, and the same folder started hosting things that ran on a clock. 118 skills now compose into 8 named agents the way recipes compose into a kitchen. The Daily Driver writes the morning brief. Vault Synth runs against new commits at 14:00. Process Inbox triages overnight email before I've made eye contact with a single human. None of them are mine in any honest sense. I named them, scheduled them, and they out-produced me by Tuesday of week one.</p>
-  <p>The fleet replaced the guy who organized media files in a basement for nine years. Same hands, different tools. He's still in the basement. The basement just has a Mac Mini in it now. What's below is the morning ritual. The bill isn't in dollars.</p>
+  <p>At 02:30 every morning while I am asleep, an agent on my Mac Mini reads everything I wrote yesterday and turns one item of it into a concept — and at 03:30 two more agents read what the first one wrote and argue about whether it's any good — and by 08:30 a fourth agent has drafted my morning note, and the day starts with a fleet that has been working since I went to bed.</p>
+  <p>This is Code Brain — an Obsidian vault that built itself a fleet, SDK agents that grow and shrink with the work, running on launchd, a knowledge graph that lints itself on Sundays, a critic that splits to Codex CLI and Anti-Gravity CLI in parallel so the variance is real, and a daily-driver agent that writes the dateline at the top of this portfolio.</p>
+  <p>The orchestration runs across three machines — Mac Mini for the long fleet, MacBook Pro for heavy local inference, an Alienware RTX 5080 for the CUDA jobs. Comprehension is the artifact. The fleet is how I keep comprehending while I do other work.</p>
 </Opener>
 
 <InvestigationBoard>
-  <MetricChart
+  <BoardArtifact
     artifactId="artifact-1"
-    date="MAY 16"
-    chartTitle="Daily Driver fleet runs"
-    yLabel="runs/day"
-    data={[
-      { x: "Apr 1", y: 12 },
-      { x: "Apr 15", y: 24 },
-      { x: "May 1", y: 38 },
-      { x: "May 16", y: 47 },
-    ]}>
-    <p slot="caption">Daily Driver fleet runs per day, April through mid-May. Curve tracks new skills landing in the vault.</p>
-  </MetricChart>
-
-  <PRDDecision
-    artifactId="artifact-2"
-    date="MAY 13"
-    prdTitle="Tier 1 retrofit — agent SDK stable"
-    decisionLine="Retrofit all Tier-1 agents to the stable SDK. Hooks lifecycle wired."
-    rationale="The beta SDK shipped breaking changes weekly; Tier 1 ROI requires a stable surface.">
-    <p slot="caption">Tier-1 retrofit decision when the Agent SDK reached 1.0. Eight named agents migrated in a single day.</p>
-  </PRDDecision>
-
-  {/* artifact cut per spec §11.4 — no real DM available */}
+    date="MAY 27"
+    boardLabel="Fleet memory Phase 1 — plan landed"
+    excerpt="Shared filesystem-memory layer at vault/90_system/fleet-memory/. Per-agent namespacing, explicit promote_to_shared(). Pilot agents: vault_synthesizer + daily_driver. Default-disabled; opt in per agent.">
+    <p slot="caption">MAY 27 — fleet memory Phase 1 plan lands. Shared filesystem layer with per-agent namespacing; vault_synthesizer + daily_driver as pilot agents. Default-disabled until the first pilot validates.</p>
+  </BoardArtifact>
 
   <BoardArtifact
+    artifactId="artifact-2"
+    date="MAY 20"
+    boardLabel="Knowledge Loop Phase 6 — producer + consumer ship">
+    <p slot="caption">MAY 20 — Knowledge Loop Phase 6 ships end-to-end. SessionEnd flush → 02:30 synthesize → 03:30 critique (Codex CLI + Anti-Gravity CLI in parallel) → SessionStart re-inject as additionalContext. The vault serves itself back into tomorrow's context window.</p>
+  </BoardArtifact>
+
+  <BoardArtifact
+    artifactId="artifact-3"
+    date="MAY 13"
+    boardLabel="Phase D — typed reasoning edges shipped">
+    <p slot="caption">MAY 13 — typed-edge SQLite layer ships. Six relation types — supports, contradicts, evolved_into, supersedes, depends_on, related_to. Weekly knowledge-lint contradiction detection collapses to a SQL query instead of an LLM scan.</p>
+  </BoardArtifact>
+
+  <PRDDecision
     artifactId="artifact-4"
-    date="MAR 20"
-    boardLabel="schedule-recommendations.md — March update"
-    excerpt={`- 08:45 daily — Daily Driver morning brief
-- 14:00 weekday — Vault Synth runs against new commits
-- 22:00 nightly — vault-knowledge-mcp re-index`}>
-    <p slot="caption">Schedule excerpt from the March cadence review. Three fixed windows; everything else fires on demand.</p>
+    date="APR 28"
+    prdTitle="Process Inbox — pause cloud-Sonnet path; await local rewrite"
+    decisionLine="Pause cloud-Sonnet Path A. Local gemma4:e4b Path B rewrite becomes the re-enable precondition; manual triage via the process-inbox skill in interactive sessions is the working alternative."
+    rationale="Cost-efficiency: cloud Sonnet ran $1.16/file at ~3 files per run. Local path is $0/file. An agent that validates working at $1.16/file is not the agent worth running on a daily schedule. Pause is a cost call against a capability that worked.">
+    <p slot="caption">APR 28 — Process Inbox cloud-Sonnet path paused. Cost-efficiency PM call against capability that validated working — local rewrite becomes the precondition for re-enable.</p>
+  </PRDDecision>
+
+  <PRDDecision
+    artifactId="artifact-5"
+    date="APR 7"
+    prdTitle="launchd PATH bug — fix in plist EnvironmentVariables"
+    decisionLine="Every launchd plist now ships EnvironmentVariables with PATH set explicitly to include /Users/seanwinslow/.local/bin and /opt/homebrew/bin."
+    rationale="Without explicit PATH, the claude CLI isn't discoverable from launchd context; agents fail with CLIConnectionError on the next macOS update. The plist is the deployment surface; the surface has to be self-contained or it silently breaks.">
+    <p slot="caption">APR 7 — launchd PATH bug surfaced and patched across the fleet. Recovery from a silent infra failure that took the morning agents down for a day.</p>
+  </PRDDecision>
+
+  <BoardArtifact
+    artifactId="artifact-6"
+    date="FEB 6"
+    boardLabel="Code Brain — first commit">
+    <p slot="caption">FEB 6 — the Code Brain repo's first commit. The vault has been around longer; the fleet starts here.</p>
   </BoardArtifact>
 </InvestigationBoard>

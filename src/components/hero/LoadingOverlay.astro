@@ -1,0 +1,147 @@
+---
+/**
+ * Loading overlay (D6 / hero-spec §2 AMENDMENT 2026-05-30 — Issue B).
+ *
+ * An ADDITIVE, full-viewport cream field that renders on top of the hero on
+ * first paint, cycles the 8 background-removed loading icons centered, then
+ * fades out and unmounts — revealing the hero that has been rendered
+ * underneath the whole time (the overlay never gates the hero).
+ *
+ * Gated to once-per-session via sessionStorage. Under reduced-motion or no-JS
+ * the overlay never becomes visible and removes itself, so a JS-gated reveal
+ * can never strand a blank hero (the reduced-motion safety win). Mount on the
+ * home page only.
+ *
+ * Timing (§6, motion phase 0): 8 frames × 600ms (≈480ms visible + 120ms
+ * crossfade) ≈ 4.8s, then a 400ms overlay fade-out.
+ */
+
+const FRAMES = [
+  "/assets/hero-icons/loading/icon-1-loop.webp",
+  "/assets/hero-icons/loading/icon-2-terminal.webp",
+  "/assets/hero-icons/loading/icon-3-graph.webp",
+  "/assets/hero-icons/loading/icon-4-pencil.webp",
+  "/assets/hero-icons/loading/icon-5-sticky-note.webp",
+  "/assets/hero-icons/loading/icon-6-matrix.webp",
+  "/assets/hero-icons/loading/icon-7-claude.webp",
+  "/assets/hero-icons/loading/icon-8-coffee.webp",
+];
+---
+
+<div class="loading-overlay" data-loading-overlay aria-hidden="true">
+  <img class="loading-overlay__icon" src={FRAMES[0]} alt="" decoding="async" />
+</div>
+
+{/* Pre-paint gate + reveal + cycle. is:inline so it runs synchronously during
+    parsing (the overlay <img> above is already parsed), reaching display:flex
+    before first paint — no flash of hero-then-overlay on the common direct
+    full-load path. Under no-JS this never runs and CSS keeps the overlay
+    display:none, so the hero shows immediately. */}
+<script is:inline>
+  (function () {
+    var FRAMES = [
+      "/assets/hero-icons/loading/icon-1-loop.webp",
+      "/assets/hero-icons/loading/icon-2-terminal.webp",
+      "/assets/hero-icons/loading/icon-3-graph.webp",
+      "/assets/hero-icons/loading/icon-4-pencil.webp",
+      "/assets/hero-icons/loading/icon-5-sticky-note.webp",
+      "/assets/hero-icons/loading/icon-6-matrix.webp",
+      "/assets/hero-icons/loading/icon-7-claude.webp",
+      "/assets/hero-icons/loading/icon-8-coffee.webp",
+    ];
+    var SESSION_KEY = "hero-overlay-shown";
+    var HOLD_MS = 480;
+    var FADE_MS = 120;
+    var LEAVE_MS = 400;
+
+    var overlay = document.currentScript
+      ? document.currentScript.previousElementSibling
+      : document.querySelector("[data-loading-overlay]");
+    if (!overlay || !overlay.matches("[data-loading-overlay]")) {
+      overlay = document.querySelector("[data-loading-overlay]");
+    }
+    if (!overlay) return;
+
+    // Gate: not reduced-motion AND not already shown this session.
+    var reduced = false;
+    try {
+      reduced =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {}
+
+    var alreadyShown = false;
+    try {
+      alreadyShown = sessionStorage.getItem(SESSION_KEY) === "true";
+    } catch (e) {}
+
+    if (reduced || alreadyShown) {
+      overlay.remove();
+      return;
+    }
+
+    // Reveal before paint, then cycle.
+    overlay.classList.add("is-visible");
+    var img = overlay.querySelector(".loading-overlay__icon");
+    var idx = 0;
+
+    function finish() {
+      overlay.classList.add("is-leaving");
+      try {
+        sessionStorage.setItem(SESSION_KEY, "true");
+      } catch (e) {}
+      setTimeout(function () {
+        overlay.remove();
+      }, LEAVE_MS + 50);
+    }
+
+    function step() {
+      // hold current frame, then fade out, swap, fade in
+      setTimeout(function () {
+        if (img) img.style.opacity = "0";
+        setTimeout(function () {
+          idx++;
+          if (idx >= FRAMES.length) {
+            finish();
+            return;
+          }
+          if (img) {
+            img.src = FRAMES[idx];
+            img.style.opacity = "1";
+          }
+          step();
+        }, FADE_MS);
+      }, HOLD_MS);
+    }
+
+    if (img) step();
+    else finish();
+  })();
+</script>
+
+<style>
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none; /* no-JS / reduced-motion safe default — hero shows underneath */
+    align-items: center;
+    justify-content: center;
+    background: var(--paper, #fff9f0);
+    transition: opacity 400ms var(--ease-out, ease);
+    opacity: 1;
+  }
+  .loading-overlay.is-visible {
+    display: flex;
+  }
+  .loading-overlay.is-leaving {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loading-overlay__icon {
+    width: clamp(120px, 16vw, 200px);
+    height: auto;
+    opacity: 1;
+    transition: opacity 120ms linear;
+  }
+</style>

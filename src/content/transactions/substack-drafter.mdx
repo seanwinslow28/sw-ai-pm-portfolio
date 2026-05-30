@@ -1,0 +1,54 @@
+---
+title: "Substack Drafter (gate-b-drafts)"
+dateline: "BOSTON, MAY 6, 2026"
+shipped: "2026-05-06"
+
+surface: fleet
+status: SHIPPED
+
+valueProp: "A weekly Thursday drafter that reads the writing-voice-modes SKILL.md verbatim and rotates across 5 voice modes (sean / sedaris / kerouac / thompson / vonnegut). Drafts land at gate-b-drafts/, awaiting Sean's first pass before publication."
+
+methods:
+  - task: scheduling
+    tool: launchd
+    cost: local / $0
+    link: null
+  - task: generation
+    tool: HybridRouter (Qwen3-14B local → Sonnet 4.6 fallback)
+    cost: ~$0.10/run cap
+    link: /work/code-brain
+  - task: voice calibration
+    tool: reads writing-voice-modes SKILL.md
+    cost: local / $0
+    link: null
+
+limitations:
+  - "Default disabled — requires INSTALL_SUBSTACK_DRAFTER=1 to install the launchd schedule (won't fire on a fresh fleet without opt-in)."
+  - "Voice fidelity degrades on the local-fallback path when Qwen3-14B handles a mode the model wasn't trained on (Vonnegut and Kerouac in particular)."
+
+# 4Q source: inline-body fallback. The upstream EXPLANATION.md
+# (agents-sdk/agents/substack_drafter/EXPLANATION.md) returns 404 as of apply,
+# so the inline body below carries the 4Q. Wire explanationUrl when the upstream ships.
+# explanationUrl: null
+
+relatedCaseStudy: code-brain
+relatedTransactions: []
+
+repoUrl: https://github.com/seanwinslow28/code-brain
+---
+
+## What is this?
+
+A weekly drafting agent that runs every Thursday, reads the `writing-voice-modes` SKILL.md verbatim, and produces a Substack draft in one of five calibrated voice modes — sean, sedaris, kerouac, thompson, or vonnegut — rotating across them week to week. The output never publishes itself: drafts land in `gate-b-drafts/` and wait for my first editorial pass. The agent fills the blank page; the human still owns the send button.
+
+## Why this approach?
+
+The hardest part of a writing habit isn't the writing — it's the cold start. A drafter that arrives every Thursday with a voice-calibrated first draft turns "what do I write about" into "is this draft worth finishing." Reading the SKILL.md verbatim instead of baking the voice rules into the prompt means the agent's voice stays in lockstep with the calibration I tune by hand — one source of truth, no drift. Routing local-first with a cloud fallback keeps the cost capped: the local model handles the easy modes, the cloud model picks up the ones it can't, and the run never exceeds the ten-cent ceiling.
+
+## What would break?
+
+Two failure modes. The drafter ships default-disabled — without `INSTALL_SUBSTACK_DRAFTER=1` the launchd schedule never installs, so a fresh fleet stays silent until I opt in, which is correct but easy to forget. And voice fidelity degrades on the local-fallback path: Qwen3-14B handles sean and sedaris cleanly but loses the cadence on Vonnegut and Kerouac, the two modes whose whole point is rhythm. When the fallback fires on those modes, the draft reads competent and wrong.
+
+## What did I learn?
+
+A drafting agent is a gate, not a publisher. The value isn't in the prose it produces — most of it gets rewritten — it's in defeating the blank page on a schedule I don't have to maintain. The discipline the agent encodes is the same one it's drafting about: write it down, then decide what's worth keeping.

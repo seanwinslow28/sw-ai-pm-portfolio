@@ -154,7 +154,7 @@ a:focus-visible {
   }
 
   :root {
-    color-scheme: light !important;
+    color-scheme: light;  /* !important dropped per site-chrome-prose-locked-2026-05-28 §3.2 — no dark mode to override */
   }
 
   body {
@@ -163,18 +163,8 @@ a:focus-visible {
   }
 }
 
-/* ===== Hero icon-cycle pre-paint suppression (Phase 3e Bug 2) =====
- * When sessionStorage["hero-cycle-played"] === "true", BaseLayout's
- * inline <script> sets data-hero-cycle-played="true" on <html> BEFORE
- * first paint. This rule then hides the icon container synchronously
- * — no flash of icon-6/icon-7 on bfcache restore or SPA navigation
- * back to /.
- * Sister behavior: hero-icon-cycle.js's existence check skips the
- * cycle entirely when the container is display:none.
+/* Hero loading choreography note (2026-05-30, D6 / hero-spec §2 AMENDMENT):
+ * the Phase-3e in-lane icon-cycle (and its pre-paint suppression here) was
+ * superseded by the additive full-viewport LoadingOverlay. CharacterLane now
+ * mounts + fades in the WebM directly, so no global suppression rule is needed.
  */
-html[data-hero-cycle-played="true"] .hero-intro-cycle {
-  display: none !important;
-}
-html[data-hero-cycle-played="true"] .character-video {
-  opacity: 1 !important;
-}

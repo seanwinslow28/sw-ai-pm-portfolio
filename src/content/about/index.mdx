@@ -23,35 +23,31 @@ current_company: null
 character_image: /assets/character/about-full-body.png
 character_alt: A pencil-test rendering of Sean Winslow, full-body — the human-self version of the character that runs the agent fleet.
 
-# --- B-1 stacked beats (7 entries; 4 lane: braided per §9.3 minimum + 3 single-lane for contrast) ---
+# --- B-1 stacked beats (6 entries; rhythm gradient→amber→amber→gradient→gradient→gradient per about-b1-b2-b4-locked-2026-05-25 §Lane mapping) ---
 beats:
   - age: 8
-    year: 1998
-    body: "drew a coyote badly. asked dad to deploy a webpage. it was on Geocities."
+    year: 2000
+    body: "Drew Ash Ketchum and Pikachu. Sold it to a kid in second grade for a buck."
     lane: braided
-  - age: 14
-    year: 2004
-    body: "filled six sketchbooks. shipped the school-play site. learned what 'broken' meant."
-    lane: braided
-  - age: 18
-    year: 2008
-    body: "first short film. first festival rejection. learned what a deadline does to a draft."
+  - age: 23
+    year: 2015
+    body: "Won \"Best Comedy\" at my college film festival. Still have the certificate."
     lane: animator
-  - age: 22
-    year: 2012
-    body: "first PRD. first stakeholder loop. discovered the discipline I'd been faking with storyboards had a name."
-    lane: pm
   - age: 28
-    year: 2018
-    body: "shipped products at scale. drew on the train home. neither half made the other smaller."
+    year: 2020
+    body: "Spent all of Covid in my parents' basement hunched over an old desk with my iPad. Created my first animated short — \"Break Time\"."
+    lane: animator
+  - age: 30
+    year: 2023
+    body: "The WGA went on strike over AI. The writers' rooms started to shrink along with my chances of breaking in. I asked ChatGPT for advice."
     lane: braided
   - age: 32
-    year: 2022
-    body: "GPT-4 dropped. saw the agents could draw the keyframes; the in-betweens were always the human job."
-    lane: pm
-  - age: 36
+    year: 2025
+    body: "Built Super Mario with Cursor when I stumbled upon Lenny's Podcast — Mike Krieger explained what a PM does inside an AI company. My ears perked up."
+    lane: braided
+  - age: 33
     year: 2026
-    body: "running an agent fleet. animating again. the same person, finally using both hands."
+    body: "Writing PRDs. Checking evals. Sketching animatics on my iPad for the animation pipeline. Same desk, different purpose."
     lane: braided
 
 # --- B-3 annotation hook (DEFERRED to v2 per spec §1.2; field retained for v1.1) ---
@@ -64,7 +60,6 @@ import Beats from "~/components/about/Beats.astro";
 import CartoonCanon from "~/components/about/CartoonCanon.astro";
 import CurrentlyAtStamp from "~/components/about/CurrentlyAtStamp.astro";
 import BuildingToward from "~/components/about/BuildingToward.astro";
-import RecruiterCallout from "~/components/about/RecruiterCallout.astro";
 import ProofPoints from "~/components/about/ProofPoints.astro";
 import PullQuote from "~/components/about/PullQuote.astro";
 
@@ -74,11 +69,11 @@ import PullQuote from "~/components/about/PullQuote.astro";
     Why a PM, not just a builder
   </h2>
 
-  I used to think shipping the thing was the whole job. The drawing, the code, the cut — get the artifact out, and the artifact would explain itself. It turns out the artifact never explains itself. The PRD does. The spec does. The note at the top of the file that says *this is what this is and what it is for* does. The thing I was avoiding because I thought it was paperwork was the actual product.
+  Deep enough into the PM job, I finally understood why a lifetime of making things hadn't quite landed. The drawing, the code, the cut — I shipped the artifact and assumed the artifact would explain itself. The artifact never explains itself. The PRD does. The spec does. The note at the top of the file that says *this is what this is and what it's for* does. The thing I was avoiding because I thought it was paperwork turned out to be the actual product.
 
-  Building got cheap this year. The agents draw the keyframes now; they write the code; they ship the page. What stayed expensive — what got more expensive — is the part that says *here is what we are doing and why*. Comprehension is the artifact. Governance is the artifact. The spec is the artifact. Everything else is shavings off the side.
+  Building got cheap this year. The agents draw the keyframes now; they write the code; they ship the page. The Tuesday I noticed was the Tuesday a PM I'd never met opened a PR I'd never read, fixing a bug I'd never logged, off a spec I'd written six weeks earlier. Comprehension is the artifact. Everything else is shavings off the side.
 
-  Sunday morning the fleet ran clean — indexer wrote 86 chunks, the synth landed one concept and one connection, the critic returned success-empty. I read the digest at 09:12 and realized I had built this thing three weeks ago when I wrote a single sentence telling it what to do. The agents were the artifact I was supposed to be impressed by. The sentence was the product.
+  Sunday morning the fleet ran clean. The indexer wrote 86 chunks, the synth landed one concept and one connection, the critic returned success-empty. I read the 09:12 digest over my overcooked breakfast. The oldest moving part on the page was a sentence I'd written three weeks earlier and forgotten. The sentence was the product.
 </section>
 
 <CartoonCanon />
@@ -93,12 +88,10 @@ import PullQuote from "~/components/about/PullQuote.astro";
   </div>
 
   <BuildingToward>
-    I'm building toward the version of product management that takes AI-native seriously — not as a feature surface but as the substrate. The agents handle the iteration loops; the spec layer is where judgment lives, and the spec layer is where I want to be in the room.
+    Building got cheap. Comprehension didn't. The next decade of product judgment lives in the spec layer — agent governance, intent engineering, the verification loops that catch the wrong-thing-shipped-correctly. That's the layer I'm working in.
 
-    The bet I'm placing is that the spec layer is where the next decade of product judgment lives — agent governance, intent engineering, the verification loops that catch the wrong-thing-shipped-correctly. The hinge moments are the ones where a PM has to choose between an agent that's 92% accurate and one that's 96% and explainable. Those are the spec lines I want to write — the ones the fleet runs at 08:45 the next morning, and the ones that come after. I'm building toward a version of this work that gets really interesting at year five, when an agent fleet has been compounding spec discipline long enough to let a small team ship what a large team can't. I want to see how far we can take it.
+    The hinge moments come when a PM has to choose between the agent that's slightly more accurate and the agent that can show its work. Most teams pick accuracy. The fix isn't smarter models. The fix is a PM who can write the spec line that distinguishes them.
   </BuildingToward>
-
-  <RecruiterCallout visible={frontmatter.available === true} />
 </section>
 
 <ProofPoints

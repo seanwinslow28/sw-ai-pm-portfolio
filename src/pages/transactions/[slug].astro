@@ -60,7 +60,7 @@ const prev = idx > 0 ? all[idx - 1] : null;
 
 // Load the cross-link graph + a title lookup map.
 const ROOT = process.cwd();
-const crosslinksPath = path.join(ROOT, "src/content/transactions/.crosslinks.json");
+const crosslinksPath = path.join(ROOT, ".cache/transactions-crosslinks.json");
 let crosslinks: { transactions?: Record<string, { supersededBy?: string; siblingShips?: string[] }> } = {};
 try {
   const raw = await fs.readFile(crosslinksPath, "utf8");

@@ -2,7 +2,7 @@
 slug: the-block
 frame: A-4
 title: The Block — Campus + RevOps
-tagline: Two products, one institutional research firm, two years.
+tagline: B2B PM work where the agreement is the UX.
 status: ARCHIVED
 tags:
   - b2b
@@ -10,36 +10,46 @@ tags:
   - product
 hero_media: /assets/projects/the-block.webp
 hero_media_type: image
-hero_media_alt: A hand-drawn pencil-and-ink diagram of a 3-tier customer matrix — research-only, research + data, and research + data + API — with a pencil-test character in the right margin pointing at the middle tier.
+hero_media_alt: "A pencil-test illustration on cream paper: a figure seen from behind at a broad wooden desk in a wood-paneled study, facing a panoramic arc of four monitors showing teal financial charts. Floor-to-ceiling bookshelves, an armillary sphere and a globe, a brass desk lamp, and a tall window onto a domed civic building frame the room."
 order: 4
-date_started: 2024-02-01
-date_active_through: 2026-02-01
+date_started: 2025-11-10
+date_active_through: 2026-05-04
 
-role: pm + product partner
-anchor_metric: "2024 – 2026 · TWO PRODUCTS · ONE FIRM"
+role: pm + builder
+anchor_metric: "B2B PM · INSTITUTIONAL CRYPTO RESEARCH"
 investigation_order: forward
 
-archived_reference_url: https://www.theblockcrypto.com/post/example-placeholder
+# null per the-block-cleanup-locked-2026-05-28 §1.4 — no shareable public artifact
+# exists; the board + methods carry the work-anchoring (schema is .nullable()).
+archived_reference_url: null
 
 methods:
-  - task: institutional research
-    tool: Campus (B2B platform)
+  - task: production tooling
+    tool: 3 Claude Skills (etf-page-creator + stakeholder-update + jira-automation)
+    cost: per-token billing
+    link: /work/code-brain
+  - task: revops automation
+    tool: Zapier + Tables (11 workflows + 10 intake forms + central DB)
     cost: SaaS
     link: null
-  - task: revenue operations
-    tool: Internal RevOps system
-    cost: internal
+  - task: PRD authoring
+    tool: Claude Code + Confluence
+    cost: per-token + SaaS
+    link: /work/code-brain
+  - task: AI media generation
+    tool: Nano Banana Pro + Veo 3.1 / Kling 3.0 + ElevenLabs
+    cost: per-credit
     link: null
-  - task: data partnerships
-    tool: redacted partner stack
-    cost: enterprise
+  - task: analytics
+    tool: GA4
+    cost: free tier
     link: null
 
 four_q:
-  what: "Two products inside one institutional research firm, across a 2024 – 2026 arc. Campus was the B2B research surface customers logged into. RevOps was the internal product that kept the revenue engine — pricing, renewals, partner data — from running on a Notion doc and three people's memory."
-  why: "Three thesis options sat on the table for Campus: a closed research-only product, a data-first product with research bolted on, and a research-first product with data and API as paid layers. We chose research-first with tiered data and API access. The bet was that the relationship sat with the analysts; the platform's job was to compound that relationship, not replace it."
-  break: "Three failure modes were live at scale and managed weekly: data-partnership renewals (a single vendor pulling a feed could shrink a tier overnight), RevOps automation slipping out of sync with the renewal calendar, and the onboarding bottleneck where every institutional account needed a human handshake before the product could carry the weight."
-  learn: "B2B research is a relationship product. The infrastructure has to disappear; the relationship has to remain."
+  what: "Product Manager at The Block, an institutional crypto data and research firm. The work spanned multiple surfaces — Campus education, the ETF launch page workflow on WordPress, the Polymarket × Campus sponsored-microcourse vertical (PRD v1 to v3, 5-component 0-to-1 build), the .co homepage redesign competitive audit, and the RevOps automation pipeline behind Salesforce closes. The agentic-engineering thread ran through all of it: three production Claude Skills shipped against the P&E Q2 OKR (etf-page-creator, stakeholder-update, jira-automation), AI-assisted image, video, and voiceover generation for the Campus 201 enterprise launch, an internal x402 / A2A / MCP strategy memo mapping six agent-economy monetization patterns, and the daily PM workflow onboarded onto Claude Code for the rest of the P&E team."
+  why: "The decision wasn't which surface to specialize on. The decision was which discipline to anchor the role around: engineering speed, design taste, or writing compression. Institutional B2B PMs spend more time writing than building because the customer relationship is the product, and the relationship is documented in agreements, briefs, and status updates that leadership and partner teams actually read. The bi-weekly P&E update was the marquee version of the writing discipline — and it became one of the three Claude Skills shipped against the Q2 OKR. Pick the writing-heavy version of the role on purpose, then ship the tools that compress it."
+  break: "Three failure modes the role guarded against, named and patched on the record. Handoff multiplication — seven manual handoff steps per deal in the RevOps process before automation, each one a place humans could drop the work. The fix was an end-to-end pipeline (eleven Zapier workflows + ten product-specific intake forms + a central Tables database) collapsing the chain to a single Salesforce 'Closed Won' trigger. Documentation sprawl — seven competing team-doc hubs, roughly twenty-five orphaned Developer Sync pages, five-plus overlapping onboarding paths. The fix was a 10-week P&E Department 2.0 execution plan consolidating into a per-product Confluence architecture with a centralized Templates Library. Status-update theater — writing the bi-weekly to look good instead of to surface real status. The fix was building each update around named risks and unresolved decisions, then shipping stakeholder-update as a Claude Skill so the discipline outlasted any one PM."
+  learn: "Institutional B2B is a relationship product. The infrastructure has to disappear; the relationship has to remain. The PM who ships the tool that automates the work is the PM who scales past their own bandwidth."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -49,49 +59,60 @@ import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
 import MetricChart from "~/components/artifacts/MetricChart.astro";
 
 <Opener>
-  <p>Two years at a research firm whose customers ran money for a living and whose product was, depending on the day, a Snowflake share, a PDF, or a phone call returned within the hour. Campus was the surface the customers logged into — research, data, an API for the desks that wanted to wire it into their own models. RevOps was the other half of the building: the internal product that priced the tiers, tracked the renewals, kept the partner data legible to the analysts who didn't want to think about plumbing. Two products, one firm, the same calendar.</p>
-  <p>The job was build it, ship it, then write it down carefully enough that the building kept running after I stopped being in it. 2024 was Campus v1 going out to a small set of institutional accounts through the partnerships team. 2025 was the tier structure locking and RevOps coming online inside the building. 2026 was the handoff doc, the runbooks, the institutional knowledge moved from people's heads into the system. The screenshots on this page have project keys redacted and customer names anonymized.</p>
-  <p>The firm restructured around me; the products didn't. This page is about the products.</p>
+  <p>The Block is an institutional crypto data and research firm whose customers ran money for a living and whose product was, depending on the day, a Snowflake share, a PDF, or a phone call returned within the hour. Multiple surfaces — the Campus education product, the ETF launch page workflow on WordPress, the Polymarket × Campus sponsored-microcourse vertical, the .co homepage redesign competitive audit, the RevOps automation pipeline behind Salesforce closes. The bi-weekly Product and Engineering status update sat above all of them.</p>
+  <p>The job was build it, ship it, and write it down carefully enough that leadership could read the bi-weekly update in under five minutes. That discipline transferred everywhere — the ETF launch page scopes easier when you've already drafted the version that fits in 90 words; the Polymarket microcourse builds faster when you've already drafted the five components out loud. Institutional B2B doesn't have UX to lean on — only the agreement.</p>
+  <p>The firm restructured around me; the products didn't. This page is about the products. The investigation board below is the build calendar in forward order — multiple surfaces, sanitized artifacts, and a public reference link at the end. The Methods strip is lean by design: most of the receipts from institutional B2B work have to be redacted before they ship.</p>
 </Opener>
 
 <InvestigationBoard>
-  <BoardArtifact
+  <PRDDecision
     artifactId="artifact-1"
-    date="2024"
-    boardLabel="Campus product launch — Q1 2024"
-    excerpt="Campus v1 ships to a small set of institutional customers. Onboarding runs through the partnerships team.">
-    <p slot="caption">2024 — Campus v1 launch. First B2B surface customers logged into directly.</p>
-  </BoardArtifact>
+    date="DEC 2025"
+    prdTitle="Polymarket × Campus — Sponsored Microcourses PRD v1"
+    decisionLine="Scope locked at 5 components: homepage module, Learn page hub, in-article recirculation, embedded course player, reporting requirements."
+    rationale="The Block's editorial audience already reaches Polymarket's target market; Campus already produces the educational format. The 5-component build connects the two surfaces without standing up a new product team — sponsor-native distribution against the existing engagement loop.">
+    <p slot="caption">DEC 2025 — Polymarket × Campus 0-to-1 PRD v1. First sponsored-microcourse B2B revenue vertical scoped end-to-end.</p>
+  </PRDDecision>
+
+  <MetricChart
+    artifactId="artifact-2"
+    date="JAN 2026"
+    chartTitle="RevOps manual handoff steps per Closed Won — before vs after"
+    yLabel="manual steps"
+    data={[
+      { x: "before", y: 7 },
+      { x: "after",  y: 0 },
+    ]}>
+    <p slot="caption">JAN 2026 — etf-page-creator Claude Skill ships. RevOps automation pipeline collapses 7 manual handoff steps into a single Salesforce "Closed Won" trigger: 11 Zapier workflows + 10 product-specific intake forms + central Tables database.</p>
+  </MetricChart>
 
   <PRDDecision
-    artifactId="artifact-2"
-    date="2025 Q1"
-    prdTitle="Subscription tier structure"
-    decisionLine="Tier structure locked at 3 levels — research-only, research + data, research + data + API."
-    rationale="The 3-tier model mapped to the customer segments already showing up in renewals: analysts who wanted the reports, desks that wanted the underlying data, and quant teams that wanted both wired into their own systems.">
-    <p slot="caption">2025 Q1 — subscription tier decision. The 3-tier model held for the remainder of the arc.</p>
+    artifactId="artifact-3"
+    date="FEB 2026"
+    prdTitle="Polymarket × Campus PRD v3 — 5-component shipped state"
+    decisionLine="All 5 components landed; Sales One-Pager template productizes the partnership for repeatable revenue-team sale."
+    rationale="Sponsored microcourse becomes a recurring revenue line, not a one-off integration. The Sales One-Pager template means the next sponsor ships without per-deal product involvement — partnership becomes infrastructure.">
+    <p slot="caption">FEB 2026 — Polymarket × Campus 0-to-1 ships. PRD v1 → v3 across two months; Sales One-Pager makes the partnership repeatable.</p>
   </PRDDecision>
 
   <BoardArtifact
-    artifactId="artifact-3"
-    date="2025 Q2"
-    boardLabel="RevOps internal launch">
-    <p slot="caption">2025 Q2 — RevOps internal product goes live to the partnerships and research teams.</p>
+    artifactId="artifact-4"
+    date="MAR 2026"
+    boardLabel="Block Pro 2.0 — competitive landscape kickoff">
+    <p slot="caption">MAR 2026 — Block Pro 2.0 product audit + competitive analysis begins. 9 enterprise data and research platforms benchmarked; 3 internal stakeholder interviews (sales, research, head of data) scope the proposal for the incoming CEO.</p>
   </BoardArtifact>
 
-  <MetricChart
-    artifactId="artifact-4"
-    date="2025-2026"
-    chartTitle="Institutional subscriber growth"
-    yLabel="subscribers"
-    data={[
-      { x: "2024 Q2", y: 18 },
-      { x: "2024 Q4", y: 42 },
-      { x: "2025 Q2", y: 87 },
-      { x: "2025 Q4", y: 134 },
-    ]}>
-    <p slot="caption">2024 – 2026 — institutional subscriber growth across the arc. Figures sanitized; trajectory directional.</p>
-  </MetricChart>
+  <BoardArtifact
+    artifactId="artifact-5"
+    date="APR 2026"
+    boardLabel="x402 / A2A / MCP — internal strategy memo">
+    <p slot="caption">APR 2026 — x402 protocol, agent-to-agent payments, and MCP integration mapped to 6 monetization patterns for the agent economy. Future-PM thesis artifact authored under the data and research firm's editorial roof.</p>
+  </BoardArtifact>
 
-  {/* artifact cut per spec §11.4 — customer DMs are confidential; no public-ready DM available */}
+  <BoardArtifact
+    artifactId="artifact-6"
+    date="MAY 2026"
+    boardLabel="bi-weekly P&E — final update + KR3 delivery">
+    <p slot="caption">MAY 2026 — final bi-weekly Product and Engineering status update. 3 production Claude Skills shipped against P&E Q2 Objective 5 KR3: etf-page-creator, stakeholder-update, jira-automation. The writing discipline encoded as production tooling.</p>
+  </BoardArtifact>
 </InvestigationBoard>

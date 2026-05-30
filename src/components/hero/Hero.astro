@@ -17,9 +17,8 @@ const ROLE = "AI PRODUCT MANAGER";
     <h1 class="hero-name">{NAME}</h1>
     <p class="hero-role">/ {ROLE}</p>
     <p class="hero-tagline">
-      <span class="line line-1">Product Manager</span>
-      <span class="line line-2">The agents handle the loops.</span>
-      <span class="line line-3">I handle the taste.</span>
+      <span class="line line-1">The agents handle the loops.</span>
+      <span class="line line-2">I handle the taste.</span>
     </p>
   </div>
   <CharacterLane />
@@ -51,14 +50,15 @@ const ROLE = "AI PRODUCT MANAGER";
     animation: heroNameIn 600ms var(--ease-out) 400ms forwards;
   }
   .hero-role {
+    /* D8 2026-05-30: enlarged so the role reads immediately on the 5s scan. */
     font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 1.8px;
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: 500;
+    letter-spacing: 1.6px;
     line-height: 1.4;
     color: var(--ink-secondary);
     text-transform: uppercase;
-    margin-top: 12px;
+    margin-top: 14px;
     opacity: 0;
     transform: translateY(8px);
     animation: heroRoleIn 300ms var(--ease-out) 700ms forwards;
@@ -81,7 +81,6 @@ const ROLE = "AI PRODUCT MANAGER";
   }
   .hero-tagline .line-1 { animation-delay: 900ms; }
   .hero-tagline .line-2 { animation-delay: 1040ms; }
-  .hero-tagline .line-3 { animation-delay: 1180ms; }
 
   @keyframes heroNameIn {
     to {

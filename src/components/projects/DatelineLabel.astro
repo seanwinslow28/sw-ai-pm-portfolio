@@ -4,10 +4,11 @@
  * Source: projects-spec §2.
  */
 import { getCollection } from "astro:content";
+import datelineData from "../../../public/api/dateline.json";
 
 const work = await getCollection("work");
 const count = work.length;
-const today = "2026-05-21"; // pulled from dateline.json eventually; static for v1
+const today = datelineData.date_iso; // wired to Daily Driver's dateline.json (written 08:30 daily)
 ---
 
 <div class="projects-dateline">

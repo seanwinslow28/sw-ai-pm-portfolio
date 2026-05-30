@@ -22,7 +22,7 @@ const count = transactions.length;
 const lastUpdated = transactions[0]?.data.shipped ?? new Date().toISOString().slice(0, 10);
 ---
 
-<BaseLayout title="Transactions — Sean Winslow" description="Every shipped artifact across the agent fleet, dated, with the explanation attached.">
+<BaseLayout title="Transactions — Sean Winslow" description="Every shipped artifact across the agent fleet, dated and explained.">
   <div class="page-sheet">
     <IndexHeader count={count} lastUpdatedISO={lastUpdated} />
     <FilterPills />

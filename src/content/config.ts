@@ -49,7 +49,7 @@ const work = defineCollection({
     shipped_at: z.coerce.string().optional(),
     shipped_stats_endpoint: z.string().optional(),
     return_condition: z.string().optional(),
-    archived_reference_url: z.string().url().optional(),
+    archived_reference_url: z.string().url().nullable().optional(),  // null = honest shape for an ARCHIVED page with no shareable public artifact (the-block-cleanup-locked-2026-05-28 §1.4)
   }),
 });
 
@@ -210,7 +210,8 @@ const essays = defineCollection({
         buyer: z.string(),
         position: z.string(),
         vocabularyTell: z.string(),
-        jdUrl: z.string().url(),
+        jdUrl: z.string().url().optional(),        // Option A (essays-prose-locked-2026-05-28 §2.2.6): was required; now optional
+        isNegativeSpace: z.boolean().optional(),   // NEW — marks the access-side contrast row (no JD; renders italic + em-dash)
       })).min(2).max(8),
     }).optional(),
 
