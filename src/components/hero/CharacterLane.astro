@@ -1,9 +1,14 @@
 ---
 /**
- * Hero character lane — flush-right WebM + intro icon cycle + floor shadow.
- * Source: hero-spec §7, §7.5; texture-spec §5.
+ * Hero character lane — flush-right WebM + floor shadow.
+ * Source: hero-spec §7; texture-spec §5.
+ *
+ * 2026-05-30 (D6 / §2 AMENDMENT): the §7.5 intro icon-cycle was superseded by
+ * the additive full-viewport LoadingOverlay. This lane now just mounts the WebM
+ * (when motion is allowed) and fades it in. The template-based mount preserves
+ * the commit `ad64ce1` reduced-motion contract — under
+ * prefers-reduced-motion: reduce, NO <video> is created in the DOM at all.
  */
-import HeroIconCycle from "./HeroIconCycle.astro";
 import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
 ---
 
@@ -15,7 +20,6 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     loading="eager"
     decoding="async"
   />
-  <HeroIconCycle />
   <template data-hero-video-template>
     <video
       class="character-video"
@@ -31,51 +35,58 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
 </div>
 
 <script>
-  import { initHeroIconCycle } from "~/scripts/hero-icon-cycle.js";
-
   /**
    * Mount the <video> element from its <template> wrapper only when the user
    * has NOT opted into reduced-motion. Per hero-spec §7.5.5 and §12: under
    * prefers-reduced-motion: reduce, the <video> element must not appear in
    * the DOM at all (was previously rendered + CSS-hidden — a defensive measure
-   * that still left a <video> in the accessibility tree).
+   * that still left a <video> in the accessibility tree). This is the
+   * load-bearing commit `ad64ce1` contract.
+   *
+   * When motion IS allowed, the video is cloned in, played, and faded in. The
+   * additive LoadingOverlay (home only, once-per-session) sits on top during
+   * the first-paint cycle; the video fade-in happens behind it.
    */
   function mountVideoIfMotionAllowed() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const existing = document.querySelector(
+      ".character-video"
+    ) as HTMLVideoElement | null;
+    if (existing) {
+      // Already mounted (re-init via pageshow / view-transition) — ensure it
+      // is visible + playing.
+      existing.style.opacity = "1";
+      existing.play?.().catch(() => {});
+      return;
+    }
     const tpl = document.querySelector(
       "[data-hero-video-template]"
     ) as HTMLTemplateElement | null;
     if (!tpl || !tpl.content.firstElementChild) return;
-    if (document.querySelector(".character-video")) return; // already mounted
     const video = tpl.content.firstElementChild.cloneNode(true) as HTMLVideoElement;
     tpl.parentNode?.insertBefore(video, tpl);
-  }
-
-  function tryInit() {
-    mountVideoIfMotionAllowed();
-    const container = document.querySelector(".hero-intro-cycle");
-    const video = document.querySelector(".character-video");
-    if (container && video) {
-      initHeroIconCycle({ container, video });
-    }
+    // Fade in on mount.
+    requestAnimationFrame(() => {
+      video.style.transition = "opacity 400ms linear";
+      video.style.opacity = "1";
+    });
+    video.play?.().catch(() => {});
   }
 
   // (1) Fresh page-load path
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", tryInit);
+    document.addEventListener("DOMContentLoaded", mountVideoIfMotionAllowed);
   } else {
-    tryInit();
+    mountVideoIfMotionAllowed();
   }
 
   // (2) bfcache restore path — fires on back/forward navigation that
-  // restored the page from the browser's back-forward cache. The
-  // sessionStorage flag is already set, so initHeroIconCycle's
-  // once-per-session bypass kicks in and immediately reveals the WebM.
-  window.addEventListener("pageshow", tryInit);
+  // restored the page from the browser's back-forward cache.
+  window.addEventListener("pageshow", mountVideoIfMotionAllowed);
 
   // (3) Astro View Transitions path — fires after each ClientRouter
   // swap. /about/ → / via the SW wordmark goes through here.
-  document.addEventListener("astro:page-load", tryInit);
+  document.addEventListener("astro:page-load", mountVideoIfMotionAllowed);
 </script>
 
 <style>
