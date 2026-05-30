@@ -58,7 +58,7 @@ const prev = idx > 0 ? all[idx - 1] : null;
 const ROOT = process.cwd();
 let crosslinks: any = {};
 try {
-  const raw = await fs.readFile(path.join(ROOT, "src/content/essays/.crosslinks.json"), "utf8");
+  const raw = await fs.readFile(path.join(ROOT, ".cache/essays-crosslinks.json"), "utf8");
   crosslinks = JSON.parse(raw);
 } catch { /* fresh checkout */ }
 
