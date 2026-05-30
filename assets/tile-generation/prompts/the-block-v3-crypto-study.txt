@@ -1,0 +1,56 @@
+A-4 THE BLOCK — v3 "crypto trader in the research study"
+Direction: keep the A-4 Path B (reading-room) framing Sean loved, convert to Path A
+pencil-and-ink-on-cream register, swap subject to a crypto trader at multiple monitors.
+The Block = crypto data & research firm. Winner tool: ChatGPT. Tile crop: 4:5 portrait.
+
+================================================================================
+PROMPT 1 — IMAGE-REFERENCE TRANSFORM  (attach A-4-chatgpt.png in ChatGPT)
+================================================================================
+Using the attached image as the exact compositional reference, redraw the entire
+scene as a traditional hand-drawn pencil-and-ink illustration on warm cream paper
+(#FFF9F0): graphite linework with fine cross-hatching, faint light-blue construction
+underdrawing, an animator's pencil-test feel, visible warm paper grain.
+
+Keep the framing identical: a single figure seen from behind, seated in an ornate
+wooden chair at a large desk; a tall multi-pane window on the left with a domed
+city skyline beyond; a wood-panelled wall and shelving behind; a deep armchair with
+a draped throw in the lower-left foreground; a patterned rug underfoot.
+
+Change the subject: instead of an old reading desk, the figure is a modern crypto
+trader working at a curved bank of multiple monitors (four to six screens) arranged
+across the desk. The screens show abstract candlestick and line-chart shapes ONLY —
+no numbers, no tickers, no readable text. Marry the old-world institutional
+research-house setting with the modern multi-monitor trading rig.
+
+Monochrome graphite and ink on warm cream paper, with ONE restrained cool teal-cyan
+accent: the soft glow of the monitor screens (echoed faintly in the banker's-lamp
+shade). Everything else stays graphite-on-cream.
+
+Portrait 4:5, the figure and monitors centered for a cover-crop tile. Absolutely no
+text, no words, no letters, no numbers, no tickers, no captions, no logos, no
+watermarks, no readable screen UI anywhere — purely pictorial.
+
+================================================================================
+PROMPT 2 — STANDALONE TEXT-TO-IMAGE  (no reference attached)
+================================================================================
+A traditional hand-drawn pencil-and-ink illustration on warm cream paper (#FFF9F0),
+animator's pencil-test feel: graphite linework, fine cross-hatching, faint light-blue
+construction underdrawing, warm paper grain. A modern crypto trader seen from behind,
+seated in an ornate wooden chair at a large desk inside a grand old-world research
+study — tall multi-pane window on the left with a domed city skyline beyond,
+wood-panelled walls and shelves of bound research volumes behind, a deep armchair with
+a draped throw in the lower-left foreground, a patterned rug underfoot, a brass
+banker's lamp on the desk. Across the desk, a curved bank of four to six monitors
+displays abstract candlestick and line-chart shapes only. The composition marries the
+old-world institutional research-house with a modern multi-monitor trading rig.
+Monochrome graphite and ink on cream, with ONE restrained cool teal-cyan accent: the
+soft glow of the monitor screens. Portrait 4:5, figure and monitors centered for a
+cover-crop tile. Absolutely no text, no words, no letters, no numbers, no tickers, no
+captions, no logos, no watermarks, no readable screen UI anywhere — purely pictorial.
+
+================================================================================
+NOTES
+- Charts must stay abstract shapes — no readable numbers/tickers (Path A no-text rule).
+- One accent only (teal-cyan monitor glow); rest is graphite-on-cream.
+- Canon-safe: depicts a research/trading study, not the killed 3-tier matrix.
+- Title + anchor metric are HTML overlays later, not baked into the art.

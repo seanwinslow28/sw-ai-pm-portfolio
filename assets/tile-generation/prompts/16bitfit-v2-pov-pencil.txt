@@ -1,0 +1,65 @@
+A-5 16BITFIT — v2 "POV hands holding the handheld" (pencil-and-ink on cream)
+Direction: keep the first-person framing Sean loved, convert to Path A pencil-and-ink
+register. INTENTIONALLY render the wordmark "16BitFit" where "Nintendo GAME BOY" sat,
+same logo-lockup style. Winner tool: ChatGPT. Tile crop: 4:5 portrait.
+NOTE: this tile deliberately breaks the no-text rule (one wordmark only) — test it.
+
+================================================================================
+PROMPT 1 — IMAGE-REFERENCE TRANSFORM  (attach the A-5 image in ChatGPT)
+================================================================================
+Using the attached image as the exact compositional reference, redraw the entire
+scene as a traditional hand-drawn pencil-and-ink illustration on warm cream paper
+(#FFF9F0): graphite linework with fine cross-hatching, faint light-blue construction
+underdrawing, an animator's pencil-test feel, visible warm paper grain.
+
+Keep the framing identical: a first-person point of view looking down at two hands
+holding a classic 1989 grey brick handheld game console; the player's lap and legs
+recede at the bottom; a cozy room behind with a wooden shelf of retro consoles,
+cartridges, books and a small trophy, a warm desk lamp glowing on the right, and a
+patterned rug on the floor. Preserve the hands, the console, and the depth of the room.
+
+On the console screen, keep a small pea-green pixel-art runner mid-stride.
+
+Render ONE piece of legible text: the wordmark "16BitFit" hand-lettered in ink in the
+spot where a handheld's brand wordmark sits (just below the screen), in a chunky retro
+logotype with mixed letter weights, matching the placement and scale of the original.
+Do NOT write "Nintendo," "Game Boy," or any other words — no status-bar text, no other
+labels. Button caps may show simple shapes only.
+
+Monochrome graphite and ink on warm cream paper, with ONE restrained color accent: the
+iconic pea-green handheld screen. Everything else is graphite-on-cream; the desk lamp
+reads as only a faint warm paper glow.
+
+Portrait 4:5, the hands and console centered for a cover-crop tile. Apart from the
+single "16BitFit" wordmark, no other text, letters, numbers, captions, logos, or
+watermarks anywhere.
+
+================================================================================
+PROMPT 2 — STANDALONE TEXT-TO-IMAGE  (no reference attached)
+================================================================================
+A traditional hand-drawn pencil-and-ink illustration on warm cream paper (#FFF9F0),
+animator's pencil-test feel: graphite linework, fine cross-hatching, faint light-blue
+construction underdrawing, warm paper grain. A first-person point of view looking down
+at two hands holding a classic 1989 grey brick handheld game console; the player's lap
+and legs recede at the bottom of the frame. Behind, a cozy room: a wooden shelf of
+retro consoles, cartridges, books and a small trophy; a warm desk lamp glowing on the
+right; a patterned rug on the wooden floor. On the console screen, a small pea-green
+pixel-art runner mid-stride.
+
+Render ONE piece of legible text: the wordmark "16BitFit" hand-lettered in ink just
+below the screen where a handheld's brand wordmark sits, in a chunky retro logotype
+with mixed letter weights. No other words anywhere — no "Nintendo," no "Game Boy," no
+status text, no extra labels.
+
+Monochrome graphite and ink on cream, with ONE restrained color accent: the iconic
+pea-green handheld screen; the lamp reads as only a faint warm glow. Portrait 4:5,
+hands and console centered for a cover-crop tile. Apart from the single "16BitFit"
+wordmark, no other text, letters, numbers, captions, logos, or watermarks anywhere.
+
+================================================================================
+NOTES
+- The ONLY intended text is the "16BitFit" wordmark; suppress all other lettering to
+  avoid garble (the original's status line and button labels were AI gibberish).
+- One accent only (pea-green screen); rest graphite-on-cream.
+- Avoids Nintendo trademark wording — homage silhouette, own wordmark.
+- If the wordmark garbles, regenerate that region or add it as an HTML/SVG overlay.

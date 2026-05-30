@@ -1,0 +1,55 @@
+A-3 INTENT ENGINEERING MCP — v2 "in-tent" visual pun (pencil-and-ink on cream)
+Direction: keep the A-3 Path A "character drawing up an agent" concept, but stage it
+INSIDE a camping tent — a play on "intent" = "in tent." The agent being drawn is the
+small blocky Claude mascot (attached reference). Winner tool: ChatGPT. Tile crop: 4:5.
+The joke is the pun; keep it text-free so it reads as wit, not a caption.
+
+================================================================================
+PROMPT 1 — IMAGE-REFERENCE  (attach the Claude-mascot image in ChatGPT)
+================================================================================
+A traditional hand-drawn pencil-and-ink illustration on warm cream paper (#FFF9F0):
+graphite linework, fine cross-hatching, faint light-blue construction underdrawing,
+an animator's pencil-test feel, visible warm paper grain.
+
+A pencil-test character sits cross-legged inside a cozy camping tent at night, a small
+lantern glowing warmly beside them. They lean over a sketchpad on their knees, drawing
+a small "agent" into existence: the simple blocky pixel mascot from the attached
+reference image — a roughly square terracotta-orange creature with two black square
+eyes and short stubby arms and legs. The little mascot is half-sketched and appears to
+be coming alive, lifting up off the page, with light blueprint-style construction lines
+radiating around it as if it is being engineered into being. The tent's open flap frames
+the scene; a rolled sleeping bag and a thermos sit nearby. Keep the mascot blocky and
+pixel-simple even though the rest of the world is hand-drawn pencil — the contrast is
+the point.
+
+Monochrome graphite and ink on warm cream paper, with ONE restrained color accent: the
+terracotta-orange of the little mascot. The lantern reads as only a faint warm glow;
+everything else is graphite-on-cream. Portrait 4:5, the character and tent interior
+centered for a cover-crop tile. Absolutely no text, no words, no letters, no numbers,
+no captions, no logos, no watermarks anywhere — purely pictorial.
+
+================================================================================
+PROMPT 2 — STANDALONE TEXT-TO-IMAGE  (no reference attached)
+================================================================================
+A traditional hand-drawn pencil-and-ink illustration on warm cream paper (#FFF9F0),
+animator's pencil-test feel: graphite linework, fine cross-hatching, faint light-blue
+construction underdrawing, warm paper grain. A pencil-test character sits cross-legged
+inside a cozy camping tent at night, a small lantern glowing warmly beside them, leaning
+over a sketchpad and drawing a small "agent" into existence. The agent is a simple blocky
+pixel mascot — a roughly square terracotta-orange creature with two black square eyes and
+short stubby arms and legs — half-sketched and lifting off the page, surrounded by light
+blueprint-style construction lines as if it is being engineered into being. The tent's
+open flap frames the scene; a rolled sleeping bag and a thermos sit nearby. The mascot
+stays blocky and pixel-simple against the hand-drawn pencil world. Monochrome graphite
+and ink on cream, with ONE restrained color accent: the terracotta-orange mascot; the
+lantern is only a faint warm glow. Portrait 4:5, character and tent centered for a
+cover-crop tile. Absolutely no text, no words, no letters, no numbers, no captions, no
+logos, no watermarks anywhere — purely pictorial.
+
+================================================================================
+NOTES
+- The gag: drawing an agent IN a TENT = "in-tent" → intent. Visual-only, no caption.
+- Keep the engineering cue (blueprint lines, agent coming alive) so it ties to the
+  case study's "drawing up agents to act with intent," not just a camping scene.
+- One accent only (terracotta mascot); rest graphite-on-cream.
+- Title + anchor metric are HTML overlays later, not baked into the art.
