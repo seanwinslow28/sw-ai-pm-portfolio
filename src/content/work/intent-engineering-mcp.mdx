@@ -25,21 +25,25 @@ shipped_stats_endpoint: /api/shipped-stats-intent-engineering-mcp.json
 
 methods:
   - task: protocol implementation
-    tool: MCP SDK
+    tool: TypeScript MCP SDK
     cost: open-source / $0
+    link: null
+  - task: transport
+    tool: stdio
+    cost: local / $0
     link: null
   - task: registry verification
     tool: DNS-verified MCP registry
-    cost: registry / $0
+    cost: free
     link: null
   - task: package publish
     tool: npm
     cost: free tier
     link: null
-  - task: development
+  - task: development environment
     tool: Claude Code
     cost: per-token billing
-    link: null
+    link: /work/code-brain
 
 four_q:
   what: "An MCP server that exposes a small set of intent-engineering tools — structured prompt scaffolds, intent templates, an audit step — to any client that speaks the protocol. It runs locally, ships on npm, and is listed in the DNS-verified MCP registry as of May 12, 2026."
@@ -64,33 +68,47 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-1"
     date="APR 24"
-    boardLabel="MCP protocol implementation — spec lock"
-    excerpt="tools/list + tools/call wired against the SDK. registry verification block opens.">
-    <p slot="caption">APR 24 — protocol surface specced and locked: two MCP tools, registered against the SDK.</p>
+    boardLabel="MCP protocol surface — 3-tool spec lock"
+    excerpt="tools/list + tools/call wired against the SDK. The three tools — audit_intent_spec, generate_intent_spec_scaffold, assess_retrofit_level — registered at this spec lock. Stdio transport only; no Streamable HTTP, no SSE.">
+    <p slot="caption">APR 24 — protocol surface specced + locked at three tools. Stdio transport only; the small surface is the discipline.</p>
   </BoardArtifact>
 
   <PRDDecision
     artifactId="artifact-2"
     date="APR 30"
-    prdTitle="Cut decision: keep registry verification"
-    decisionLine="Keep the DNS-verified registry block. Defer the embed page to a separate future spec."
-    rationale="Verification is load-bearing for adoption trust; the embed is retrospective polish.">
-    <p slot="caption">APR 30 — the cut that saved the ship date: registry verification stayed, the embedded tool-call demo moved to a future spec.</p>
+    prdTitle="Cut decision — keep registry verification, defer embed"
+    decisionLine="Keep the DNS-verified registry block as v0.1.0's load-bearing trust signal. Defer the embedded tool-call demo to a separate future spec."
+    rationale="Verification is load-bearing for adoption trust; installs without it are taken on faith. The embed is retrospective polish — exciting, but the kind of exciting that slows the ship. Cut on purpose, on the calendar, before it cost the date.">
+    <p slot="caption">APR 30 — the cut that saved the ship date. Registry verification stays; embedded tool-call demo moves to a future spec.</p>
   </PRDDecision>
 
-  <MetricChart
+  <PRDDecision
     artifactId="artifact-3"
-    date="MAY 1"
-    chartTitle="Build size vs feature count"
-    yLabel="KB"
-    data={[
-      { x: "v0.0.1", y: 320 },
-      { x: "v0.0.5", y: 290 },
-      { x: "v0.0.8", y: 240 },
-      { x: "v0.1.0", y: 180 },
-    ]}>
-    <p slot="caption">MAY 1 — build size traced from 320KB at v0.0.1 to 180KB at v0.1.0 as scope shrank to the load-bearing core.</p>
-  </MetricChart>
+    date="MAY 8"
+    prdTitle="Validation checklist canonicalized at 25 items"
+    decisionLine="Scope-lock prose realigns to SKILL.md, not the other way around. 40-item reference reconciled to the canonical 25 across 7 sub-sections."
+    rationale="Source-of-truth discipline (scope-lock §3): SKILL.md is canonical. The earlier 40-item figure was paraphrased into scope-lock without verification. validation_score output reads X/25, not X/40. No Zod schema change.">
+    <p slot="caption">MAY 8 — validation count reconciliation. 40 → 25 items; spec realigns to the canonical SKILL.md instead of the other way around.</p>
+  </PRDDecision>
 
-  {/* artifact cut per spec §11.4 — no real DM available */}
+  <BoardArtifact
+    artifactId="artifact-4"
+    date="MAY 12"
+    boardLabel="@swins/intent-engineering-mcp@0.1.0 — npm + MCP registry publish"
+    excerpt="npm publish lands at v0.1.0. MCP registry listing live under com.seanwinslow/intent-engineering with DNS-verified namespace. Thirteen days earlier than the date circled on the calendar.">
+    <p slot="caption">MAY 12 — package publishes to npm. DNS-verified registry listing live under com.seanwinslow/intent-engineering. Thirteen days early.</p>
+  </BoardArtifact>
+
+  <MetricChart
+    artifactId="artifact-5"
+    date="MAY 13"
+    chartTitle="Scale audit — 118 first-party skills by retrofit level"
+    yLabel="% of skills"
+    data={[
+      { x: "L1-mvr",        y: 24 },
+      { x: "L2-structured", y: 36 },
+      { x: "L3-full",       y: 40 },
+    ]}>
+    <p slot="caption">MAY 13 — post-ship scale audit: assess_retrofit_level runs against 118 first-party skills in under a second, zero parse errors. The dogfood test on the canonical intent-engineering SKILL.md scores 23/25 with zero anti-patterns. The tool eats its own dog food.</p>
+  </MetricChart>
 </InvestigationBoard>

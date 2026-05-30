@@ -21,22 +21,30 @@ anchor_metric: "ACT 1 SHIPPED · ACT 2 IN FLIGHT"
 investigation_order: reverse
 
 methods:
-  - task: frame cleanup
-    tool: clean-frame-v2a.sh
-    cost: rembg / $0
+  - task: keyframe stills
+    tool: Gemini Nano Banana 2
+    cost: ~$0.04/frame
     link: null
-  - task: render
-    tool: ffmpeg + libvpx-vp9
-    cost: local / $0
-    link: null
-  - task: style anchor
+  - task: motion interpolation
     tool: Seedance 2.0
-    cost: ~$0.40 per run
+    cost: ~$0.40/clip (Fast tier)
     link: null
   - task: orchestration
     tool: Code Brain
-    cost: Claude Sonnet 4.6
-    link: /work/code-brain/
+    cost: Claude Sonnet 4.6 (HybridRouter)
+    link: /work/code-brain
+  - task: vision critic (T2)
+    tool: Gemini 3.1 Pro via Anti-Gravity CLI
+    cost: $0 incremental (subscription)
+    link: null
+  - task: multi-CLI critic (T3)
+    tool: Codex CLI + Anti-Gravity CLI in parallel
+    cost: $0 incremental (subscriptions absorb)
+    link: null
+  - task: planner
+    tool: Opus 4.7 (Maya persona) + Sonnet 4.6 adversarial
+    cost: per-token billing
+    link: null
 
 four_q:
   what: "anima is a 10-phase pipeline for shipping 2D animated stories made by a human and a fleet of named agents working together. A brief becomes a plan. A plan becomes an animatic. An animatic constrains motion. Motion gets cleaned to the aesthetic. The fleet runs the volume work — a line producer, a character designer, a scriptwriter, a storyboard artist, a frame generator, a script-supervisor critic, a museum writer — while the human owns timing, taste, and the decision to ship. The Pencil Test short is the first reference implementation; anima is the system."

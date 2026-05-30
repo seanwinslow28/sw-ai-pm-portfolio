@@ -28,9 +28,17 @@ methods:
     tool: launchd (macOS)
     cost: local / $0
     link: null
-  - task: local model
-    tool: Ollama (Qwen3-14B, nomic-embed-text)
+  - task: local inference (heavy)
+    tool: qwen3.6_35b-a3b-32k on MBP via Ollama
     cost: local / $0
+    link: null
+  - task: multi-CLI critic
+    tool: Codex CLI + Anti-Gravity CLI in parallel
+    cost: $0 incremental (subscriptions absorb)
+    link: null
+  - task: local-cloud routing
+    tool: HybridRouter (qwen3.6_35b-a3b-32k → Sonnet 4.6 fallback)
+    cost: per-token (capped)
     link: null
   - task: animation pipeline (downstream consumer)
     tool: Animation Pipeline
@@ -58,38 +66,50 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
 </Opener>
 
 <InvestigationBoard>
-  <MetricChart
+  <BoardArtifact
     artifactId="artifact-1"
-    date="MAY 16"
-    chartTitle="Daily Driver fleet runs"
-    yLabel="runs/day"
-    data={[
-      { x: "Apr 1", y: 12 },
-      { x: "Apr 15", y: 24 },
-      { x: "May 1", y: 38 },
-      { x: "May 16", y: 47 },
-    ]}>
-    <p slot="caption">Daily Driver fleet runs per day, April through mid-May. Curve tracks new skills landing in the vault.</p>
-  </MetricChart>
-
-  <PRDDecision
-    artifactId="artifact-2"
-    date="MAY 13"
-    prdTitle="Tier 1 retrofit — agent SDK stable"
-    decisionLine="Retrofit all Tier-1 agents to the stable SDK. Hooks lifecycle wired."
-    rationale="The beta SDK shipped breaking changes weekly; Tier 1 ROI requires a stable surface.">
-    <p slot="caption">Tier-1 retrofit decision when the Agent SDK reached 1.0. Eight named agents migrated in a single day.</p>
-  </PRDDecision>
-
-  {/* artifact cut per spec §11.4 — no real DM available */}
+    date="MAY 27"
+    boardLabel="Fleet memory Phase 1 — plan landed"
+    excerpt="Shared filesystem-memory layer at vault/90_system/fleet-memory/. Per-agent namespacing, explicit promote_to_shared(). Pilot agents: vault_synthesizer + daily_driver. Default-disabled; opt in per agent.">
+    <p slot="caption">MAY 27 — fleet memory Phase 1 plan lands. Shared filesystem layer with per-agent namespacing; vault_synthesizer + daily_driver as pilot agents. Default-disabled until the first pilot validates.</p>
+  </BoardArtifact>
 
   <BoardArtifact
+    artifactId="artifact-2"
+    date="MAY 20"
+    boardLabel="Knowledge Loop Phase 6 — producer + consumer ship">
+    <p slot="caption">MAY 20 — Knowledge Loop Phase 6 ships end-to-end. SessionEnd flush → 02:30 synthesize → 03:30 critique (Codex CLI + Anti-Gravity CLI in parallel) → SessionStart re-inject as additionalContext. The vault serves itself back into tomorrow's context window.</p>
+  </BoardArtifact>
+
+  <BoardArtifact
+    artifactId="artifact-3"
+    date="MAY 13"
+    boardLabel="Phase D — typed reasoning edges shipped">
+    <p slot="caption">MAY 13 — typed-edge SQLite layer ships. Six relation types — supports, contradicts, evolved_into, supersedes, depends_on, related_to. Weekly knowledge-lint contradiction detection collapses to a SQL query instead of an LLM scan.</p>
+  </BoardArtifact>
+
+  <PRDDecision
     artifactId="artifact-4"
-    date="MAR 20"
-    boardLabel="schedule-recommendations.md — March update"
-    excerpt={`- 08:45 daily — Daily Driver morning brief
-- 14:00 weekday — Vault Synth runs against new commits
-- 22:00 nightly — vault-knowledge-mcp re-index`}>
-    <p slot="caption">Schedule excerpt from the March cadence review. Three fixed windows; everything else fires on demand.</p>
+    date="APR 28"
+    prdTitle="Process Inbox — pause cloud-Sonnet path; await local rewrite"
+    decisionLine="Pause cloud-Sonnet Path A. Local gemma4:e4b Path B rewrite becomes the re-enable precondition; manual triage via the process-inbox skill in interactive sessions is the working alternative."
+    rationale="Cost-efficiency: cloud Sonnet ran $1.16/file at ~3 files per run. Local path is $0/file. An agent that validates working at $1.16/file is not the agent worth running on a daily schedule. Pause is a cost call against a capability that worked.">
+    <p slot="caption">APR 28 — Process Inbox cloud-Sonnet path paused. Cost-efficiency PM call against capability that validated working — local rewrite becomes the precondition for re-enable.</p>
+  </PRDDecision>
+
+  <PRDDecision
+    artifactId="artifact-5"
+    date="APR 7"
+    prdTitle="launchd PATH bug — fix in plist EnvironmentVariables"
+    decisionLine="Every launchd plist now ships EnvironmentVariables with PATH set explicitly to include /Users/seanwinslow/.local/bin and /opt/homebrew/bin."
+    rationale="Without explicit PATH, the claude CLI isn't discoverable from launchd context; agents fail with CLIConnectionError on the next macOS update. The plist is the deployment surface; the surface has to be self-contained or it silently breaks.">
+    <p slot="caption">APR 7 — launchd PATH bug surfaced and patched across the fleet. Recovery from a silent infra failure that took the morning agents down for a day.</p>
+  </PRDDecision>
+
+  <BoardArtifact
+    artifactId="artifact-6"
+    date="FEB 6"
+    boardLabel="Code Brain — first commit">
+    <p slot="caption">FEB 6 — the Code Brain repo's first commit. The vault has been around longer; the fleet starts here.</p>
   </BoardArtifact>
 </InvestigationBoard>

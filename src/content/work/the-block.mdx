@@ -10,29 +10,39 @@ tags:
   - product
 hero_media: /assets/projects/the-block.webp
 hero_media_type: image
-hero_media_alt: A hand-drawn pencil-and-ink diagram of a 3-tier customer matrix — research-only, research + data, and research + data + API — with a pencil-test character in the right margin pointing at the middle tier.
+hero_media_alt: "A hand-drawn pencil-test composite of the multi-surface PM scope at The Block — three Claude Skill cards (etf-page-creator, stakeholder-update, jira-automation) on the left, a RevOps pipeline flow diagram center (Salesforce Closed Won → Jira tickets, intake emails, Slack notifications), and an x402 / A2A / MCP memo stamped at right. The bi-weekly P&E status update sits across the top, frame-of-frames."
 order: 4
-date_started: 2024-02-01
-date_active_through: 2026-02-01
+date_started: 2025-11-10
+date_active_through: 2026-05-04
 
-role: pm + product partner
+role: pm + builder
 anchor_metric: "B2B PM · INSTITUTIONAL CRYPTO RESEARCH"
 investigation_order: forward
 
-archived_reference_url: https://www.theblockcrypto.com/post/example-placeholder
+# null per the-block-cleanup-locked-2026-05-28 §1.4 — no shareable public artifact
+# exists; the board + methods carry the work-anchoring (schema is .nullable()).
+archived_reference_url: null
 
 methods:
-  - task: institutional research
-    tool: Campus (B2B platform)
+  - task: production tooling
+    tool: 3 Claude Skills (etf-page-creator + stakeholder-update + jira-automation)
+    cost: per-token billing
+    link: /work/code-brain
+  - task: revops automation
+    tool: Zapier + Tables (11 workflows + 10 intake forms + central DB)
     cost: SaaS
     link: null
-  - task: revenue operations
-    tool: Internal RevOps system
-    cost: internal
+  - task: PRD authoring
+    tool: Claude Code + Confluence
+    cost: per-token + SaaS
+    link: /work/code-brain
+  - task: AI media generation
+    tool: Nano Banana Pro + Veo 3.1 / Kling 3.0 + ElevenLabs
+    cost: per-credit
     link: null
-  - task: data partnerships
-    tool: redacted partner stack
-    cost: enterprise
+  - task: analytics
+    tool: GA4
+    cost: free tier
     link: null
 
 four_q:
@@ -55,43 +65,54 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
 </Opener>
 
 <InvestigationBoard>
-  <BoardArtifact
+  <PRDDecision
     artifactId="artifact-1"
-    date="2024"
-    boardLabel="Campus product launch — Q1 2024"
-    excerpt="Campus v1 ships to a small set of institutional customers. Onboarding runs through the partnerships team.">
-    <p slot="caption">2024 — Campus v1 launch. First B2B surface customers logged into directly.</p>
-  </BoardArtifact>
+    date="DEC 2025"
+    prdTitle="Polymarket × Campus — Sponsored Microcourses PRD v1"
+    decisionLine="Scope locked at 5 components: homepage module, Learn page hub, in-article recirculation, embedded course player, reporting requirements."
+    rationale="The Block's editorial audience already reaches Polymarket's target market; Campus already produces the educational format. The 5-component build connects the two surfaces without standing up a new product team — sponsor-native distribution against the existing engagement loop.">
+    <p slot="caption">DEC 2025 — Polymarket × Campus 0-to-1 PRD v1. First sponsored-microcourse B2B revenue vertical scoped end-to-end.</p>
+  </PRDDecision>
+
+  <MetricChart
+    artifactId="artifact-2"
+    date="JAN 2026"
+    chartTitle="RevOps manual handoff steps per Closed Won — before vs after"
+    yLabel="manual steps"
+    data={[
+      { x: "before", y: 7 },
+      { x: "after",  y: 0 },
+    ]}>
+    <p slot="caption">JAN 2026 — etf-page-creator Claude Skill ships. RevOps automation pipeline collapses 7 manual handoff steps into a single Salesforce "Closed Won" trigger: 11 Zapier workflows + 10 product-specific intake forms + central Tables database.</p>
+  </MetricChart>
 
   <PRDDecision
-    artifactId="artifact-2"
-    date="2025 Q1"
-    prdTitle="Subscription tier structure"
-    decisionLine="Tier structure locked at 3 levels — research-only, research + data, research + data + API."
-    rationale="The 3-tier model mapped to the customer segments already showing up in renewals: analysts who wanted the reports, desks that wanted the underlying data, and quant teams that wanted both wired into their own systems.">
-    <p slot="caption">2025 Q1 — subscription tier decision. The 3-tier model held for the remainder of the arc.</p>
+    artifactId="artifact-3"
+    date="FEB 2026"
+    prdTitle="Polymarket × Campus PRD v3 — 5-component shipped state"
+    decisionLine="All 5 components landed; Sales One-Pager template productizes the partnership for repeatable revenue-team sale."
+    rationale="Sponsored microcourse becomes a recurring revenue line, not a one-off integration. The Sales One-Pager template means the next sponsor ships without per-deal product involvement — partnership becomes infrastructure.">
+    <p slot="caption">FEB 2026 — Polymarket × Campus 0-to-1 ships. PRD v1 → v3 across two months; Sales One-Pager makes the partnership repeatable.</p>
   </PRDDecision>
 
   <BoardArtifact
-    artifactId="artifact-3"
-    date="2025 Q2"
-    boardLabel="RevOps internal launch">
-    <p slot="caption">2025 Q2 — RevOps internal product goes live to the partnerships and research teams.</p>
+    artifactId="artifact-4"
+    date="MAR 2026"
+    boardLabel="Block Pro 2.0 — competitive landscape kickoff">
+    <p slot="caption">MAR 2026 — Block Pro 2.0 product audit + competitive analysis begins. 9 enterprise data and research platforms benchmarked; 3 internal stakeholder interviews (sales, research, head of data) scope the proposal for the incoming CEO.</p>
   </BoardArtifact>
 
-  <MetricChart
-    artifactId="artifact-4"
-    date="2025-2026"
-    chartTitle="Institutional subscriber growth"
-    yLabel="subscribers"
-    data={[
-      { x: "2024 Q2", y: 18 },
-      { x: "2024 Q4", y: 42 },
-      { x: "2025 Q2", y: 87 },
-      { x: "2025 Q4", y: 134 },
-    ]}>
-    <p slot="caption">2024 – 2026 — institutional subscriber growth across the arc. Figures sanitized; trajectory directional.</p>
-  </MetricChart>
+  <BoardArtifact
+    artifactId="artifact-5"
+    date="APR 2026"
+    boardLabel="x402 / A2A / MCP — internal strategy memo">
+    <p slot="caption">APR 2026 — x402 protocol, agent-to-agent payments, and MCP integration mapped to 6 monetization patterns for the agent economy. Future-PM thesis artifact authored under the data and research firm's editorial roof.</p>
+  </BoardArtifact>
 
-  {/* artifact cut per spec §11.4 — customer DMs are confidential; no public-ready DM available */}
+  <BoardArtifact
+    artifactId="artifact-6"
+    date="MAY 2026"
+    boardLabel="bi-weekly P&E — final update + KR3 delivery">
+    <p slot="caption">MAY 2026 — final bi-weekly Product and Engineering status update. 3 production Claude Skills shipped against P&E Q2 Objective 5 KR3: etf-page-creator, stakeholder-update, jira-automation. The writing discipline encoded as production tooling.</p>
+  </BoardArtifact>
 </InvestigationBoard>

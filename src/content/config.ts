@@ -49,7 +49,7 @@ const work = defineCollection({
     shipped_at: z.coerce.string().optional(),
     shipped_stats_endpoint: z.string().optional(),
     return_condition: z.string().optional(),
-    archived_reference_url: z.string().url().optional(),
+    archived_reference_url: z.string().url().nullable().optional(),  // null = honest shape for an ARCHIVED page with no shareable public artifact (the-block-cleanup-locked-2026-05-28 §1.4)
   }),
 });
 
