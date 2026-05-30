@@ -10,7 +10,7 @@
 import TeaserSwiper from "~/components/teaser/TeaserSwiper.astro";
 
 /* Build-time fetch with fallback. */
-let beatItems = "log will refresh at 08:45";
+let beatItems = "log will refresh at 08:30";
 try {
   const pulse = await import("../../../public/api/about-pulse.json");
   const items = (pulse.default?.items ?? []).slice(0, 3);
