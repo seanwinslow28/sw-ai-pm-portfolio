@@ -60,7 +60,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 
 ## Locked decisions (quick reference)
 
-- **Hero tagline:** "Product Manager. The agents handle the loops. I handle the taste."
+- **Hero tagline:** "The agents handle the loops. I handle the taste." (D8 2026-05-30 dropped the redundant "Product Manager." line — role lives in the enlarged `/ AI PRODUCT MANAGER` tag.)
 - **About header:** "Raised by Saturday morning cartoons and Vercel deployment logs."
 - **Home About teaser editorial line:** "A man, a pencil, an agent fleet. Same person, different tools."
 - **Intent Engineering MCP tile + case-study hero:** "Drawing up agents to act with intent."
