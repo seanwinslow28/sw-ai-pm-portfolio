@@ -1,16 +1,19 @@
 ---
-title: "Meaning Over Access"
+title: "Access Over Meaning"
 subtitle: "A bet on the semantic layer."
-dateline: "BOSTON, MAY 24, 2026"
-published: "2026-05-24"
+dateline: "BOSTON, JUNE 19, 2026"
+published: "2026-06-19"
 lastRevised: null
 readingTime: 6
 
-status: PUBLISHED
+# status DRAFT per SHIP-PLAN D5 — manifesto publishes 2026-06-19; staged DRAFT
+# does not gate v1 launch. Flip to PUBLISHED on publish day.
+status: DRAFT
 tags:
   - meaning-layer
   - agents
   - pm-thesis
+  - agent-infrastructure
 
 excerpt: "I don't think the durable enterprise value is agents clicking around UIs. I think it's the semantic layer: typed work objects, scoped authority, memory provenance, reviewable decisions."
 
@@ -35,7 +38,7 @@ quadrantLegend:
     artifact: phase-d-typed-edges
   - key: eval
     label: "eval suite (workflow primitive)"
-    artifact: null
+    artifact: vault-synthesizer-eval-suite
   - key: cost
     label: "cost caps (authority primitive)"
     artifact: null
@@ -53,7 +56,7 @@ quadrantLegend:
     artifact: null
 
 roleMap:
-  lastValidated: "2026-05-22"
+  lastValidated: "2026-06-19"
   rows:
     - buyer: "Anthropic FDE (Boston / NYC / Chicago)"
       position: "meaning + workflow"
@@ -74,7 +77,7 @@ roleMap:
     - buyer: "Manus / Adept / browser-use / OpenAI Operator"
       position: "access + workflow"
       vocabularyTell: '"computer-use"; "browser automation"; "general computer-using agent"'
-      jdUrl: "https://manus.im/"
+      isNegativeSpace: true                        # negative-space callout — not on Sean's target list; renders italic + em-dash (no JD)
 
 # Plotted artifacts: only slugs that resolve on at least one surface
 # in v1 (the validator's derive_crosslinks rejects dangling slugs).
@@ -85,13 +88,16 @@ plottedArtifacts:
   - intent-engineering-mcp
   - vault-knowledge-mcp
   - phase-d-typed-edges
+  - vault-synthesizer-eval-suite
 relatedLedgerRow: null
 relatedCaseStudy: null
 relatedArchitecture:
   - vault-scorecard
 relatedEssays: []
 
-crossPostedTo: []
+crossPostedTo:
+  - name: Substack
+    url: https://sean.substack.com/p/meaning-over-access
 sourceRepoUrl: https://github.com/seanwinslow28/code-brain
 
 ogImage: /og-cards/essays/meaning-over-access.png
@@ -117,7 +123,7 @@ Seven things shipped or shipping between May 12th and June 4th. Sorted by reposi
 
 The infrastructure cluster, upper right. **Intent-engineering MCP** (shipped 5/12) turns vague PM intent into a typed spec the agent can act on without guessing. **Vault-knowledge MCP** (ships ~6/4) turns 17 days of personal knowledge into queryable concepts with typed reasoning edges. **concept_edges Phase D** (shipped) is a six-relation typed schema — `supports`, `contradicts`, `evolved_into`, `supersedes`, `depends_on`, `related_to` — that makes agent memory queryable, not just retrievable. Three artifacts, one move: stop letting the agent guess what things are.
 
-The workflow cluster, lower right. **Eval suite** (shipped 5/12) is a 10-case binary rubric that converts "did the agent run?" into "did it produce a publishable concept article?" **Cost caps** via HybridRouter + budget governors (shipped) aren't a cost control; they're an authority primitive — the agent is *allowed* to spend $X here, not $Y, and that scoping is meaning, not accounting. **Judge layer** in the substack-drafter retrofit (ships ~6/4) promotes draft output from "the agent wrote a thing" to "the agent wrote a thing AND another agent judged it against a rubric before any human sees it." **Fleet observability** (shipped 5/18) turns 17 SDK agents from "trust me they run" into "look at the screen for 30 seconds and verify" — observability as audit primitive.
+The workflow cluster, lower right. **Eval suite** (shipped 5/12) is a 10-case binary rubric that converts "did the agent run?" into "did it produce a publishable concept article?" **Cost caps** via local-cloud routing + budget governors (shipped) aren't a cost control; they're an authority primitive — the agent is *allowed* to spend $X here, not $Y, and that scoping is meaning, not accounting. **Judge layer** in the substack-drafter retrofit (ships ~6/4) promotes draft output from "the agent wrote a thing" to "the agent wrote a thing AND another agent judged it against a rubric before any human sees it." **Fleet observability** (shipped 5/18) turns 17 SDK agents from "trust me they run" into "look at the screen for 30 seconds and verify" — observability as audit primitive.
 
 Two callouts in the negative space, named so the contrast is visible. Browser-use and computer-use agents — Manus, Adept, browser-use, OpenAI Operator — live in access + workflow. Real work, real category, not my category. MCP HTTP transports and generic SaaS connectors live in access + infrastructure, and they are on the chart specifically to make this point: *MCP itself isn't the meaning layer*. The rubric inside a meaning-layer MCP server is.
 
