@@ -1,0 +1,58 @@
+---
+title: "Vault Synthesizer Eval Suite"
+dateline: "BOSTON, APRIL 23, 2026"
+shipped: "2026-04-23"
+
+surface: fleet
+status: SHIPPED
+
+valueProp: "Ten reference cases the nightly Vault Synthesizer runs against every commit. A Sonnet judge scores quote density + cross-domain pull + depth; CI fails when a regression would otherwise land silently in the knowledge graph."
+
+methods:
+  - task: eval harness
+    tool: pytest + custom case loader
+    cost: local / $0
+    link: null
+  - task: LLM judge
+    tool: Claude Sonnet 4.6
+    cost: ~$0.04 per case
+    link: /work/code-brain
+  - task: case authoring
+    tool: hand-curated reference cases
+    cost: local / $0
+    link: null
+
+limitations:
+  - "Ten cases doesn't catch the long tail — niche concept types (contradictions across SOUL artifacts, EDC canonicalization) can regress invisibly."
+  - "Sonnet-as-judge introduces ~$0.04/case ongoing cost; full suite ≈ $0.40/run."
+
+# 4Q source: inline-body fallback. An upstream EXPLANATION.md exists at
+# evals/vault-synthesizer/EXPLANATION.md (HTTP 200) but uses plain `## What is this?`
+# headings that don't match the fetch validator's Q1–Q4 canonical format, so the
+# inline body below carries the 4Q (grounded verbatim in that upstream). Wire
+# explanationUrl once the upstream headings adopt the canonical Q-token format.
+# explanationUrl: null
+
+relatedCaseStudy: code-brain
+relatedTransactions:
+  - knowledge-loop-phase-6
+  - phase-d-typed-edges
+
+repoUrl: https://github.com/seanwinslow28/code-brain
+---
+
+## What is this?
+
+A 10-case binary pass/fail eval suite for the local Qwen3-14B vault synthesizer agent. The cases were derived from open-coding 17 days of production logs (2026-04-24 → 2026-05-10), not from imagined failure modes. The suite catches the failure class that production monitoring missed: silent regressions where the agent reports success while producing zero output.
+
+## Why this approach?
+
+Pytest + YAML over Braintrust or Langfuse — at ten cases, platform infrastructure is pure overhead. Code-based and rubric graders run before any LLM-as-judge, per Hamel's cost-economics rule. Binary pass/fail over Likert, per the Husain-Shankar canon — Likert scales destroy inter-rater reliability at this scale. The case library is grounded in real-log error analysis, not synthetic generation: the failures the suite guards against actually happened.
+
+## What would break?
+
+Three failure modes. Synthesizer prompt drift — a structural change to the underlying synthesis prompt requires re-baselining the whole suite. Mock-input fixtures going stale as the vault evolves — they need a quarterly refresh. And the judge boundary: no active case uses an LLM judge at v1, so if a case is ever promoted to LLM-judge, the model ID has to be pinned explicitly in the case YAML and a `--skip-llm-judge` flag added for offline runs, or the suite stops being reproducible.
+
+## What did I learn?
+
+That evals aren't really about hallucinations. The failure modes I imagined — hallucinated phase numbers, relation-tag drift, temporal confusion — were the easy cases. The hard case was the one nobody drafts on purpose: the status field that says "ok" while the output is empty. Three layers of monitoring agreed everything was fine while the system underneath them rotted silently for nine days. Error analysis surfaces the failures imagination does not.
