@@ -31,11 +31,16 @@ methods:
     cost: ~$0.10
     link: null
 
-# OQ-C resolved 2026-05-29: the upstream sources shipped to code-brain
-# main, so both URLs now point at the live files. The MDX body below
-# still carries the 4 canonical h2 headings as an inline-body 4Q fallback.
-essaySourceUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE.md
-explanationUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/VAULT_AS_AGENT_INFRASTRUCTURE_EXPLANATION.md
+# OQ-C v1 (2026-05-30): both URLs null → inline-body 4Q fallback path.
+# The upstream sources shipped to code-brain main, but the live-fetch infra
+# has two bugs (blob-URL not raw + body-cache collides with the architecture
+# collection glob + set:html doesn't render markdown) — see
+# docs/writing-council/IMPLEMENTATION-NOTES-2026-05-30.md BLOCKER-1.
+# The MDX body below carries the 4 canonical h2 headings as the rendered
+# inline-body 4Q. Repopulate these URLs in v1.1 once the fetch/render infra
+# is fixed (raw URLs verified HTTP 200).
+essaySourceUrl: null
+explanationUrl: null
 
 mermaidSource: diagrams/concept-edges-erd.mmd
 mermaidCaption: "concept_edges schema — six relation types enforced by a SQL CHECK constraint, scored against 632 production edges (2026-05-29)."
