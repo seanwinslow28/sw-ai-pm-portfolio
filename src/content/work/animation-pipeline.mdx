@@ -1,8 +1,8 @@
 ---
 slug: animation-pipeline
 frame: A-1
-title: 2D Animation Pipeline
-tagline: Teaching Seedance to draw me, then teaching the pipeline to ship the drawing.
+title: Anima
+tagline: A pencil-test pipeline with a fleet of in-betweeners.
 status: ACTIVE
 tags:
   - animation
@@ -17,7 +17,7 @@ date_active_through: 2026-06-11
 case_study_dateline_pattern: ship_log
 
 role: pm + builder + operator
-anchor_metric: 220 FRAMES
+anchor_metric: "ACT 1 SHIPPED · ACT 2 IN FLIGHT"
 investigation_order: reverse
 
 methods:
@@ -39,10 +39,10 @@ methods:
     link: /work/code-brain/
 
 four_q:
-  what: "A 2D pencil-test animation pipeline. Sketch goes in one end; a 24fps WebM with a clean alpha channel comes out the other. A small fleet of agents and one shell script handle the frames between."
-  why: "Three options on the table: Midjourney for stylization, hand-drawn end to end, or a hybrid pipeline anchored on the character. Pure AI broke on character consistency across long sequences. Pure hand-drawn broke on volume. The hybrid kept the character locked and the frame count tractable."
-  break: "Three named failure modes. Seedance drifts the character on sequences longer than ~120 frames. The ffmpeg encode silently strips the alpha channel if libvpx-vp9 is configured for h264 defaults. The render queue drops frames past 150 without an exception — a length check on the output catches it."
-  learn: "The pipeline is the artifact. The character is the test the pipeline has to pass."
+  what: "anima is a 10-phase pipeline for shipping 2D animated stories made by a human and a fleet of named agents working together. A brief becomes a plan. A plan becomes an animatic. An animatic constrains motion. Motion gets cleaned to the aesthetic. The fleet runs the volume work — a line producer, a character designer, a scriptwriter, a storyboard artist, a frame generator, a script-supervisor critic, a museum writer — while the human owns timing, taste, and the decision to ship. The Pencil Test short is the first reference implementation; anima is the system."
+  why: "The decision wasn't which model to use. The decision was which working method: a studio budget and a four-year project timeline (out of reach), AI-only generation (fast but someone else's idiom), or a human-author plus AI-fleet partnership. The third one is anima — production-company speed at solo-creator cost, without losing four years of life to a single piece. The model layer is replaceable; the architecture and the human role are not."
+  break: "Three named failure modes the architecture guards against, not three encoder bugs. Correlated blind spots when the orchestrator and the vision critic share a model family — 'valid output' and 'acceptable frame' silently align, and bad frames slip through. anima pairs a Sonnet orchestrator with a Gemini vision critic at the busiest checkpoint by construction. Local-optimization drift when every phase ships 'better' output that no longer matches the approved brief. Phase 0's planner emits an immutable acceptance_criteria.json; every downstream critic cites criteria IDs when it blocks. Cheap-judge failures with documented base rates — 58% sycophancy, up to 90% self-preference bias, length and position bias. T3 runs three peers from three vendors (Codex CLI + Anti-Gravity CLI + Claude SDK), with a separate Opus chairman that never grades its own work."
+  learn: "Validators cannot recover taste that was absent at generation time. The pipeline is the artifact. The character is the test the pipeline has to pass."
 ---
 
 import Opener from "~/components/case-study/Opener.astro";
@@ -54,9 +54,9 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
 import Annotation from "~/components/annotations/Annotation.astro";
 
 <Opener>
-  <p>I taught Seedance to draw me. Then I taught the pipeline to ship the drawing. The guy walking across the top of this page is the unit test. If a single frame breaks the line — if the jaw drifts, if the alpha channel leaks, if the encode quietly swaps in the wrong colorspace — the whole short breaks with it.</p>
-  <p>The system is five agents and one shell script. The script cleans the frames. The agents make the harder calls: when the character has drifted enough to re-anchor, when an encode pass needs a re-run, when a 146-frame raw cycle is close enough to ship and when it isn't. I write the prompts. Seedance draws the model sheet. The pipeline does everything between sketch and render that I used to do by hand at New York Life, in a windowless basement, with three monitors and a copy of After Effects that crashed every fourth save.</p>
-  <p>What's below is the production thread. What shipped, what was killed, what's still running. The 9.2-second loop at the top is rev 3 of the cleanup chain. Rev 1 took twenty-two seconds per frame and lost the alpha. Rev 2a takes four seconds per frame and holds the alpha through every encode. That's the whole job.</p>
+  <p>I drew a pencil sketch of myself on the iPad — me at 33, slightly stooped, stylus in the right hand. Then I taught Gemini Nano Banana 2 to redraw the same guy 220 times in a row, in 16:9, on cream paper, with the same facial scruff in every frame. The model has a list of ways it can fail me now. They have numbers. SF02 is "wrong jaw."</p>
+  <p>It could've been Midjourney. Midjourney would've been faster. Midjourney would've also been gauzy, vertical, photo-real, and someone else's. The pipeline is a pencil test on purpose — construction lines visible, paper grain, hole-punch marks down the left edge. It's an animator's idiom, not a content-farm idiom. The discipline is the proof that a human still owns the timing.</p>
+  <p>I block the motion in Procreate Dreams. The agents fill the frames. Seedance 2.0 interpolates between the approved keys. A critic agent flags identity drift before the render burns budget. The pipeline is called *anima*. Act 1 plays clean. Act 2 is on the board.</p>
 </Opener>
 
 <InvestigationBoard>
