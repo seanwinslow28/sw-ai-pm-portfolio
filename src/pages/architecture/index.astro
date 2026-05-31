@@ -11,8 +11,10 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import IndexHeader from "~/components/architecture/IndexHeader.astro";
 import WriteupRow from "~/components/architecture/WriteupRow.astro";
+import { isLiveArchitecture } from "~/lib/publish-gate";
 
 const writeups = (await getCollection("architecture"))
+  .filter((w) => isLiveArchitecture(w.data))
   .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 
 const count = writeups.length;

@@ -23,6 +23,11 @@ interface Props {
 
 const { frame, title, status, tags, role, dateStarted, dateActiveThrough, anchorMetric } = Astro.props;
 
+// Display label ≠ data value — ARCHIVED stays the semantic status (drives the
+// .status-archived class + [data-status] desaturation); it reads "PRIOR ROLE"
+// so B2B PM work frames as a credential. Mirrors StatusPill. Critique 2026-05-31.
+const statusLabel = status === "ARCHIVED" ? "PRIOR ROLE" : status;
+
 const inFlightRange = (() => {
   if (!dateStarted) return null;
   const fmt = (iso: string) => {
@@ -44,7 +49,7 @@ const inFlightRange = (() => {
   <div class="frame-row">
     <span class="frame-number">{frame}</span>
     <span class="bullet" aria-hidden="true">·</span>
-    <span class={`status-pill status-${status.toLowerCase()}`}>{status}</span>
+    <span class={`status-pill status-${status.toLowerCase()}`}>{statusLabel}</span>
   </div>
   <h1 class="case-study-title">{title}</h1>
   <div class="tag-row">

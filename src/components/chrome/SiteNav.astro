@@ -12,14 +12,22 @@
  * Source: site-chrome-spec-v1.md §6 + §4 (typography).
  */
 import { WORDMARK } from "~/lib/site";
+import { getCollection } from "astro:content";
+import { isLiveEssay } from "~/lib/publish-gate";
 
 const pathname = Astro.url.pathname;
+
+// The ESSAYS tab only appears once at least one essay is live. The
+// manifesto stays DRAFT (publishes 2026-06-19); until then a tab to an
+// empty section reads as unfinished, so it's hidden. It reappears
+// automatically on the publish-date build.
+const hasLiveEssay = (await getCollection("essays")).some((e) => isLiveEssay(e.data));
 
 const TABS: Array<{ label: string; href: string; matchPrefix: string }> = [
   { label: "WORK",           href: "/work/",          matchPrefix: "/work/" },
   { label: "TRANSACTIONS",   href: "/transactions/",  matchPrefix: "/transactions/" },
   { label: "ARCHITECTURE",   href: "/architecture/",  matchPrefix: "/architecture/" },
-  { label: "ESSAYS",         href: "/essays/",        matchPrefix: "/essays/" },
+  ...(hasLiveEssay ? [{ label: "ESSAYS", href: "/essays/", matchPrefix: "/essays/" }] : []),
   { label: "ABOUT",          href: "/about/",         matchPrefix: "/about/" },
 ];
 

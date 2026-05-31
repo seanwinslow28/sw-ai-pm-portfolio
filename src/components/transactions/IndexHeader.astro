@@ -53,8 +53,11 @@ const heading = surface ? `Transactions / ${surface}` : "Transactions";
 <style>
   .index-header {
     max-width: 1120px;
-    margin: 60px auto 0;
-    padding: 0 24px;
+    margin: 0 auto;
+    /* Top space is PADDING, not margin: a top margin on the first child of
+       .page-sheet collapses out through the sheet, exposing the teal body
+       backdrop as a band. Matches architecture/essays IndexHeader. */
+    padding: 60px 24px 0;
   }
 
   .dateline {
@@ -119,7 +122,7 @@ const heading = surface ? `Transactions / ${surface}` : "Transactions";
   }
 
   @media (max-width: 767px) {
-    .index-header { padding: 0 16px; margin-top: 40px; }
+    .index-header { padding: 40px 16px 0; margin-top: 0; }
     .page-title { font-size: clamp(40px, 9vw, 56px); }
   }
 </style>

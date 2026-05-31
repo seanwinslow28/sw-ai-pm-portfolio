@@ -14,8 +14,10 @@ import IndexHeader from "~/components/transactions/IndexHeader.astro";
 import FilterPills from "~/components/transactions/FilterPills.astro";
 import LedgerRow from "~/components/transactions/LedgerRow.astro";
 import FooterFold from "~/components/transactions/FooterFold.astro";
+import { isLiveTransaction } from "~/lib/publish-gate";
 
 const transactions = (await getCollection("transactions"))
+  .filter((t) => isLiveTransaction(t.data))
   .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 
 const count = transactions.length;

@@ -40,8 +40,11 @@ const statusClass = `status-pill status-${status.toLowerCase()}`;
 <style>
   .title-block {
     max-width: 1120px;
-    margin: 60px auto 0;
-    padding: 0 24px;
+    margin: 0 auto;
+    /* Top space is PADDING, not margin: a top margin on the first child of
+       .page-sheet collapses out through the sheet, exposing the teal body
+       backdrop as a band. Matches architecture/essays IndexHeader. */
+    padding: 60px 24px 0;
   }
   .dateline {
     font-family: var(--font-mono);
@@ -95,7 +98,7 @@ const statusClass = `status-pill status-${status.toLowerCase()}`;
   }
 
   @media (max-width: 767px) {
-    .title-block { padding: 0 16px; margin-top: 40px; }
+    .title-block { padding: 40px 16px 0; margin-top: 0; }
     .page-title { font-size: clamp(32px, 8vw, 48px); }
   }
 </style>

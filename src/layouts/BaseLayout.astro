@@ -2,7 +2,6 @@
 /**
  * src/layouts/BaseLayout.astro — site shell
  * Renders skip link, conditional top nav (Phase 3+), <main>, universal footer.
- * Inline FOUC-prevention script sets the theme cookie before first paint.
  *
  * Source: site-chrome-spec-v1.md §3, §12.
  */
@@ -72,13 +71,15 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
       />
     ))}
 
-    <!-- Preload substrate (texture-spec §3.6 + §4.6) -->
+    <!-- Preload substrate (texture-spec §3.6 + §4.6).
+         paper-tile is the site-wide body bg; tear-edge is home-only (rendered
+         directly in ProjectsSection) so it is not preloaded here — a global
+         preload fired an unused-resource warning on every inner page. -->
     <link rel="preload" as="image" href="/assets/textures/paper-tile.png" />
-    <link rel="preload" as="image" href="/assets/textures/tear-edge.png" />
 
     <!-- Fonts via astro-google-fonts-optimizer (hero-spec §13) -->
     <GoogleFontsOptimizer
-      url="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      url="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500&display=swap"
     />
 
     <!-- View Transitions -->
@@ -94,12 +95,9 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
     <SiteFooter />
 
     <style is:global>
-      .cursor--hover-name {
-        width: 60px !important;
-        height: 60px !important;
-        margin-left: -30px !important;
-        margin-top: -30px !important;
-      }
+      /* Hover growth is driven by transform: scale() in Cursor.tsx (no
+         layout-property animation). These classes are toggled for intent /
+         future styling hooks; they intentionally set no size. */
       .cursor--hover-character {
         /* Future easter egg: pencil-icon cursor. v1 keeps the same dot. */
       }

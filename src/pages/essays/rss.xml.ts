@@ -10,6 +10,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isLiveEssay } from "~/lib/publish-gate";
 
 const ROOT = process.cwd();
 
@@ -20,6 +21,7 @@ async function readBody(slug: string): Promise<string | null> {
 
 export async function GET(context: { site?: URL }) {
   const essays = (await getCollection("essays"))
+    .filter((e) => isLiveEssay(e.data))
     .sort((a, b) => b.data.published.localeCompare(a.data.published));
 
   const items = await Promise.all(

@@ -12,6 +12,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isLiveTransaction } from "~/lib/publish-gate";
 
 const ROOT = process.cwd();
 
@@ -26,6 +27,7 @@ async function readCanonical(slug: string): Promise<string | null> {
 
 export async function GET(context: { site?: URL }) {
   const transactions = (await getCollection("transactions"))
+    .filter((t) => isLiveTransaction(t.data))
     .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 
   const items = await Promise.all(

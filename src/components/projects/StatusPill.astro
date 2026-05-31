@@ -15,9 +15,21 @@ const colorMap: Record<Props["status"], string> = {
   ARCHIVED: "var(--ink-secondary)",
   SHIPPED: "var(--success-teal)",
 };
+
+// Display label ≠ data value. `ARCHIVED` is the semantic enum (drives the
+// validator, the archived_reference_url null-shape, and the page-shape
+// desaturation); it reads "PRIOR ROLE" on the surface so it frames B2B PM
+// work as a credential, not an abandoned project. Critique fix 2026-05-31.
+const labelMap: Record<Props["status"], string> = {
+  ACTIVE: "ACTIVE",
+  COMING: "COMING",
+  PAUSED: "PAUSED",
+  ARCHIVED: "PRIOR ROLE",
+  SHIPPED: "SHIPPED",
+};
 ---
 
-<span class="status-pill" data-status={status} style={`color: ${colorMap[status]};`}>{status}</span>
+<span class="status-pill" data-status={status} style={`color: ${colorMap[status]};`}>{labelMap[status]}</span>
 
 <style>
   .status-pill {

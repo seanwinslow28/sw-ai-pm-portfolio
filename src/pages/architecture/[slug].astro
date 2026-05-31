@@ -34,11 +34,13 @@ import TryItYourself from "~/components/architecture/TryItYourself.astro";
 import RelatedBlock from "~/components/architecture/RelatedBlock.astro";
 import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
+import { isLiveArchitecture } from "~/lib/publish-gate";
 
 type Arch = CollectionEntry<"architecture">;
 
 export async function getStaticPaths() {
-  const all = await getCollection("architecture");
+  // Publish gate: DRAFT / future-dated writeups do not get a built page.
+  const all = (await getCollection("architecture")).filter((w) => isLiveArchitecture(w.data));
   return all.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 
@@ -48,8 +50,10 @@ const { Content } = await entry.render();
 const data = entry.data;
 const slug = entry.slug;
 
-// Adjacent writeups (desc shipped)
-const all = (await getCollection("architecture")).sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
+// Adjacent writeups (desc shipped) — gated to live writeups.
+const all = (await getCollection("architecture"))
+  .filter((w) => isLiveArchitecture(w.data))
+  .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 const idx = all.findIndex((t) => t.slug === entry.slug);
 const next = idx >= 0 && idx + 1 < all.length ? all[idx + 1] : null;
 const prev = idx > 0 ? all[idx - 1] : null;
