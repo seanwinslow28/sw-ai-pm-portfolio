@@ -11,6 +11,9 @@
  *
  * Source: about-spec-v1.md §13 + §4 type table.
  */
+import fs from "node:fs";
+import path from "node:path";
+
 interface Props {
   linkedinUrl: string;
   githubUrl: string;
@@ -19,6 +22,13 @@ interface Props {
 }
 
 const { linkedinUrl, githubUrl, transactionsUrl, resumeUrl } = Astro.props;
+
+// Never ship a 404. The resume link only renders if the PDF is actually
+// present under public/. Drop the real file at public/resume/sean-winslow.pdf
+// and this link lights up on the next build.
+const resumeExists =
+  resumeUrl.startsWith("/") &&
+  fs.existsSync(path.join(process.cwd(), "public", resumeUrl.replace(/^\//, "")));
 ---
 
 <section class="proof-points" aria-labelledby="b5-heading">
@@ -45,12 +55,14 @@ const { linkedinUrl, githubUrl, transactionsUrl, resumeUrl } = Astro.props;
         seanwinslow.com/transactions
       </a>
     </li>
-    <li>
-      <a href={resumeUrl} class="proof-points__link">
-        <span class="proof-points__arrow" aria-hidden="true">→</span>
-        resume.pdf
-      </a>
-    </li>
+    {resumeExists && (
+      <li>
+        <a href={resumeUrl} class="proof-points__link">
+          <span class="proof-points__arrow" aria-hidden="true">→</span>
+          resume.pdf
+        </a>
+      </li>
+    )}
   </ul>
 </section>
 

@@ -11,7 +11,7 @@
  * SVG social-row icons.
  */
 import BaseLayout from "~/layouts/BaseLayout.astro";
-import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "~/lib/site";
+import { EMAIL } from "~/lib/site";
 ---
 
 <BaseLayout title="Contact — Sean Winslow" description="Email me at sean.winslow28@gmail.com.">
@@ -20,24 +20,10 @@ import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "~/lib/site";
     <hr />
     <h1>Contact</h1>
     <p class="body">
-      Email me at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
+      Open to AI PM, Tech PM, and Creative PM roles in the Boston metro or remote.
+      Email me at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> and I'll reply the same day.
     </p>
-    <ul class="contact-links">
-      <li>
-        <span class="prefix">&rarr;</span>
-        email &middot; <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-      </li>
-      <li>
-        <span class="prefix">&rarr;</span>
-        <a href={LINKEDIN_URL} rel="me">linkedin.com/in/sean-winslow-204390a5</a>
-        <span class="glyph">&#x2197;</span>
-      </li>
-      <li>
-        <span class="prefix">&rarr;</span>
-        <a href={GITHUB_URL} rel="me">github.com/seanwinslow28</a>
-        <span class="glyph">&#x2197;</span>
-      </li>
-    </ul>
+    <p class="footnote">LinkedIn and GitHub are in the footer below.</p>
   </article>
 </BaseLayout>
 
@@ -94,40 +80,13 @@ import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "~/lib/site";
     text-decoration-thickness: 1px;
   }
 
-  .contact-links {
-    list-style: none;
-    padding: 0;
-    margin: 16px 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .contact-links li {
+  .footnote {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.8px;
-    color: var(--teal);
-  }
-  .contact-links .prefix {
     color: var(--ink-secondary);
-    margin-right: 4px;
-  }
-  .contact-links .glyph {
-    color: var(--ink-secondary);
-    font-size: 12px;
-    margin-left: 4px;
-  }
-  .contact-links a {
-    color: var(--teal);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 160ms var(--ease-out);
-  }
-  .contact-links a:hover,
-  .contact-links a:focus-visible {
-    border-bottom-color: var(--teal);
-    outline: none;
+    margin: 0;
   }
 
   @media (max-width: 767px) {
@@ -136,9 +95,6 @@ import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "~/lib/site";
     }
     .body {
       font-size: 18px;
-    }
-    .contact-links li {
-      font-size: 13px;
     }
   }
 </style>

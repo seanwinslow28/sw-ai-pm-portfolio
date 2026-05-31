@@ -1,0 +1,58 @@
+---
+title: "LDR Grounding-Collapse Post-Mortem"
+dateline: "BOSTON, MAY 31, 2026"
+shipped: "2026-05-31"
+
+surface: fleet
+status: SHIPPED
+
+valueProp: "My local research agent invented Microsoft docs URLs and ranked three nonexistent tools in confidently-formatted output — in 280 of its 900 seconds. The fix was a routing rule, not a bigger model, plus an eval with bite."
+
+methods:
+  - task: forensic preservation
+    tool: superseded LDR fixture (Qwen3-14B + SearXNG, Mac Mini)
+    cost: $0 (local)
+    link: null
+  - task: control experiment
+    tool: same prompt re-run on Gemini Deep Research
+    cost: research / $2.80
+    link: null
+  - task: fix as policy
+    tool: CLAUDE.md research-routing rule (compound to cloud, single-shape local)
+    cost: portfolio time
+    link: null
+  - task: regression eval
+    tool: eval-case.yaml — fails on bad fixture, passes on grounded output
+    cost: portfolio time
+    link: null
+
+limitations:
+  - "The eval's structural assertion (numbered citations resolving to one URL each) is documented but needs a runner that parses [n] markers to execute fully — the token-level assertions run today; the structural one travels with the case ahead of that runner."
+  - "This is one specimen of one failure mode (grounding collapse under multi-target width). It doesn't address the fleet's other LDR failure mode — the 900s timeout — which the same routing rule mitigates but this post-mortem doesn't demonstrate."
+
+repoUrl: https://github.com/seanwinslow28/ldr-grounding-collapse
+
+relatedTransactions: []
+# surface: "fleet" — this is an agent-fleet ops incident + eval, sits with
+# substack-drafter and vault-synthesizer-eval-suite. 4Q lives inline below
+# (push-independent build), mirroring code-brain-system-card.mdx. repoUrl
+# resolves once the standalone repo is pushed public (Sean-host close-out).
+---
+
+On May 5th one of my fleet agents produced a polished, scored comparison table of the MCP tooling ecosystem — with a ranking, a references section, and ten citations. About a third of it was invented: a tool called `PureMCPClient` ranked #3, a fabricated `MCPCatalog (Central)`, Google's ADK miscast as an MCP SDK at a Microsoft Azure URL, and the home of MCP declared to be `github.com/microsoft/mcp` (it's `modelcontextprotocol`). It didn't error or time out — it finished in 280 of its 900-second budget and reported nothing wrong. This is the post-mortem: the failure preserved verbatim, the diagnosis against the same prompt re-run correctly on Gemini DR, the routing rule that now lives in the fleet's `CLAUDE.md`, and an eval that fails on the bad fixture and passes on the grounded one.
+
+## What is this?
+
+A standalone forensic write-up of a silent agent failure. It keeps the bad output as a specimen, annotates every fabrication, and shows the control experiment that proved the failure was about the *router*, not the *question*: the identical prompt grounded cleanly on Gemini Deep Research the next day — naming real maintainers and flagging its own fragile claims before I asked. The audience is anyone evaluating whether I can catch a confidently-wrong agent and harden the system so it doesn't recur.
+
+## Why this approach?
+
+Three options after the failure: swap in a bigger local model (rejected — doesn't address grounding-under-width, and kills the $0 economics); route all research to the cloud (rejected — most research is single-shape and grounds fine locally; this pays $2.80 to dodge a failure that only hits compound prompts); or build a routing boundary keyed on prompt shape (chosen). Compound research — three or more sub-questions, due-diligence matrices, "evaluate N things on M dimensions" — goes to a grounded cloud researcher; single-shape research stays local at $0. The boundary is encoded as policy so the system can't drift back to "try local first, it's free" — the default that *was* the bug.
+
+## What would break?
+
+The eval is the load-bearing safeguard, and it has two soft spots. The structural assertion — every numbered citation resolving to exactly one URL — needs a runner that parses `[n]` markers; the token-level assertions (no invented entities, no fabricated URLs, correct provenance anchor, no leaked self-talk) run today, but the structural check is documented ahead of its runner. And the eval encodes *this* specimen; a new fabrication shape (a plausible-but-wrong maintainer name, say) would pass it. The general defense is the routing rule; the eval is the regression net for the one failure I've actually seen.
+
+## What did I learn?
+
+The dangerous agent output isn't the one that errors loudly — it's the one that's confidently, plausibly wrong and *looks* more rigorous than the truth. The grounded re-run's real tell wasn't that it got more cells right; it's that it modeled its own uncertainty and flagged which claims to verify. The discipline that matters in agent products isn't "use the best model" — it's knowing what each tier can be trusted with, and building the boundary so the system can't take the cheap path on work the cheap path can't do. Catch the silent failure, name it, encode the fix as policy, write the test that proves it. That's the loop.

@@ -34,11 +34,13 @@ import PlottedArtifacts from "~/components/essays/PlottedArtifacts.astro";
 import FootLinks from "~/components/essays/FootLinks.astro";
 import RelatedBlock from "~/components/essays/RelatedBlock.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
+import { isLiveEssay } from "~/lib/publish-gate";
 
 type Essay = CollectionEntry<"essays">;
 
 export async function getStaticPaths() {
-  const all = await getCollection("essays");
+  // Publish gate: DRAFT / future-dated essays do not get a built page.
+  const all = (await getCollection("essays")).filter((e) => isLiveEssay(e.data));
   return all.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 
@@ -48,8 +50,10 @@ const { Content } = await entry.render();
 const data = entry.data;
 const slug = entry.slug;
 
-// Adjacent essays (desc published)
-const all = (await getCollection("essays")).sort((a, b) => b.data.published.localeCompare(a.data.published));
+// Adjacent essays (desc published) — gated, so nav never points at a draft/future page.
+const all = (await getCollection("essays"))
+  .filter((e) => isLiveEssay(e.data))
+  .sort((a, b) => b.data.published.localeCompare(a.data.published));
 const idx = all.findIndex((t) => t.slug === entry.slug);
 const next = idx >= 0 && idx + 1 < all.length ? all[idx + 1] : null;
 const prev = idx > 0 ? all[idx - 1] : null;

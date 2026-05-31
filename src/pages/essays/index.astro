@@ -11,17 +11,22 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import IndexHeader from "~/components/essays/IndexHeader.astro";
 import EssayRow from "~/components/essays/EssayRow.astro";
+import { isLiveEssay } from "~/lib/publish-gate";
 
+// Publish gate: only PUBLISHED essays whose date has arrived render. The
+// manifesto stays DRAFT (publishes 2026-06-19) and is excluded until then,
+// so nothing future-dated ever appears as live.
 const essays = (await getCollection("essays"))
+  .filter((e) => isLiveEssay(e.data))
   .sort((a, b) => b.data.published.localeCompare(a.data.published));
 
 const count = essays.length;
 const lastPublished = essays[0]?.data.published ?? new Date().toISOString().slice(0, 10);
 
 // Footer-fold staging per essays-prose-locked-2026-05-28 §1.5: the "subscribe via RSS"
-// affordance only surfaces once at least one essay is PUBLISHED (the RSS feed is empty
-// until then). v1 launches with the manifesto staged DRAFT → 2 affordances.
-const hasPublishedEssay = essays.some((e) => e.data.status === "PUBLISHED");
+// affordance only surfaces once at least one essay is live (the RSS feed is empty
+// until then).
+const hasPublishedEssay = essays.length > 0;
 
 // Find a Substack URL across all essays for the footer link.
 let substackUrl: string | null = null;

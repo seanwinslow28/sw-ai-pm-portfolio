@@ -33,6 +33,23 @@ import process from "node:process";
 
 const ROOT = process.cwd();
 
+// "Today" in Boston time, matching the wire-service datelines. Build runs
+// in UTC on Vercel; computing in America/New_York avoids a late-night-UTC
+// false positive on the dateline freshness check below.
+function bostonTodayISO() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+}
+const TODAY_ISO = bostonTodayISO();
+
+function daysBetween(isoA, isoB) {
+  return Math.round(
+    (Date.parse(`${isoB}T12:00:00Z`) - Date.parse(`${isoA}T12:00:00Z`)) / 86400000
+  );
+}
+
 const COLLECTIONS = [
   {
     name: "work",
@@ -58,6 +75,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["methods", "limitations"],
+    futureDate: { field: "shipped" },   // any status: a future ship date is staged
     forbiddenSlugs: ["fleet", "pipeline", "product", "writing", "infra"],
     crossLinkFields: [
       "relatedCaseStudy", "relatedTransactions", "relatedEssay",
@@ -80,6 +98,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["tags", "methods"],
+    futureDate: { field: "shipped", statuses: ["SHIPPED"] },
     crossLinkFields: [
       "relatedLedgerRow", "relatedCaseStudy", "relatedEssay",
       "relatedArchitecture",
@@ -101,6 +120,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["tags"],
+    futureDate: { field: "published", statuses: ["PUBLISHED"] },
     crossLinkFields: [
       "relatedLedgerRow", "relatedCaseStudy", "relatedArchitecture",
       "relatedEssays", "plottedArtifacts",
@@ -278,6 +298,17 @@ async function validateCollection(coll, warnings) {
         errors.push(`${coll.name}/${slug}: must declare one of [${label}]`);
       }
     }
+    // Future-date staging notice. The publish gate (src/lib/publish-gate.ts)
+    // hides these until their date arrives, so this is informational — it
+    // tells Sean exactly what is staged and won't render yet.
+    if (coll.futureDate) {
+      const { field, statuses } = coll.futureDate;
+      const d = fm[field];
+      const statusInScope = !statuses || statuses.includes(fm.status);
+      if (statusInScope && typeof d === "string" && d > TODAY_ISO) {
+        warnings.push(`${coll.name}/${slug}: ${field} ${d} is in the future (today ${TODAY_ISO}). Staged — the publish gate hides it until then.`);
+      }
+    }
     // status-specific fields
     const statusReq = coll.statusFields?.[fm.status] ?? [];
     for (const f of statusReq) {
@@ -366,6 +397,34 @@ async function main() {
     process.stdout.write(`\n[${coll.name}]\n`);
     const errs = await validateCollection(coll, warnings);
     allErrors.push(...errs);
+  }
+
+  // Dateline freshness. The home hero reads public/api/dateline.json (the
+  // Daily Driver writes it ~08:30 ET). A stale date on the hero quietly
+  // undercuts the whole "real and dated" thesis, so guard it:
+  //   - stale by 1 day  → warn (normal pre-08:30 window; run the driver)
+  //   - stale by 2+ days → hard error (clearly forgotten; do not ship)
+  // Flip the 1-day case to an error once the deploy is wired to fire after
+  // the 08:30 write.
+  process.stdout.write(`\n[dateline freshness]\n`);
+  try {
+    const dl = JSON.parse(await fs.readFile(path.join(ROOT, "public/api/dateline.json"), "utf8"));
+    if (typeof dl.date_iso !== "string") {
+      allErrors.push(`dateline.json: missing or non-string date_iso`);
+    } else if (dl.date_iso > TODAY_ISO) {
+      allErrors.push(`dateline.json: date_iso ${dl.date_iso} is in the FUTURE (today ${TODAY_ISO}). The hero would show a fabricated-looking future date.`);
+    } else {
+      const staleDays = daysBetween(dl.date_iso, TODAY_ISO);
+      if (staleDays >= 2) {
+        allErrors.push(`dateline.json: date_iso ${dl.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}). Run the Daily Driver before deploying — a stale hero date undercuts the dated-fleet thesis.`);
+      } else if (staleDays === 1) {
+        warnings.push(`dateline.json: date_iso ${dl.date_iso} is 1 day stale (today ${TODAY_ISO}). Run the Daily Driver before deploying so the hero dateline is current.`);
+      } else {
+        process.stdout.write(`  ✓ dateline.json is current (${dl.date_iso})\n`);
+      }
+    }
+  } catch (e) {
+    allErrors.push(`dateline.json: could not read/parse (${e.message})`);
   }
   if (warnings.length > 0) {
     process.stdout.write(`\n⚠ ${warnings.length} warnings (build proceeds):\n`);

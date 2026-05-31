@@ -36,11 +36,13 @@ import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
 import LimitationsBlock from "~/components/transactions/LimitationsBlock.astro";
 import RelatedBlock from "~/components/transactions/RelatedBlock.astro";
+import { isLiveTransaction } from "~/lib/publish-gate";
 
 type Txn = CollectionEntry<"transactions">;
 
 export async function getStaticPaths() {
-  const all = await getCollection("transactions");
+  // Publish gate: future-dated transactions do not get a built page.
+  const all = (await getCollection("transactions")).filter((t) => isLiveTransaction(t.data));
   return all.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -51,8 +53,9 @@ interface Props { entry: Txn }
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
-// Adjacent transactions (next/prev in desc-shipped order).
+// Adjacent transactions (next/prev in desc-shipped order) — gated to live rows.
 const all = (await getCollection("transactions"))
+  .filter((t) => isLiveTransaction(t.data))
   .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 const idx = all.findIndex((t) => t.slug === entry.slug);
 const next = idx >= 0 && idx + 1 < all.length ? all[idx + 1] : null;

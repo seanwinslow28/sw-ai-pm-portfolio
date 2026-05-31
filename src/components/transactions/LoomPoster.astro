@@ -2,8 +2,10 @@
 /**
  * <LoomPoster /> — optional editorial Loom video embed.
  *
- * Renders only when loomUrl is present. Poster click opens a native
- * <dialog> with the Loom iframe. Strict 1-Loom max per row
+ * Renders only when loomUrl is present. The poster is the <summary> of a
+ * native <details> element; clicking it reveals the Loom iframe INLINE,
+ * directly beneath the poster. No modal, no overlay, no JS — per the
+ * system's no-modal rule (DESIGN.md §5). Strict 1-Loom max per row
  * (transactions-spec §19 OPEN-5 RESOLVED).
  *
  * Per transactions-spec §9.1 step 6 + §16 (a11y).
@@ -11,7 +13,7 @@
 interface Props {
   loomUrl: string;
   posterUrl?: string;             // optional editorial poster image
-  title: string;                  // for the aria-label + dialog title
+  title: string;                  // for the aria-label + iframe title
 }
 const { loomUrl, posterUrl, title } = Astro.props;
 
@@ -20,52 +22,28 @@ function toEmbedUrl(url: string): string {
   return url.replace("/share/", "/embed/");
 }
 const embedUrl = toEmbedUrl(loomUrl);
-const dialogId = `loom-dialog-${title.toLowerCase().replace(/[^\w]+/g, "-").slice(0, 32)}`;
 ---
 
-<section class="loom-section">
-  <button
-    type="button"
-    class="loom-trigger"
-    aria-label={`Play Loom video: ${title}`}
-    data-dialog-id={dialogId}
-  >
+<details class="loom-section">
+  <summary class="loom-trigger" aria-label={`Play Loom video: ${title}`}>
     {posterUrl
       ? <img src={posterUrl} alt="" class="loom-poster" loading="lazy" />
       : <span class="loom-poster-fallback" aria-hidden="true">▶ Loom</span>
     }
     <span class="loom-play" aria-hidden="true">▶</span>
-  </button>
+  </summary>
 
-  <dialog id={dialogId} class="loom-dialog" aria-label={`Loom video: ${title}`}>
-    <form method="dialog" class="loom-close-form">
-      <button type="submit" class="loom-close" aria-label="Close video">&times;</button>
-    </form>
+  <div class="loom-reveal">
     <iframe
       src={embedUrl}
       allow="fullscreen"
       allowfullscreen
       class="loom-iframe"
       title={`Loom video: ${title}`}
+      loading="lazy"
     ></iframe>
-  </dialog>
-</section>
-
-<script>
-  // Wire up trigger → dialog.showModal() + restore focus on close.
-  document.querySelectorAll<HTMLButtonElement>(".loom-trigger").forEach((trigger) => {
-    const dialogId = trigger.dataset.dialogId;
-    if (!dialogId) return;
-    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
-    if (!dialog) return;
-    trigger.addEventListener("click", () => {
-      dialog.showModal();
-    });
-    dialog.addEventListener("close", () => {
-      trigger.focus();
-    });
-  });
-</script>
+  </div>
+</details>
 
 <style>
   .loom-section {
@@ -81,15 +59,19 @@ const dialogId = `loom-dialog-${title.toLowerCase().replace(/[^\w]+/g, "-").slic
     background-color: var(--ink);
     border: 0.5px solid var(--border-paper);
     cursor: pointer;
-    padding: 0;
     overflow: hidden;
+    list-style: none;            /* hide the default disclosure triangle */
     transition: opacity 160ms var(--ease-out);
   }
+  .loom-trigger::-webkit-details-marker { display: none; }
   .loom-trigger:hover { opacity: 0.92; }
   .loom-trigger:focus-visible {
     outline: 2px solid var(--teal);
     outline-offset: 4px;
   }
+  /* Once open, the poster collapses and the iframe takes over inline. */
+  .loom-section[open] .loom-trigger { display: none; }
+
   .loom-poster {
     width: 100%;
     height: 100%;
@@ -116,41 +98,19 @@ const dialogId = `loom-dialog-${title.toLowerCase().replace(/[^\w]+/g, "-").slic
     color: var(--paper);
     font-size: 48px;
     pointer-events: none;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    text-shadow: 0 2px 8px rgba(10, 62, 66, 0.4);
   }
 
-  .loom-dialog {
-    border: none;
-    background-color: transparent;
-    padding: 0;
-    max-width: 90vw;
-    width: 960px;
-  }
-  .loom-dialog::backdrop {
-    background-color: rgba(0,0,0,0.7);
+  .loom-reveal {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0.5px solid var(--border-paper);
   }
   .loom-iframe {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     border: none;
     display: block;
-  }
-  .loom-close-form { margin: 0; }
-  .loom-close {
-    position: absolute;
-    top: -32px;
-    right: -8px;
-    background: transparent;
-    border: none;
-    color: var(--paper);
-    font-size: 24px;
-    cursor: pointer;
-    padding: 4px 8px;
-    line-height: 1;
-  }
-  .loom-close:focus-visible {
-    outline: 2px solid var(--paper);
-    outline-offset: 2px;
   }
 
   @media (max-width: 767px) {

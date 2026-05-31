@@ -11,6 +11,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isLiveArchitecture } from "~/lib/publish-gate";
 
 const ROOT = process.cwd();
 
@@ -21,6 +22,7 @@ async function readBody(slug: string): Promise<string | null> {
 
 export async function GET(context: { site?: URL }) {
   const writeups = (await getCollection("architecture"))
+    .filter((w) => isLiveArchitecture(w.data))
     .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 
   const items = await Promise.all(

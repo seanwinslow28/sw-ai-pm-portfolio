@@ -81,9 +81,13 @@ const { slug, frame, title, tagline, status, tags, hero_media, hero_media_type, 
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 16px 20px 20px;
-    background-color: rgba(0, 0, 0, 0.15);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    padding: 14px 20px 18px;
+    /* Solid caption band (film-cell slate) — legible cream text over any
+       illustration, regardless of the tones behind it. Replaces the 15%
+       multiply, which vanished over the light sketchbook tiles. */
+    background-color: var(--teal-deep);
+    border-top: 0.5px solid rgba(255, 249, 240, 0.14);
+    box-shadow: 0 -6px 14px rgba(12, 45, 47, 0.35);
   }
   .tile-meta-top {
     display: flex;
@@ -112,7 +116,7 @@ const { slug, frame, title, tagline, status, tags, hero_media, hero_media_type, 
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.4px;
-    color: rgba(255, 249, 240, 0.75);
+    color: rgba(255, 249, 240, 0.85);
     margin-bottom: 4px;
   }
   .tags {

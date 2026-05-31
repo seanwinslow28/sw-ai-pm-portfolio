@@ -17,7 +17,11 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
     <hr />
     <h1>PAGE NOT FOUND</h1>
     <p>Nothing at this URL.</p>
-    <p><a href="/" class="mono-link">&rarr; HOME</a></p>
+    <p class="exits">
+      <a href="/" class="mono-link">&rarr; HOME</a>
+      <a href="/work/" class="mono-link">&rarr; WORK</a>
+      <a href="/about/" class="mono-link">&rarr; ABOUT</a>
+    </p>
   </article>
 </BaseLayout>
 
@@ -68,6 +72,12 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
     color: var(--ink);
     margin: 0;
     max-width: 560px;
+  }
+
+  .exits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
   }
 
   .mono-link {

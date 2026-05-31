@@ -13,6 +13,7 @@ import IndexHeader from "~/components/transactions/IndexHeader.astro";
 import FilterPills from "~/components/transactions/FilterPills.astro";
 import LedgerRow from "~/components/transactions/LedgerRow.astro";
 import FooterFold from "~/components/transactions/FooterFold.astro";
+import { isLiveTransaction } from "~/lib/publish-gate";
 
 const SURFACE_ENUM = ["fleet", "pipeline", "product", "writing", "infra"] as const;
 type Surface = typeof SURFACE_ENUM[number];
@@ -31,7 +32,7 @@ const { surface } = Astro.params as { surface: Surface };
 
 const all = await getCollection("transactions");
 const filtered = all
-  .filter((t) => t.data.surface === surface)
+  .filter((t) => isLiveTransaction(t.data) && t.data.surface === surface)
   .sort((a, b) => b.data.shipped.localeCompare(a.data.shipped));
 
 const count = filtered.length;
