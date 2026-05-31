@@ -1,0 +1,61 @@
+---
+title: "Code-Brain System Card"
+dateline: "BOSTON, MAY 31, 2026"
+shipped: "2026-05-31"
+
+surface: infra
+status: SHIPPED
+
+valueProp: "Maps my live agent fleet to SR-11-7 model-risk materiality tiers and the EU AI Act (Art. 50/72, Annex IV) — leading with a scope determination that rules most of the regulation out, then modeling the discipline voluntarily and naming every gap."
+
+methods:
+  - task: framework grounding
+    tool: Gemini DR-Max 4-panel deep research + live regulatory verification
+    cost: research / $7
+    link: null
+  - task: SR-11-7 tiering + EU AI Act mapping
+    tool: fleet-inventory reconciliation against agents-sdk/config.toml
+    cost: portfolio time
+    link: null
+  - task: adversarial stress-test
+    tool: premium LLM Council (4 frontier models + chairman synthesis)
+    cost: council / $0.56
+    link: null
+  - task: 4Q writeup
+    tool: EXPLANATION.md
+    cost: portfolio time
+    link: https://github.com/seanwinslow28/code-brain/blob/main/docs/CODE_BRAIN_SYSTEM_CARD_EXPLANATION.md
+
+limitations:
+  - "It's a voluntary mapping, not a conformance claim — SR-11-7 and the EU AI Act's high-risk obligations don't legally bind a personal minimal-risk system. The artifact's value is correct scoping and materiality tiering, not compliance."
+  - "Eval coverage is one-of-twelve components, and the Judge Layer control plane is built but not yet armed — so the highest-materiality surfaces currently rest on the manual 'agents draft / I send' gate, not programmatic mitigation."
+
+repoUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/CODE_BRAIN_SYSTEM_CARD.md
+
+relatedTransactions: []
+# surface: "infra" matches the Enterprise Data Readiness Matrix (governance/
+# infrastructure). If the portfolio later groups strategic writing under
+# "writing", this is the row to reconsider.
+# 4Q lives inline below (push-independent build). To switch to the fetched-
+# canonical path once code-brain is pushed public, add `explanationUrl:` pointing
+# at the EXPLANATION.md blob and reformat its headings to `## <prefix> Q1 ...`
+# (the format fetch_canonical_sources.mjs validates against).
+---
+
+The credibility move that made the Enterprise Data Readiness Matrix land was applying a framework to a system I actually operate instead of reciting it. This does the same for regulatory accountability: it cards the real Code-Brain fleet — ~12 live agents plus a published MCP server and a control-plane Judge Layer — against SR-11-7 and the EU AI Act. The load-bearing section isn't the tiering; it's the applicability determination up front that rules most of the regulation *out* (Code-Brain is minimal-risk, not high-risk, so Annex IV and Articles 13/72 don't apply), then models the discipline voluntarily. Stress-tested through the premium LLM Council; the convergent fixes — correct EU AI Act scope, vendor-model risk that can't be architected away, inherent-vs-residual tiering — are folded in.
+
+## What is this?
+
+A governance accounting of my autonomous agent fleet, mapped to SR-11-7 (Fed model-risk management) and the EU AI Act. It tiers each live component by materiality, documents validation evidence and the human-override path, and names every place the system would not pass if it were regulated. The audience is a model-risk officer or regulated-SaaS hiring manager who wants to see whether I can scope a regulation, not just recite one.
+
+## Why this approach?
+
+Three options: write an abstract explainer (rejected — proves no judgment); claim conformance (rejected — the high-risk obligations don't legally apply, so "partial compliance" is a category error); or apply the frameworks to a system I operate, lead with a scope determination that rules most of the regulation out, then model the discipline and name the gaps (chosen). Correctly scoping a law you don't have to follow signals more than performing compliance with one you've misread.
+
+## What would break?
+
+Three failure modes. **Over-claiming** — any EU AI Act cell that reads "Partial / Substantially present" instead of "inapplicable; modeled voluntarily" has re-acquired the category error the scope section exists to prevent (the first draft had exactly this; the Council caught it). **Inventory drift** — the `status` column must match `agents-sdk/config.toml` enable flags, or the tiering lies the moment an agent is toggled. **The "no training data" erasure** — framing inherited vendor-model risk as "N/A by architecture" erases an SR-11-7 obligation rather than satisfying it.
+
+## What did I learn?
+
+The hardest part of regulatory fluency isn't knowing what a regulation requires — it's knowing when it doesn't apply, and leading with that. A four-model adversarial review turned the artifact inside out: the impressive move is ruling the regimes out correctly, then modeling them anyway. That's the instinct a fintech or regulated-SaaS PM needs in week one.
