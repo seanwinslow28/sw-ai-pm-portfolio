@@ -28,7 +28,7 @@ methods:
 
 limitations:
   - "Claude Desktop's MCP client revs faster than the server; semver discipline is the v1.x discipline."
-  - "DNS verification expires annually — renewal is on Sean's calendar but not automated."
+  - "DNS verification expires annually; renewal is on Sean's calendar but not automated."
 
 # 4Q via inline-body fallback. Upstream EXPLANATION.md lives in the
 # intent-engineering-mcp repo and will be wired via explanationUrl
@@ -47,7 +47,7 @@ A Model Context Protocol server published to npm + the MCP registry on May 12, 2
 
 ## Why this approach?
 
-Three options were on the table: ship as a standalone CLI tool, bake into a larger MCP, or ship as a registered server. The registered-server path won because DNS-verified registry adoption was the right scope-cut signal — recruiter could see the install count + registry presence at a glance. The case study at /work/intent-engineering-mcp documents what got cut to ship early.
+Three options were on the table: ship as a standalone CLI tool, bake into a larger MCP, or ship as a registered server. The registered-server path won because DNS-verified registry adoption was the right scope-cut signal: recruiter could see the install count + registry presence at a glance. The case study at /work/intent-engineering-mcp documents what got cut to ship early.
 
 ## What would break?
 
@@ -55,4 +55,4 @@ Three named failure modes: (1) Claude Desktop's MCP client revs faster than this
 
 ## What did I learn?
 
-It shipped 13 days early because the design was right. What got cut was right too — the interactive MCP-tool-call embed page is a future spec, not v1. The cut list is on the case-study page; the install count is on this ledger row's `<ShippedNow />` block (rendered via the case-study route, not duplicated here).
+It shipped 13 days early because the design was right. What got cut was right too: the interactive MCP-tool-call embed page is a future spec, not v1. The cut list is on the case-study page; the install count is on this ledger row's `<ShippedNow />` block (rendered via the case-study route, not duplicated here).

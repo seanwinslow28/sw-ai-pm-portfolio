@@ -7,13 +7,29 @@
  */
 
 import { ClientRouter } from "astro:transitions";
-import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
 import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE, RSS_FEEDS } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
 import SiteNav from "~/components/chrome/SiteNav.astro";
 import SiteFooter from "~/components/chrome/SiteFooter.astro";
 import Cursor from "~/components/Cursor.tsx";
 import "~/styles/global.css";
+
+/* Self-hosted fonts (replaces the fonts.gstatic.com CDN dependency so the
+ * editorial identity survives offline / locked-down corporate networks and
+ * never flashes a generic-serif FOUT). Weights mirror the prior request;
+ * italics added as real cuts rather than browser-synthesized obliques.
+ * Caveat is the intentional third face for pencil-margin annotations — a
+ * documented exception to the two-font lock, logged in CHANGELOG.md. */
+import "@fontsource/newsreader/300.css";
+import "@fontsource/newsreader/400.css";
+import "@fontsource/newsreader/500.css";
+import "@fontsource/newsreader/300-italic.css";
+import "@fontsource/newsreader/400-italic.css";
+import "@fontsource/newsreader/500-italic.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/jetbrains-mono/700.css";
+import "@fontsource/caveat/500.css";
 
 interface Props {
   title: string;
@@ -75,12 +91,10 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
          paper-tile is the site-wide body bg; tear-edge is home-only (rendered
          directly in ProjectsSection) so it is not preloaded here — a global
          preload fired an unused-resource warning on every inner page. -->
-    <link rel="preload" as="image" href="/assets/textures/paper-tile.png" />
+    <link rel="preload" as="image" type="image/png" href="/assets/textures/paper-tile.png" />
 
-    <!-- Fonts via astro-google-fonts-optimizer (hero-spec §13) -->
-    <GoogleFontsOptimizer
-      url="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500&display=swap"
-    />
+    <!-- Fonts are self-hosted via @fontsource (imported in the component
+         script above); no external font CDN. -->
 
     <!-- View Transitions -->
     <ClientRouter />

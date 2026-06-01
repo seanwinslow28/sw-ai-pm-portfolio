@@ -23,7 +23,7 @@ methods:
     link: null
 
 limitations:
-  - "Ten cases doesn't catch the long tail — niche concept types (contradictions across SOUL artifacts, EDC canonicalization) can regress invisibly."
+  - "Ten cases doesn't catch the long tail: niche concept types (contradictions across SOUL artifacts, EDC canonicalization) can regress invisibly."
   - "Sonnet-as-judge introduces ~$0.04/case ongoing cost; full suite ≈ $0.40/run."
 
 # 4Q source: inline-body fallback. An upstream EXPLANATION.md exists at
@@ -47,12 +47,12 @@ A 10-case binary pass/fail eval suite for the local Qwen3-14B vault synthesizer 
 
 ## Why this approach?
 
-Pytest + YAML over Braintrust or Langfuse — at ten cases, platform infrastructure is pure overhead. Code-based and rubric graders run before any LLM-as-judge, per Hamel's cost-economics rule. Binary pass/fail over Likert, per the Husain-Shankar canon — Likert scales destroy inter-rater reliability at this scale. The case library is grounded in real-log error analysis, not synthetic generation: the failures the suite guards against actually happened.
+Pytest + YAML over Braintrust or Langfuse: at ten cases, platform infrastructure is pure overhead. Code-based and rubric graders run before any LLM-as-judge, per Hamel's cost-economics rule. Binary pass/fail over Likert, per the Husain-Shankar canon: Likert scales destroy inter-rater reliability at this scale. The case library is grounded in real-log error analysis, not synthetic generation: the failures the suite guards against actually happened.
 
 ## What would break?
 
-Three failure modes. Synthesizer prompt drift — a structural change to the underlying synthesis prompt requires re-baselining the whole suite. Mock-input fixtures going stale as the vault evolves — they need a quarterly refresh. And the judge boundary: no active case uses an LLM judge at v1, so if a case is ever promoted to LLM-judge, the model ID has to be pinned explicitly in the case YAML and a `--skip-llm-judge` flag added for offline runs, or the suite stops being reproducible.
+Three failure modes. Synthesizer prompt drift: a structural change to the underlying synthesis prompt requires re-baselining the whole suite. Mock-input fixtures going stale as the vault evolves: they need a quarterly refresh. And the judge boundary: no active case uses an LLM judge at v1, so if a case is ever promoted to LLM-judge, the model ID has to be pinned explicitly in the case YAML and a `--skip-llm-judge` flag added for offline runs, or the suite stops being reproducible.
 
 ## What did I learn?
 
-That evals aren't really about hallucinations. The failure modes I imagined — hallucinated phase numbers, relation-tag drift, temporal confusion — were the easy cases. The hard case was the one nobody drafts on purpose: the status field that says "ok" while the output is empty. Three layers of monitoring agreed everything was fine while the system underneath them rotted silently for nine days. Error analysis surfaces the failures imagination does not.
+That evals aren't really about hallucinations. The failure modes I imagined (hallucinated phase numbers, relation-tag drift, temporal confusion) were the easy cases. The hard case was the one nobody drafts on purpose: the status field that says "ok" while the output is empty. Three layers of monitoring agreed everything was fine while the system underneath them rotted silently for nine days. Error analysis surfaces the failures imagination does not.

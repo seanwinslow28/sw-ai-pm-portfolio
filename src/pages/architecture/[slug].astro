@@ -98,7 +98,7 @@ if (data.essaySourceUrl) {
 const pageTitle = `${data.title} — Sean Winslow`;
 const pageDescription = data.lead;
 ---
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} ogImage={data.ogImage}>
   <article class="arch-deep-dive page-sheet">
     <header class="head-band">
       <p class="dateline">

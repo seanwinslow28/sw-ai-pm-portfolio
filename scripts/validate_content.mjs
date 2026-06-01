@@ -23,6 +23,13 @@
  *   - essays: jdUrl HEAD checks (warning on 4xx/5xx)
  *   - essays: roleMap.lastValidated staleness (>30 days = warning)
  *
+ * Launch-readiness guardrails (post-mortem 2026-06-01 §5) — catch the silent
+ * failure class that passes `astro build` but leaves the page wrong:
+ *   - F1: every <BoardArtifact> needs an excerpt OR ticketKey+ticketTitle
+ *   - F6: em-dash lint over rendered prose (DESIGN.md §213 allowlist)
+ *   - F2: about-pulse.json date_iso may not be after the build date
+ *   - F3/F4: OG cards must be wired; no font-CDN font loads in src/
+ *
  * Source: case-study-spec-v1.md §15 + transactions-spec-v1.md §11.1 +
  *         architecture-spec-v1.md §11.1 + essays-spec-v1.md §11.1 +
  *         §11.2 (the unified-validator merge).
@@ -65,6 +72,9 @@ const COLLECTIONS = [
       ARCHIVED: ["archived_reference_url"],
     },
     requiredArrays: ["tags", "methods"],
+    boardArtifacts: true,                  // F1: every <BoardArtifact> needs a body
+    emDashFields: ["tagline"],             // F6: rendered prose fields
+    scanBody: true,
   },
   {
     name: "transactions",
@@ -81,6 +91,8 @@ const COLLECTIONS = [
       "relatedCaseStudy", "relatedTransactions", "relatedEssay",
       "previousVersion", "relatedArchitecture",
     ],
+    emDashFields: ["valueProp", "limitations"],
+    scanBody: true,
   },
   // ============================================================
   // Phase 3c.2 — architecture collection
@@ -106,6 +118,8 @@ const COLLECTIONS = [
     mermaidSourceField: "mermaidSource",      // existence check if value is a path
     honestNotesField: "honestNotes",           // anchor warning check
     scoreboardField: "scoreboard",             // row/column count consistency
+    emDashFields: ["lead", "mermaidCaption", "honestNotes.body"],
+    scanBody: true,
   },
   // ============================================================
   // Phase 3c.2 — essays collection
@@ -127,6 +141,8 @@ const COLLECTIONS = [
     ],
     mermaidSourceField: "mermaidSource",
     roleMapField: "roleMap",                   // jdUrl HEAD checks + lastValidated staleness
+    emDashFields: ["excerpt", "subtitle", "mermaidCaption"],
+    scanBody: true,
   },
 ];
 
@@ -243,6 +259,135 @@ function detectInline4Q(src) {
     /^##\s+What did I learn\?/m,
   ];
   return required.every((re) => re.test(body));
+}
+
+// ============================================================
+// Launch-readiness guardrails (post-mortem 2026-06-01 §5).
+// These catch the silent failure class: valid-but-incomplete data
+// and authored-but-unwired assets that pass `astro build` but leave
+// the rendered page wrong.
+// ============================================================
+
+/**
+ * Strip inline-code spans (`...`) so backticked CLI flags and sample
+ * text (e.g. `--skip-llm-judge`, `fonts.gstatic.com`) never trip the
+ * prose lints below. Code is not editorial prose.
+ */
+function stripInlineCode(s) {
+  return s.replace(/`[^`]*`/g, "");
+}
+
+// DESIGN.md §213 allowlist: the locked project title carries an em dash by lock.
+const LOCKED_TITLE = "The Block — Campus + RevOps";
+
+// Wire-service dateline stamp at the start of a line / caption, e.g.
+// "MAY 27 —", "DEC 2025 —", "JUNE 1, 2026 —", "KILLED —". Allowlisted
+// by DESIGN.md §213 (datelines + ledger captions inherit newspaper em dashes).
+const WIRE_STAMP_RE = /^\s*(?:<p[^>]*>)?\s*(?:[A-Z]{3,9}\.?(?:\s+\d{1,4})?(?:,\s*\d{4})?|KILLED)\s*—/;
+
+/**
+ * Returns the list of em-dash / typographic-double-hyphen violations in a
+ * single rendered-prose string, after removing inline code and the locked
+ * title. `--` is only flagged in its URL-free, code-free form (a real CLI
+ * flag lives in backticks and is already stripped).
+ */
+function emDashHits(text) {
+  if (typeof text !== "string") return [];
+  const cleaned = stripInlineCode(text).split(LOCKED_TITLE).join("");
+  const hits = [];
+  if (cleaned.includes("—")) hits.push("em dash (—)");
+  if (/(?:^|[^-])--(?:[^-]|$)/.test(cleaned)) hits.push("double hyphen (--)");
+  return hits;
+}
+
+/**
+ * Scan named frontmatter prose fields for em dashes. `fields` entries may be
+ * scalar ("valueProp"), array ("limitations"), or array-of-objects with a
+ * property ("honestNotes.body"). Only fields that actually render are passed
+ * in per-collection; title/description/dateline/alt-text are intentionally
+ * excluded (they legitimately carry the "— Sean Winslow" separator, locked
+ * titles, and wire-service stamps).
+ */
+function scanFieldEmDashes(fm, fields, label, errors) {
+  for (const field of fields) {
+    if (field.includes(".")) {
+      const [arr, prop] = field.split(".");
+      if (!Array.isArray(fm[arr])) continue;
+      fm[arr].forEach((o, i) => {
+        if (o && typeof o[prop] === "string") {
+          const hits = emDashHits(o[prop]);
+          if (hits.length) errors.push(`${label}: ${hits.join(" + ")} in ${arr}[${i}].${prop} (rendered prose — DESIGN.md §213)`);
+        }
+      });
+    } else {
+      const v = fm[field];
+      const vals = Array.isArray(v) ? v : typeof v === "string" ? [v] : [];
+      vals.forEach((s, i) => {
+        const hits = emDashHits(s);
+        if (hits.length) errors.push(`${label}: ${hits.join(" + ")} in ${field}${Array.isArray(v) ? `[${i}]` : ""} (rendered prose — DESIGN.md §213)`);
+      });
+    }
+  }
+}
+
+/**
+ * Scan the MDX body (prose + JSX prop strings like boardLabel="…",
+ * excerpt="…") for em dashes. Skips fenced code blocks, `<p slot="caption">`
+ * ledger captions (wire-service voice), and strips the leading wire-service
+ * dateline stamp before checking the remainder of a line.
+ */
+function scanBodyEmDashes(src, label, errors) {
+  const bodyMatch = src.match(/^---\n[\s\S]+?\n---\n([\s\S]*)$/);
+  if (!bodyMatch) return;
+  const lines = bodyMatch[1].split("\n");
+  const fmOffset = src.slice(0, src.length - bodyMatch[1].length).split("\n").length - 1;
+  let inCode = false;
+  lines.forEach((rawLine, idx) => {
+    if (/^\s*```/.test(rawLine)) { inCode = !inCode; return; }
+    if (inCode) return;
+    if (/slot="caption"/.test(rawLine)) return;          // ledger caption = wire-service voice
+    const line = rawLine.replace(WIRE_STAMP_RE, "");     // allow a leading stamp, scan the rest
+    const hits = emDashHits(line);
+    if (hits.length) {
+      errors.push(`${label} (line ${fmOffset + idx + 1}): ${hits.join(" + ")} in rendered prose — "${rawLine.trim().slice(0, 80)}" (DESIGN.md §213)`);
+    }
+  });
+}
+
+/**
+ * Empty-board-card check (post-mortem F1). A <BoardArtifact> with only a
+ * boardLabel renders as an empty polaroid frame: it must carry an `excerpt`
+ * OR both `ticketKey` and `ticketTitle`. The opening-tag regex tolerates `>`
+ * inside double-quoted attribute values.
+ */
+function scanBoardArtifacts(src, label, errors) {
+  const tagRe = /<BoardArtifact\b((?:[^>"]|"[^"]*")*)>/g;
+  let m;
+  while ((m = tagRe.exec(src)) !== null) {
+    const props = m[1];
+    const prop = (name) => {
+      const pm = props.match(new RegExp(`${name}=("[^"]*"|'[^']*')`));
+      return pm ? pm[1].slice(1, -1).trim() : "";
+    };
+    const id = prop("artifactId") || "(no artifactId)";
+    const hasBody = prop("excerpt").length > 0 || (prop("ticketKey").length > 0 && prop("ticketTitle").length > 0);
+    if (!hasBody) {
+      errors.push(`${label}: BoardArtifact "${id}" has no excerpt and no ticketKey+ticketTitle — renders as an empty polaroid frame (post-mortem F1).`);
+    }
+  }
+}
+
+/** Recursively list every file under a directory (absolute paths). */
+async function walkFiles(dir) {
+  const out = [];
+  let entries = [];
+  try { entries = await fs.readdir(dir, { withFileTypes: true }); } catch { return out; }
+  for (const e of entries) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...await walkFiles(full));
+    else out.push(full);
+  }
+  return out;
 }
 
 async function headCheck(url) {
@@ -384,6 +529,12 @@ async function validateCollection(coll, warnings) {
       }
     }
 
+    // F1 — empty-board-card check (work only)
+    if (coll.boardArtifacts) scanBoardArtifacts(src, `${coll.name}/${slug}`, errors);
+    // F6 — em-dash lint over rendered frontmatter fields + MDX body prose
+    if (coll.emDashFields) scanFieldEmDashes(fm, coll.emDashFields, `${coll.name}/${slug}`, errors);
+    if (coll.scanBody) scanBodyEmDashes(src, `${coll.name}/${slug}`, errors);
+
     process.stdout.write(`  ✓ ${coll.name}/${slug}\n`);
   }
   return errors;
@@ -426,6 +577,66 @@ async function main() {
   } catch (e) {
     allErrors.push(`dateline.json: could not read/parse (${e.message})`);
   }
+
+  // about-pulse coherence (post-mortem F2). The home About-teaser pulse strip
+  // reads public/api/about-pulse.json. A future date_iso would let the strip
+  // label not-yet-real stats with a fabricated date; stale-behind is handled
+  // by the isFresh() fallback in src/lib/dateline.ts, so only *ahead* is a bug.
+  process.stdout.write(`\n[about-pulse coherence]\n`);
+  try {
+    const ap = JSON.parse(await fs.readFile(path.join(ROOT, "public/api/about-pulse.json"), "utf8"));
+    if (typeof ap.date_iso !== "string") {
+      allErrors.push(`about-pulse.json: missing or non-string date_iso`);
+    } else if (ap.date_iso > TODAY_ISO) {
+      allErrors.push(`about-pulse.json: date_iso ${ap.date_iso} is in the FUTURE (today ${TODAY_ISO}). The pulse strip would label not-yet-real stats with a future date.`);
+    } else {
+      const staleDays = daysBetween(ap.date_iso, TODAY_ISO);
+      if (staleDays >= 2) {
+        warnings.push(`about-pulse.json: date_iso ${ap.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}). The strip degrades TODAY→LATEST past 48h, but run the Daily Driver before deploying.`);
+      } else {
+        process.stdout.write(`  ✓ about-pulse.json is coherent (${ap.date_iso})\n`);
+      }
+    }
+  } catch (e) {
+    allErrors.push(`about-pulse.json: could not read/parse (${e.message})`);
+  }
+
+  // Render-gated asset locks (post-mortem F3/F4). An asset is only "locked"
+  // when it is wired into the page that uses it.
+  process.stdout.write(`\n[asset locks]\n`);
+  // F4 — every OG card on disk must be referenced by some page's ogImage.
+  const ogDir = path.join(ROOT, "public/og-cards");
+  const ogFiles = (await walkFiles(ogDir)).filter((f) => /\.(png|jpe?g|webp)$/i.test(f));
+  let refHaystack = "";
+  for (const d of ["src/content", "src/lib", "src/pages"]) {
+    for (const f of await walkFiles(path.join(ROOT, d))) {
+      if (/\.(mdx?|astro|ts|js)$/.test(f)) refHaystack += await fs.readFile(f, "utf8");
+    }
+  }
+  for (const cardFull of ogFiles) {
+    const rel = "/og-cards/" + path.relative(ogDir, cardFull).split(path.sep).join("/");
+    if (!refHaystack.includes(rel)) {
+      allErrors.push(`og-cards: "${rel}" exists on disk but no page references it via ogImage — authored-but-unwired card (post-mortem F4).`);
+    } else {
+      process.stdout.write(`  ✓ ${rel} is wired\n`);
+    }
+  }
+  // F3 — fonts must stay self-hosted: no font-CDN URL in src. Match the URL
+  // form (//fonts.gstatic.com) so a bare-domain mention in a comment doesn't
+  // false-positive.
+  const FONT_CDN_RE = /(?:https?:)?\/\/fonts\.(?:gstatic|googleapis)\.com/;
+  const fontHits = [];
+  for (const f of await walkFiles(path.join(ROOT, "src"))) {
+    if (!/\.(astro|css|ts|js)$/.test(f)) continue;
+    const txt = await fs.readFile(f, "utf8");
+    if (FONT_CDN_RE.test(txt)) fontHits.push(path.relative(ROOT, f));
+  }
+  if (fontHits.length) {
+    for (const f of fontHits) allErrors.push(`font CDN: ${f} loads a font from fonts.gstatic.com/googleapis.com — fonts must stay self-hosted via @fontsource (post-mortem F3).`);
+  } else {
+    process.stdout.write(`  ✓ no font-CDN font loads in src/ (self-hosted)\n`);
+  }
+
   if (warnings.length > 0) {
     process.stdout.write(`\n⚠ ${warnings.length} warnings (build proceeds):\n`);
     for (const w of warnings) process.stdout.write(`  - ${w}\n`);

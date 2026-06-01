@@ -62,6 +62,7 @@ export async function GET(context: { site?: URL }) {
     title: "Sean Winslow — Transactions",
     description: "Every shipped artifact across the agent fleet, dated, with the explanation attached.",
     site: context.site ?? new URL("https://seanwinslow.com"),
+    stylesheet: "/rss/styles.xsl",
     items,
     customData: `<language>en-us</language>`,
   });

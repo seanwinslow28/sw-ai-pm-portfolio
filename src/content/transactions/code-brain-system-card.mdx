@@ -6,7 +6,7 @@ shipped: "2026-05-31"
 surface: infra
 status: SHIPPED
 
-valueProp: "Maps my live agent fleet to SR-11-7 model-risk materiality tiers and the EU AI Act (Art. 50/72, Annex IV) — leading with a scope determination that rules most of the regulation out, then modeling the discipline voluntarily and naming every gap."
+valueProp: "Maps my live agent fleet to SR-11-7 model-risk materiality tiers and the EU AI Act (Art. 50/72, Annex IV), leading with a scope determination that rules most of the regulation out, then modeling the discipline voluntarily and naming every gap."
 
 methods:
   - task: framework grounding
@@ -27,8 +27,8 @@ methods:
     link: https://github.com/seanwinslow28/code-brain/blob/main/docs/CODE_BRAIN_SYSTEM_CARD_EXPLANATION.md
 
 limitations:
-  - "It's a voluntary mapping, not a conformance claim — SR-11-7 and the EU AI Act's high-risk obligations don't legally bind a personal minimal-risk system. The artifact's value is correct scoping and materiality tiering, not compliance."
-  - "Eval coverage is one-of-twelve components, and the Judge Layer control plane is built but not yet armed — so the highest-materiality surfaces currently rest on the manual 'agents draft / I send' gate, not programmatic mitigation."
+  - "It's a voluntary mapping, not a conformance claim. SR-11-7 and the EU AI Act's high-risk obligations don't legally bind a personal minimal-risk system. The artifact's value is correct scoping and materiality tiering, not compliance."
+  - "Eval coverage is one-of-twelve components, and the Judge Layer control plane is built but not yet armed, so the highest-materiality surfaces currently rest on the manual 'agents draft / I send' gate, not programmatic mitigation."
 
 repoUrl: https://github.com/seanwinslow28/code-brain/blob/main/docs/CODE_BRAIN_SYSTEM_CARD.md
 
@@ -42,7 +42,7 @@ relatedTransactions: []
 # (the format fetch_canonical_sources.mjs validates against).
 ---
 
-The credibility move that made the Enterprise Data Readiness Matrix land was applying a framework to a system I actually operate instead of reciting it. This does the same for regulatory accountability: it cards the real Code-Brain fleet — ~12 live agents plus a published MCP server and a control-plane Judge Layer — against SR-11-7 and the EU AI Act. The load-bearing section isn't the tiering; it's the applicability determination up front that rules most of the regulation *out* (Code-Brain is minimal-risk, not high-risk, so Annex IV and Articles 13/72 don't apply), then models the discipline voluntarily. Stress-tested through the premium LLM Council; the convergent fixes — correct EU AI Act scope, vendor-model risk that can't be architected away, inherent-vs-residual tiering — are folded in.
+The credibility move that made the Enterprise Data Readiness Matrix land was applying a framework to a system I actually operate instead of reciting it. This does the same for regulatory accountability: it cards the real Code-Brain fleet (~12 live agents plus a published MCP server and a control-plane Judge Layer) against SR-11-7 and the EU AI Act. The load-bearing section isn't the tiering; it's the applicability determination up front that rules most of the regulation *out* (Code-Brain is minimal-risk, not high-risk, so Annex IV and Articles 13/72 don't apply), then models the discipline voluntarily. Stress-tested through the premium LLM Council; the convergent fixes (correct EU AI Act scope, vendor-model risk that can't be architected away, inherent-vs-residual tiering) are folded in.
 
 ## What is this?
 
@@ -50,12 +50,12 @@ A governance accounting of my autonomous agent fleet, mapped to SR-11-7 (Fed mod
 
 ## Why this approach?
 
-Three options: write an abstract explainer (rejected — proves no judgment); claim conformance (rejected — the high-risk obligations don't legally apply, so "partial compliance" is a category error); or apply the frameworks to a system I operate, lead with a scope determination that rules most of the regulation out, then model the discipline and name the gaps (chosen). Correctly scoping a law you don't have to follow signals more than performing compliance with one you've misread.
+Three options: write an abstract explainer (rejected: proves no judgment); claim conformance (rejected: the high-risk obligations don't legally apply, so "partial compliance" is a category error); or apply the frameworks to a system I operate, lead with a scope determination that rules most of the regulation out, then model the discipline and name the gaps (chosen). Correctly scoping a law you don't have to follow signals more than performing compliance with one you've misread.
 
 ## What would break?
 
-Three failure modes. **Over-claiming** — any EU AI Act cell that reads "Partial / Substantially present" instead of "inapplicable; modeled voluntarily" has re-acquired the category error the scope section exists to prevent (the first draft had exactly this; the Council caught it). **Inventory drift** — the `status` column must match `agents-sdk/config.toml` enable flags, or the tiering lies the moment an agent is toggled. **The "no training data" erasure** — framing inherited vendor-model risk as "N/A by architecture" erases an SR-11-7 obligation rather than satisfying it.
+Three failure modes. **Over-claiming**: any EU AI Act cell that reads "Partial / Substantially present" instead of "inapplicable; modeled voluntarily" has re-acquired the category error the scope section exists to prevent (the first draft had exactly this; the Council caught it). **Inventory drift**: the `status` column must match `agents-sdk/config.toml` enable flags, or the tiering lies the moment an agent is toggled. **The "no training data" erasure**: framing inherited vendor-model risk as "N/A by architecture" erases an SR-11-7 obligation rather than satisfying it.
 
 ## What did I learn?
 
-The hardest part of regulatory fluency isn't knowing what a regulation requires — it's knowing when it doesn't apply, and leading with that. A four-model adversarial review turned the artifact inside out: the impressive move is ruling the regimes out correctly, then modeling them anyway. That's the instinct a fintech or regulated-SaaS PM needs in week one.
+The hardest part of regulatory fluency isn't knowing what a regulation requires; it's knowing when it doesn't apply, and leading with that. A four-model adversarial review turned the artifact inside out: the impressive move is ruling the regimes out correctly, then modeling them anyway. That's the instinct a fintech or regulated-SaaS PM needs in week one.

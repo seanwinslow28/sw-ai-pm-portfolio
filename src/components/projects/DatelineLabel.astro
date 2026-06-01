@@ -4,11 +4,11 @@
  * Source: projects-spec §2.
  */
 import { getCollection } from "astro:content";
-import datelineData from "../../../public/api/dateline.json";
+import { BUILD_DATE_ISO } from "~/lib/dateline";
 
 const work = await getCollection("work");
 const count = work.length;
-const today = datelineData.date_iso; // wired to Daily Driver's dateline.json (written 08:30 daily)
+const today = BUILD_DATE_ISO; // build-date source keeps this coherent with every other dateline
 ---
 
 <div class="projects-dateline">

@@ -5,8 +5,12 @@
  * Source: hero-spec §8.
  */
 import datelineData from "../../../public/api/dateline.json";
+import { dateline } from "~/lib/dateline";
 
-const { date_display, body } = datelineData;
+// Date derives from the build date for cross-page coherence; the fleet
+// JSON supplies the body narrative. See src/lib/dateline.ts.
+const { body } = datelineData;
+const date_display = dateline();
 ---
 
 <div class="dateline-strip">

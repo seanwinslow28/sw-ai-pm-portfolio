@@ -69,7 +69,7 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-1"
     date="MAY 27"
-    boardLabel="Fleet memory Phase 1 — plan landed"
+    boardLabel="Fleet memory Phase 1: plan landed"
     excerpt="Shared filesystem-memory layer at vault/90_system/fleet-memory/. Per-agent namespacing, explicit promote_to_shared(). Pilot agents: vault_synthesizer + daily_driver. Default-disabled; opt in per agent.">
     <p slot="caption">MAY 27 — fleet memory Phase 1 plan lands. Shared filesystem layer with per-agent namespacing; vault_synthesizer + daily_driver as pilot agents. Default-disabled until the first pilot validates.</p>
   </BoardArtifact>
@@ -77,30 +77,32 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-2"
     date="MAY 20"
-    boardLabel="Knowledge Loop Phase 6 — producer + consumer ship">
+    boardLabel="Knowledge Loop Phase 6: producer + consumer ship"
+    excerpt="Phase 6/6 shipped. Producer: SessionEnd flush → 02:30 synthesize. Consumer: SessionStart re-inject as additionalContext. Critic splits to Codex CLI + Anti-Gravity CLI in parallel so the variance is real. The vault now serves itself back into the next morning's context window.">
     <p slot="caption">MAY 20 — Knowledge Loop Phase 6 ships end-to-end. SessionEnd flush → 02:30 synthesize → 03:30 critique (Codex CLI + Anti-Gravity CLI in parallel) → SessionStart re-inject as additionalContext. The vault serves itself back into tomorrow's context window.</p>
   </BoardArtifact>
 
   <BoardArtifact
     artifactId="artifact-3"
     date="MAY 13"
-    boardLabel="Phase D — typed reasoning edges shipped">
-    <p slot="caption">MAY 13 — typed-edge SQLite layer ships. Six relation types — supports, contradicts, evolved_into, supersedes, depends_on, related_to. Weekly knowledge-lint contradiction detection collapses to a SQL query instead of an LLM scan.</p>
+    boardLabel="Phase D: typed reasoning edges shipped"
+    excerpt="Typed-edge SQLite layer shipped. Six relation types: supports, contradicts, evolved_into, supersedes, depends_on, related_to. Weekly knowledge-lint contradiction detection collapses from an LLM scan to a single SQL query.">
+    <p slot="caption">MAY 13 — typed-edge SQLite layer ships. Six relation types: supports, contradicts, evolved_into, supersedes, depends_on, related_to. Weekly knowledge-lint contradiction detection collapses to a SQL query instead of an LLM scan.</p>
   </BoardArtifact>
 
   <PRDDecision
     artifactId="artifact-4"
     date="APR 28"
-    prdTitle="Process Inbox — pause cloud-Sonnet path; await local rewrite"
+    prdTitle="Process Inbox: pause cloud-Sonnet path; await local rewrite"
     decisionLine="Pause cloud-Sonnet Path A. Local gemma4:e4b Path B rewrite becomes the re-enable precondition; manual triage via the process-inbox skill in interactive sessions is the working alternative."
     rationale="Cost-efficiency: cloud Sonnet ran $1.16/file at ~3 files per run. Local path is $0/file. An agent that validates working at $1.16/file is not the agent worth running on a daily schedule. Pause is a cost call against a capability that worked.">
-    <p slot="caption">APR 28 — Process Inbox cloud-Sonnet path paused. Cost-efficiency PM call against capability that validated working — local rewrite becomes the precondition for re-enable.</p>
+    <p slot="caption">APR 28 — Process Inbox cloud-Sonnet path paused. Cost-efficiency PM call against capability that validated working. Local rewrite becomes the precondition for re-enable.</p>
   </PRDDecision>
 
   <PRDDecision
     artifactId="artifact-5"
     date="APR 7"
-    prdTitle="launchd PATH bug — fix in plist EnvironmentVariables"
+    prdTitle="launchd PATH bug: fix in plist EnvironmentVariables"
     decisionLine="Every launchd plist now ships EnvironmentVariables with PATH set explicitly to include /Users/seanwinslow/.local/bin and /opt/homebrew/bin."
     rationale="Without explicit PATH, the claude CLI isn't discoverable from launchd context; agents fail with CLIConnectionError on the next macOS update. The plist is the deployment surface; the surface has to be self-contained or it silently breaks.">
     <p slot="caption">APR 7 — launchd PATH bug surfaced and patched across the fleet. Recovery from a silent infra failure that took the morning agents down for a day.</p>
@@ -109,7 +111,8 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-6"
     date="FEB 6"
-    boardLabel="Code Brain — first commit">
+    boardLabel="Code Brain: first commit"
+    excerpt="Repo initialized Feb 6. The Obsidian vault predates it by years; the agent fleet starts at this commit. Everything else on this board grew from here.">
     <p slot="caption">FEB 6 — the Code Brain repo's first commit. The vault has been around longer; the fleet starts here.</p>
   </BoardArtifact>
 </InvestigationBoard>
