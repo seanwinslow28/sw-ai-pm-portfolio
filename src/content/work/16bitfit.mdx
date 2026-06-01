@@ -69,7 +69,7 @@ import SlackQuote from "~/components/artifacts/SlackQuote.astro";
     artifactId="artifact-1"
     date="APR 20"
     boardLabel="Pause decision board"
-    excerpt="DECISION — pause game work; continue pipeline work. Return condition: animation pipeline ships first full short. Rationale: the game can't inherit a production system that isn't tested yet.">
+    excerpt="DECISION: pause game work; continue pipeline work. Return condition: animation pipeline ships first full short. Rationale: the game can't inherit a production system that isn't tested yet.">
     <p slot="caption">APR 20 — the pause decision, written in plain language. Pipeline work continues; gameplay work waits for the system to inherit.</p>
   </BoardArtifact>
 
@@ -77,7 +77,7 @@ import SlackQuote from "~/components/artifacts/SlackQuote.astro";
     artifactId="artifact-2"
     date="APR"
     boardLabel="Killed: v1 gameplay loop"
-    excerpt="KILLED — v1 gameplay loop. The fight loop wasn't carrying its own weight without the polish layer. Decision: rebuild the loop after the pipeline ships and sprites stop drifting between cycles."
+    excerpt="KILLED: v1 gameplay loop. The fight loop wasn't carrying its own weight without the polish layer. Decision: rebuild the loop after the pipeline ships and sprites stop drifting between cycles."
     killed={true}>
     <p slot="caption">KILLED — v1 fight loop. Not interesting enough to play before the sprites get pretty. Rebuilds after the pipeline ships.</p>
   </BoardArtifact>
@@ -86,7 +86,7 @@ import SlackQuote from "~/components/artifacts/SlackQuote.astro";
     artifactId="artifact-3"
     date="MAR"
     boardLabel="Killed: Phaser atlas-streaming experiment"
-    excerpt="KILLED — atlas-streaming experiment for large sprite atlases at 60fps on mid-range mobile. Deferred until the sprite pipeline produces stable cycles worth optimizing."
+    excerpt="KILLED: atlas-streaming experiment for large sprite atlases at 60fps on mid-range mobile. Deferred until the sprite pipeline produces stable cycles worth optimizing."
     killed={true}>
     <p slot="caption">KILLED — atlas-streaming experiment for a fitness game that did not yet exist. The scope-creep moment that made the pause inevitable.</p>
   </BoardArtifact>
@@ -94,16 +94,17 @@ import SlackQuote from "~/components/artifacts/SlackQuote.astro";
   <PRDDecision
     artifactId="artifact-4"
     date="MAR"
-    prdTitle="Avatar generation pipeline — Smooth-to-Pixel architecture"
+    prdTitle="Avatar generation pipeline: Smooth-to-Pixel architecture"
     decisionLine="AI generates cel-shaded vector art; server-side CLAHE + Bayer dithering enforces the DMG 4-color palette. Separation of generation and palette enforcement."
-    rationale="Direct pixel-art generation was unreliable across cycles — palette drift, identity drift between idle and punch. Separating generation (Lightning-style cel-shaded source) from palette enforcement (deterministic post-processing) makes the pipeline trustworthy enough to feed a roster.">
+    rationale="Direct pixel-art generation was unreliable across cycles: palette drift, identity drift between idle and punch. Separating generation (Lightning-style cel-shaded source) from palette enforcement (deterministic post-processing) makes the pipeline trustworthy enough to feed a roster.">
     <p slot="caption">MAR — avatar generation pipeline architecture lock. Smooth-to-Pixel: AI generates vector art, server post-processes to the 4-color DMG palette. Separation of concerns makes the pipeline trustworthy.</p>
   </PRDDecision>
 
   <BoardArtifact
     artifactId="artifact-5"
     date="DEC 29"
-    boardLabel="Design lock — 6 cosmetic champions + no-defeat philosophy">
-    <p slot="caption">DEC 29 — design lock. Champions are cosmetic, not stat-bearing (Mario Party model); battle outcomes are "victory" or "continue_training" — no defeat state. The PM call that says what the game is for.</p>
+    boardLabel="Design lock: 6 cosmetic champions + no-defeat philosophy"
+    excerpt="Design locked. 6 champions, cosmetic only, no stat-bearing advantage (the Mario Party model). Battle outcomes are victory or continue_training. There is no defeat state, by design.">
+    <p slot="caption">DEC 29 — design lock. Champions are cosmetic, not stat-bearing (Mario Party model); battle outcomes are "victory" or "continue_training", no defeat state. The PM call that says what the game is for.</p>
   </BoardArtifact>
 </InvestigationBoard>

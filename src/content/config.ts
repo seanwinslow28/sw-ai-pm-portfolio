@@ -50,6 +50,7 @@ const work = defineCollection({
     shipped_stats_endpoint: z.string().optional(),
     return_condition: z.string().optional(),
     archived_reference_url: z.string().url().nullable().optional(),  // null = honest shape for an ARCHIVED page with no shareable public artifact (the-block-cleanup-locked-2026-05-28 §1.4)
+    ogImage: z.string().optional(),  // dedicated OG card; falls back to og-default.png when absent
   }),
 });
 
@@ -160,6 +161,7 @@ const architecture = defineCollection({
     sourceRepoUrl: z.string().url().optional(),
     tryItYourselfUrl: z.string().url().optional(),
     tryItYourselfCommand: z.string().optional(),             // multi-line bash; rendered via Shiki
+    ogImage: z.string().optional(),                          // dedicated OG card; falls back to og-default.png when absent
   }),
 });
 

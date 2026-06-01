@@ -22,6 +22,7 @@ investigation_order: forward
 
 shipped_at: 2026-05-12
 shipped_stats_endpoint: /api/shipped-stats-intent-engineering-mcp.json
+ogImage: /og-cards/intent-engineering-mcp.png
 
 methods:
   - task: protocol implementation
@@ -68,17 +69,17 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-1"
     date="APR 24"
-    boardLabel="MCP protocol surface — 3-tool spec lock"
-    excerpt="tools/list + tools/call wired against the SDK. The three tools — audit_intent_spec, generate_intent_spec_scaffold, assess_retrofit_level — registered at this spec lock. Stdio transport only; no Streamable HTTP, no SSE.">
+    boardLabel="MCP protocol surface: 3-tool spec lock"
+    excerpt="tools/list + tools/call wired against the SDK. The three tools (audit_intent_spec, generate_intent_spec_scaffold, assess_retrofit_level) registered at this spec lock. Stdio transport only; no Streamable HTTP, no SSE.">
     <p slot="caption">APR 24 — protocol surface specced + locked at three tools. Stdio transport only; the small surface is the discipline.</p>
   </BoardArtifact>
 
   <PRDDecision
     artifactId="artifact-2"
     date="APR 30"
-    prdTitle="Cut decision — keep registry verification, defer embed"
+    prdTitle="Cut decision: keep registry verification, defer embed"
     decisionLine="Keep the DNS-verified registry block as v0.1.0's load-bearing trust signal. Defer the embedded tool-call demo to a separate future spec."
-    rationale="Verification is load-bearing for adoption trust; installs without it are taken on faith. The embed is retrospective polish — exciting, but the kind of exciting that slows the ship. Cut on purpose, on the calendar, before it cost the date.">
+    rationale="Verification is load-bearing for adoption trust; installs without it are taken on faith. The embed is retrospective polish: exciting, but the kind of exciting that slows the ship. Cut on purpose, on the calendar, before it cost the date.">
     <p slot="caption">APR 30 — the cut that saved the ship date. Registry verification stays; embedded tool-call demo moves to a future spec.</p>
   </PRDDecision>
 
@@ -94,7 +95,7 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <BoardArtifact
     artifactId="artifact-4"
     date="MAY 12"
-    boardLabel="@swins/intent-engineering-mcp@0.1.0 — npm + MCP registry publish"
+    boardLabel="@swins/intent-engineering-mcp@0.1.0: npm + MCP registry publish"
     excerpt="npm publish lands at v0.1.0. MCP registry listing live under com.seanwinslow/intent-engineering with DNS-verified namespace. Thirteen days earlier than the date circled on the calendar.">
     <p slot="caption">MAY 12 — package publishes to npm. DNS-verified registry listing live under com.seanwinslow/intent-engineering. Thirteen days early.</p>
   </BoardArtifact>
@@ -102,7 +103,7 @@ import MetricChart from "~/components/artifacts/MetricChart.astro";
   <MetricChart
     artifactId="artifact-5"
     date="MAY 13"
-    chartTitle="Scale audit — 118 first-party skills by retrofit level"
+    chartTitle="Scale audit: 118 first-party skills by retrofit level"
     yLabel="% of skills"
     data={[
       { x: "L1-mvr",        y: 24 },

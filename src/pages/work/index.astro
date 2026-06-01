@@ -40,13 +40,16 @@ const count = work.length;
     <section class="work-list" aria-label="Case studies">
       {work.map((entry) => (
         <a href={`/work/${entry.slug}/`} class="work-row" aria-label={`Case study: ${entry.data.title}`}>
-          <div class="row-meta">
-            <span class="frame">{entry.data.frame}</span>
-            <span class="status" data-status={entry.data.status}>{entry.data.status}</span>
+          <img class="row-thumb" src={entry.data.hero_media} alt="" loading="lazy" decoding="async" />
+          <div class="row-body">
+            <div class="row-meta">
+              <span class="frame">{entry.data.frame}</span>
+              <span class="status" data-status={entry.data.status}>{entry.data.status}</span>
+            </div>
+            <h2 class="row-title">{entry.data.title}</h2>
+            {entry.data.tagline && <p class="row-tagline">{entry.data.tagline}</p>}
+            <p class="row-tags">{entry.data.tags.join(" · ")}</p>
           </div>
-          <h2 class="row-title">{entry.data.title}</h2>
-          {entry.data.tagline && <p class="row-tagline">{entry.data.tagline}</p>}
-          <p class="row-tags">{entry.data.tags.join(" · ")}</p>
           <span class="row-arrow" aria-hidden="true">→</span>
         </a>
       ))}
@@ -111,12 +114,28 @@ const count = work.length;
 
   .work-row {
     position: relative;
-    display: block;
-    padding: 32px 24px 32px 0;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 28px;
+    align-items: start;
+    padding: 28px 24px 28px 0;
     border-bottom: 0.5px solid var(--border-paper);
     color: inherit;
     text-decoration: none;
     transition: background-color 160ms var(--ease-out);
+  }
+  .row-thumb {
+    width: 140px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    border: 0.5px solid var(--amber-mid);
+    border-radius: 2px;
+    background-color: var(--paper);
+    box-shadow: 0 1px 2px rgba(10, 62, 66, 0.06);
+  }
+  .row-body {
+    min-width: 0;
   }
   .work-row:hover {
     background-color: rgba(10, 62, 66, 0.03);
@@ -216,7 +235,8 @@ const count = work.length;
   @media (max-width: 767px) {
     .work-index { padding: 48px 16px 40px; }
     .index-header { margin-bottom: 40px; }
-    .work-row { padding: 24px 24px 24px 0; }
+    .work-row { grid-template-columns: 96px 1fr; gap: 16px; padding: 24px 24px 24px 0; }
+    .row-thumb { width: 96px; }
     .row-arrow { top: 24px; }
     .footer-fold { margin-top: 56px; }
   }

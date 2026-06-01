@@ -1,12 +1,12 @@
 ---
-title: "Vault Knowledge MCP — Design Lock"
+title: "Vault Knowledge MCP: Design Lock"
 dateline: "BOSTON, MAY 21, 2026"
 shipped: "2026-05-21"
 
 surface: product
 status: ACTIVE
 
-valueProp: "Design-locked MCP that wraps Sean's vault — the only public PM vault that passes all five Nate-tests on the agent-infrastructure scoreboard. Ship target ~6/4."
+valueProp: "Design-locked MCP that wraps Sean's vault: the only public PM vault that passes all five Nate-tests on the agent-infrastructure scoreboard. Ship target ~6/4."
 
 methods:
   - task: protocol design
@@ -23,7 +23,7 @@ methods:
     link: null
 
 limitations:
-  - "Design only at this point — the read-layer is wired to concept_edges but the MCP transport layer is stubbed."
+  - "Design only at this point: the read-layer is wired to concept_edges but the MCP transport layer is stubbed."
   - "The five-Nate-test scoreboard pass depends on the Audit pillar, which itself depends on the queryable JSONL filesystem layer landing first."
 
 # 4Q via inline-body fallback. explanationUrl arrives when the upstream
@@ -41,7 +41,7 @@ repoUrl: https://github.com/seanwinslow28/code-brain
 
 ## What is this?
 
-A Model Context Protocol that exposes Sean's vault as a queryable agent surface. Design-locked May 21, 2026; ship-target ~June 4. The architecture argument lives at `/architecture/vault-scorecard/` (Phase 3c.2). This row tracks the *shipped artifact* — the MCP transport + tool surface — not the thesis.
+A Model Context Protocol that exposes Sean's vault as a queryable agent surface. Design-locked May 21, 2026; ship-target ~June 4. The architecture argument lives at `/architecture/vault-scorecard/` (Phase 3c.2). This row tracks the *shipped artifact* (the MCP transport + tool surface), not the thesis.
 
 ## Why this approach?
 
@@ -53,4 +53,4 @@ If the MCP HTTP transport spec revs between design-lock and ship, the design re-
 
 ## What did I learn?
 
-Design-lock is the artifact, not the code. Locking the design on May 21 with a June 4 ship target gives 14 days of runway — enough for a real implementation cycle without scope drift. The pattern: lock at T-14, ship at T-0.
+Design-lock is the artifact, not the code. Locking the design on May 21 with a June 4 ship target gives 14 days of runway: enough for a real implementation cycle without scope drift. The pattern: lock at T-14, ship at T-0.

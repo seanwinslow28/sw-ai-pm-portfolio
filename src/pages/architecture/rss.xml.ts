@@ -48,6 +48,7 @@ export async function GET(context: { site?: URL }) {
     title: "Sean Winslow — Architecture",
     description: "Architectural arguments where the proof is the code, linked.",
     site: context.site ?? new URL("https://seanwinslow.com"),
+    stylesheet: "/rss/styles.xsl",
     items,
     customData: `<language>en-us</language>`,
   });

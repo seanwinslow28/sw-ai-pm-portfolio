@@ -8,18 +8,24 @@
  * to a static line if missing (§9.2 contract).
  */
 import TeaserSwiper from "~/components/teaser/TeaserSwiper.astro";
+import { isFresh } from "~/lib/dateline";
 
-/* Build-time fetch with fallback. */
-let beatItems = "log will refresh at 08:30";
+/* Build-time fetch with fallback. The "TODAY" label only stands when the
+ * fleet pulse is fresh; a stale file falls back so we never date old stats
+ * as today's. See src/lib/dateline.ts. */
+let beatItems = "log refreshes each morning at 08:30";
+let pulseFresh = false;
 try {
   const pulse = await import("../../../public/api/about-pulse.json");
+  pulseFresh = isFresh(pulse.default?.date_iso ?? "");
   const items = (pulse.default?.items ?? []).slice(0, 3);
-  if (items.length > 0) {
+  if (pulseFresh && items.length > 0) {
     beatItems = items.map((i: { label: string }) => i.label).join(" · ");
   }
 } catch (e) {
   /* fallback already set */
 }
+const beatPrefix = pulseFresh ? "TODAY · " : "LATEST · ";
 
 /* The editorial line is locked per spec §2. */
 const EDITORIAL_LINE = "A man, a pencil, an agent fleet. Same person, different tools.";
@@ -33,7 +39,7 @@ const CTA = "→ READ THE FULL ABOUT";
       <p id="about-teaser-heading" class="eyebrow">{EYEBROW}</p>
       <p class="editorial">{EDITORIAL_LINE}</p>
       <p class="beat" aria-live="polite">
-        <span class="beat-today">TODAY ·&nbsp;</span>
+        <span class="beat-today">{beatPrefix}</span>
         <span class="beat-items">{beatItems}</span>
       </p>
       <a href="/about/" class="cta">{CTA}</a>

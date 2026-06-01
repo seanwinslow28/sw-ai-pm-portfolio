@@ -35,13 +35,14 @@ export const OG_DEFAULT_IMAGE = "/og-default.png";
  * RSS feeds rendered in the chrome footer's SUBSCRIBE column + BaseLayout <head>
  * auto-discovery tags (F-2 staging mechanism, site-chrome-prose-locked-2026-05-28 §2).
  * Stage by uncommenting entries as each surface ships a populated RSS endpoint.
- * v1 launch = transactions + architecture (both live; Gate A green). Essays stays
- * staged out until its 2026-06-19 publish day (status: DRAFT → PUBLISHED + uncomment).
+ * v1 launch = transactions + architecture (both live; Gate A green). Essays went
+ * live early: the manifesto was published 2026-06-01 (status PUBLISHED), so the
+ * feed is un-gated as of that date (was staged for 2026-06-19).
  */
 export const RSS_FEEDS = [
   { surface: "transactions", url: "/transactions/rss.xml", label: "transactions / rss" },
   { surface: "architecture", url: "/architecture/rss.xml", label: "architecture / rss" },
-  // { surface: "essays",       url: "/essays/rss.xml",       label: "essays / rss" },  // uncomment on 2026-06-19 publish day
+  { surface: "essays",       url: "/essays/rss.xml",       label: "essays / rss" },  // un-gated 2026-06-01 (manifesto published early)
 ] as const;
 
 /**

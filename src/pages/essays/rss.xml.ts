@@ -47,6 +47,7 @@ export async function GET(context: { site?: URL }) {
     title: "Sean Winslow — Essays",
     description: "Thesis-shaped writing where the artifacts back the claim.",
     site: context.site ?? new URL("https://seanwinslow.com"),
+    stylesheet: "/rss/styles.xsl",
     items,
     customData: `<language>en-us</language>`,
   });

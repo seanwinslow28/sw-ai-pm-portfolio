@@ -1,5 +1,5 @@
 ---
-title: "Vault as Agent Infrastructure — 5-Test Scorecard"
+title: "Vault as Agent Infrastructure: 5-Test Scorecard"
 dateline: "BOSTON, MAY 31, 2026"
 shipped: "2026-05-31"
 # ↑ Shipped 2026-05-31 (landed ahead of the Task 15 window; authored 2026-05-29).
@@ -7,7 +7,7 @@ shipped: "2026-05-31"
 surface: infra
 status: SHIPPED
 
-valueProp: "Scores four knowledge systems against Nate Jones's five structural tests for agent infrastructure. My vault passes three above Linear, loses two to it — and the two losses are the build map. Every cell is backed by live SQLite telemetry."
+valueProp: "Scores four knowledge systems against Nate Jones's five structural tests for agent infrastructure. My vault passes three above Linear, loses two to it, and the two losses are the build map. Every cell is backed by live SQLite telemetry."
 
 methods:
   - task: telemetry extraction
@@ -28,8 +28,8 @@ methods:
     link: null
 
 limitations:
-  - "Ownership is filesystem + git + frontmatter only — no per-record assignee/watcher model. Linear wins this axis; vault-knowledge-mcp is the closer."
-  - "Permissions are POSIX + git-remote only — no per-record RBAC. The Judge Layer (built) is the control-plane primitive underneath the fix; full RBAC is rollout work."
+  - "Ownership is filesystem + git + frontmatter only: no per-record assignee/watcher model. Linear wins this axis; vault-knowledge-mcp is the closer."
+  - "Permissions are POSIX + git-remote only: no per-record RBAC. The Judge Layer (built) is the control-plane primitive underneath the fix; full RBAC is rollout work."
   - "Scorecard numbers are a dated snapshot; they drift as the nightly synthesizer runs. Regenerable via generate_schema.py rather than hand-maintained."
 
 # 4Q via inline-body fallback. explanationUrl arrives when the upstream
@@ -46,16 +46,16 @@ repoUrl: https://github.com/seanwinslow28/code-brain
 
 ## What is this?
 
-A five-test scoreboard for agent infrastructure. Nate Jones published five structural tests — persistent state, defined verbs, ownership, permissions, queryable audit history — and this scores four knowledge systems against them: Notion, default Obsidian, Linear, and my vault. The verdict is three passes and two honest losses, every cell backed by live telemetry from `vault/.vault-index.db` (632 typed edges, six SQL-enforced relations, 15,582 indexed chunks).
+A five-test scoreboard for agent infrastructure. Nate Jones published five structural tests (persistent state, defined verbs, ownership, permissions, queryable audit history) and this scores four knowledge systems against them: Notion, default Obsidian, Linear, and my vault. The verdict is three passes and two honest losses, every cell backed by live telemetry from `vault/.vault-index.db` (632 typed edges, six SQL-enforced relations, 15,582 indexed chunks).
 
 ## Why this approach?
 
-Nate's framing is the recruiter vocabulary for agent-infrastructure work right now, so scoring against it beats inventing my own rubric — it's citing a standard instead of grading my own homework. It also makes the next build, `vault-knowledge-mcp`, self-justifying: the MCP ships as "the wrapper around the only public PM vault that passes the agent-infrastructure tests." The two losses to Linear are deliberate. Linear's RBAC and record-ownership model genuinely beat POSIX file permissions, and naming that is what calibrates the whole artifact's credibility.
+Nate's framing is the recruiter vocabulary for agent-infrastructure work right now, so scoring against it beats inventing my own rubric: it's citing a standard instead of grading my own homework. It also makes the next build, `vault-knowledge-mcp`, self-justifying: the MCP ships as "the wrapper around the only public PM vault that passes the agent-infrastructure tests." The two losses to Linear are deliberate. Linear's RBAC and record-ownership model genuinely beat POSIX file permissions, and naming that is what calibrates the whole artifact's credibility.
 
 ## What would break?
 
-The numbers are a snapshot, so they go stale as the synthesizer runs nightly — they already moved from 478 edges to 632 in nine days. That's mitigated by making them regenerable on demand from the live schema rather than hand-maintained. The deeper risk is reading a scorecard I authored about my own system as objective truth; the Linear-wins-here callouts are the structural check against that.
+The numbers are a snapshot, so they go stale as the synthesizer runs nightly: they already moved from 478 edges to 632 in nine days. That's mitigated by making them regenerable on demand from the live schema rather than hand-maintained. The deeper risk is reading a scorecard I authored about my own system as objective truth; the Linear-wins-here callouts are the structural check against that.
 
 ## What did I learn?
 
-Most "agent infrastructure" claims fail the persistent-state test on day one — ask whether the structured state survives a crash with no recovery procedure, and most setups turn out to be tool integrations with session-scoped memory. The test discriminates. And the most useful losses to name are the ones whose fix already exists: the closer for the permissions gap — the Judge Layer, a control-plane interceptor with an append-only decision ledger — was already built, which turned that "failure" from a someday into a rollout.
+Most "agent infrastructure" claims fail the persistent-state test on day one: ask whether the structured state survives a crash with no recovery procedure, and most setups turn out to be tool integrations with session-scoped memory. The test discriminates. And the most useful losses to name are the ones whose fix already exists: the closer for the permissions gap (the Judge Layer, a control-plane interceptor with an append-only decision ledger) was already built, which turned that "failure" from a someday into a rollout.

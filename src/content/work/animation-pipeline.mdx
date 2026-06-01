@@ -71,7 +71,7 @@ import Annotation from "~/components/annotations/Annotation.astro";
   <PRDDecision
     artifactId="artifact-1"
     date="MAY 15"
-    prdTitle="A-1 Pipeline rev 3 — final cleanup chain"
+    prdTitle="A-1 Pipeline rev 3: final cleanup chain"
     decisionLine="220-frame cycle locks. Move to case-study hero media (not portfolio hero)."
     rationale="Rev 3 is consistent enough to ship; portfolio hero stays with the 94-frame loop per hero-spec §7.5.">
     <p slot="caption">MAY 15 — first fully cleaned 220-frame cycle. Alpha holds; line stays consistent; ffmpeg encode passes.</p>
@@ -96,7 +96,7 @@ import Annotation from "~/components/annotations/Annotation.astro";
     date="APR 23"
     messages={[
       { role: "eng lead", text: "the alpha channel is the rub. vp9 with alpha_mode=1, not h264." },
-      { role: "sean", text: "tried that yesterday — re-running with the corrected flag." },
+      { role: "sean", text: "tried that yesterday, re-running with the corrected flag." },
     ]}>
     <p slot="caption">APR 23 — anonymized DM. The alpha-channel encode rub, named and fixed in two messages.</p>
   </SlackQuote>
@@ -104,7 +104,7 @@ import Annotation from "~/components/annotations/Annotation.astro";
   <BoardArtifact
     artifactId="artifact-4"
     date="APR 17"
-    boardLabel="Production board — first cleaned cycle"
+    boardLabel="Production board: first cleaned cycle"
     ticketKey="A1-014"
     ticketTitle="Land 146-frame raw cycle with consistent line">
     <p slot="caption">APR 17 — first raw cleaned cycle lands. 146 frames at 24fps, alpha clean.</p>
