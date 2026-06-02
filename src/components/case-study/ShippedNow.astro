@@ -10,6 +10,7 @@
  */
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isFresh } from "~/lib/dateline";
 
 interface Props {
   slug: string;
@@ -37,8 +38,18 @@ async function readLocalJson(endpoint: string): Promise<Stats | null> {
 }
 
 const stats = await readLocalJson(shippedStatsEndpoint);
+
+// "real and dated" gate: the pulsing LIVE badge may only assert liveness when
+// the fleet JSON was written within the freshness window. A stale file (fleet
+// missed a morning, or the site was redeployed without a fresh run) still
+// shows its real numbers + real timestamp, but as a static "LATEST" read with
+// no pulse — so the badge never overstates how live the data is. Mirrors the
+// hero dateline + about-teaser gating (see src/lib/dateline.ts).
+const updatedIso = stats?.updated_at ? stats.updated_at.slice(0, 10) : null;
+const fresh = updatedIso ? isFresh(updatedIso) : false;
+
 const fallbackText = stats === null
-  ? "LIVE — stats will refresh nightly"
+  ? "stats refresh nightly"
   : null;
 
 const updatedPretty = stats?.updated_at
@@ -50,9 +61,9 @@ const updatedPretty = stats?.updated_at
 ---
 
 <aside class="shipped-now" aria-labelledby={`shipped-now-${slug}`}>
-  <p id={`shipped-now-${slug}`} class="live-label">
-    <span class="live-dot" aria-hidden="true">●</span>
-    LIVE
+  <p id={`shipped-now-${slug}`} class="live-label" data-fresh={fresh ? "true" : "false"}>
+    {fresh && <span class="live-dot" aria-hidden="true">●</span>}
+    {fresh ? "LIVE" : "LATEST"}
   </p>
   {fallbackText && <p class="fallback">{fallbackText}</p>}
   {stats?.items && (
@@ -91,6 +102,11 @@ const updatedPretty = stats?.updated_at
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+  /* Stale read: drop the live-green so "LATEST" reads as an archival stamp,
+     not a live signal. The pulsing dot is omitted in markup when not fresh. */
+  .live-label[data-fresh="false"] {
+    color: var(--ink-secondary);
   }
   .live-dot {
     color: var(--success-teal, #0F6E56);
