@@ -40,7 +40,7 @@ const count = work.length;
     <section class="work-list" aria-label="Case studies">
       {work.map((entry) => (
         <a href={`/work/${entry.slug}/`} class="work-row" aria-label={`Case study: ${entry.data.title}`}>
-          <img class="row-thumb" src={entry.data.hero_media} alt="" loading="lazy" decoding="async" />
+          <img class="row-thumb" src={entry.data.hero_media} alt="" loading="lazy" decoding="async" width="140" height="105" />
           <div class="row-body">
             <div class="row-meta">
               <span class="frame">{entry.data.frame}</span>

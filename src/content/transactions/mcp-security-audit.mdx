@@ -1,0 +1,57 @@
+---
+title: "MCP Security Audit"
+dateline: "BOSTON, JUNE 1, 2026"
+shipped: "2026-06-01"
+
+surface: product
+status: SHIPPED
+
+valueProp: "After publishing an MCP server, I audited my own artifact. The real hole wasn't textbook prompt injection but an unconstrained file_path read (audit_intent_spec on /etc/passwd). v0.1.1 closes it: realpath containment, size cap, extension allowlist, audit log."
+
+methods:
+  - task: threat modeling
+    tool: SECURITY.md (5-section, surface-scoped threat model)
+    cost: portfolio time
+    link: https://github.com/seanwinslow28/sw-mcp-intent-engineering/blob/main/docs/SECURITY.md
+  - task: file-read hardening
+    tool: loadFileSafely — realpath symlink resolution + 1 MiB cap + extension allowlist + optional root confinement
+    cost: portfolio time
+    link: null
+  - task: regression tests
+    tool: node:test (zero new runtime deps; bite tests on the /etc/passwd + symlink + oversize cases)
+    cost: portfolio time
+    link: null
+  - task: publish
+    tool: npm + MCP registry (v0.1.1)
+    cost: free tier
+    link: null
+
+limitations:
+  - "The MCP architecture trusts the client. These guards defend against untrusted content flowing *through* a trusted client (a pasted doc or retrieved file that steers the model into a bad tool call), not against a hostile client itself. That's the protocol's boundary, named honestly, not a gap I claim to have closed."
+  - "Root confinement (INTENT_ENGINEERING_ALLOWED_ROOT) is opt-in and off by default to preserve zero-config install. It's documented as the recommended hardening for shared machines, not enforced: a deliberate UX-vs-lockdown trade, not an oversight."
+
+repoUrl: https://github.com/seanwinslow28/sw-mcp-intent-engineering/blob/main/docs/SECURITY.md
+
+relatedTransactions: [intent-engineering-mcp]
+# surface: "product" — this is the hardening of the intent-engineering MCP, so
+# it sits beside intent-engineering-mcp.mdx. 4Q inline (push-independent build),
+# mirroring code-brain-system-card.mdx. repoUrl points at the live SECURITY.md.
+---
+
+Three weeks after I published `@swins/intent-engineering-mcp`, I ran a security audit on my own server, and the finding wasn't the textbook MCP threat. The interesting failure was concrete: two of the three tools accepted an unconstrained `file_path` and read it straight off disk, so `audit_intent_spec({file_path: "/etc/passwd"})` (or a `.md` symlink pointing at `~/.ssh/id_rsa`) would hand file contents back to the model. v0.1.1 routes every disk read through one guard (realpath symlink resolution, a 1 MiB cap, an extension allowlist, optional root confinement) and logs every read. The threat model in `SECURITY.md` leads with that, and deliberately defers OAuth and sandboxing, with reasons.
+
+## What is this?
+
+A self-audit of a published MCP server, shipped as code (`v0.1.1`) plus a `SECURITY.md` threat model. It names the real attack surface (arbitrary local-file read via a confused-deputy tool call), applies a single hardening guard across both file-reading tools, adds zero-dependency regression tests that fail on the unpatched code, and documents which standard defenses don't apply to a stdio pure-function server. Audience: anyone asking whether I can secure the things I publish, not just publish them.
+
+## Why this approach?
+
+The roadmap checklist said "add input validation." But Zod was already validating every input at the boundary, so claiming I added it would be false. So the work was *tightening*, not adding: `.strict()` schemas plus a `loadFileSafely` guard for the one surface that was actually exposed. And I deferred OAuth 2.1/PKCE and sandboxed execution on purpose: this is a stdio, pure-function server with no network-auth surface and no exec path, so applying them would be cargo-culting. Scoping defenses to the surface is the judgment a security review is supposed to demonstrate; running every item on a generic checklist is the opposite of it.
+
+## What would break?
+
+The guard is realpath-based, so the symlink-escape vector is closed at the resolved path, not the supplied string. But root confinement is opt-in, so on a shared machine without `INTENT_ENGINEERING_ALLOWED_ROOT` set, any readable `.md`/`.yaml` is still in scope (by design: zero-config install over lockdown). The audit log is local and plaintext, so it's evidence for the operator, not a tamper-proof control. And the MCP trust boundary still holds: a genuinely malicious *client* is out of scope. These defenses are against content flowing *through* a trusted one.
+
+## What did I learn?
+
+Securing your own published artifact is a different muscle than building it. The credibility move was correcting the checklist against the real code, and correcting the research it came from: the source doc attributed the EchoLeak CVE to "the Anthropic MCP server," but CVE-2025-32711 is a Microsoft 365 Copilot vulnerability (Aim Labs). Catching a widely-repeated wrong attribution, and scoping defenses to the surface that's actually exposed, is the same instinct in both directions: read your own work, and your own sources, adversarially.

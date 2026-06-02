@@ -1,11 +1,10 @@
 {
-  "date_iso": "2026-06-01",
+  "date_iso": "2026-06-02",
   "items": [
-    { "type": "commits", "count": 7, "label": "7 commits" },
-    { "type": "drafts", "count": 5, "label": "5 case-study drafts" },
+    { "type": "commits", "count": 12, "label": "12 commits" },
     { "type": "fleet_runs", "count": 3, "label": "3 fleet runs (indexer · synth · critic)" },
     { "type": "reading", "count": 1, "label": "1 daily note" },
-    { "type": "pencil_frames", "count": 0, "label": "0 cels (writing day)" }
+    { "type": "pencil_frames", "count": 0, "label": "0 cels (code day)" }
   ],
-  "updated_at": "2026-06-01T08:30:00-04:00"
+  "updated_at": "2026-06-02T08:35:00-04:00"
 }

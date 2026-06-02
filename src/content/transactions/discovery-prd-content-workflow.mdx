@@ -1,0 +1,58 @@
+---
+title: "Discovery PRD — AI-Assisted Article Drafting Workflow"
+dateline: "BOSTON, JUNE 2, 2026"
+shipped: "2026-06-02"
+
+surface: product
+status: SHIPPED
+
+valueProp: "A discovery PRD for deploying an article-drafting agent into a skeptical 50-person content org. The load-bearing section voices five stakeholders (editor, strategist, SEO, legal, exec) and translates RAG, hallucination, and eval metrics into each one's language."
+
+methods:
+  - task: framework grounding
+    tool: Gemini DR-Max 4-panel skill-gap research (Q1 cross-functional translation = 90% of Tier-1 AI PM JDs)
+    cost: research / $7
+    link: null
+  - task: stakeholder translation + 90-day rollout
+    tool: DR-Max Q6 change-management cases (Klarna walk-back + JPMorgan LLM Suite)
+    cost: portfolio time
+    link: null
+  - task: voice calibration
+    tool: writing-voice-modes (Sean-voiced intro + evangelism callout; sober PRD body)
+    cost: portfolio time
+    link: null
+  - task: adversarial stress-test
+    tool: premium LLM Council (4 frontier models + chairman synthesis)
+    cost: council / $0.61
+    link: null
+
+limitations:
+  - "It's a discovery artifact, not a shipped product. The five personas are composites grounded in a real AI-evangelism arc across two prior orgs, not interview transcripts from a named employer, and the workflow is sanitized to a generic Fortune-500 frame."
+  - "Success metrics and rollout thresholds are proposed, not measured. The adoption-funnel targets (70% adoption, sub-20% fallback-to-human, sub-21-day Time-to-Trust) are defensible goals, not results. No production deployment backs them."
+
+relatedTransactions: []
+# surface: "product" — a Discovery PRD is the canonical PM craft artifact; files next to
+# the other product-surface rows and reads as "I do product discovery / cross-functional
+# translation," the exact skill the DR-Max research names as the #1 JD gap (90%).
+# 4Q lives inline below (the PRD source lives in the vault, not a public repo, so there is
+# no explanationUrl yet). If the PRD is ever published standalone, add explanationUrl and
+# reformat the headings to "## <prefix> Q1 ..." per fetch_canonical_sources.mjs.
+---
+
+The skill this artifact exists to prove is cross-functional translation, which the 2026-05-18 DR-Max research flags as the single most-cited competency across Tier-1 AI PM job descriptions (90%). It's hard to claim and easy to show, so the PRD is built backward from the way these pitches actually die: an engineer explains RAG to a lawyer, the lawyer hears "the machine writes things and we hope they're true," and the meeting is over. The center of gravity is five distinctly-voiced stakeholders and the exact translation move made for each. Everything else (problem statement, six user stories, adoption-funnel metrics, a 90-day Klarna-citing rollout) exists to frame them. Stress-tested through the premium LLM Council; the convergent fix is folded in: keep the human translation, remove the deterministic overclaims (citation ≠ factuality, the SEO lead made genuinely SEO-specific, training-data scope stated honestly).
+
+## What is this?
+
+A discovery-phase PRD for an AI article-drafting and editorial-review workflow at a generic ~50-person content organization. The load-bearing section voices the editor, content strategist, SEO lead, legal counsel, and executive sponsor, and translates embeddings, RAG, hallucination rates, and eval metrics into each one's vocabulary. The audience is a hiring manager checking whether I can translate across a skeptical org, not whether I can recite the technical terms.
+
+## Why this approach?
+
+Three options: an abstract essay on stakeholder alignment (rejected: proves nothing), a generic PRD template (rejected: every PM has one), or a PRD whose weight sits on five personas a reader can tell apart blind, each paired with the specific concept I had to re-root in their language (chosen). The translations are the deliverable. The problem statement is framed as an outcome (cut first-draft cycle time from ~4 days to under 8 hours without sacrificing brand voice), never as "adopt AI."
+
+## What would break?
+
+Three failure modes. **Persona collapse**: if the five voices blur together, the artifact fails its one job, so each quote and translation is tuned to be unmistakable. **Vanity metrics**: success is an adoption funnel (adoption rate, fallback-to-human rate, Time-to-Trust), not output volume or CTR; a metric that rewards shipping more drafts would re-introduce the exact failure the rollout guards against. **Rollout amnesia**: a plan that expands on the calendar instead of on metrics becomes Klarna, which walked back its AI support when complex cases degraded CSAT. The standing rule is that the expansion gate is always a metric, never a date.
+
+## What did I learn?
+
+Translation isn't dumbing the concept down; it's re-rooting it in the listener's accountability. "Hallucination" becomes a ranking risk to the SEO lead, a liability with a chain of custody to the lawyer, and a weekly tripwire to the executive: same fact, three different promises. And half the skill is knowing what not to say, like never raising token economics with the editor. I ran this discovery informally for the better part of a decade across two non-AI orgs. Writing it with named accountability is the difference the title would have made.
