@@ -5,12 +5,20 @@
  * Source: hero-spec §8.
  */
 import datelineData from "../../../public/api/dateline.json";
-import { dateline } from "~/lib/dateline";
+import { dateline, isFresh } from "~/lib/dateline";
 
 // Date derives from the build date for cross-page coherence; the fleet
 // JSON supplies the body narrative. See src/lib/dateline.ts.
-const { body } = datelineData;
+//
+// Gate the body with isFresh(): the date stamp is always today's, so a
+// lagged fleet JSON would otherwise label yesterday's pulse with today's
+// date. When the JSON isn't fresh, fall back to an evergreen line that
+// makes no dated claim, keeping the load-bearing "real and dated" strip
+// honest on a deploy where the fleet hasn't run yet.
 const date_display = dateline();
+const body = isFresh(datelineData.date_iso)
+  ? datelineData.body
+  : "morning fleet pulse posts after the 08:45 et run.";
 ---
 
 <div class="dateline-strip">
