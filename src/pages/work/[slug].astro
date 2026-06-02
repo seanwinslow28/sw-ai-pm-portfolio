@@ -63,6 +63,7 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
   title={`${data.title} — Sean Winslow`}
   description={data.tagline ?? data.hero_media_alt}
   ogImage={data.ogImage}
+  ogType="article"
 >
   <article class={`case-study case-study-${data.status.toLowerCase()}`}>
     <DatelineStrip body={datelineBody} />

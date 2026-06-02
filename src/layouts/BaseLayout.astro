@@ -35,6 +35,7 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogType?: string;
   noChrome?: boolean;
 }
 
@@ -42,6 +43,7 @@ const {
   title,
   description = SITE_DESCRIPTION,
   ogImage = OG_DEFAULT_IMAGE,
+  ogType = "website",
   noChrome = false,
 } = Astro.props;
 
@@ -62,7 +64,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
     <!-- OG -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:url" content={canonicalUrl} />
 
