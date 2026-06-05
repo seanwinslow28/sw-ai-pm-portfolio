@@ -9,7 +9,7 @@
  * the commit `ad64ce1` reduced-motion contract — under
  * prefers-reduced-motion: reduce, NO <video> is created in the DOM at all.
  */
-import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
+import { HERO_LOOP_MP4, HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
 ---
 
 <div class="character" aria-hidden="true">
@@ -23,13 +23,14 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
   <template data-hero-video-template>
     <video
       class="character-video"
-      src={HERO_LOOP_WEBM}
       poster={HERO_LOOP_POSTER}
       muted
       loop
       playsinline
       preload="auto"
       data-state="pending"
+      data-src-mp4={HERO_LOOP_MP4}
+      data-src-webm={HERO_LOOP_WEBM}
     />
   </template>
 </div>
@@ -64,6 +65,20 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     ) as HTMLTemplateElement | null;
     if (!tpl || !tpl.content.firstElementChild) return;
     const video = tpl.content.firstElementChild.cloneNode(true) as HTMLVideoElement;
+    // Pick the transparent-background source the engine can actually composite.
+    // Apple WebKit (Safari + ALL iOS browsers) honors alpha only via HEVC/hvc1;
+    // it ignores the alpha plane in VP9 WebM (the old box bug). Everyone else
+    // gets VP9-alpha WebM — Chrome-on-Mac CAN decode HEVC but drops its alpha,
+    // so we must NOT let it fall onto the mp4. Hence explicit selection here,
+    // not <source> order.
+    const ua = navigator.userAgent;
+    const isAppleWebKit =
+      /iP(hone|ad|od)/.test(ua) ||
+      (/Safari/.test(ua) && !/Chrome|Chromium|CriOS|Android|Edg|OPR/.test(ua));
+    video.src =
+      (isAppleWebKit
+        ? video.getAttribute("data-src-mp4")
+        : video.getAttribute("data-src-webm")) || "";
     tpl.parentNode?.insertBefore(video, tpl);
     // Fade in on mount.
     requestAnimationFrame(() => {
@@ -150,7 +165,12 @@ import { HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
       width: 420px;
       height: 240px;
       right: -24px;
-      bottom: -10px;
+      /* Lift the lane clear of the projects section's top torn-paper edge
+         (margin-top: -80px pulls the tear ~20px up into the hero). At -10px
+         the shoes landed ON the tear and were sliced by the hero's
+         overflow:hidden. Resting them ~30px above the tear keeps the whole
+         character on warm paper with the floor shadow beneath. */
+      bottom: 34px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
