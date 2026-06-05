@@ -24,8 +24,15 @@ export const COPYRIGHT_YEAR = "2026";
 /* Wordmark — site-chrome §16 OPEN-1 CONFIRMED 2026-05-21 */
 export const WORDMARK = "SW";
 
-/* Asset paths (canonical) */
-export const HERO_LOOP_WEBM = "/assets/character/hero-loop.webm";
+/* Asset paths (canonical)
+ * Hero loop ships as TRUE-alpha (transparent bg) in two formats so the
+ * background reads as "removed" on every engine — see CharacterLane.astro:
+ *   - HEVC-with-alpha MP4 (hvc1) → Safari / iOS (incl. all iOS browsers).
+ *   - VP9-alpha WebM            → Chrome / Firefox / Android.
+ * Versioned filenames (`-alpha`) bust the CDN cache of the prior opaque webm,
+ * whose baked cream bg showed as a visible box under iOS color management. */
+export const HERO_LOOP_MP4 = "/assets/character/hero-loop-alpha.mp4";
+export const HERO_LOOP_WEBM = "/assets/character/hero-loop-alpha.webm";
 export const HERO_LOOP_POSTER = "/assets/hero-icons/icon-1-loop.webp";
 
 /* OG defaults */
