@@ -85,6 +85,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["methods", "limitations"],
+    maxLenFields: { valueProp: 280 },   // mirror config.ts z.string().max(280)
     futureDate: { field: "shipped" },   // any status: a future ship date is staged
     forbiddenSlugs: ["fleet", "pipeline", "product", "writing", "infra"],
     crossLinkFields: [
@@ -110,6 +111,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["tags", "methods"],
+    maxLenFields: { lead: 280 },        // mirror config.ts z.string().max(280)
     futureDate: { field: "shipped", statuses: ["SHIPPED"] },
     crossLinkFields: [
       "relatedLedgerRow", "relatedCaseStudy", "relatedEssay",
@@ -134,6 +136,7 @@ const COLLECTIONS = [
     requiredOneOf: [["explanationUrl", "__inline_4Q__"]],
     statusFields: {},
     requiredArrays: ["tags"],
+    maxLenFields: { excerpt: 280 },     // mirror config.ts z.string().max(280)
     futureDate: { field: "published", statuses: ["PUBLISHED"] },
     crossLinkFields: [
       "relatedLedgerRow", "relatedCaseStudy", "relatedArchitecture",
@@ -422,6 +425,16 @@ async function validateCollection(coll, warnings) {
     for (const arrField of coll.requiredArrays ?? []) {
       if (!Array.isArray(fm[arrField]) || fm[arrField].length === 0) {
         errors.push(`${coll.name}/${slug}: required array "${arrField}" is missing or empty`);
+      }
+    }
+    // String length caps — mirror src/content/config.ts z.string().max(N).
+    // Astro enforces these at build; mirroring them here makes an over-long
+    // field fail `npm run validate` instead of only failing the Vercel build
+    // (post-mortem 2026-06-08: a 315-char valueProp passed validate, broke build).
+    for (const [field, max] of Object.entries(coll.maxLenFields ?? {})) {
+      const v = fm[field];
+      if (typeof v === "string" && v.length > max) {
+        errors.push(`${coll.name}/${slug}: ${field} is ${v.length} chars; schema cap is ${max} (src/content/config.ts z.string().max(${max})). Trim it — the Astro build rejects this.`);
       }
     }
     // Forbidden slugs
