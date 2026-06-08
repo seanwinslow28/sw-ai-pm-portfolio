@@ -1,0 +1,62 @@
+---
+title: "Control Architecture: Authority, Recovery, Audit"
+dateline: "BOSTON, JUNE 7, 2026"
+shipped: "2026-06-07"
+
+surface: infra
+status: SHIPPED
+
+valueProp: "Reframes the budget caps, circuit breakers, keychain-gated credentials, Pushover escalation, and append-only ledgers already governing my live agent fleet as the Authority / Recovery / Audit control trinity enterprise buyers look for, with a 60-second runnable demo that trips a budget breach across all three legs."
+
+methods:
+  - task: trinity reframe + worked example
+    tool: 1:1 mapping to Nate Jones §3.7, citing live config.toml / keychain.py / pushover.py / concept_edges
+    cost: portfolio time
+    link: https://github.com/seanwinslow28/code-brain/blob/main/agents-sdk/docs/CONTROL_ARCHITECTURE.md
+  - task: runnable governance demo
+    tool: replay_budget_breach.py, 3 synthetic fixtures, append-only ledger, dry/live Pushover
+    cost: portfolio time
+    link: https://github.com/seanwinslow28/code-brain/tree/main/tools/governance-demo
+  - task: regression coverage
+    tool: pytest, 7 tests, 3 fixtures exercising 3 distinct exit codes, network-free dry-pushover
+    cost: portfolio time
+    link: null
+  - task: adversarial stress-test
+    tool: premium LLM Council (4 frontier models + chairman synthesis), fixes folded in
+    cost: council / $0.49
+    link: null
+
+limitations:
+  - "The demo is stubbed and synthetic by design, no LLM or paid API is called, the fixtures are hand-authored, and exit code 7 (budget breach) is a demo convention for an unambiguous worked example, not a code the production fleet emits (the fleet enforces hook codes 0/1/2 plus typed exceptions like RouteUnavailable)."
+  - "The trinity is scoped to the controls that matter most for autonomous spend on a one-laptop fleet, not an exhaustive enterprise control catalog. Rate limiting, least-privilege scoping beyond credential presence, secret rotation, and tamper-evident audit logs are not claimed. The live phone-paging demo and the Loom are host-side follow-ups."
+
+repoUrl: https://github.com/seanwinslow28/code-brain/blob/main/agents-sdk/docs/CONTROL_ARCHITECTURE.md
+
+relatedTransactions: []
+# surface: "infra", governance/control infrastructure, grouping with the
+# Code-Brain System Card and the Enterprise Data Readiness Matrix. "control
+# architecture (docs)" from the Task 14 spec is not a valid surface enum; infra
+# is the closest valid value in src/content/config.ts SURFACE_ENUM.
+# 4Q lives inline below (push-independent build). To switch to the fetched-
+# canonical path once code-brain is public, add `explanationUrl:` pointing at
+# agents-sdk/docs/EXPLANATION.md and reformat its headings to the prefix shape
+# fetch_canonical_sources.mjs validates against.
+---
+
+The credibility move that made the Code-Brain System Card land was applying a framework to a system I actually operate. This does the same for cost economics, my one "beginner" gap on paper. The controls weren't built for the demo; they've been enforcing a $50/month ceiling on a live overnight fleet since April. The work here is naming them as the trinity an FDE buyer recognizes (Authority decides what's allowed, Recovery makes failure loud and the fix a one-liner, Audit writes down what happened) and adding the smallest runnable proof: a forced over-budget call that trips the circuit before any spend, pages a phone, appends a breach to a ledger, and prints its own rollback, in under a minute.
+
+## What is this?
+
+A ~2,100-word artifact mapping the budget caps, keychain-gated credentials, circuit breakers, escalation, and append-oriented ledgers already running my agent fleet to the Authority / Recovery / Audit control trinity (Nate Jones §3.7). It ships with a runnable demo (`tools/governance-demo/`) that replays three synthetic fixtures through the real control shape, a sanitized declarative policy example, and a 4Q writeup. It's the Forward-Deployed-shaped artifact, a direct match to the Anthropic FDE Boston JD, and it closes the cost-economics gap with a worked example instead of a claim.
+
+## Why this approach?
+
+Three options: build new governance infrastructure to demo (rejected, theater; the controls already exist and an FDE would smell it), write the doc with no runnable artifact (rejected, "I have controls" is a claim FDE buyers discount), or name the existing infrastructure as the trinity and add the smallest demo over it (chosen). ~80% of the substance had already shipped, so the work is the naming plus a worked example that exercises the real control shape. The load-bearing constraint: the local-cloud router gets exactly one paragraph and is never framed as an "agent OS". Inflating ~100 lines of routing logic into systems architecture invites a technical screen I can't win. The restraint is the credibility.
+
+## What would break?
+
+Three failure modes. **Stub drift**: the demo's exit-7 convention differs from the fleet's real 0/1/2 codes; mitigated by stating that boundary loudly in three places and a planned integration test that asserts the demo's *decisions* match the real `RouteUnavailable` / cap-abort behavior. **Citation rot**: config keys and line numbers drift (these caps already moved from L340 to L460 between planning and build); mitigated by citing key names and behavior over exact integers. **Trinity over-reach**: enterprise buyers may expect controls a one-laptop fleet lacks (rate limiting, secret rotation, tamper-evidence, the concurrency check-then-write race); the premium LLM Council ($0.49) converged on exactly this, so a dedicated "Known gaps at this scale" section now names each one plainly rather than letting it ambush a reader.
+
+## What did I learn?
+
+Control architecture is mostly the discipline of writing down what's already implemented, not building new infrastructure. The hardest part wasn't the controls; it was resisting the urge to make them sound bigger than they are. The most valuable edit was a subtraction, refusing to call the router an "agent OS", and the second was an addition of honesty: saying out loud that exit code 7 is a demo convention makes the demo *more* persuasive, because it proves I know exactly where the demo ends and the real system begins. Naming beats building when the thing is already built.
