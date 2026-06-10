@@ -97,5 +97,7 @@ const ariaLabel = `Chart titled ${chartTitle}. ${data.length} points ranging fro
     text-transform: lowercase;
     letter-spacing: 0.8px;
   }
-  svg { width: 100%; height: auto; display: block; }
+  /* overflow visible: SVG default (hidden) clipped the last x-axis label
+     ("L3-full" rendered "L3-ful") — audit 2026-06-10. */
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
 </style>

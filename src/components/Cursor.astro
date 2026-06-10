@@ -1,0 +1,97 @@
+---
+/**
+ * Custom cursor — RAF-driven lerp + hover state class toggles.
+ * Source: hero-spec §9.
+ *
+ * Vanilla port of the former Cursor.tsx React island (audit 2026-06-10):
+ * the island was the only React on the site and shipped react + react-dom
+ * (~186KB raw / ~58KB gzip) on every page for an 80-line effect. Behavior
+ * is unchanged: 6px ink dot, mix-blend difference, position lerp 0.15,
+ * snappier scale lerp 0.22 (Emil snap-feedback), 10x growth over .hero-name,
+ * disabled under reduced-motion and coarse pointers.
+ */
+---
+<div class="cursor" aria-hidden="true"></div>
+
+<script>
+  const LERP = 0.15;
+  const SCALE_LERP = 0.22; // snappier than position — Emil snap-feedback
+  const HOVER_NAME_SCALE = 60 / 6; // 10x — grows from center
+
+  const state = {
+    targetX: 0,
+    targetY: 0,
+    currentX: 0,
+    currentY: 0,
+    targetScale: 1,
+    currentScale: 1,
+  };
+  let el: HTMLElement | null = null;
+  let raf = 0;
+
+  function tick() {
+    state.currentX += (state.targetX - state.currentX) * LERP;
+    state.currentY += (state.targetY - state.currentY) * LERP;
+    state.currentScale += (state.targetScale - state.currentScale) * SCALE_LERP;
+    if (el) {
+      // Compose position + hover scale in one transform (no layout-property
+      // animation). Origin is the dot's center, so scale grows symmetrically
+      // around the cursor point.
+      el.style.transform = `translate3d(${state.currentX}px, ${state.currentY}px, 0) scale(${state.currentScale})`;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function init() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Re-query on every init: view transitions replace the body, so the
+    // previous element reference goes stale after navigation.
+    el = document.querySelector<HTMLElement>(".cursor");
+    if (!el) return;
+    el.style.display = "block";
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener("mousemove", (e) => {
+    state.targetX = e.clientX;
+    state.targetY = e.clientY;
+  });
+
+  window.addEventListener("mouseover", (e) => {
+    if (!el) return;
+    const target = e.target as HTMLElement;
+    if (target.closest(".hero-name")) {
+      el.classList.add("cursor--hover-name");
+      state.targetScale = HOVER_NAME_SCALE;
+    } else if (target.closest(".character")) {
+      el.classList.add("cursor--hover-character");
+    }
+  });
+
+  window.addEventListener("mouseout", () => {
+    el?.classList.remove("cursor--hover-name", "cursor--hover-character");
+    state.targetScale = 1;
+  });
+
+  document.addEventListener("astro:page-load", init);
+  init();
+</script>
+
+<style>
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #1a1a1e;
+    pointer-events: none;
+    z-index: 800;
+    mix-blend-mode: difference;
+    margin-left: -3px;
+    margin-top: -3px;
+    display: none;
+  }
+</style>

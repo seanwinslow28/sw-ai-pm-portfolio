@@ -20,10 +20,12 @@ interface Props {
 const { slug, frame, title, tagline, status, tags, hero_media, hero_media_type, hero_media_alt } = Astro.props;
 ---
 
+<!-- No aria-label: the tile's own text (frame, status, title, tags) is the
+     accessible name; the previous "View case study:" label failed WCAG 2.5.3
+     label-in-name (visible text not in accessible name). -->
 <a
   href={`/work/${slug}/`}
   class="project-tile"
-  aria-label={`View case study: ${title}`}
   data-cursor-preview={hero_media}
 >
   <div class="tile-media" style={`view-transition-name: hero-media-${slug};`}>

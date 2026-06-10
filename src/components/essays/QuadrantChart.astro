@@ -32,7 +32,10 @@ if (isPath) {
 <style>
   .quadrant-chart { margin: 48px auto; max-width: 1120px; padding: 0 24px; }
   .quadrant-chart__svg-wrap { background: var(--paper); padding: 24px; overflow-x: auto; }
-  .quadrant-chart__svg-wrap :global(svg) { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  /* overflow visible: mermaid's quadrant title renders wider than its SVG
+     viewport and was clipped at both ends; the wrap's 24px padding absorbs
+     the overhang. Audit 2026-06-10. */
+  .quadrant-chart__svg-wrap :global(svg) { max-width: 100%; height: auto; display: block; margin: 0 auto; overflow: visible; }
   .quadrant-chart__caption {
     margin: 16px 0 0;
     font-family: var(--font-mono);

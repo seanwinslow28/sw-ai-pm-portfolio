@@ -3,7 +3,11 @@
  * Inherits: DESIGN.md (color/type/spacing) + texture-spec (Z-stacking)
  * ---------------------------------------------------------------------- */
 
-@import "tailwindcss";
+/* source(): restrict Tailwind 4's auto source detection to src/. Without it,
+ * Tailwind scanned .claude/skills/ + .agents/skills/ markdown and emitted
+ * dead utilities (border-l-4, text-gray-400, bg-blue-500) into the shipped
+ * CSS — bytes + design-lint noise. Audit 2026-06-10. */
+@import "tailwindcss" source("..");
 
 /* ===== Design tokens (light mode default) ===== */
 :root {

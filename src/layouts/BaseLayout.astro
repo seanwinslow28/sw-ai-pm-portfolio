@@ -11,7 +11,7 @@ import { SITE_DESCRIPTION, OG_DEFAULT_IMAGE, RSS_FEEDS } from "~/lib/site";
 import SkipLink from "~/components/chrome/SkipLink.astro";
 import SiteNav from "~/components/chrome/SiteNav.astro";
 import SiteFooter from "~/components/chrome/SiteFooter.astro";
-import Cursor from "~/components/Cursor.tsx";
+import Cursor from "~/components/Cursor.astro";
 import "~/styles/global.css";
 
 /* Self-hosted fonts (replaces the fonts.gstatic.com CDN dependency so the
@@ -93,7 +93,9 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
          paper-tile is the site-wide body bg; tear-edge is home-only (rendered
          directly in ProjectsSection) so it is not preloaded here — a global
          preload fired an unused-resource warning on every inner page. -->
-    <link rel="preload" as="image" type="image/png" href="/assets/textures/paper-tile.png" />
+    <!-- fetchpriority=high: paper-tile is the measured LCP resource (the
+         hero page-sheet background) — audit 2026-06-10. -->
+    <link rel="preload" as="image" type="image/png" href="/assets/textures/paper-tile.png" fetchpriority="high" />
 
     <!-- Fonts are self-hosted via @fontsource (imported in the component
          script above); no external font CDN. -->
@@ -103,7 +105,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
   </head>
   <body>
     <SkipLink />
-    <Cursor client:load />
+    <Cursor />
     {!noChrome && <SiteNav />}
     <main id="main-content">
       <slot />
@@ -111,7 +113,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? "https://seanwinslow.com").toS
     <SiteFooter />
 
     <style is:global>
-      /* Hover growth is driven by transform: scale() in Cursor.tsx (no
+      /* Hover growth is driven by transform: scale() in Cursor.astro (no
          layout-property animation). These classes are toggled for intent /
          future styling hooks; they intentionally set no size. */
       .cursor--hover-character {

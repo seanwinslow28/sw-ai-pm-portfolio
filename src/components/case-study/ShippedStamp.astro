@@ -11,9 +11,14 @@ interface Props {
 }
 const { shippedAt } = Astro.props;
 const prettyDate = (() => {
+  // shippedAt arrives either as ISO "yyyy-mm-dd" or as a full Date.toString()
+  // (z.coerce.string() stringifies the YAML date in the build machine's tz).
+  // Both encode the same instant: UTC midnight of the shipped day. Formatting
+  // in UTC recovers the calendar date deterministically — formatting in local
+  // time rendered MAY 12 as "MAY 11" on ET builds. Audit 2026-06-10.
   const d = new Date(shippedAt);
   if (Number.isNaN(d.getTime())) return shippedAt;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase();
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).toUpperCase();
 })();
 ---
 

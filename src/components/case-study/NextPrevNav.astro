@@ -64,7 +64,9 @@ const { prev, next } = Astro.props;
   .nav-next:hover .arrow { transform: translateX(4px); }
   .nav-pill .frame {
     font-weight: 500;
-    color: var(--amber-mid);
+    /* stamp-amber, not amber-mid: paper surface (Inversion Rule) — amber-mid
+     * measured 1.48:1 on cream. Audit 2026-06-10. */
+    color: var(--stamp-amber);
     letter-spacing: 1.6px;
   }
   .nav-pill .title { color: var(--teal); }

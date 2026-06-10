@@ -108,7 +108,10 @@ function formatDate(iso: string): string {
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 1.4px;
-    color: var(--stamp-amber);
+    /* Chrome-side warm accent per the Paper-vs-Chrome Inversion Rule:
+     * stamp amber measured 1.56:1 on the teal-deep meta strip (illegible);
+     * amber-mid is the spec'd warm on chrome (9.4:1). CHANGELOG 2026-06-10. */
+    color: var(--amber-mid);
     margin: 0;
   }
 </style>

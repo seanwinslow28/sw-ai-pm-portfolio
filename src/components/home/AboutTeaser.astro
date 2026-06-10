@@ -115,8 +115,10 @@ const CTA = "→ READ THE FULL ABOUT";
   }
 
   .beat-today {
-    color: var(--amber-mid);
-    /* spec §4 calls for stamp-amber on the TODAY prefix */
+    /* stamp-amber per the spec's named token (teaser-spec §4 + §6 "paper +
+     * ink + teal + stamp-amber only"); the spec's hex was amber-mid by
+     * mistake, which is chrome-only and 1.48:1 on cream. Audit 2026-06-10. */
+    color: var(--stamp-amber);
   }
 
   .cta {

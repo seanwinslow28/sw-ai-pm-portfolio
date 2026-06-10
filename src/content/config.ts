@@ -318,4 +318,13 @@ const cartoons = defineCollection({
   }),
 });
 
-export const collections = { work, teaserDeck, transactions, architecture, essays, about, cartoons };
+/* explanations: canonical EXPLANATION.md files written by
+ * fetch_canonical_sources.mjs and read via fs (never getCollection).
+ * Declared so Astro stops auto-generating a deprecated collection for the
+ * folder (build WARN). Markdown with no required frontmatter. */
+const explanations = defineCollection({
+  type: "content",
+  schema: z.object({}).passthrough(),
+});
+
+export const collections = { work, teaserDeck, transactions, architecture, essays, about, cartoons, explanations };

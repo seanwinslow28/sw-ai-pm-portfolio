@@ -11,7 +11,7 @@
 interface MethodRow {
   task: string;
   tool: string;
-  cost: string;
+  cost?: string; // optional in the content schema; was required here (ts2322)
   link?: string | null;
 }
 interface Props {

@@ -8,6 +8,8 @@
  *
  * Per architecture-spec §2.1 + §4.1 + §5.
  */
+import { BUILD_DATE_PRETTY } from "~/lib/dateline";
+
 interface Props {
   count: number;            // total writeups
   lastUpdatedISO: string;   // ISO YYYY-MM-DD of most recent shipped
@@ -15,10 +17,10 @@ interface Props {
 }
 const { count, lastUpdatedISO, mostRecentTitle } = Astro.props;
 
-const today = new Date();
-const monthName = today.toLocaleDateString("en-US", { month: "long" }).toUpperCase();
-const day = today.getDate();
-const year = today.getFullYear();
+// Single date source (src/lib/dateline.ts): resolves in America/New_York so
+// the BOSTON stamp can't show tomorrow's date on a UTC evening build.
+const [monthName, dayWithComma, year] = BUILD_DATE_PRETTY.split(" ");
+const day = dayWithComma.replace(",", "");
 const datelineBody = mostRecentTitle
   ? `${mostRecentTitle.toLowerCase()} shipped. ${count} writeup${count === 1 ? "" : "s"}.`
   : `${count} writeup${count === 1 ? "" : "s"}.`;

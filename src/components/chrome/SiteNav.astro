@@ -38,7 +38,9 @@ function isActive(matchPrefix: string): boolean {
 
 <header class="site-nav-header">
   <nav class="site-nav" aria-label="Primary navigation">
-    <a href="/" class="wordmark" aria-label="Sean Winslow — home">{WORDMARK}</a>
+    <!-- Accessible name starts with the visible "SW" per WCAG 2.5.3
+         label-in-name (voice-control users say what they see). -->
+    <a href="/" class="wordmark" aria-label="SW — Sean Winslow, home">{WORDMARK}</a>
     <ul class="nav-tabs">
       {TABS.map((tab) => (
         <li>
