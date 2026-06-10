@@ -9,7 +9,13 @@
  * the commit `ad64ce1` reduced-motion contract — under
  * prefers-reduced-motion: reduce, NO <video> is created in the DOM at all.
  */
-import { HERO_LOOP_MP4, HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
+import {
+  HERO_LOOP_MP4,
+  HERO_LOOP_WEBM,
+  HERO_LOOP_MP4_MOBILE,
+  HERO_LOOP_WEBM_MOBILE,
+  HERO_LOOP_POSTER,
+} from "~/lib/site";
 ---
 
 <div class="character" aria-hidden="true">
@@ -33,6 +39,8 @@ import { HERO_LOOP_MP4, HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
       data-state="pending"
       data-src-mp4={HERO_LOOP_MP4}
       data-src-webm={HERO_LOOP_WEBM}
+      data-src-mp4-mobile={HERO_LOOP_MP4_MOBILE}
+      data-src-webm-mobile={HERO_LOOP_WEBM_MOBILE}
     />
   </template>
 </div>
@@ -72,15 +80,21 @@ import { HERO_LOOP_MP4, HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
     // it ignores the alpha plane in VP9 WebM (the old box bug). Everyone else
     // gets VP9-alpha WebM — Chrome-on-Mac CAN decode HEVC but drops its alpha,
     // so we must NOT let it fall onto the mp4. Hence explicit selection here,
-    // not <source> order.
+    // not <source> order. The HEVC is premultiplied-alpha; the WebM is straight.
     const ua = navigator.userAgent;
     const isAppleWebKit =
       /iP(hone|ad|od)/.test(ua) ||
       (/Safari/.test(ua) && !/Chrome|Chromium|CriOS|Android|Edg|OPR/.test(ua));
-    video.src =
-      (isAppleWebKit
-        ? video.getAttribute("data-src-mp4")
-        : video.getAttribute("data-src-webm")) || "";
+    // Serve the downscaled 720-wide pair on phones to cut the cellular payload.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const attr = isAppleWebKit
+      ? isMobile
+        ? "data-src-mp4-mobile"
+        : "data-src-mp4"
+      : isMobile
+        ? "data-src-webm-mobile"
+        : "data-src-webm";
+    video.src = video.getAttribute(attr) || "";
     tpl.parentNode?.insertBefore(video, tpl);
     // Fade in on mount.
     requestAnimationFrame(() => {
@@ -144,12 +158,19 @@ import { HERO_LOOP_MP4, HERO_LOOP_WEBM, HERO_LOOP_POSTER } from "~/lib/site";
       bottom: 4px;
     }
   }
-  /* Tablet / small desktop (≤1024): lane scales down; bigger shadow + nudge. */
+  /* Tablet / small desktop (≤1024): the lane is a fixed 420px anchored
+     right:-24px, so both the character's ground-contact centroid and the
+     shadow centroid scale identically with viewport — one `left` value
+     centers the shadow at every width in this range. Measured at 390px the
+     feet sit at x≈206; left:15% lands the shadow centroid there (the prior
+     26% was calibrated while the character was still an opaque white box, so
+     the ~44px rightward offset was invisible — premultiplied-alpha fix 2026-06-10
+     made it show). */
   @media (max-width: 1024px) {
     .hero-floor-shadow {
       width: 70%;
-      left: 26%;
-      bottom: -16px;
+      left: 17%;
+      bottom: 2px;
     }
   }
   .character-video {

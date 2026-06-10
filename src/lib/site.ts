@@ -25,14 +25,22 @@ export const COPYRIGHT_YEAR = "2026";
 export const WORDMARK = "SW";
 
 /* Asset paths (canonical)
- * Hero loop ships as TRUE-alpha (transparent bg) in two formats so the
- * background reads as "removed" on every engine — see CharacterLane.astro:
+ * Hero loop ships as TRUE-alpha (transparent bg) so the background reads as
+ * "removed" on every engine — see CharacterLane.astro for the selection logic:
  *   - HEVC-with-alpha MP4 (hvc1) → Safari / iOS (incl. all iOS browsers).
  *   - VP9-alpha WebM            → Chrome / Firefox / Android.
- * Versioned filenames (`-alpha`) bust the CDN cache of the prior opaque webm,
- * whose baked cream bg showed as a visible box under iOS color management. */
+ * The MP4 is encoded with PREMULTIPLIED alpha (transparent pixels are truly
+ * (0,0,0,0)); Apple's VideoToolbox tags HEVC as PremultipliedAlpha, so feeding
+ * it straight RGBA used to blow transparent areas out to a white box on iOS.
+ * The WebM uses STRAIGHT alpha (what Chrome/VP9 expect). Both are regenerated
+ * by scripts/phase-2/encode_hero_loop.sh.
+ *
+ * Mobile (≤768px) gets a downscaled 720-wide pair to cut the cellular payload
+ * (~half the bytes) while staying crisp for a hand-drawn loop. */
 export const HERO_LOOP_MP4 = "/assets/character/hero-loop-alpha.mp4";
 export const HERO_LOOP_WEBM = "/assets/character/hero-loop-alpha.webm";
+export const HERO_LOOP_MP4_MOBILE = "/assets/character/hero-loop-alpha-mobile.mp4";
+export const HERO_LOOP_WEBM_MOBILE = "/assets/character/hero-loop-alpha-mobile.webm";
 export const HERO_LOOP_POSTER = "/assets/hero-icons/icon-1-loop.webp";
 
 /* OG defaults */
