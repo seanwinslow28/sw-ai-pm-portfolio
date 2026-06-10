@@ -17,6 +17,14 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
     <hr />
     <h1>PAGE NOT FOUND</h1>
     <p>Filed, but it never ran. The desk is one click back.</p>
+    <img
+      class="empty-desk"
+      src="/assets/character/404-empty-desk.webp"
+      alt="Pencil-test sketch of Sean shrugging at a completely empty desk, an abandoned coffee mug and one crumpled page on the floor"
+      width="1100"
+      height="738"
+      decoding="async"
+    />
     <p class="exits">
       <a href="/" class="mono-link">&rarr; HOME</a>
       <a href="/work/" class="mono-link">&rarr; WORK</a>
@@ -72,6 +80,19 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
     color: var(--ink);
     margin: 0;
     max-width: 560px;
+  }
+
+  /* The one cel the 404 earns (delight 5, Sean-approved 2026-06-10):
+     the character at the desk the page claims is one click back —
+     except this one's empty. Static, above the fold, eager load. */
+  .empty-desk {
+    width: min(440px, 100%);
+    height: auto;
+    display: block;
+    margin: 8px 0;
+    /* Multiply melts the cel's cream into the page paper so the drawing
+       reads as drawn ON the sheet, not pasted over it. */
+    mix-blend-mode: multiply;
   }
 
   .exits {

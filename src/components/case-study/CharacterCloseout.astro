@@ -1,0 +1,53 @@
+---
+/**
+ * <CharacterCloseout /> — the character's close-out beat at the end of every
+ * case study, above the prev/next nav.
+ *
+ * Fulfills DESIGN.md's Character-on-Every-Key-Surface rule ("…and as the
+ * close-out on every case-study page"). One shared pose across all five
+ * studies: the walk-off look-back — pencil raised, sheets under arm, "on to
+ * the next one" — drawn in the canonical pencil-test style and approved by
+ * Sean 2026-06-10 (audit lever 3).
+ *
+ * Static art, so reduced-motion-safe by construction. Lazy-loaded with
+ * explicit dimensions (intrinsic 560×750, rendered ~210px wide).
+ */
+---
+
+<div class="character-closeout">
+  <img
+    src="/assets/character/case-study-closeout.webp"
+    alt="Pencil-test sketch of Sean walking off the page, looking back with a pencil raised and storyboard sheets under his arm"
+    width="560"
+    height="750"
+    loading="lazy"
+    decoding="async"
+  />
+</div>
+
+<style>
+  .character-closeout {
+    max-width: 1120px;
+    margin: 72px auto 0;
+    padding: 0 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .character-closeout img {
+    width: 210px;
+    height: auto;
+    display: block;
+    /* Multiply melts the cel's cream into the page paper so the drawing
+       reads as drawn ON the sheet, not pasted over it. */
+    mix-blend-mode: multiply;
+  }
+  @media (max-width: 767px) {
+    .character-closeout {
+      margin-top: 48px;
+      padding: 0 16px;
+    }
+    .character-closeout img {
+      width: 170px;
+    }
+  }
+</style>
