@@ -23,6 +23,7 @@ import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro
 import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
 import NextPrevNav from "~/components/case-study/NextPrevNav.astro";
+import CharacterCloseout from "~/components/case-study/CharacterCloseout.astro";
 
 import ShippedStamp from "~/components/case-study/ShippedStamp.astro";
 import ShippedNow from "~/components/case-study/ShippedNow.astro";
@@ -65,7 +66,7 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
   ogImage={data.ogImage}
   ogType="article"
 >
-  <article class={`case-study case-study-${data.status.toLowerCase()}`}>
+  <article class={`case-study page-sheet case-study-${data.status.toLowerCase()}`}>
     <DatelineStrip body={datelineBody} />
 
     <div class="title-block-wrap">
@@ -125,6 +126,8 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
       fourQ={data.four_q}
       explanationUrl={data.explanation_url}
     />
+
+    <CharacterCloseout />
 
     <NextPrevNav prev={prev} next={next} />
 

@@ -2,12 +2,18 @@
 /**
  * <ProofPoints /> — B-5 four-link block.
  *
- * Mono links, left-aligned, one per line. No descriptions.
+ * Labeled rows: uppercase mono channel + human display text, one per
+ * line (2026-06-10 audit lever 4 — the raw `sean-winslow-204390a5` slug
+ * read as an unfinished surface right before the closing pull quote;
+ * spec deviation from §13's "no descriptions" logged in CHANGELOG).
+ * The em dash in the rows is wire-service register (audit D-2 precedent:
+ * mono-label em dashes inherit from newspaper typography).
  * The arrow prefix is rendered as a static "→" character (no
- * pseudo-element trickery — keeps the print stylesheet honest).
+ * pseudo-element trickery — keeps the print stylesheet honest; the
+ * print ::after still exposes the real href).
  *
  * The "rev scribble" annotation on the /transactions/ link is
- * DEFERRED to v2 per spec §1.2. v1 ships four clean links.
+ * DEFERRED to v2 per spec §1.2.
  *
  * Source: about-spec-v1.md §13 + §4 type table.
  */
@@ -40,26 +46,30 @@ const resumeExists =
     <li>
       <a href={linkedinUrl} class="proof-points__link">
         <span class="proof-points__arrow" aria-hidden="true">→</span>
-        linkedin.com/in/sean-winslow-204390a5
+        <span class="proof-points__channel">LINKEDIN</span>
+        <span class="proof-points__text">— Sean Winslow</span>
       </a>
     </li>
     <li>
       <a href={githubUrl} class="proof-points__link">
         <span class="proof-points__arrow" aria-hidden="true">→</span>
-        github.com/seanwinslow28
+        <span class="proof-points__channel">GITHUB</span>
+        <span class="proof-points__text">— seanwinslow28</span>
       </a>
     </li>
     <li>
       <a href={transactionsUrl} class="proof-points__link">
         <span class="proof-points__arrow" aria-hidden="true">→</span>
-        seanwinslow.com/transactions
+        <span class="proof-points__channel">TRANSACTIONS</span>
+        <span class="proof-points__text">— the ledger, every artifact dated</span>
       </a>
     </li>
     {resumeExists && (
       <li>
         <a href={resumeUrl} class="proof-points__link">
           <span class="proof-points__arrow" aria-hidden="true">→</span>
-          resume.pdf
+          <span class="proof-points__channel">RESUME</span>
+          <span class="proof-points__text">— one page, pdf</span>
         </a>
       </li>
     )}
@@ -124,6 +134,16 @@ const resumeExists =
   .proof-points__arrow {
     display: inline-block;
     width: 12px;
+  }
+
+  .proof-points__channel {
+    letter-spacing: 1.2px;
+  }
+
+  .proof-points__text {
+    font-weight: 400;
+    color: var(--ink-secondary);
+    letter-spacing: 0.4px;
   }
 
   @media (max-width: 767px) {
