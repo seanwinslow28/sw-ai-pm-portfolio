@@ -197,6 +197,11 @@
         "name": "sticky-nav-hairline",
         "value": "0 1px 0 rgba(10, 62, 66, 0.15)",
         "purpose": "Separation between the sticky sub-page nav and content scrolling beneath. Functions as a hairline border, not a shadow. Never deeper than 1px offset, never above 0.15 alpha."
+      },
+      {
+        "name": "tile-meta-strip-lift",
+        "value": "0 -6px 14px rgba(12, 45, 47, 0.35)",
+        "purpose": "Soft upward shadow under the project tile's solid --teal-deep caption band (2026-05-31 design-critique fix) so the band reads as a mounted film-cell slate over the tile media. Teal-deep-tinted, never neutral black. Tiles only — not a general card shadow."
       }
     ],
     "motion": [
