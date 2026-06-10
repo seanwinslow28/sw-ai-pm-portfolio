@@ -160,12 +160,12 @@ This system explicitly rejects the design-system-viewer template (V3 "Iterative 
 Tinted neutrals built around a deep teal anchor with two earned warm accents and one success-coded green. The palette is Committed, not Restrained: the teal carries the chrome at 30–60% of the visible page surface, not as a 10% accent.
 
 ### Primary
-- **Deep Teal Chrome** (`#0A3E42`, oklch(31.6% 0.043 197)): The book-cover color. Lives on the persistent chrome backdrop at Z=0, the hero name, every editorial heading on paper, all "primary ink" mono labels. Carries 30–60% of any given screen. The site's structural color — not an accent.
+- **Deep Teal Chrome** (`#0A3E42`, oklch(31.6% 0.043 197)): The book-cover color. Lives on the persistent chrome backdrop at Z=0, the hero name, every editorial heading on paper, all "primary ink" mono labels. Carries 30–60% of the home page; on sub-pages it carries the body backdrop and the footer seam (see the Committed-Teal Rule's scope). The site's structural color — not an accent.
 - **Deep Teal Chrome (deep)** (`#0c2d2f`): One step darker; used only for chrome-on-chrome inversion moments (footer hover backgrounds, deepest contrast pairs). Not for type.
 
 ### Secondary
 - **Stamp Amber** (`#7C2D12`, oklch(36.8% 0.13 35)): The transaction stamp. Dateline prefix (`BOSTON, MAY 13, 2026 —`), `ACTIVE` and `COMING` status pills, footer column headers, the active-nav-tab underline, skip-link background. Earned scarcity — appears once per surface, never as decoration. *Not* a warning color, not a CTA color; it's the wire-service register's accent.
-- **Amber Mid-Stop** (`#FAC775`, oklch(85.1% 0.124 75)): The chrome-side accent. Used *only* on chrome surfaces (Z=0), where the primary teal is the bg and amber needs to read warm against it. Frame numbers (`A-1`, `A-2`) on project tiles. Highlights inside the universal footer. Never used on paper — on paper, stamp amber `#7C2D12` is the only warm.
+- **Amber Mid-Stop** (`#FAC775`, oklch(85.1% 0.124 75)): The chrome-side accent. Used *only* on chrome surfaces (Z=0), where the primary teal is the bg and amber needs to read warm against it. Frame numbers (`A-1`, `A-2`) on project tiles. Highlights inside the universal footer. Never used on paper as **type or affordance** — on paper, stamp amber `#7C2D12` is the only warm for anything that must be read. Two licensed paper exceptions (2026-06-10): **(a) ghost watermarks** — sub-perceptible decorative annotation marks (~≤1.1:1 against cream, e.g. the essay + transaction deep-dive margin marks) that are texture, not information; **(b) the `/about/` `B-n ·` spec-code kickers**, locked by about-spec §4 as intentional internal-labeling brand — the spec showing its own seams. Neither exception licenses amber-mid for body type, labels, links, or anything carrying meaning on paper.
 - **Amber Warm** (`#E89060`): One transitional warm between stamp amber and amber mid-stop. Used sparingly for hover states on chrome where stamp amber would feel too dark and amber mid-stop too pale.
 
 ### Tertiary
@@ -179,11 +179,11 @@ Tinted neutrals built around a deep teal anchor with two earned warm accents and
 - **Border Whisper (on chrome)** (`rgba(255, 249, 240, 0.18)`): 0.5px hairline dividers on chrome surfaces. Tile borders default at `0.08` alpha and lift to `0.25` on hover.
 
 ### Named Rules
-**The Committed-Teal Rule.** The teal carries the chrome at 30–60% of any given screen. Anyone who collapses this back to "10% accent" is rebuilding the Restrained palette and producing the luxury-minimal-PM template. The chrome IS the book cover.
+**The Committed-Teal Rule.** The teal carries the chrome at 30–60% of the **home page** — the cover of the book. Anyone who collapses the home back to "10% accent" is rebuilding the Restrained palette and producing the luxury-minimal-PM template. The chrome IS the book cover. *Scope (2026-06-10):* sub-pages are the book's interior pages — a single full-bleed `.page-sheet` over the teal body backdrop, with the chrome reading through at the page edges and the footer seam. Torn-edge chrome reveals are home-only per texture-spec §3.6/§4.6; the 30–60% coverage target does not apply off-home and visible-teal percentage on sub-pages is not a defect.
 
 **The One Splash Rule.** Each section earns at most *one* full-bleed splash-color block, never two. The hero has zero splash (paper-on-chrome). The projects section earns the teal splash (the chrome reveals through torn edges). A future section can earn an amber splash, but the same page cannot earn both a teal splash and an amber splash.
 
-**The Paper-vs-Chrome Inversion Rule.** Type and accent colors *invert* between the two layers. On paper: ink `#1A1A1E` text, teal `#0A3E42` accent. On chrome: cream `#FFF9F0` text, amber mid-stop `#FAC775` accent. Stamp amber `#7C2D12` is the only color that survives both surfaces (it passes contrast on cream *and* on teal). Never put paper-mode tokens on chrome or vice versa.
+**The Paper-vs-Chrome Inversion Rule.** Type and accent colors *invert* between the two layers. On paper: ink `#1A1A1E` text, teal `#0A3E42` accent, stamp amber `#7C2D12` the only warm. On chrome: cream `#FFF9F0` text, amber mid-stop `#FAC775` accent. *(Corrected 2026-06-10: stamp amber does NOT survive on chrome — measured 1.26:1 on `#0A3E42`, an earlier version of this rule claimed otherwise. Warm accents on chrome are amber-mid, full stop — see audit P1-04/P1-05.)* Never put paper-mode tokens on chrome or vice versa; the only exceptions are amber-mid's two licensed paper uses (ghost watermarks + the `B-n ·` kickers, above).
 
 **The No Pure Black, No Pure White Rule.** `#000` is prohibited. `#fff` is prohibited. Ink is `#1A1A1E` (slightly cool tint). Paper is `#FFF9F0` (warm cream). Every neutral carries hue.
 
@@ -331,6 +331,8 @@ The hero's right-margin character lane carries Sean's hand-drawn pencil-test sel
 **The Character-on-Every-Key-Surface Rule.** The hand-drawn pencil-test character (in static, looped, or beat-illustrated form) appears on the hero, the About B-N sections (cartoon cels), the project tiles' default media when video isn't ready, and as the close-out on every case-study page. If a key surface can't earn the character, the surface is wrong.
 
 **The No-Card-Reflex Rule.** Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The "next in production" zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.
+
+**The Licensed-Infinite-Motion Rule (2026-06-10).** Persistent (`infinite`) animation is banned on decoration — entrances are one-shot, hovers settle. Exactly three infinite animations are licensed, each carrying meaning: (1) the `COMING` status-pill pulse (§5 Status Pills), (2) `live-pulse` — the ShippedNow LIVE dot's 2s opacity breath; it is status semantics, rendered only when the fleet data is fresh and omitted entirely when stale, and (3) `swipe-me-bob` — the home teaser's desktop swipe-hint bob; a functional affordance pointing at an interaction, not ornament. All three are `prefers-reduced-motion`-guarded to static. Anything else animating forever is a defect.
 
 ## 6. Do's and Don'ts
 

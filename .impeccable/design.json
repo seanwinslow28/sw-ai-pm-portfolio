@@ -197,6 +197,11 @@
         "name": "sticky-nav-hairline",
         "value": "0 1px 0 rgba(10, 62, 66, 0.15)",
         "purpose": "Separation between the sticky sub-page nav and content scrolling beneath. Functions as a hairline border, not a shadow. Never deeper than 1px offset, never above 0.15 alpha."
+      },
+      {
+        "name": "tile-meta-strip-lift",
+        "value": "0 -6px 14px rgba(12, 45, 47, 0.35)",
+        "purpose": "Soft upward shadow under the project tile's solid --teal-deep caption band (2026-05-31 design-critique fix) so the band reads as a mounted film-cell slate over the tile media. Teal-deep-tinted, never neutral black. Tiles only — not a general card shadow."
       }
     ],
     "motion": [
@@ -325,9 +330,9 @@
       "Every dated string on the site is real and dated — never streaming, never invented."
     ],
     "rules": [
-      { "name": "The Committed-Teal Rule", "body": "The teal carries the chrome at 30–60% of any given screen. Anyone who collapses this back to '10% accent' is rebuilding the Restrained palette and producing the luxury-minimal-PM template. The chrome IS the book cover.", "section": "colors" },
+      { "name": "The Committed-Teal Rule", "body": "The teal carries the chrome at 30–60% of the HOME page — the cover of the book. Sub-pages are interior pages: a single full-bleed .page-sheet over the teal body backdrop, chrome reading through at page edges and the footer seam; torn-edge reveals are home-only per texture-spec §3.6/§4.6, and visible-teal percentage on sub-pages is not a defect (scoped 2026-06-10). Anyone who collapses the home back to '10% accent' is rebuilding the Restrained palette and producing the luxury-minimal-PM template. The chrome IS the book cover.", "section": "colors" },
       { "name": "The One Splash Rule", "body": "Each section earns at most one full-bleed splash-color block, never two. The hero has zero splash (paper-on-chrome). The projects section earns the teal splash (the chrome reveals through torn edges). A future section can earn an amber splash, but the same page cannot earn both a teal splash and an amber splash.", "section": "colors" },
-      { "name": "The Paper-vs-Chrome Inversion Rule", "body": "Type and accent colors invert between the two layers. On paper: ink #1A1A1E text, teal #0A3E42 accent. On chrome: cream #FFF9F0 text, amber mid-stop #FAC775 accent. Stamp amber #7C2D12 is the only color that survives both surfaces. Never put paper-mode tokens on chrome or vice versa.", "section": "colors" },
+      { "name": "The Paper-vs-Chrome Inversion Rule", "body": "Type and accent colors invert between the two layers. On paper: ink #1A1A1E text, teal #0A3E42 accent, stamp amber #7C2D12 the only warm. On chrome: cream #FFF9F0 text, amber mid-stop #FAC775 accent. Corrected 2026-06-10: stamp amber does NOT survive on chrome (measured 1.26:1 on #0A3E42); warm accents on chrome are amber-mid. Never put paper-mode tokens on chrome or vice versa. Two licensed amber-mid-on-paper exceptions: ghost watermarks (sub-perceptible decorative annotation marks, ~≤1.1:1, texture not information) and the /about/ 'B-n ·' spec-code kickers (about-spec §4 lock, internal-labeling brand). Neither licenses amber-mid for type, labels, links, or anything carrying meaning on paper.", "section": "colors" },
       { "name": "The No Pure Black, No Pure White Rule", "body": "#000 is prohibited. #fff is prohibited. Ink is #1A1A1E (slightly cool tint). Paper is #FFF9F0 (warm cream). Every neutral carries hue.", "section": "colors" },
       { "name": "The Two-Fonts Rule", "body": "Newsreader + JetBrains Mono. Caveat is the one allowed annotation accent. Anything else — Inter, Sora, Public Sans, Switzer, Recoleta, Söhne — is a regression to template land. If a new surface 'needs' a third font, the surface is wrong.", "section": "typography" },
       { "name": "The No-Gradient-Text Rule", "body": "background-clip: text combined with a gradient background is prohibited. Headlines are solid teal #0A3E42. Emphasis comes from weight contrast and size, never from color flow.", "section": "typography" },
@@ -339,7 +344,8 @@
       { "name": "The No Glass-Cards Rule", "body": "backdrop-filter: blur() is banned for decorative use. The only acceptable backdrop blur is the sticky nav's optional 6px blur on a paper-tinted background when content scrolls under it — and even that is opt-in, not default.", "section": "elevation" },
       { "name": "The Sharp-Corners-By-Default Rule", "body": "Default radius is 0px. The only allowed radius values are 0px (default), 2px (status pills only, because they're sub-glyph affordances and 0px reads as cramped), and 4px (reserved). No rounded-lg, no rounded-xl. Sharpness IS the engineering register.", "section": "components" },
       { "name": "The Character-on-Every-Key-Surface Rule", "body": "The hand-drawn pencil-test character (in static, looped, or beat-illustrated form) appears on the hero, the About B-N sections (cartoon cels), the project tiles' default media when video isn't ready, and as the close-out on every case-study page. If a key surface can't earn the character, the surface is wrong.", "section": "components" },
-      { "name": "The No-Card-Reflex Rule", "body": "Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The 'next in production' zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.", "section": "components" }
+      { "name": "The No-Card-Reflex Rule", "body": "Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The 'next in production' zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.", "section": "components" },
+      { "name": "The Licensed-Infinite-Motion Rule", "body": "Persistent (infinite) animation is banned on decoration — entrances are one-shot, hovers settle. Exactly three infinite animations are licensed, each carrying meaning: (1) the COMING status-pill pulse, (2) live-pulse — the ShippedNow LIVE dot's 2s opacity breath, status semantics rendered only when fleet data is fresh and omitted when stale, (3) swipe-me-bob — the home teaser's desktop swipe-hint bob, a functional affordance. All three are prefers-reduced-motion-guarded to static. Anything else animating forever is a defect. (Licensed 2026-06-10.)", "section": "components" }
     ],
     "dos": [
       "Do put #0A3E42 teal at Z=0 as the persistent chrome on every page. The chrome is the book cover; the paper sheets sit on it.",
