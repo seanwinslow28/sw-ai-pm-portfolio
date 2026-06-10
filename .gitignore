@@ -59,3 +59,4 @@ assets/tile-generation/raw/
 # llm-council CLI session cache
 docs/writing-council/.sessions/
 .vercel
+.audit-scratch/

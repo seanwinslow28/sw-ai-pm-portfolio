@@ -26,7 +26,9 @@ const { lead, characterImage, characterAlt } = Astro.props;
 
 <section class="about-hero" aria-label="Lead line and character">
   <div class="about-hero__lead-col">
-    <p class="about-hero__lead">{lead}</p>
+    <!-- h1, not p: this is the page's only top-level heading (the page
+         had zero h1 and heading order started at h2 — audit 2026-06-10). -->
+    <h1 class="about-hero__lead">{lead}</h1>
   </div>
   <div class="about-hero__character-col">
     <img

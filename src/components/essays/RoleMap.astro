@@ -9,7 +9,11 @@
  *
  * Per essays-spec §9.
  */
-interface RoleRow { buyer: string; position: string; vocabularyTell: string; jdUrl: string }
+/* jdUrl optional + isNegativeSpace per the essays schema amendment
+ * (essays-prose-locked-2026-05-28 §3 Option A): the negative-space row has
+ * no JD to link. The component previously required jdUrl (ts2322) and
+ * rendered an href-less dead <a> for that row. Audit 2026-06-10. */
+interface RoleRow { buyer: string; position: string; vocabularyTell: string; jdUrl?: string; isNegativeSpace?: boolean }
 interface Props {
   lastValidated: string;   // ISO YYYY-MM-DD
   rows: RoleRow[];
@@ -40,7 +44,11 @@ const stale = ageDays > 30;
             <td class="cell-position">{r.position}</td>
             <td class="cell-tell">{r.vocabularyTell}</td>
             <td class="cell-jd">
-              <a href={r.jdUrl} rel="external">link <span aria-hidden="true">&uarr;</span></a>
+              {r.jdUrl ? (
+                <a href={r.jdUrl} rel="external">link <span aria-hidden="true">&uarr;</span></a>
+              ) : (
+                <span class="cell-jd__none" aria-label="no job description; negative space">&middot;</span>
+              )}
             </td>
           </tr>
         ))}

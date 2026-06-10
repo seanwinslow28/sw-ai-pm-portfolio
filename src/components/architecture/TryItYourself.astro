@@ -15,10 +15,29 @@ interface Props {
   command: string;
 }
 const { url, command } = Astro.props;
+
+// Custom Shiki theme on the system palette. github-light injected pure #fff
+// and five foreign hues (#005CC5, #032F62, #6F42C1, #D73A49, #24292e) as
+// inline styles that defeated the CSS override below, breaking the
+// No-Pure-White rule on a live page. Audit 2026-06-10.
+const swPaperTheme = {
+  name: "sw-paper",
+  type: "light" as const,
+  colors: {
+    "editor.background": "#FFF9F0",
+    "editor.foreground": "#1A1A1E",
+  },
+  tokenColors: [
+    { scope: ["comment"], settings: { foreground: "#546E71" } },
+    { scope: ["string", "string.quoted"], settings: { foreground: "#0F6E56" } },
+    { scope: ["keyword", "support.function", "entity.name.function"], settings: { foreground: "#0A3E42" } },
+    { scope: ["constant", "variable", "variable.other"], settings: { foreground: "#7C2D12" } },
+  ],
+};
 ---
 <aside class="try-it" aria-label="Try it yourself">
   <header class="try-it__prefix">TRY IT YOURSELF &mdash;</header>
-  <Code code={command} lang="bash" theme="github-light" />
+  <Code code={command} lang="bash" theme={swPaperTheme} />
   <p class="try-it__link">
     <a href={url} rel="external">&rarr; view the fixture on github</a>
   </p>

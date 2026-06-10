@@ -149,14 +149,19 @@ const pageDescription = data.excerpt;
 
     {useFourQBlock ? (
       <FourQBlock frame="ESSAY" slug={slug} canonicalMarkdown={canonicalMarkdown} explanationUrl={data.explanationUrl ?? undefined} />
-    ) : (
+    ) : essayBodyMarkdown ? (
+      /* Inline-body fallback only applies when the essay body came from
+       * sourceUrl — then the local MDX <Content /> is the 4Q explanation.
+       * When the MDX itself IS the body (sourceUrl null), there is no
+       * separate explanation; rendering <Content /> here duplicated the
+       * entire essay under "— EXPLANATION —" (audit 2026-06-10, P0). */
       <section class="inline-body-4q" aria-labelledby={`4q-${slug}`}>
         <h2 id={`4q-${slug}`} class="section-heading">&mdash; EXPLANATION &mdash;</h2>
         <div class="prose">
-          {!essayBodyMarkdown && <Content />}
+          <Content />
         </div>
       </section>
-    )}
+    ) : null}
 
     <FootLinks
       crossPostedTo={data.crossPostedTo}
