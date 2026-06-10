@@ -5,7 +5,7 @@
  * Source: hero-spec §8.
  */
 import datelineData from "../../../public/api/dateline.json";
-import { dateline, isFresh } from "~/lib/dateline";
+import { BUILD_DATE_PRETTY, isFresh } from "~/lib/dateline";
 
 // Date derives from the build date for cross-page coherence; the fleet
 // JSON supplies the body narrative. See src/lib/dateline.ts.
@@ -15,7 +15,6 @@ import { dateline, isFresh } from "~/lib/dateline";
 // date. When the JSON isn't fresh, fall back to an evergreen line that
 // makes no dated claim, keeping the load-bearing "real and dated" strip
 // honest on a deploy where the fleet hasn't run yet.
-const date_display = dateline();
 const body = isFresh(datelineData.date_iso)
   ? datelineData.body
   : "morning fleet pulse posts after the 08:45 et run.";
@@ -23,7 +22,7 @@ const body = isFresh(datelineData.date_iso)
 
 <div class="dateline-strip">
   <p class="dateline-line">
-    <span class="stamp">{date_display} —</span>
+    <span class="stamp"><span class="seal">BOSTON</span>, {BUILD_DATE_PRETTY} —</span>
     <span class="body">{body}</span>
   </p>
   <hr class="dateline-rule" />
@@ -46,6 +45,22 @@ const body = isFresh(datelineData.date_iso)
     color: var(--stamp-amber);
     font-weight: 500;
     margin-right: 4px;
+  }
+  /* Rubber-stamp city seal (2026-06-10 audit lever 2, Sean-approved V2):
+     BOSTON alone gets the literal stamp — 1px amber frame, slight tilt,
+     paper-fiber mask for pressed-ink texture. Home hero only; the date
+     stays level on the wire line. Static, so reduced-motion-safe. */
+  .seal {
+    display: inline-block;
+    border: 1px solid var(--stamp-amber);
+    padding: 1px 5px 0;
+    margin-right: 3px;
+    transform: rotate(-2deg);
+    transform-origin: center;
+    -webkit-mask-image: url("/assets/textures/paper-tile.png");
+    mask-image: url("/assets/textures/paper-tile.png");
+    -webkit-mask-size: 180px 180px;
+    mask-size: 180px 180px;
   }
   .dateline-rule {
     height: 0;
