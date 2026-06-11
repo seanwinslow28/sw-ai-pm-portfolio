@@ -1,9 +1,10 @@
 {
   "slug": "intent-engineering-mcp",
-  "updated_at": "2026-05-30T08:30:00-04:00",
+  "static": true,
+  "updated_at": "2026-05-12T08:30:00-04:00",
   "items": [
-    { "label": "weekly downloads", "value": "47", "unit": "npm" },
-    { "label": "verified installs", "value": "12", "unit": "MCP registry" },
-    { "label": "stars", "value": "8", "unit": "GitHub" }
+    { "label": "npm + official MCP registry", "value": "Published", "unit": "" },
+    { "label": "registry namespace", "value": "DNS-verified", "unit": "" },
+    { "label": "in Claude Desktop, one config change", "value": "Demoable", "unit": "" }
   ]
 }
