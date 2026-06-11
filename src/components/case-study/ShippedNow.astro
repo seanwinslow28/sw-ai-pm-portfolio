@@ -23,6 +23,9 @@ interface StatsRow { label: string; value: string; unit?: string }
 interface Stats {
   updated_at?: string;
   items?: StatsRow[];
+  // When true, the block reports durable ship facts (not live metrics): no
+  // LIVE pulse, no "by daily driver" attribution, no freshness gate.
+  static?: boolean;
 }
 
 async function readLocalJson(endpoint: string): Promise<Stats | null> {
@@ -45,8 +48,10 @@ const stats = await readLocalJson(shippedStatsEndpoint);
 // shows its real numbers + real timestamp, but as a static "LATEST" read with
 // no pulse — so the badge never overstates how live the data is. Mirrors the
 // hero dateline + about-teaser gating (see src/lib/dateline.ts).
+const isStatic = stats?.static === true;
 const updatedIso = stats?.updated_at ? stats.updated_at.slice(0, 10) : null;
-const fresh = updatedIso ? isFresh(updatedIso) : false;
+// Static cards never assert liveness, so the freshness gate is skipped for them.
+const fresh = !isStatic && updatedIso ? isFresh(updatedIso) : false;
 
 const fallbackText = stats === null
   ? "stats refresh nightly"
@@ -61,12 +66,20 @@ const updatedPretty = stats?.updated_at
       timeZone: "America/New_York",
     })
   : null;
+
+// Static cards show a plain "shipped <Month Year>" stamp instead of a
+// daily-driver freshness timestamp.
+const shippedPretty = isStatic && stats?.updated_at
+  ? new Date(stats.updated_at).toLocaleString("en-US", {
+      year: "numeric", month: "long", timeZone: "America/New_York",
+    })
+  : null;
 ---
 
 <aside class="shipped-now" aria-labelledby={`shipped-now-${slug}`}>
   <p id={`shipped-now-${slug}`} class="live-label" data-fresh={fresh ? "true" : "false"}>
     {fresh && <span class="live-dot" aria-hidden="true">●</span>}
-    {fresh ? "LIVE" : "LATEST"}
+    {isStatic ? "SHIPPED" : fresh ? "LIVE" : "LATEST"}
   </p>
   {fallbackText && <p class="fallback">{fallbackText}</p>}
   {stats?.items && (
@@ -80,9 +93,10 @@ const updatedPretty = stats?.updated_at
       ))}
     </ul>
   )}
-  {updatedPretty && (
-    <p class="updated-at">updated {updatedPretty} by daily driver</p>
-  )}
+  {isStatic
+    ? (shippedPretty && <p class="updated-at">shipped {shippedPretty}</p>)
+    : (updatedPretty && <p class="updated-at">updated {updatedPretty} by daily driver</p>)
+  }
 </aside>
 
 <style>
