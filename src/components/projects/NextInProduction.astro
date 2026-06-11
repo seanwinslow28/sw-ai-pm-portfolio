@@ -4,24 +4,18 @@
  * Source: projects-spec §4.
  *
  * Mirrors ProjectTile anatomy — media area (top) + solid caption band (bottom) —
- * so the sixth cell reads as a reserved-and-dated slot still on the drawing
- * board, not an empty hole. The media area carries faint pencil construction
- * marks (peg-bar registration + crop ticks) instead of a finished illustration;
+ * so the sixth cell reads as a reserved slot still on the drawing board, not
+ * an empty hole. The media area carries faint pencil construction marks
+ * (peg-bar registration + crop ticks) instead of a finished illustration;
  * the dashed outer border (vs the tiles' solid hairline) signals "not yet
- * drawn." The caption band reuses the A-6 frame + a pulsing COMING pill +
- * the live `check back ~<date>` line from next-piece.json.
+ * drawn." The caption band carries the A-6 frame + a pulsing COMING pill.
+ *
+ * The `check back ~<date>` subtitle (fed by next-piece.json date_target) was
+ * removed 2026-06-11 per Sean: a passed date inverts the honesty layer into
+ * evidence of abandonment (audit P3-17), and the COMING pill already carries
+ * the promise without naming a day. next-piece.json is no longer consumed here.
  */
 import StatusPill from "./StatusPill.astro";
-import nextPiece from "../../../public/api/next-piece.json";
-
-const { date_target } = nextPiece;
-
-// Format `2026-06-11` → `~jun 11`
-function formatDate(iso: string): string {
-  const d = new Date(iso + "T00:00:00");
-  const month = d.toLocaleString("en-US", { month: "short" }).toLowerCase();
-  return `~${month} ${d.getDate()}`;
-}
 ---
 
 <div class="next-in-production">
@@ -40,7 +34,6 @@ function formatDate(iso: string): string {
       <StatusPill status="COMING" />
     </div>
     <h3 class="title">next piece in production</h3>
-    <p class="tagline">check back {formatDate(date_target)}</p>
   </div>
 </div>
 
@@ -101,17 +94,6 @@ function formatDate(iso: string): string {
     font-weight: 400;
     line-height: 1.2;
     color: var(--paper);
-    margin: 4px 0;
-  }
-  .tagline {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 1.4px;
-    /* Chrome-side warm accent per the Paper-vs-Chrome Inversion Rule:
-     * stamp amber measured 1.56:1 on the teal-deep meta strip (illegible);
-     * amber-mid is the spec'd warm on chrome (9.4:1). CHANGELOG 2026-06-10. */
-    color: var(--amber-mid);
-    margin: 0;
+    margin: 4px 0 2px;
   }
 </style>

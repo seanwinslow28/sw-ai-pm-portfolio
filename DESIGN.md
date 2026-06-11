@@ -278,8 +278,8 @@ Five statuses. No others. The vocabulary is the discipline.
 - **Background:** transparent on the teal splash (no fill).
 - **Border:** 1.5px dashed `rgba(255, 249, 240, 0.4)`.
 - **Title:** "next piece in production" — Newsreader 24px / weight 300, paper-cream, lowercase.
-- **Subtitle:** "check back ~jun 11" — JetBrains Mono 12px / 1.4px tracking, stamp amber.
-- **Hover:** dashed border fills in solid (animated to `rgba(255, 249, 240, 1)` 200ms ease-out).
+- **Subtitle:** none. The dated `check back ~<date>` line was removed 2026-06-11 — a passed `date_target` inverts the honesty layer into evidence of abandonment (audit P3-17); the COMING pill carries the promise without naming a day.
+- **Hover:** dashed border fills in solid (animated to `rgba(255, 249, 240, 0.85)` 200ms ease-out — de-facto lock, CHANGELOG 2026-06-10).
 
 ### Inputs / Fields
 There is one input on the site: a future newsletter-subscribe input (TBD). When implemented:
