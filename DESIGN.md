@@ -262,7 +262,7 @@ The defining component of the home page. Six tiles on a teal-splash grid; five c
 - **Status pill** (`ACTIVE`, `SHIPPED`, `PAUSED`, `ARCHIVED`): JetBrains Mono 12px / 1.2px tracking, uppercase, paper-cream background, status-color text, 2px radius, top-right of the metadata strip.
 - **Title:** Newsreader 20px weight 400, paper-cream, single line.
 - **Tags:** JetBrains Mono 11px / 1.2px tracking, `rgba(255, 249, 240, 0.65)`, dot-separated.
-- **Tagline (optional, present on A-3):** JetBrains Mono 12px weight 400, secondary ink — but this is a *project-tile-voice* tagline ("Drawing up agents to act with intent."), not a marketing tagline.
+- **Tagline (optional, present on A-3):** JetBrains Mono 12px weight 400, secondary ink — but this is a *project-tile-voice* tagline ("An MCP server that checks an agent's spec before it runs."), not a marketing tagline.
 
 ### Status Pills
 A constrained vocabulary of five labels, each color-coded against the paper-cream pill background:

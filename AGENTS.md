@@ -63,7 +63,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 - **Hero tagline:** "Product Manager. The agents handle the loops. I handle the taste."
 - **About header:** "Raised by Saturday morning cartoons and Vercel deployment logs."
 - **Home About teaser editorial line:** "A man, a pencil, an agent fleet. Same person, different tools."
-- **Intent Engineering MCP tile + case-study hero:** "Drawing up agents to act with intent."
+- **Intent Engineering MCP tile + case-study hero:** "An MCP server that checks an agent's spec before it runs." (Subtitle pass 2026-06-16: superseded the prior "Drawing up agents to act with intent." for recruiter scan-ability, follow-on to the W1 critique redesign. The baked OG-card PNG still shows the old line until the og-card generator is re-run.)
 - **Hero treatment:** the "duet" — newsroom dateline strip above the name, tagline below.
 - **Fonts:** Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). Only two. No Inter, no Sora.
 - **Color:** warm paper `#FFF9F0` + ink + teal `#0A3E42`; one splash color per section, never two.
