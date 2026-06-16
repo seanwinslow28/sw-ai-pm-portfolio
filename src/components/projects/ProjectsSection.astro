@@ -26,7 +26,6 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
     <h2 class="sr-only">Selected work</h2>
     <div class="dateline-block">
       <DatelineLabel />
-      <PencilAnnotation variant="updated-weekly" />
     </div>
     <div class="grid">
       {sorted.map((entry, i) => (
@@ -128,12 +127,6 @@ const sorted = work.sort((a, b) => a.data.order - b.data.order);
   }
 
   /* Pencil annotation positioning */
-  :global(.dateline-block .annotation--updated-weekly) {
-    top: 8px;
-    left: 200px;
-    width: 220px;
-    height: 60px;
-  }
   :global(.grid-cell .annotation--rev-3) {
     top: -8px;
     right: -8px;
