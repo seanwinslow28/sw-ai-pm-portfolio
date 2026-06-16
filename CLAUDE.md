@@ -52,7 +52,7 @@ The pre-build "Phase 0 / Phase 2 / all-specs-LOCKED" status that used to live he
 - **Color:** warm paper `#FFF9F0` + ink + teal `#0A3E42`; one splash color per section, never two.
 - **5 projects:** 2D Animation Pipeline, Code Brain, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
-- **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. No top nav on home (`noChrome={true}` per site-chrome spec).
+- **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. The full sticky SiteNav stays off on home (`noChrome={true}`), but a minimal corner nav (`HomeCornerNav.astro`, wordmark + work/about) sits top-right so recruiters know there's more (critique W2, 2026-06-16).
 - **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
 - **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
 
