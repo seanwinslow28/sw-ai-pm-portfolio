@@ -12,6 +12,32 @@
 
 ---
 
+## Status — ✅ COMPLETE (2026-06-16)
+
+All five tasks implemented via subagent-driven-development on `feat/2026-06-16-critique-w2-home-affordances-and-nav` (off `main`), each gated by a spec+quality review, then a clean whole-branch review and a browser visual-QA pass. Shipped as **PR [#25](https://github.com/seanwinslow28/sw-ai-pm-portfolio/pull/25)**.
+
+| Task | Status | Commit |
+|---|---|---|
+| 1 — Minimal corner nav (D2) | ✅ done | `1809f20` |
+| 2 — Enlarge projects dateline | ✅ done | `dc607f7` |
+| 3 — Remove "updated weekly" annotation | ✅ done | `ba6b01a` |
+| 4 — Swipe affordance + card-stack peek | ✅ done | `10d8063` |
+| 5 — Docs (CLAUDE.md + specs + CHANGELOG) | ✅ done | `c68956f` |
+
+(Base commit `fe48707` carries the critique-pass scaffolding — W1/W3 plans, execution spec, CLAUDE.md status — so the task commits stay focused.)
+
+**Verification:** `npm run build` green (full prebuild validate/fetch/crosslink chain + 34 pages). Browser visual QA (Playwright, desktop 1280px / 1024–1100px band / mobile 390px) confirmed: corner nav legible + pinned on scroll; enlarged dateline readable; no annotation; `← SWIPE ME` right-of-deck on desktop and visible **below** the deck on touch (computed `opacity:1`, centered); card-stack peek renders **behind** the front card.
+
+**Note on Task 4 Step 4 (tune offsets):** evaluated in the visual pass — the plan's starting rotation/offset values (`-3deg`/`2.5deg`, ±6px) read well at all widths, so **no tuning was needed**.
+
+**Nothing blocking remains.** Optional, deferred polish (logged, not required for merge):
+- Mobile `← SWIPE ME` is subtle and sits close to the busy fanned peek — could read a touch stronger.
+- `TeaserSwiper.astro` now has two `.teaser-swiper` rules (existing props + plan-mandated `{ z-index: 1 }`, no collision) — consolidate next time the file is touched.
+- Removing the `updated-weekly` CSS also dropped the `/* Pencil annotation positioning */` section comment above the surviving `rev-3`/`registration-mark` rules (cosmetic; could re-add).
+- The corner-nav CHANGELOG bullet's `§2.1 + §3.2` tag is slightly imprecise for the swipe-affordance item (it's a home-about-teaser §6.4 concern; already cross-referenced).
+
+---
+
 ## File Structure
 
 | File | Responsibility | Change |
@@ -32,7 +58,7 @@
 - Create: `src/components/chrome/HomeCornerNav.astro`
 - Modify: `src/pages/index.astro`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```astro
 ---
@@ -101,7 +127,7 @@ import { WORDMARK } from "~/lib/site";
 </style>
 ```
 
-- [ ] **Step 2: Mount it on the home page** — edit `src/pages/index.astro`
+- [x] **Step 2: Mount it on the home page** — edit `src/pages/index.astro`
 
 Find:
 ```astro
@@ -124,12 +150,12 @@ import HomeCornerNav from "~/components/chrome/HomeCornerNav.astro";
   <Hero />
 ```
 
-- [ ] **Step 3: Build + visual check (desktop + mobile widths)**
+- [x] **Step 3: Build + visual check (desktop + mobile widths)**
 
 Run: `npm run build` (expect success), then `npm run dev` → http://localhost:4321
 Expected: a small paper pill top-right reading `SW · work · about`, legible over the hero, links work, visible after the loading overlay clears. Check it doesn't cover the hero's key content at 1280px and at 390px.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/chrome/HomeCornerNav.astro src/pages/index.astro
@@ -143,7 +169,7 @@ git commit -m "feat(home): minimal corner nav (critique W2, D2)"
 **Files:**
 - Modify: `src/components/projects/DatelineLabel.astro`
 
-- [ ] **Step 1: Bump the label font size**
+- [x] **Step 1: Bump the label font size**
 
 Find:
 ```css
@@ -183,12 +209,12 @@ Replace with:
   }
 ```
 
-- [ ] **Step 2: Visual check**
+- [x] **Step 2: Visual check**
 
 Run: `npm run dev` → http://localhost:4321 → scroll to Projects.
 Expected: `WORK · 5 PIECES · UPDATED 2026-…` is clearly readable, not lost. Confirm it still fits on one line at desktop width; if it wraps awkwardly on mobile, it's acceptable to keep two lines but verify it reads cleanly.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/components/projects/DatelineLabel.astro
@@ -202,7 +228,7 @@ git commit -m "feat(projects): enlarge dateline label so it isn't missed (critiq
 **Files:**
 - Modify: `src/components/projects/ProjectsSection.astro`
 
-- [ ] **Step 1: Remove the annotation usage**
+- [x] **Step 1: Remove the annotation usage**
 
 Find:
 ```astro
@@ -218,7 +244,7 @@ Replace with:
     </div>
 ```
 
-- [ ] **Step 2: Remove its now-dead positioning CSS** (in the same file)
+- [x] **Step 2: Remove its now-dead positioning CSS** (in the same file)
 
 Find and delete this block:
 ```css
@@ -232,17 +258,17 @@ Find and delete this block:
 ```
 Leave the `.annotation--rev-3` and `.annotation--registration-mark` positioning blocks intact — those variants are still used.
 
-- [ ] **Step 3: Verify the import is still needed**
+- [x] **Step 3: Verify the import is still needed**
 
 `PencilAnnotation` is still used for `rev-3` and `registration-mark`, so keep its import. Confirm:
 Run: `grep -n "PencilAnnotation" src/components/projects/ProjectsSection.astro`
 Expected: the import line + the `rev-3` and `registration-mark` usages remain; no `updated-weekly` usage.
 
-- [ ] **Step 4: Build + visual check**
+- [x] **Step 4: Build + visual check**
 
 Run: `npm run build` (success), `npm run dev` → Projects section shows no "updated weekly" curved-arrow scribble near the dateline.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/projects/ProjectsSection.astro
@@ -259,7 +285,7 @@ Two edits: restyle/reposition `SwipeMeIndicator` to sit to the right of the deck
 - Modify (full rewrite): `src/components/teaser/SwipeMeIndicator.astro`
 - Modify: `src/components/teaser/TeaserSwiper.astro` (style block only)
 
-- [ ] **Step 1: Rewrite `SwipeMeIndicator.astro`** — right of the deck, left-pointing, visible on touch
+- [x] **Step 1: Rewrite `SwipeMeIndicator.astro`** — right of the deck, left-pointing, visible on touch
 
 ```astro
 ---
@@ -325,7 +351,7 @@ Two edits: restyle/reposition `SwipeMeIndicator` to sit to the right of the deck
 </style>
 ```
 
-- [ ] **Step 2: Add the card-stack peek cue** — edit the `<style>` in `TeaserSwiper.astro`
+- [x] **Step 2: Add the card-stack peek cue** — edit the `<style>` in `TeaserSwiper.astro`
 
 Find:
 ```css
@@ -381,16 +407,16 @@ Replace with:
   }
 ```
 
-- [ ] **Step 3: Build + visual check (desktop AND touch/narrow)**
+- [x] **Step 3: Build + visual check (desktop AND touch/narrow)**
 
 Run: `npm run build` (success), `npm run dev` → http://localhost:4321 → About teaser section.
 Expected (desktop): the deck reads as a stack of paper cards (faint edges peeking behind), and `← SWIPE ME` sits to the right, bobbing toward the deck. Expected (DevTools device mode / touch width): the indicator appears centered below the deck and the peek cue still shows. Confirm the `::before/::after` rectangles sit BEHIND the active card (not covering it) — if they bleed in front, re-check the `z-index` on `.teaser-swiper`.
 
-- [ ] **Step 4: Tune offsets if needed**
+- [x] **Step 4: Tune offsets if needed**
 
 The rotation/offset values (`-3deg`/`2.5deg`, ±6px) are a starting point. If the peek looks too strong or too subtle against the real cards, adjust the degrees/translate and re-verify. Keep it subtle — a hint, not a fan.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/teaser/SwipeMeIndicator.astro src/components/teaser/TeaserSwiper.astro
@@ -406,7 +432,7 @@ git commit -m "feat(teaser): obvious + touch-visible swipe affordance, card-stac
 - Modify: `docs/specs/site-chrome-spec-v1.md` and/or `docs/specs/home-about-teaser-spec-v1.md`
 - Modify: `CHANGELOG.md`
 
-- [ ] **Step 1: Update the locked decision in `CLAUDE.md`**
+- [x] **Step 1: Update the locked decision in `CLAUDE.md`**
 
 Find:
 ```
@@ -417,15 +443,15 @@ Replace with:
 - **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. The full sticky SiteNav stays off on home (`noChrome={true}`), but a minimal corner nav (`HomeCornerNav.astro`, wordmark + work/about) sits top-right so recruiters know there's more (critique W2, 2026-06-16).
 ```
 
-- [ ] **Step 2: Update the relevant spec(s)**
+- [x] **Step 2: Update the relevant spec(s)**
 
 In `site-chrome-spec-v1.md` (and `home-about-teaser-spec-v1.md` for the swipe affordance), note: the home now carries a minimal corner nav; the projects dateline was enlarged; the "updated weekly" annotation was removed; the teaser swipe affordance was repositioned, made touch-visible, and given a card-stack peek cue.
 
-- [ ] **Step 3: Add a CHANGELOG entry**
+- [x] **Step 3: Add a CHANGELOG entry**
 
 Per the `CHANGELOG.md` "How to add an entry" header, add a 2026-06-16 entry covering all four W2 changes.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add CLAUDE.md docs/specs/site-chrome-spec-v1.md docs/specs/home-about-teaser-spec-v1.md CHANGELOG.md
@@ -436,9 +462,9 @@ git commit -m "docs: record home affordances + corner nav (critique W2)"
 
 ## Self-Review (run before declaring W2 done)
 
-- [ ] A minimal corner nav appears top-right on the home page, legible over the hero, links to /work/ and /about/, keyboard-focusable.
-- [ ] The projects dateline is visibly larger and readable.
-- [ ] No "updated weekly" annotation in the projects section; `rev-3` + registration mark untouched.
-- [ ] The teaser deck reads as a swipeable stack (peek cue) with an obvious `← SWIPE ME` cue, visible on touch as well as desktop, reduced-motion safe.
-- [ ] `npm run build` green; visual check passed at desktop + narrow widths.
-- [ ] CLAUDE.md "no top nav on home" decision updated; spec(s) + CHANGELOG updated.
+- [x] A minimal corner nav appears top-right on the home page, legible over the hero, links to /work/ and /about/, keyboard-focusable.
+- [x] The projects dateline is visibly larger and readable.
+- [x] No "updated weekly" annotation in the projects section; `rev-3` + registration mark untouched.
+- [x] The teaser deck reads as a swipeable stack (peek cue) with an obvious `← SWIPE ME` cue, visible on touch as well as desktop, reduced-motion safe.
+- [x] `npm run build` green; visual check passed at desktop + narrow widths.
+- [x] CLAUDE.md "no top nav on home" decision updated; spec(s) + CHANGELOG updated.
