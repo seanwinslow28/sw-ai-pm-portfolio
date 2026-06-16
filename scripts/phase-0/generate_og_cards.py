@@ -261,7 +261,7 @@ def card_intent_engineering_mcp():
         out_path=os.path.join(OUT_DIR, "intent-engineering-mcp.png"),
         dateline="Boston · Case Study · 2026",
         title="Intent Engineering MCP",
-        hook="Drawing up agents to act with intent.",
+        hook="An MCP server that checks an agent's spec before it runs.",
         url_line="seanwinslow.com",
         slug_line="/work/intent-engineering-mcp/",
         splash=SPLASH_AMBER,

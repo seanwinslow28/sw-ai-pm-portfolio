@@ -25,6 +25,10 @@ const { explainer } = Astro.props;
     display: block;
     width: 100%;
     height: auto;
+    /* Canonical 16:9 for all explainer graphics — reserves height before the
+       image loads so the band doesn't shift between the 4Q and Methods bands
+       (CLS). All 5 assets are authored at 16:9 (critique W3). */
+    aspect-ratio: 16 / 9;
     border-radius: 4px;
   }
   .explainer-graphic figcaption {
