@@ -1,0 +1,41 @@
+---
+/**
+ * <ExplainerGraphic /> — the "what this does at a glance" figure on a case
+ * study, between the 4Q and Methods bands (critique W3). Renders only when
+ * the project's frontmatter carries an `explainer:` block.
+ */
+interface Props {
+  explainer: { src: string; alt: string; caption?: string };
+}
+const { explainer } = Astro.props;
+---
+
+<figure class="explainer-graphic">
+  <img src={explainer.src} alt={explainer.alt} loading="lazy" decoding="async" />
+  {explainer.caption && <figcaption>{explainer.caption}</figcaption>}
+</figure>
+
+<style>
+  .explainer-graphic {
+    max-width: 1120px;
+    margin: 56px auto 0;
+    padding: 0 24px;
+  }
+  .explainer-graphic img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .explainer-graphic figcaption {
+    margin: 12px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+  }
+  @media (max-width: 767px) {
+    .explainer-graphic { padding: 0 16px; margin-top: 40px; }
+  }
+</style>

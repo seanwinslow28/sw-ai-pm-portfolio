@@ -20,6 +20,7 @@ import TitleBlock from "~/components/case-study/TitleBlock.astro";
 import HeroMedia from "~/components/case-study/HeroMedia.astro";
 import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
+import ExplainerGraphic from "~/components/case-study/ExplainerGraphic.astro";
 import NextPrevNav from "~/components/case-study/NextPrevNav.astro";
 import CharacterCloseout from "~/components/case-study/CharacterCloseout.astro";
 
@@ -96,8 +97,7 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
       explanationUrl={data.explanation_url}
     />
 
-    {/* Explainer-graphic slot — wired in W3 (ExplainerGraphic.astro). Order per
-        critique spec §4.1: hero → 4Q → explainer graphic → methods. */}
+    {data.explainer && <ExplainerGraphic explainer={data.explainer} />}
 
     <MethodsStrip methods={data.methods} />
 
