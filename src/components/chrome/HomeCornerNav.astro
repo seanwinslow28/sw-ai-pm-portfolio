@@ -1,0 +1,64 @@
+---
+/**
+ * <HomeCornerNav /> — minimal home-only nav (critique W2, decision D2).
+ *
+ * The home page is intentionally chrome-free (BaseLayout noChrome={true}),
+ * but recruiters need a cue that there's more and a way to jump. This is a
+ * quiet paper pill in the top-right corner: wordmark + two jump links. It is
+ * NOT the full sticky SiteNav used on sub-pages.
+ */
+import { WORDMARK } from "~/lib/site";
+---
+
+<nav class="home-corner-nav" aria-label="Home navigation">
+  <a href="/" class="hc-wordmark" aria-label={`${WORDMARK} — home`}>{WORDMARK}</a>
+  <span class="hc-sep" aria-hidden="true">·</span>
+  <a href="/work/" class="hc-link">work</a>
+  <a href="/about/" class="hc-link">about</a>
+</nav>
+
+<style>
+  .home-corner-nav {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background-color: var(--paper);
+    border: 0.5px solid var(--border-paper);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .hc-wordmark {
+    font-weight: 700;
+    color: var(--teal);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .hc-sep { color: var(--ink-secondary); }
+  .hc-link {
+    font-weight: 500;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    line-height: 1;
+    border-bottom: 1px solid transparent;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  }
+  .hc-link:hover,
+  .hc-link:focus-visible { color: var(--teal); border-bottom-color: var(--stamp-amber); }
+  .hc-wordmark:focus-visible,
+  .hc-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+  @media (max-width: 640px) {
+    .home-corner-nav { top: 12px; right: 12px; gap: 10px; padding: 6px 10px; font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hc-link { transition: none; }
+  }
+</style>
