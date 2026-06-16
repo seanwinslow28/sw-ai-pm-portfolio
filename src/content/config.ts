@@ -14,6 +14,12 @@ const fourQ = z.object({
   learn: z.string(),
 });
 
+const explainer = z.object({
+  src: z.string(),          // /assets/projects/explainers/<slug>.webp
+  alt: z.string(),
+  caption: z.string().max(160).optional(),
+});
+
 const work = defineCollection({
   type: "content",
   schema: z.object({
@@ -44,6 +50,9 @@ const work = defineCollection({
     // scripts/validate_content.mjs since Zod can't express "one-of" cleanly.
     four_q: fourQ.optional(),
     explanation_url: z.string().url().optional(),
+
+    // --- Explainer graphic (critique W3, optional) ---
+    explainer: explainer.optional(),
 
     // --- Status-specific frontmatter (validator enforces presence per status) ---
     shipped_at: z.coerce.string().optional(),

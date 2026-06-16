@@ -22,6 +22,16 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 > - The **Opener** and the **Investigation Board** are **removed** (`Opener.astro` / `InvestigationBoard.astro` no longer rendered; the MDX bodies are now frontmatter-only). The artifacts (PRDDecision, SlackQuote, BoardArtifact, MetricChart) go with them.
 > - The **4Q** is **question-led**: no `─ 4Q ─` heading, no `A-1.Q1` frame prefixes, no `Q1/Q2` labels — each answer's question is its heading.
 > - **New band order:** `dateline → title (title + tagline) → status callout → hero → 4Q → explainer-graphic slot → Methods → next/prev`. The explainer-graphic band (one simple "what this does at a glance" image per project) is added between 4Q and Methods (`ExplainerGraphic.astro`, optional `explainer:` frontmatter — wired in W3).
+>   - **`explainer:` frontmatter shape** (added to the `work` schema in `src/content/config.ts`, **optional** — the band renders only when present, so a project with no `explainer:` block simply skips it):
+>     ```yaml
+>     explainer:
+>       src: /assets/projects/explainers/<slug>.webp   # required
+>       alt: "literal description of the graphic for screen readers"   # required
+>       caption: "one-line wire-service caption"        # optional, ≤160 chars
+>     ```
+>     `src` + `alt` are required; `caption` is optional (max 160). `<ExplainerGraphic />` renders a `<figure>` (lazy `<img>` + optional mono `<figcaption>`, max-width 1120px) only when `data.explainer` is present.
+>   - **Brand constraints every graphic must follow:** warm paper `#FFF9F0` background, ink + teal `#0A3E42`, pencil-test register; one splash accent max; no photoreal, no gradients; legible at ~1100px and on mobile; one clear concept (a small flow or single before/after, never a dense diagram); WebP, target < ~200 KB; real (literal) alt text.
+>   - **Status as of W3:** only the code path shipped — the `explainer:` schema field, `ExplainerGraphic.astro`, and the page slot. The 5 graphics themselves do **not** exist yet and no `work/*.mdx` carries an `explainer:` block, so the band currently renders on zero pages. The graphics are authored later in a separate, Sean-gated generation pass; each `work/*.mdx` gains its `explainer:` block as its graphic is approved.
 > - Status callouts (`ShippedStamp`, `ReturnConditionCallout`, the ARCHIVED preamble) are **kept**.
 > The §§2-6 anatomy diagram, vertical budgets, type table, and motion timeline below describe the pre-2026-06-16 layout and are retained as historical reference; where they conflict with this amendment, the amendment wins. Full design: [`docs/superpowers/specs/2026-06-16-portfolio-critique-execution-design.md`](../superpowers/specs/2026-06-16-portfolio-critique-execution-design.md).
 
