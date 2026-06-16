@@ -187,6 +187,8 @@ Bob animation: pure CSS keyframe.
 
 Reveals 1s after the section enters viewport (see §8).
 
+> **As-built deviation — critique W2, 2026-06-16:** The touch-hidden rule above was reversed. The `← SWIPE ME` indicator is now visible on touch devices (not hidden) so mobile visitors get an explicit affordance; the `hover: none` detection now styles rather than suppresses it. The indicator was also repositioned from inline-below the deck to the right edge of the card stack (matching the §6.1 3D cascade's right-open direction), and a card-stack peek cue was added — the second card's right edge is partially visible behind the front card, signaling swipeability before the user reads any label. Reduced-motion fallback (§6.5) unchanged. See [CHANGELOG.md](../../CHANGELOG.md).
+
 ### 6.5 Fallback (`prefers-reduced-motion`)
 
 Swipe physics disabled. The deck collapses to a tab-style affordance: `← prev` / `next →` buttons below the stack. Card change is an instant cross-fade (no transform). The CSS keyframe bob is removed. The 3D cascade is preserved (static), but no card moves except on button click. Keyboard navigation (§12) continues to work.

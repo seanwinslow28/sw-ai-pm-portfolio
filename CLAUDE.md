@@ -1,6 +1,6 @@
 # CLAUDE.md — sw-ai-pm-portfolio
 
-Sean Winslow's PM portfolio — third build. This file orients every Claude session. Read it first, then [`docs/specs/BLUEPRINT-COMPLETE.md`](docs/specs/BLUEPRINT-COMPLETE.md) for the spec graph + build sequence, then [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) for the strategic anchor.
+Sean Winslow's PM portfolio — third build, **now built and live on Vercel.** This file orients every Claude session. Read it first, then [`docs/specs/PORTFOLIO-MASTER-PLAN.md`](docs/specs/PORTFOLIO-MASTER-PLAN.md) for the strategic anchor. [`docs/specs/BLUEPRINT-COMPLETE.md`](docs/specs/BLUEPRINT-COMPLETE.md) is the historical build sequence — useful for *why* a surface is shaped the way it is, not a to-do list.
 
 ## What this is
 
@@ -27,36 +27,19 @@ Sean will invoke `pm-product-discovery:brainstorm` (or `superpowers:brainstormin
 
 Be a thinking partner, not an executor — challenge while exploring, amplify once committed, cross-pollinate from animation/game-design/PM. Brief and to the point, calm and factual, no trailing summaries. (Full communication baseline: [`docs/prompts-and-references/Sean-Winslow-Full-Personal-Context-v2.0.md`](docs/prompts-and-references/Sean-Winslow-Full-Personal-Context-v2.0.md) §Communication Baseline.)
 
-## Current status (2026-05-21)
+## Current status (2026-06-16)
 
-All 9 surface specs are LOCKED. The spec graph is internally consistent and build-ready. Phase 0 asset authoring is COMPLETE — the Astro 5 scaffold can begin immediately.
+**The site is fully built and live on Vercel.** All nine surfaces are shipped and rendering: Hero, Projects, Home About-teaser, About, Case study (`/work/<slug>`), Transactions ledger, Architecture, Essays, and site chrome (nav + footer + `/contact/` + 404). The Astro 5 + Tailwind 4 build runs through `npm run build` (with a `prebuild` validate/fetch/crosslink chain) and the Daily Driver agent auto-refreshes the daily-dated layer each morning. The work now is **iterating on the live site and adding new projects** — not scaffolding.
 
-| Surface | Status |
-|---|---|
-| Design philosophy | Locked — "an animator's pencil test, mounted in a Vercel-grade frame" |
-| Voice rules | Locked — incl. the parallel-lineage rule (PMP §3.1) |
-| Hero | **LOCKED** 2026-05-13; `math` → `loops` word swap 2026-05-20 |
-| Projects section | **LOCKED** 2026-05-13 |
-| Home About teaser (NEW) | **LOCKED** 2026-05-20 — 9-card swipeable character-deck between projects + footer |
-| About page | **LOCKED** 2026-05-20 (with v1 decorative deferrals per spec §1.2) |
-| Case study | **LOCKED** 2026-05-20 |
-| Transactions ledger | **LOCKED** 2026-05-20 |
-| Architecture | **LOCKED** 2026-05-20 |
-| Essays | **LOCKED** 2026-05-20 |
-| Site chrome (nav + footer + `/contact/` + 404) | **LOCKED** 2026-05-20 |
-| Texture + artifacts (paper substrate) | **LOCKED** — foundational asset-authoring spec |
-| PMP §10 cross-cutting decisions | All 6 remaining items LOCKED 2026-05-20 |
-| Hero character animation | 3.917s hero WebM rendered + prototype-validated; 9.2s loop for `/work/animation-pipeline` done |
-| Headshot for teaser deck | Captured + bg-matted to warm paper at [`reference-images/headshot-source/sean-headshot-v2.png`](reference-images/headshot-source/sean-headshot-v2.png) |
-| Teaser deck (all 10 cards) | **LOCKED 2026-05-20** — sources at [`reference-images/teaser-deck/`](reference-images/teaser-deck/) (PNG; WebP conversion at Phase 2 build). 1 photograph + pencil-test + 8 AI-style variations. Deck thesis tightened around cartoons-that-formed-my-taste. |
-| About page full-body character | **LOCKED 2026-05-20** at [`reference-images/about-full-body.png`](reference-images/about-full-body.png) — V1 of Sean's drawn canonical character (matches `2D-Character-Sketch-Sean-v1.png` palette) |
-| Hero intro icon cycle (replaces static hero-loop-poster) | **LOCKED 2026-05-20** — 8 pencil-test icons at [`reference-images/hero-icons/`](reference-images/hero-icons/) (loop, terminal, graph, pencil, sticky note, matrix, Claude mascot, coffee). 4.8s cycle plays once-per-session before WebM crossfades in. See hero-spec §7.5. |
-| Saturday-morning cartoon cels (about §11) | **LOCKED 2026-05-21** — 6 pencil-test cels at [`reference-images/about-cartoons/`](reference-images/about-cartoons/) (Tommy Pickles · Ash Ketchum · Rocko · Samurai Jack `break_grid:true` · Uncle Iroh · Jake the Dog). MDX frontmatter draft at [`reference-images/about-cartoons/cartoons-content-collection-draft.md`](reference-images/about-cartoons/cartoons-content-collection-draft.md). Authored via Gemini Nano Banana 2 / Approach B (style anchor + per-character reference). |
-| OG cards | **LOCKED 2026-05-21; S4 fixes 2026-05-30** — 4 cards (1200×630, ≤55KB each), authored at [`reference-images/og-cards/`](reference-images/og-cards/) and served from `public/` (`og-default.png` + `public/og-cards/`): og-default · vault-scorecard · intent-engineering-mcp (with SHIPPED 2026-05-12 stamp) · essays/meaning-over-access ("Access Over Meaning"). Generated via Python + Pillow + Newsreader/JetBrains Mono TTFs; script at [`scripts/phase-0/generate_og_cards.py`](scripts/phase-0/generate_og_cards.py). The dedicated vault-knowledge-mcp OG card is **deferred** until that surface ships (~6/4) with its own title-lock. |
-| Favicon set | **LOCKED 2026-05-21** — SW wordmark, JetBrains Mono 700, teal `#0A3E42` on warm paper `#FFF9F0`. SVG source + multi-res ICO (16/32/48) + apple-touch-icon.png (180×180) at [`reference-images/favicon/`](reference-images/favicon/). Raster script at [`scripts/phase-0/generate_favicons.py`](scripts/phase-0/generate_favicons.py). |
-| The build | Not started — **all specs locked, all Phase 0 assets authored**; Astro 5 scaffold is the next session. |
+The pre-build "Phase 0 / Phase 2 / all-specs-LOCKED" status that used to live here is **retired** — it described a site that didn't exist yet. The surface specs in `docs/specs/` are now **as-built references** (read them for *why* a surface is shaped the way it is). Where an active change supersedes a locked spec, the spec body + `CHANGELOG.md` get updated as part of that change.
 
-**Immediate next:** Phase 2 build session — Astro 5 scaffold + Tailwind 4 + hero + projects + teaser + footer. All Phase 0 assets are authored, all spec OPEN-N items resolved. Asset folders under `reference-images/` move to `/public/` at scaffold time. See [`docs/specs/BLUEPRINT-COMPLETE.md`](docs/specs/BLUEPRINT-COMPLETE.md) §6 Phase 2 build sequence.
+**Active work — 2026-06-16 hiring-manager critique pass.** A PM-lead friend reviewed the live site as a hiring manager. The execution design is at [`docs/superpowers/specs/2026-06-16-portfolio-critique-execution-design.md`](docs/superpowers/specs/2026-06-16-portfolio-critique-execution-design.md), broken into three independent plans in [`docs/superpowers/plans/`](docs/superpowers/plans/):
+
+1. **Project-page surgery + 4Q rewrites** — strip the cryptic header cluster (`role` / `IN FLIGHT` / `frame · status` / tags / anchor-metric) down to title + tagline; remove the Opener and Investigation Board; lead with the 4Q ("What is this?" first, no `A-1.Q1` prefixes, no `─ 4Q ─` heading); rewrite all 20 4Q answers grounded in real repo source. (Copy authored in `code-brain` via the voice chain; components edited here.)
+2. **Home affordances + nav** — add a minimal corner nav; enlarge the projects dateline; remove the "updated weekly" annotation; make the teaser-deck swipe affordance obvious and touch-visible.
+3. **Explainer graphics** — one simple test-first explainer graphic per project, between the 4Q and Methods bands.
+
+**Adding a project** is the other recurring task: a new `src/content/work/<slug>.mdx` (frontmatter + `four_q:`), a hero asset, and — going forward — an explainer graphic. The `order:` field sets its grid position.
 
 ## Locked decisions (quick reference)
 
@@ -69,7 +52,7 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 - **Color:** warm paper `#FFF9F0` + ink + teal `#0A3E42`; one splash color per section, never two.
 - **5 projects:** 2D Animation Pipeline, Code Brain, Intent Engineering MCP, The Block — Campus + RevOps, 16BitFit Battle Mode.
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
-- **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. No top nav on home (`noChrome={true}` per site-chrome spec).
+- **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. The full sticky SiteNav stays off on home (`noChrome={true}`), but a minimal corner nav (`HomeCornerNav.astro`, wordmark + work/about) sits top-right so recruiters know there's more (critique W2, 2026-06-16).
 - **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
 - **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
 
@@ -78,39 +61,54 @@ All 9 surface specs are LOCKED. The spec graph is internally consistent and buil
 ```
 sw-ai-pm-portfolio/
 ├── CLAUDE.md                              ← you are here
-├── CHANGELOG.md                           ← spec-change log (read before editing any spec)
+├── CHANGELOG.md                           ← change log (read before editing any spec or surface)
 ├── DESIGN.md                              ← design-system encoding (color, type, spacing, motion)
 ├── PRODUCT.md                             ← product context + positioning
-├── .claude/skills/                        ← local skills (gemini-pencil-animation, writing-voice-modes, etc.)
+├── AGENTS.md                              ← agent/automation notes
+├── astro.config.mjs · package.json · tsconfig.json   ← Astro 5 + Tailwind 4 build config
+├── .claude/skills/                        ← local skills (writing-voice-modes, writing-humanity-pass,
+│                                            gemini-image-gen, openai-image-gen, gemini-pencil-animation,
+│                                            image-generator-prompt-science, + BMAD/GDS/WDS bundles)
 ├── .env                                   ← API keys (Gemini, OpenAI, OpenRouter) — gitignored
+├── src/
+│   ├── pages/                             ← routes: index · about · contact · 404 · work/[slug]
+│   │   │                                    · transactions/* · architecture/* · essays/* (+ rss.xml)
+│   ├── layouts/BaseLayout.astro           ← the one layout (noChrome toggles the sticky nav off, e.g. home)
+│   ├── components/                        ← by surface:
+│   │   ├── hero/ · home/ · projects/      ←   home page (Hero, ProjectsSection, AboutTeaser, tiles)
+│   │   ├── case-study/                    ←   /work/[slug] bands (TitleBlock, HeroMedia, FourQBlock,
+│   │   │                                        MethodsStrip, Opener, InvestigationBoard, …)
+│   │   ├── teaser/                        ←   swipeable About-teaser deck (TeaserSwiper, SwipeMeIndicator)
+│   │   ├── chrome/                        ←   SiteNav, SiteFooter, SkipLink
+│   │   ├── about/ · transactions/ · architecture/ · essays/   ←   per-surface components
+│   │   ├── artifacts/ · annotations/      ←   case-study artifact + pencil-margin primitives
+│   ├── content/                           ← content collections (config.ts defines schemas):
+│   │   ├── work/                          ←   the 5 projects (frontmatter + four_q:) — add a project here
+│   │   ├── transactions/ · architecture/ · essays/ · cartoons/ · about/ · teaserDeck/
+│   ├── lib/                               ← site.ts (constants, email, wordmark) · dateline.ts (isFresh,
+│   │                                        BUILD_DATE) · publish-gate.ts
+│   ├── scripts/                           ← client JS: teaser-swiper.js · annotation-positioner.js
+│   └── styles/                            ← global.css + per-surface css
+├── public/
+│   ├── api/                               ← daily-dated layer JSON (dateline · about-pulse · next-piece
+│   │                                        · shipped-stats-<slug>) — written by code-brain's Daily Driver
+│   ├── assets/                            ← project hero media, textures, explainer graphics
+│   ├── og-cards/ · og-default.png · favicon.* · apple-touch-icon.png · robots.txt · rss/
+├── scripts/                              ← build-time Node: validate_content · fetch_canonical_sources
+│                                            · derive_crosslinks · validate_about (+ phase-0/ asset gens)
 ├── docs/
-│   ├── specs/                             ← all locked build specs
-│   │   ├── BLUEPRINT-COMPLETE.md          ← entry point synthesizing the spec graph — read second
-│   │   ├── PORTFOLIO-MASTER-PLAN.md       ← strategic anchor — read third
-│   │   ├── hero-spec-v1.md                ← LOCKED
-│   │   ├── projects-section-spec-v1.md    ← LOCKED
-│   │   ├── home-about-teaser-spec-v1.md   ← LOCKED 2026-05-20
-│   │   ├── case-study-spec-v1.md          ← LOCKED 2026-05-20
-│   │   ├── about-spec-v1.md               ← LOCKED 2026-05-20 (with v1 decorative deferrals per §1.2)
-│   │   ├── transactions-spec-v1.md        ← LOCKED 2026-05-20
-│   │   ├── architecture-spec-v1.md        ← LOCKED 2026-05-20
-│   │   ├── essays-spec-v1.md              ← LOCKED 2026-05-20
-│   │   ├── site-chrome-spec-v1.md         ← LOCKED 2026-05-20
-│   │   └── texture-and-artifacts-spec-v1.md  ← LOCKED (foundational paper-substrate spec)
+│   ├── specs/                             ← as-built surface references (read for WHY, not as a to-do):
+│   │   │                                    PORTFOLIO-MASTER-PLAN (strategic anchor) · BLUEPRINT-COMPLETE
+│   │   │                                    (historical build sequence) · hero · projects-section ·
+│   │   │                                    home-about-teaser · case-study · about · transactions ·
+│   │   │                                    architecture · essays · site-chrome · texture-and-artifacts
+│   │   └──  (specs get updated in place when an active change supersedes them)
+│   ├── superpowers/specs/ · superpowers/plans/   ← brainstorm design docs + implementation plans
 │   ├── prompts-and-references/            ← personal context, roadmaps, kickoff prompts
-│   │   └── Sean-Winslow-Full-Personal-Context-v2.0.md
-│   ├── impeccable-and-emil-design-critique.md  ← critique pass that drove 2026-05-19 fixes
-│   ├── previous-design-specs/             ← V3, V4 — superseded direction, useful foundations
-│   └── superpowers/                       ← superpowers skill artifacts
-├── reference-images/
-│   ├── 2D-Character-Sketch-Sean-v1.png    ← THE load-bearing character (§template trap #1)
-│   ├── headshot-source/                   ← Sean's photo + style refs for the teaser deck
-│   └── teaser-deck-trials/                ← in-progress + locked deck cards + prompts
-├── mynrd.co.uk-site-analysis/             ← DNA teardown of the #1 inspiration anchor
-├── sw-portfolio-animation-2026/           ← character animation working dir (hero WebM + assets)
-├── assets/                                ← generic project assets
-├── prototype/                             ← early hero code prototype (superseded by hero-spec-v1)
-└── .impeccable/                           ← impeccable critique config
+│   └── previous-design-specs/             ← V3, V4 — superseded direction, kept for foundations
+├── reference-images/                      ← source art; most production assets now live in public/assets/
+├── sw-portfolio-animation-2026/           ← character-animation working dir (hero WebM + assets)
+└── dist/                                  ← build output (gitignored)
 ```
 
 ## When you create or lock something
@@ -123,12 +121,13 @@ sw-ai-pm-portfolio/
 ## Skills in play
 
 - `pm-product-discovery:brainstorm` / `superpowers:brainstorming` — the planning mindset; Sean invokes per session
-- `.claude/skills/writing-voice-modes` — all portfolio copy is calibrated through this (5 voice modes: Sedaris / Thompson / Kerouac / Vonnegut / Sean Mode hybrid)
+- `.claude/skills/writing-voice-modes` — portfolio copy is voiced through this. Default is **Sean Mode** (Sean's own voice, ~90%, with Sedaris/Thompson/Kerouac/Vonnegut techniques borrowed ~10%); dial down for recruiter-facing copy by *substitution*, not subtraction. For the full copy chain (`storytelling-architecture` → voice-modes → `writing-critique` → LLM Council → `writing-humanity-pass`), run the writing work from `code-brain`, which carries the upstream/critique skills this repo doesn't.
+- `.claude/skills/writing-humanity-pass` — final scrub: strips AI tells, enforces no em-dashes. Run after voicing any copy.
 - `.claude/skills/gemini-pencil-animation-image-gen` — 2D pencil-test character art, anchored to [`reference-images/2D-Character-Sketch-Sean-v1.png`](reference-images/2D-Character-Sketch-Sean-v1.png)
-- `.claude/skills/gemini-image-gen` — general image generation (Nano Banana 2) for the teaser deck stylized cards
+- `.claude/skills/gemini-image-gen` (Nano Banana 2) + `.claude/skills/openai-image-gen` — image generation for stylized cards and the per-project explainer graphics
 - `.claude/skills/image-generator-prompt-science` — prompt-engineering reference for image gen
 
 ## Related context (outside this repo)
 
-- `/Users/seanwinslow/Code-Brain/code-brain/` — Sean's Claude Code command center (118 skills, 14 SDK agents). The portfolio's "daily-dated layer" (dateline, pulse strip, ledger row) and the universal footer all read from this fleet's outputs. The Daily Driver agent renders the four build-time JSON files (`public/api/dateline.json`, `next-piece.json`, `about-pulse.json`, `shipped-stats-<slug>.json`) from real measured fleet activity, runs the portfolio's own `npm run validate`, and — only if it passes — commits + pushes to `main` (Vercel auto-deploys) each morning.
+- `/Users/seanwinslow/Code-Brain/code-brain/` — Sean's Claude Code command center (a large skill library + an autonomous SDK agent fleet). The portfolio's "daily-dated layer" (dateline, pulse strip, ledger row) and the universal footer all read from this fleet's outputs. The Daily Driver agent renders the four build-time JSON files (`public/api/dateline.json`, `next-piece.json`, `about-pulse.json`, `shipped-stats-<slug>.json`) from real measured fleet activity, runs the portfolio's own `npm run validate`, and — only if it passes — commits + pushes to `main` (Vercel auto-deploys) each morning.
   - **Runbook:** [`code-brain/agents-sdk/docs/portfolio-refresh-runbook.md`](../code-brain/agents-sdk/docs/portfolio-refresh-runbook.md) is the source of truth for how this is wired — the data contract, the `isFresh` freshness gate (48h, anchored 08:30 ET), the validation gate, the push-only dedicated-worktree mechanism, the editorial `next_piece` / `shipped_stats` config knobs, and the failure-mode table. Read it before touching anything that produces or consumes `public/api/*.json`.

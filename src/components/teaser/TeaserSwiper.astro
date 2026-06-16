@@ -59,6 +59,35 @@ const { cards } = deck!.data;
     gap: 16px;
     margin-top: -40px;
   }
+  /* Card-stack peek cue (critique W2): two faint offset paper rectangles behind
+     the deck so it visibly reads as a flippable stack, not a render glitch.
+     Purely decorative, JS-independent — the swiper transforms live on the
+     cards inside .teaser-swiper, above these. */
+  .teaser-swiper-wrap::before,
+  .teaser-swiper-wrap::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: calc(50% - 160px);
+    width: 320px;
+    height: 427px;
+    border: 0.5px solid var(--border-paper);
+    border-radius: 8px;
+    background-color: var(--paper);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .teaser-swiper-wrap::before { transform: rotate(-3deg) translateX(-6px); }
+  .teaser-swiper-wrap::after  { transform: rotate(2.5deg) translateX(6px); }
+  .teaser-swiper { z-index: 1; }
+  @media (max-width: 1023px) {
+    .teaser-swiper-wrap::before,
+    .teaser-swiper-wrap::after { width: 290px; height: 387px; left: calc(50% - 145px); }
+  }
+  @media (max-width: 767px) {
+    .teaser-swiper-wrap::before,
+    .teaser-swiper-wrap::after { width: 260px; height: 347px; left: calc(50% - 130px); }
+  }
 
   .teaser-swiper {
     position: relative;
