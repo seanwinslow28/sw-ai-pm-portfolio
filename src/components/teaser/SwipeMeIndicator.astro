@@ -1,14 +1,23 @@
 ---
-/* Spec §6.4 — desktop-only swipe affordance. */
+/* Swipe affordance — critique W2. Sits to the right of the deck, points back
+ * at it, and now shows on touch devices too (the friend on a touch screen
+ * read the stacked deck as a glitch because the old indicator was
+ * desktop-only and below the deck). */
 ---
 
 <div class="swipe-me" aria-hidden="true">
+  <span class="chevron">&larr;</span>
   <span class="caption">SWIPE ME</span>
-  <span class="chevron">→</span>
 </div>
 
 <style>
+  /* The deck (320px) is centered inside a wider wrap, so anchor off the
+     wrap center + half the deck width + a gap, not the wrap's right edge. */
   .swipe-me {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 172px);
+    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -17,37 +26,36 @@
     font-weight: 500;
     letter-spacing: 1.0px;
     color: var(--teal);
+    white-space: nowrap;
     opacity: 0;
-    /* Reveal 1s after section enters viewport — coordinated by AboutTeaser.astro. */
     animation:
       swipe-me-fade-in 400ms linear 1000ms forwards,
       swipe-me-bob 2s ease-in-out 1400ms infinite;
   }
+  .chevron { font-size: 16px; line-height: 1; }
 
-  .chevron {
-    font-size: 14px;
-    line-height: 1;
-  }
-
-  @keyframes swipe-me-fade-in {
-    to { opacity: 1; }
-  }
+  @keyframes swipe-me-fade-in { to { opacity: 1; } }
   @keyframes swipe-me-bob {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-8px); }
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50%      { transform: translateY(-50%) translateX(-6px); }
   }
 
-  /* Touch devices: hide entirely. */
-  @media (hover: none) {
+  /* On narrow / touch layouts there's no room to the right of the deck —
+     drop it below the deck, centered, still visible (the ≤1023px deck is
+     290px and the wrap stops being offset, so static flow is correct). */
+  @media (max-width: 1023px) {
     .swipe-me {
-      display: none;
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+      justify-content: center;
+      margin-top: 12px;
+      animation: swipe-me-fade-in 400ms linear 1000ms forwards;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .swipe-me {
-      animation: none;
-      opacity: 1;
-    }
+    .swipe-me { animation: none; opacity: 1; }
   }
 </style>
