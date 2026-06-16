@@ -2,13 +2,13 @@
 /**
  * /work/[slug] — case-study page.
  *
- * Composes the 6-band chrome around the MDX body per case-study-spec §2:
- *   dateline → title block → hero media → status preamble (if any) →
- *   opener → investigation board → Methods strip → 4Q block → next/prev
+ * Composes the chrome bands per case-study-spec §2 (2026-06-16 critique
+ * redesign):
+ *   dateline → title block (title + tagline) → status preamble (if any) →
+ *   hero media → 4Q block → explainer-graphic slot → Methods strip → next/prev
  *
- * The MDX body supplies the opener prose + the investigation-board
- * artifact components + any pencil-margin annotations. Frontmatter
- * supplies the chrome and the four_q closer.
+ * The Opener and Investigation Board were removed 2026-06-16; the MDX body is
+ * no longer rendered. Frontmatter supplies the chrome and the four_q closer.
  *
  * Source: case-study-spec-v1.md §2 + §12.
  */
@@ -18,8 +18,6 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import DatelineStrip from "~/components/case-study/DatelineStrip.astro";
 import TitleBlock from "~/components/case-study/TitleBlock.astro";
 import HeroMedia from "~/components/case-study/HeroMedia.astro";
-import Opener from "~/components/case-study/Opener.astro";
-import InvestigationBoard from "~/components/case-study/InvestigationBoard.astro";
 import MethodsStrip from "~/components/case-study/MethodsStrip.astro";
 import FourQBlock from "~/components/case-study/FourQBlock.astro";
 import NextPrevNav from "~/components/case-study/NextPrevNav.astro";
@@ -30,10 +28,6 @@ import ShippedNow from "~/components/case-study/ShippedNow.astro";
 import ReturnConditionCallout from "~/components/case-study/ReturnConditionCallout.astro";
 import FrameTheWorkPreamble from "~/components/case-study/FrameTheWorkPreamble.astro";
 
-import PRDDecision from "~/components/artifacts/PRDDecision.astro";
-import SlackQuote from "~/components/artifacts/SlackQuote.astro";
-import BoardArtifact from "~/components/artifacts/BoardArtifact.astro";
-import MetricChart from "~/components/artifacts/MetricChart.astro";
 import Annotation from "~/components/annotations/Annotation.astro";
 
 export async function getStaticPaths() {
@@ -55,7 +49,6 @@ const { entry, prev, next } = Astro.props as {
   next: Awaited<ReturnType<typeof getCollection<"work">>>[number];
 };
 const { data } = entry;
-const { Content } = await entry.render();
 
 const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`;
 ---
@@ -70,16 +63,7 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
     <DatelineStrip body={datelineBody} />
 
     <div class="title-block-wrap">
-      <TitleBlock
-        frame={data.frame}
-        title={data.title}
-        status={data.status}
-        tags={data.tags}
-        role={data.role}
-        dateStarted={data.date_started}
-        dateActiveThrough={data.date_active_through}
-        anchorMetric={data.anchor_metric}
-      />
+      <TitleBlock title={data.title} tagline={data.tagline} />
       {data.status === "SHIPPED" && data.shipped_at && (
         <ShippedStamp shippedAt={data.shipped_at} />
       )}
@@ -106,26 +90,16 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
       heroMediaAlt={data.hero_media_alt}
     />
 
-    <Content
-      components={{
-        Opener,
-        InvestigationBoard,
-        PRDDecision,
-        SlackQuote,
-        BoardArtifact,
-        MetricChart,
-        Annotation,
-      }}
-    />
-
-    <MethodsStrip methods={data.methods} />
-
     <FourQBlock
-      frame={data.frame}
       slug={entry.slug}
       fourQ={data.four_q}
       explanationUrl={data.explanation_url}
     />
+
+    {/* Explainer-graphic slot — wired in W3 (ExplainerGraphic.astro). Order per
+        critique spec §4.1: hero → 4Q → explainer graphic → methods. */}
+
+    <MethodsStrip methods={data.methods} />
 
     <CharacterCloseout />
 
