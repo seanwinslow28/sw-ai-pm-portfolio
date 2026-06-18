@@ -17,7 +17,10 @@ const { explainer } = Astro.props;
 
 <style>
   .explainer-graphic {
-    max-width: 1120px;
+    /* 928px container − 48px (0 24px) gutters = ~880px rendered figure, so the
+       graphic sits a touch wider than the 720px prose column but stays clearly
+       contained instead of overhanging the writing (critique follow-up). */
+    max-width: 928px;
     margin: 56px auto 0;
     padding: 0 24px;
   }
