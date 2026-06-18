@@ -32,6 +32,7 @@ const work = defineCollection({
     hero_media: z.string(),
     hero_media_type: z.enum(["video", "image"]),
     hero_media_alt: z.string(),
+    hero_media_position: z.string().optional(),  // CSS object-position for the case-study hero crop; defaults to "center"
     order: z.number().int().min(1).max(5),
     date_started: z.coerce.string().optional(),
     date_active_through: z.coerce.string().optional(),
