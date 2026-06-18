@@ -51,6 +51,15 @@ function bostonTodayISO() {
 }
 const TODAY_ISO = bostonTodayISO();
 
+// Vercel sets VERCEL=1 and VERCEL_ENV to "production" | "preview" | "development".
+// The stale-dateline gate must stay fatal where it guards the live site:
+// production builds, and local / Daily-Driver runs (VERCEL unset). On *preview*
+// builds (feature branches) the daily-dated layer is frozen at the branch's last
+// refresh — the Daily Driver only updates main — so a stale dateline is expected
+// and should warn, not block the preview URL.
+const IS_VERCEL_PREVIEW =
+  process.env.VERCEL === "1" && process.env.VERCEL_ENV !== "production";
+
 function daysBetween(isoA, isoB) {
   return Math.round(
     (Date.parse(`${isoB}T12:00:00Z`) - Date.parse(`${isoA}T12:00:00Z`)) / 86400000
@@ -567,7 +576,11 @@ async function main() {
   // Daily Driver writes it ~08:30 ET). A stale date on the hero quietly
   // undercuts the whole "real and dated" thesis, so guard it:
   //   - stale by 1 day  → warn (normal pre-08:30 window; run the driver)
-  //   - stale by 2+ days → hard error (clearly forgotten; do not ship)
+  //   - stale by 2+ days → hard error on production + local/Daily-Driver runs
+  //     (clearly forgotten; do not ship), but a warning on Vercel *preview*
+  //     builds — feature branches freeze the daily-dated layer at branch time,
+  //     so a stale dateline there isn't the branch's fault and shouldn't block
+  //     its preview URL. See IS_VERCEL_PREVIEW above.
   // Flip the 1-day case to an error once the deploy is wired to fire after
   // the 08:30 write.
   process.stdout.write(`\n[dateline freshness]\n`);
@@ -580,7 +593,12 @@ async function main() {
     } else {
       const staleDays = daysBetween(dl.date_iso, TODAY_ISO);
       if (staleDays >= 2) {
-        allErrors.push(`dateline.json: date_iso ${dl.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}). Run the Daily Driver before deploying — a stale hero date undercuts the dated-fleet thesis.`);
+        const detail = `dateline.json: date_iso ${dl.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}).`;
+        if (IS_VERCEL_PREVIEW) {
+          warnings.push(`${detail} Preview build — hero dateline is frozen at this branch's last refresh; rebase on main (or run the Daily Driver) to make it current.`);
+        } else {
+          allErrors.push(`${detail} Run the Daily Driver before deploying — a stale hero date undercuts the dated-fleet thesis.`);
+        }
       } else if (staleDays === 1) {
         warnings.push(`dateline.json: date_iso ${dl.date_iso} is 1 day stale (today ${TODAY_ISO}). Run the Daily Driver before deploying so the hero dateline is current.`);
       } else {
