@@ -53,7 +53,7 @@ const { methods } = Astro.props;
 <style>
   .methods-strip {
     margin: 80px auto 0;
-    max-width: 1120px;
+    max-width: var(--cs-measure-read);
     padding: 0 24px;
   }
 
@@ -66,6 +66,9 @@ const { methods } = Astro.props;
     opacity: 0.8;
     text-transform: uppercase;
     margin: 0 0 24px;
+    /* Centered over the table — a lone "─ METHODS ─" reads as composed, not
+     * stranded at the left of the column (2026-06-19, Sean). */
+    text-align: center;
   }
 
   table {

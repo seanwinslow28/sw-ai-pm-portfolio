@@ -3,12 +3,16 @@
  * /work/[slug] — case-study page.
  *
  * Composes the chrome bands per case-study-spec §2 (2026-06-16 critique
- * redesign):
- *   dateline → title block (title + tagline) → status preamble (if any) →
- *   hero media → 4Q block → explainer-graphic slot → Methods strip → next/prev
+ * redesign; 2026-06-19 masthead pass):
+ *   dateline → title block (title + tagline) → hero media →
+ *   status callout (SHIPPED stats / PAUSED return-condition, below the hero) →
+ *   4Q block → explainer-graphic slot → Methods strip → next/prev
  *
  * The Opener and Investigation Board were removed 2026-06-16; the MDX body is
- * no longer rendered. Frontmatter supplies the chrome and the four_q closer.
+ * no longer rendered. 2026-06-19: the SHIPPED corner stamp and the ARCHIVED
+ * "prior role" preamble were removed, and the SHIPPED/PAUSED callouts moved
+ * below the hero so they don't crowd the masthead. Frontmatter supplies the
+ * chrome and the four_q closer.
  *
  * Source: case-study-spec-v1.md §2 + §12.
  */
@@ -24,10 +28,8 @@ import ExplainerGraphic from "~/components/case-study/ExplainerGraphic.astro";
 import NextPrevNav from "~/components/case-study/NextPrevNav.astro";
 import CharacterCloseout from "~/components/case-study/CharacterCloseout.astro";
 
-import ShippedStamp from "~/components/case-study/ShippedStamp.astro";
 import ShippedNow from "~/components/case-study/ShippedNow.astro";
 import ReturnConditionCallout from "~/components/case-study/ReturnConditionCallout.astro";
-import FrameTheWorkPreamble from "~/components/case-study/FrameTheWorkPreamble.astro";
 
 import Annotation from "~/components/annotations/Annotation.astro";
 
@@ -65,24 +67,7 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
 
     <div class="title-block-wrap">
       <TitleBlock title={data.title} tagline={data.tagline} />
-      {data.status === "SHIPPED" && data.shipped_at && (
-        <ShippedStamp shippedAt={data.shipped_at} />
-      )}
     </div>
-
-    {data.status === "SHIPPED" && data.shipped_stats_endpoint && (
-      <ShippedNow slug={entry.slug} shippedStatsEndpoint={data.shipped_stats_endpoint} />
-    )}
-
-    {data.status === "PAUSED" && data.return_condition && (
-      <ReturnConditionCallout returnCondition={data.return_condition} />
-    )}
-
-    {data.status === "ARCHIVED" && (
-      <FrameTheWorkPreamble>
-        <p>{data.tagline ?? "Two years of B2B and infrastructure work. Frame the work, not the exit."}</p>
-      </FrameTheWorkPreamble>
-    )}
 
     <HeroMedia
       slug={entry.slug}
@@ -91,6 +76,18 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
       heroMediaAlt={data.hero_media_alt}
       heroMediaPosition={data.hero_media_position}
     />
+
+    {/* Status callouts sit below the hero so they don't crowd the masthead
+        (2026-06-19, Sean): SHIPPED stats card + PAUSED return-condition box.
+        The SHIPPED corner stamp + the ARCHIVED "prior role" preamble were
+        removed the same pass. */}
+    {data.status === "SHIPPED" && data.shipped_stats_endpoint && (
+      <ShippedNow slug={entry.slug} shippedStatsEndpoint={data.shipped_stats_endpoint} />
+    )}
+
+    {data.status === "PAUSED" && data.return_condition && (
+      <ReturnConditionCallout returnCondition={data.return_condition} />
+    )}
 
     <FourQBlock
       slug={entry.slug}
@@ -130,28 +127,14 @@ const datelineBody = `${data.title.toLowerCase()}, ${data.status.toLowerCase()}`
     position: relative;
   }
   .title-block-wrap {
+    /* Full-width relative wrapper; the masthead inside reads from the left at
+     * 1120 (TitleBlock), and the ShippedStamp anchors to the page right margin
+     * as before. The right-margin status accent was removed 2026-06-19. */
     position: relative;
   }
 
-  /* Status-driven right-margin accent per case-study-spec §5 */
-  .case-study::before {
-    content: "";
-    position: absolute;
-    top: 100px;
-    right: 24px;
-    bottom: 100px;
-    width: 1px;
-    background-color: rgba(10, 62, 66, 0.4);
-    pointer-events: none;
-  }
-  @media (max-width: 1023px) {
-    .case-study::before { display: none; }
-  }
-  .case-study-archived::before { opacity: 0.5; }
-  .case-study-paused::before    { opacity: 0.7; }
-
   .page-closeout {
-    max-width: 1120px;
+    max-width: var(--cs-measure-media);
     margin: 80px auto 0;
     padding: 0 24px;
     height: 24px;

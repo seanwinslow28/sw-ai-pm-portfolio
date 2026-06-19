@@ -17,10 +17,11 @@ const { explainer } = Astro.props;
 
 <style>
   .explainer-graphic {
-    /* 928px container − 48px (0 24px) gutters = ~880px rendered figure, so the
-       graphic sits a touch wider than the 720px prose column but stays clearly
-       contained instead of overhanging the writing (critique follow-up). */
-    max-width: 928px;
+    /* Media spine (--cs-measure-media = 928px container − 48px gutters = ~880px
+       rendered figure), so the graphic sits a touch wider than the ~672px read
+       column but stays on the same centered axis as the hero (critique
+       follow-up + 2026-06-19 centered-spine pass). */
+    max-width: var(--cs-measure-media);
     margin: 56px auto 0;
     padding: 0 24px;
   }
@@ -41,6 +42,9 @@ const { explainer } = Astro.props;
     letter-spacing: 0.6px;
     color: var(--ink-secondary);
     text-transform: uppercase;
+    /* Centered under the graphic — a lone one-line caption reads as composed,
+     * not stranded at the left of the wide figure (2026-06-19, Sean). */
+    text-align: center;
   }
   @media (max-width: 767px) {
     .explainer-graphic { padding: 0 16px; margin-top: 40px; }
