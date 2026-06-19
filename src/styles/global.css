@@ -43,6 +43,13 @@
   --space-xl: 60px;
   --space-xxl: 80px;
 
+  /* Case-study measures — the centered two-tier spine (DESIGN.md §3).
+   * Read = the reading column container (≈672px content after 24px gutters);
+   * media = the visual column container (≈880px content). Both centered on one
+   * axis so the page reads as a single spine, not left/center alternation. */
+  --cs-measure-read: 720px;
+  --cs-measure-media: 928px;
+
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);

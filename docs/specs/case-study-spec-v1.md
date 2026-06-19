@@ -29,10 +29,10 @@ A landed-from-the-tile editorial dossier — investigation board of real artifac
 >       alt: "literal description of the graphic for screen readers"   # required
 >       caption: "one-line wire-service caption"        # optional, ≤160 chars
 >     ```
->     `src` + `alt` are required; `caption` is optional (max 160). `<ExplainerGraphic />` renders a `<figure>` (lazy `<img>` + optional mono `<figcaption>`, max-width 1120px) only when `data.explainer` is present.
+>     `src` + `alt` are required; `caption` is optional (max 160). `<ExplainerGraphic />` renders a `<figure>` (lazy `<img>` + optional mono `<figcaption>`, max-width `var(--cs-measure-media)` = 928px, the media spine) only when `data.explainer` is present.
 >   - **Brand constraints every graphic must follow:** warm paper `#FFF9F0` background, ink + teal `#0A3E42`, pencil-test register; one splash accent max; no photoreal, no gradients; legible at ~1100px and on mobile; one clear concept (a small flow or single before/after, never a dense diagram); WebP, target < ~200 KB; real (literal) alt text.
 >   - **Status as of W3:** only the code path shipped — the `explainer:` schema field, `ExplainerGraphic.astro`, and the page slot. The 5 graphics themselves do **not** exist yet and no `work/*.mdx` carries an `explainer:` block, so the band currently renders on zero pages. The graphics are authored later in a separate, Sean-gated generation pass; each `work/*.mdx` gains its `explainer:` block as its graphic is approved.
-> - Status callouts (`ShippedStamp`, `ReturnConditionCallout`, the ARCHIVED preamble) are **kept**.
+> - Status callouts (2026-06-19 masthead pass): the `ShippedStamp` corner stamp and the ARCHIVED `FrameTheWorkPreamble` ("prior role" line, which duplicated the tagline) are **removed**. `ShippedNow` (the SHIPPED stats card) and `ReturnConditionCallout` (the PAUSED box) are **kept but moved below the hero**, so they no longer crowd the masthead. (The ARCHIVED page — The Block — also dropped its compound title: `title: The Block`, `tagline: Campus + RevOps. B2B PM work.`)
 > The §§2-6 anatomy diagram, vertical budgets, type table, and motion timeline below describe the pre-2026-06-16 layout and are retained as historical reference; where they conflict with this amendment, the amendment wins. Full design: [`docs/superpowers/specs/2026-06-16-portfolio-critique-execution-design.md`](../superpowers/specs/2026-06-16-portfolio-critique-execution-design.md).
 
 ## 2. Anatomy
@@ -150,7 +150,7 @@ Six bands. Top to bottom: **dateline strip → title block → hero media → op
 | **Role + in-flight** | 24px + 16px margin | mono, role pill on left, date range on right |
 | **Title block** | ~220px total | frame (mono 14px) → status pill (mono 12px) → title (Newsreader, `clamp(48px, 5.6vw, 84px)`) → tags (mono 12px) → anchor metric (mono 18px, right-aligned) |
 | Gap | 48px | |
-| **Hero media** | 16:9 box, max-width 1120px, centered | View Transition target |
+| **Hero media** | 16:9 box, max-width 1120px (the wider feature shot), centered | View Transition target |
 | Gap | 64px | |
 | **Opener** | 3 paragraphs, 22-24px Newsreader, max-width 680px | |
 | Gap | 80px | |
@@ -166,6 +166,14 @@ Six bands. Top to bottom: **dateline strip → title block → hero media → op
 | **Page height** | ~3300-3800px typical | scroll-friendly, not 100vh-fixed |
 
 The page is a long-form scroll, not a hero-and-CTA. Recruiter scans the title block + hero media + first opener paragraph, then either bounces or commits to the artifact thread.
+
+**Layout measures (as-built 2026-06-19 — supersedes the per-row widths in the table above, which predate the W1 surgery + this pass).** Three widths, all centered on one axis (`margin: <v> auto`), defined as tokens in `global.css`:
+
+- **Left masthead — `1120px` container, content reading from the left:** the dateline strip + title block (title + tagline). The masthead deliberately reads from the left edge (aligned with the hero's left edge); the body below it centers inward. The intended eye-path is left masthead → centered body as you scroll.
+- **Read column — `var(--cs-measure-read)` (720px container ≈ 672px content):** 4Q, Methods, and the status callouts (`ShippedNow`, `ReturnConditionCallout`, ARCHIVED preamble).
+- **Media column — `var(--cs-measure-media)` (928px container ≈ 880px content):** explainer graphic, next/prev nav, character closeout, page closeout. The **hero media is the one wider exception at `1120px`** — the feature shot, centered on the same axis.
+
+**Text stays left-aligned within each column** (long-form prose is more readable left-aligned, per DESIGN.md §3; never center body) — the two exceptions are the explainer **caption** and the **`─ METHODS ─` heading**, which are `text-align: center` because a lone one-line label reads as composed rather than stranded at the column's left. This kills the old left/center wobble in the body while keeping the masthead's deliberate left start. The right-margin status accent (formerly §5) was **removed** this pass.
 
 ### Mobile (<768px)
 
@@ -239,7 +247,7 @@ The rule: **personal warmth lives in the opener and the 4Q's "What did I learn?"
 | Amber mid-stop | `#FAC775` | Frame numbers, registration marks, artifact borders |
 | Success teal | `#0F6E56` | SHIPPED status pill only |
 | Border whisper | `rgba(10, 62, 66, 0.15)` | Dateline divider, Methods table grid, torn-paper shadow |
-| Right-margin accent | `rgba(10, 62, 66, 0.4)` | 1px column down the right edge (desktop only) — visual rhyme back to the projects-section teal |
+| ~~Right-margin accent~~ | — | **Removed 2026-06-19.** Was a 1px teal column down the page's right edge; re-anchoring it to the centered spine made it loud, so Sean cut it entirely. |
 
 ### Status variants
 
