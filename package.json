@@ -29,7 +29,9 @@
     "astro-google-fonts-optimizer": "^0.2.2",
     "astro-mermaid": "^2.0.1",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "rough-notation": "^0.5.1",
+    "roughjs": "^4.6.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

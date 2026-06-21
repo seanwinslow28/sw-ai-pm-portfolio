@@ -18,6 +18,7 @@ const explainer = z.object({
   src: z.string(),          // /assets/projects/explainers/<slug>.webp
   alt: z.string(),
   caption: z.string().max(160).optional(),
+  interactive: z.string().optional(),  // names an interactive variant component; static src is the fallback
 });
 
 const work = defineCollection({

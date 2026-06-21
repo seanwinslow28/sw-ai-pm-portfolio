@@ -1,0 +1,335 @@
+---
+/**
+ * <IntentExplainer /> — interactive variant of the intent-engineering-mcp
+ * case-study explainer (rollout §3, build #2, 2026-06-20). Consumes the shared
+ * <InteractiveExplainer/> base for chrome + the progressive-enhancement contract;
+ * owns the "tighten the spec, watch the score" interaction.
+ *
+ * Concept: one slider = spec quality (vague → tight). Dragging right resolves a
+ * scribbled spec card into a clean 9-section checklist (sections check off one at
+ * a time), climbs the AUDIT score 7/25 → 23/25 (the real number — the MCP scores
+ * its own spec 23/25), and — only near the very top, once the structure is
+ * actually done — flips the agent glyph from building-the-wrong-thing to
+ * building-the-right-thing, with rough-notation drawing a stamp-amber circle on
+ * the final score. Predict-then-check: intent quality, not model smarts, decides
+ * the outcome.
+ *
+ * Art: one Gemini graphite sheet (scripts/gen-explainer-intent.sh) cropped + keyed
+ * into four registered transparent pieces (vague card | checklist card | wrong
+ * glyph | right glyph). The cards cross-fade in place; the glyphs flip. The score
+ * and the checkmarks are LIVE (text / SVG), so they animate, recolor on real
+ * tokens, and stay screen-reader-accessible — they are NOT baked into the art.
+ *
+ * Progressive enhancement: no-JS / prefers-reduced-motion shows the static
+ * intent-engineering-mcp.webp (the honest final state) with the scrubber hidden.
+ */
+import InteractiveExplainer from "./InteractiveExplainer.astro";
+
+interface Props {
+  /** Frontmatter static src — the no-JS / reduced-motion fallback image. */
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+
+const V = "?v=2026-06-20";
+const vagueArt = `/assets/projects/explainers/intent-engineering-mcp-vague.webp${V}`;
+const checklistArt = `/assets/projects/explainers/intent-engineering-mcp-checklist.webp${V}`;
+const agentWrongArt = `/assets/projects/explainers/intent-engineering-mcp-agent-wrong.webp${V}`;
+const agentRightArt = `/assets/projects/explainers/intent-engineering-mcp-agent-right.webp${V}`;
+
+// Calibrated checkbox y-centers (% of the checklist card), measured from the
+// keyed art by alpha scan. Box x-center is ~12% (set in CSS).
+const CHECK_TOPS = [17.5, 25.8, 34.0, 42.4, 50.7, 59.0, 67.4, 75.6, 83.9];
+---
+
+<InteractiveExplainer
+  variant="intent-engineering-mcp"
+  aspectRatio="16 / 9"
+  scrub={{
+    title: "Spec quality",
+    hint: "Drag to tighten the spec →",
+    ariaLabel:
+      "Drag to tighten the spec from vague to tight and watch the audit score climb from 7 to 23 out of 25",
+    ticks: ["Vague", "Tight"],
+  }}
+>
+  {/* no-JS / reduced-motion floor — the honest final state */}
+  <img class="intent-static" src={src} alt={alt} draggable="false" decoding="async" />
+
+  {/* interactive layers — revealed only when JS adds is-interactive */}
+  <div class="intent-interactive">
+    {/* spec card: vague scribble cross-fades to the clean checklist, in place */}
+    <div class="intent-cards">
+      <img
+        class="intent-card intent-vague"
+        src={vagueArt}
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+        decoding="async"
+      />
+      <img
+        class="intent-card intent-checklist"
+        src={checklistArt}
+        alt={alt}
+        draggable="false"
+        decoding="async"
+      />
+      {CHECK_TOPS.map((top) => (
+        <svg class="intent-check" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={`top: ${top}%`}>
+          <path
+            d="M4 13 l5 5 l11 -13"
+            stroke="var(--teal)"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      ))}
+    </div>
+
+    {/* connecting arrows (always on) */}
+    <svg class="intent-arrow intent-arrow-1" viewBox="0 0 40 16" fill="none" aria-hidden="true">
+      <line x1="1" y1="8" x2="32" y2="8" stroke="var(--ink-secondary)" stroke-width="1.5" />
+      <path d="M28 3 l6 5 l-6 5" stroke="var(--ink-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <svg class="intent-arrow intent-arrow-2" viewBox="0 0 40 16" fill="none" aria-hidden="true">
+      <line x1="1" y1="8" x2="32" y2="8" stroke="var(--ink-secondary)" stroke-width="1.5" />
+      <path d="M28 3 l6 5 l-6 5" stroke="var(--ink-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+    {/* AUDIT stamp + the live score (the hero) */}
+    <div class="intent-score" aria-hidden="true">
+      <span class="intent-audit">Audit</span>
+      <span class="intent-score-num"><span data-score>7</span><span class="intent-den">/25</span></span>
+    </div>
+
+    {/* agent glyph: builds the wrong thing until the spec is actually tight */}
+    <div class="intent-agent">
+      <img class="intent-agent-glyph intent-agent-wrong" src={agentWrongArt} alt="" aria-hidden="true" draggable="false" decoding="async" />
+      <img class="intent-agent-glyph intent-agent-right" src={agentRightArt} alt="" aria-hidden="true" draggable="false" decoding="async" />
+    </div>
+  </div>
+
+  {/* the live score, announced politely to screen readers */}
+  <span class="ie-sr-only" aria-live="polite" data-score-sr>Spec quality score: 7 of 25.</span>
+</InteractiveExplainer>
+
+<style>
+  /* Layers are slotted into the base stage, so they keep this component's scope;
+     the is-interactive toggles wrap the base-rendered ancestor in :global(). */
+  .intent-static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .intent-interactive {
+    display: none;
+    position: absolute;
+    inset: 0;
+    container-type: inline-size; /* cqw drives in-stage typography with the figure */
+  }
+  :global(.ie-root.is-interactive) .intent-interactive { display: block; }
+  :global(.ie-root.is-interactive) .intent-static { display: none; }
+
+  /* spec card region (vague <-> checklist cross-fade, in place) */
+  .intent-cards {
+    position: absolute;
+    left: 1.5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 39%;
+    aspect-ratio: 505 / 354;
+  }
+  .intent-card {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+  .intent-vague { opacity: 1; }
+  .intent-checklist { opacity: 0; }
+
+  .intent-check {
+    position: absolute;
+    left: 12%;
+    width: 4.4%;
+    aspect-ratio: 1;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    overflow: visible;
+  }
+
+  /* connecting arrows */
+  .intent-arrow {
+    position: absolute;
+    top: 50%;
+    width: 5%;
+    transform: translateY(-50%);
+    opacity: 0.85;
+  }
+  .intent-arrow-1 { left: 42%; }
+  .intent-arrow-2 { left: 70.5%; }
+
+  /* AUDIT stamp + live score */
+  .intent-score {
+    position: absolute;
+    left: 48.5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 21%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4cqw;
+    text-align: center;
+  }
+  .intent-audit {
+    font-family: var(--font-mono);
+    font-size: 2.4cqw;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .intent-score-num {
+    font-family: var(--font-mono);
+    font-size: 9cqw;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink-secondary); /* opening state; JS recolors as it climbs */
+    white-space: nowrap;
+  }
+  .intent-den { font-size: 4cqw; color: var(--ink-secondary); }
+
+  /* agent glyph (wrong <-> right flip) */
+  .intent-agent {
+    position: absolute;
+    right: 1.5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22%;
+    aspect-ratio: 320 / 285;
+  }
+  .intent-agent-glyph {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+  .intent-agent-wrong { opacity: 1; }
+  .intent-agent-right { opacity: 0; }
+
+  .ie-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 600px) {
+    /* the score stays legible on the narrowest figure */
+    .intent-den { font-size: 4.4cqw; }
+  }
+</style>
+
+<script>
+  import { wireScrubber, easeInOut } from "~/scripts/interactive-explainer";
+
+  const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+
+  document
+    .querySelectorAll<HTMLElement>('[data-interactive-explainer="intent-engineering-mcp"]')
+    .forEach((root) => {
+      const vague = root.querySelector<HTMLElement>(".intent-vague");
+      const checklist = root.querySelector<HTMLElement>(".intent-checklist");
+      const checks = Array.from(root.querySelectorAll<HTMLElement>(".intent-check"));
+      const scoreNum = root.querySelector<HTMLElement>("[data-score]");
+      const scoreWrap = root.querySelector<HTMLElement>(".intent-score-num");
+      const scoreSr = root.querySelector<HTMLElement>("[data-score-sr]");
+      const agentWrong = root.querySelector<HTMLElement>(".intent-agent-wrong");
+      const agentRight = root.querySelector<HTMLElement>(".intent-agent-right");
+      if (!checklist || !scoreNum || !scoreWrap) return;
+
+      const css = getComputedStyle(document.documentElement);
+      const inkSecondary = css.getPropertyValue("--ink-secondary").trim() || "#546E71";
+      const teal = css.getPropertyValue("--teal").trim() || "#0A3E42";
+      const successTeal = css.getPropertyValue("--success-teal").trim() || "#0F6E56";
+      const stampAmber = css.getPropertyValue("--stamp-amber").trim() || "#7C2D12";
+
+      // rough-notation circle on the final score — lazy-loaded, this island only,
+      // never fetched under reduced motion (wireScrubber returns before render).
+      let annotation: { show(): void; hide(): void } | null = null;
+      let circleOn = false;
+      let lastScore = -1;
+
+      async function ensureCircle() {
+        if (!annotation) {
+          const { annotate } = await import("rough-notation");
+          annotation = annotate(scoreWrap!, {
+            type: "circle",
+            color: stampAmber,
+            strokeWidth: 2,
+            padding: 8,
+            animationDuration: 500,
+          });
+        }
+        if (!circleOn) {
+          annotation.show();
+          circleOn = true;
+        }
+      }
+      function hideCircle() {
+        if (annotation && circleOn) {
+          annotation.hide();
+          circleOn = false;
+        }
+      }
+
+      wireScrubber(root, (t) => {
+        // spec card resolves in the first ~45% of the drag
+        const cf = clamp01((t - 0.05) / 0.4);
+        if (vague) vague.style.opacity = (1 - cf).toFixed(3);
+        checklist!.style.opacity = cf.toFixed(3);
+
+        // nine sections check off one at a time across the drag
+        checks.forEach((c, i) => {
+          const ti = 0.15 + (i / 8) * 0.8;
+          const o = clamp01((t - ti) / 0.06);
+          c.style.opacity = o.toFixed(3);
+          c.style.transform = `translate(-50%, -50%) scale(${(0.6 + 0.4 * o).toFixed(3)})`;
+        });
+
+        // AUDIT score climbs 7 -> 23, recoloring on real tokens
+        const score = Math.round(7 + 16 * easeInOut(t));
+        if (score !== lastScore) {
+          scoreNum!.textContent = String(score);
+          if (scoreSr) scoreSr.textContent = `Spec quality score: ${score} of 25.`;
+          lastScore = score;
+        }
+        scoreWrap!.style.color = t < 0.4 ? inkSecondary : t < 0.75 ? teal : successTeal;
+
+        // the agent stays wrong until the spec is actually tight — then it flips
+        const flip = clamp01((t - 0.8) / 0.15);
+        if (agentWrong) agentWrong.style.opacity = (1 - flip).toFixed(3);
+        if (agentRight) agentRight.style.opacity = flip.toFixed(3);
+
+        // draw the stamp-amber circle on the score at the very top
+        if (t >= 0.97) ensureCircle();
+        else hideCircle();
+      });
+    });
+</script>

@@ -325,6 +325,16 @@ The hero's right-margin character lane carries Sean's hand-drawn pencil-test sel
 - **Floor shadow:** A baked-in PNG (`Hero-floor-shadow-2800x560.png`) underlays the character so it reads as standing on the paper, not floating above it.
 - **Reduced-motion:** No `<video>` element mounted at all; renders the poster image (`hero-loop-poster.webp`) as a static `<img>`.
 
+### The Interactive Explainer (Signature Component, portable)
+Turn a static concept diagram into something the reader *performs*. Instead of a flat figure, the reader drags a control and the artwork **draws itself** in sequence, so understanding arrives through doing. First built for the case-study explainer slot as a pencil **run cycle** the reader inks in by scrubbing a 10-phase timeline (human keyframe pre-drawn → fleet inks the in-betweens → shipped frame + approval stamp). Reusable anywhere a concept has a progression: a pipeline, a transform, a build-up, a before→after.
+
+- **Artwork sits on your own surface.** The line art is keyed to **transparent** and composited on the page's real paper, so it inherits the substrate — no foreign frame, no second background.
+- **Two layers + a masked reveal.** A faint always-on *ghost* of the whole sequence (≈0.15 opacity) under a full-opacity *ink* layer revealed by a CSS `mask-image` gradient whose edge tracks a `--reveal` custom property driven by the control. An indicator (a pencil) rides the reveal edge.
+- **Color-as-actor lives in the labels, not the art.** The drawing stays authentic (graphite); the role colors (ink / accent / success) + the one stamp accent live in the labels and the approval stamp.
+- **Production pipeline (the portable part):** (1) AI-generate a **single consistency-locked sequence sheet** — one generation across all frames dodges frame-to-frame identity drift; (2) **luminance→alpha key** it to transparent (keeps soft strokes and faint construction lines, no halos a chroma-key would leave); (3) reveal it with a CSS mask tied to a native `<input type="range">`.
+- **Discipline (non-negotiable):** progressive-enhancement — it reads as the *complete* static figure with no JS; `prefers-reduced-motion` lands on that final state with the control hidden; lightweight (no animation libraries); CLS-safe (reserve the box with `aspect-ratio`); the native range control gives keyboard operation + a focus ring for free.
+- **Motion is gated, never ambient** — the reveal only moves under the reader's hand (see the Licensed-Infinite-Motion Rule). Reuse the system's house easing curve for the reveal.
+
 ### Named Rules
 **The Sharp-Corners-By-Default Rule.** Default radius is `0px`. The only allowed radius values are `0px` (default), `2px` (status pills only, because they're sub-glyph affordances and 0px reads as cramped), and `4px` (no current use; reserved). No `rounded-lg`, no `rounded-xl`, no soft-everything aesthetic. Sharpness IS the engineering register.
 
@@ -333,6 +343,8 @@ The hero's right-margin character lane carries Sean's hand-drawn pencil-test sel
 **The No-Card-Reflex Rule.** Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The "next in production" zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.
 
 **The Licensed-Infinite-Motion Rule (2026-06-10).** Persistent (`infinite`) animation is banned on decoration — entrances are one-shot, hovers settle. Exactly three infinite animations are licensed, each carrying meaning: (1) the `COMING` status-pill pulse (§5 Status Pills), (2) `live-pulse` — the ShippedNow LIVE dot's 2s opacity breath; it is status semantics, rendered only when the fleet data is fresh and omitted entirely when stale, and (3) `swipe-me-bob` — the home teaser's desktop swipe-hint bob; a functional affordance pointing at an interaction, not ornament. All three are `prefers-reduced-motion`-guarded to static. Anything else animating forever is a defect.
+
+**The Author-with-AI, Self-Host-the-Output Rule.** Use generative tools (Claude Design, Claude Artifacts, Gemini Nano Banana, etc.) as the *authoring* path — then export and commit the code or asset so it ships on your own domain, in your own fonts and tokens, with no runtime dependency on a third party. Never embed a live third-party-hosted widget (an iframe'd artifact, a hosted gen-tool preview) as a load-bearing surface: it can't inherit your design tokens (it runs under a sandboxed CSP that blocks your fonts/colors), it stamps someone else's chrome onto your page, and a failed embed is a dead band on the screen. Once exported, the output should be indistinguishable from something you hand-built — because it is now yours. (This is how the Interactive Explainer's pencil art is made: generated, then keyed and self-hosted.)
 
 ## 6. Do's and Don'ts
 

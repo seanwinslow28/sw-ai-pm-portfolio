@@ -1,0 +1,26 @@
+CONCEPT: "The Second Brain Wakes Up" — A-2 · Code Brain (ACTIVE)
+
+A three-quarter-view editorial illustration of a lamplit desk at night, where an open notebook emits glowing threads that rise into a constellation of nodes hovering above it. Warm cream paper world. Zero text anywhere.
+
+Composition: 4:5 portrait, 800×1000 pixels. Eye-level-to-slightly-above, three-quarter angle on the desk.
+
+The scene:
+- On a cream desk surface, an OPEN notebook lies flat, its two pages completely BLANK (no writing, no lines, no marks — just warm paper catching the lamp light).
+- From the open pages, faint luminous THREADS lift off the paper and curl upward, weaving into a hovering CONSTELLATION in the upper 60% of the image: 7–8 small glowing NODES (soft luminous orbs, each the size of a marble, some with a tiny simple icon-glyph like a dot, ring, or spark — NEVER a letter or word) connected by thin curved threads. The graph is slightly tangled but readable, like a brain lighting up.
+- The node-glow is COOL (soft teal-white). Exactly ONE thread runs WARM AMBER, tracing a path through three of the nodes — the "live" path — standing out against the cool web.
+- A desk LAMP at the edge throws a warm pool of light over the notebook; the rest of the scene falls into soft nocturnal shadow. Ambient props: a coffee mug, a closed laptop (lid down, no screen visible), a pencil — all in shadow.
+- Optional: a relaxed hand resting at the corner of the notebook (no figure, just a hand). Skip if it crowds the frame.
+
+Technique: nocturne ink-wash + dual-temperature glow. Loose, atmospheric, hand-made — soft graphite-and-wash render with luminous accents. Cozy and nocturnal (this is a system that runs at night).
+
+Palette (strict): paper cream #FFF9F0 (desk, notebook, warm lamp pool), ink primary #1A1A1E (objects, shadows, line work), cool teal-white node glow #0A3E42 lightened toward white (the constellation), stamp amber #7C2D12 → #FAC775 (the ONE live thread, and the lamp's warm pool). No other colors.
+
+The bottom ~250px is quiet — desk surface in soft shadow, no nodes, no notebook edge. Reserved for an HTML metadata strip.
+
+NEGATIVES — ZERO TEXT:
+- No text, no letters, no numbers, no node labels, no edge labels, no writing on the notebook pages, no captions, no logos, no UI copy, no legible glyphs of ANY kind. Nodes may carry only abstract non-letter icons (dot/ring/spark); the notebook pages are BLANK; the laptop lid is closed (no screen text).
+- No drawn human figure (a single resting hand is acceptable, nothing more).
+- No clean vector graphics — the graph is hand-drawn / luminous, not a UI diagram.
+- No more than ONE amber thread.
+- No project title or tagline anywhere.
+- No watermarks or signatures.

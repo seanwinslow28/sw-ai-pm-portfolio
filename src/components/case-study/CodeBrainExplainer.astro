@@ -1,0 +1,245 @@
+---
+/**
+ * <CodeBrainExplainer /> — interactive "Drag the night" radial dial
+ * (rollout §2 / spec 2026-06-21). Consumes <InteractiveExplainer/> for chrome +
+ * the progressive-enhancement contract; owns the radial interaction.
+ *
+ * The reader sweeps a "now" hand dusk -> dawn around the clock dial. As the hand
+ * passes each station the node lights teal and a note resolves in place
+ * (capture -> synthesize -> two-critic gate -> vault); the figure stays asleep.
+ * At dawn an amber wash sweeps in, an SVG sun rises, 08:30 prints, and a
+ * dateline-style masthead resolves. (Stations: Task 4. Dawn: Task 5.)
+ *
+ * Art: the colored dial with the dawn cluster overpainted out
+ * (code-brain-dial.webp, NOT keyed). The base stays a bordered white card like
+ * the shipped static; the hand / glows / note / sun / masthead are live SVG/DOM.
+ *
+ * Geometry is in image-pixel space: the base art is 1672x941 (exactly 16:9), so
+ * the overlay SVG viewBox 0 0 1672 941 aligns 1:1 with the contained image, and
+ * the "radial" is just render(t) rotating the hand. The control stays linear.
+ *
+ * Progressive enhancement: no-JS / prefers-reduced-motion shows the original
+ * code-brain.webp (complete diagram) with the scrubber hidden.
+ */
+import InteractiveExplainer from "./InteractiveExplainer.astro";
+
+interface Props {
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+
+const V = "?v=2026-06-21";
+const dialArt = `/assets/projects/explainers/code-brain-dial.webp${V}`;
+
+// Dial geometry in source pixels (1672x941). TUNE in Task 6.
+const CX = 800;
+const CY = 478;
+const R = 300;
+
+// Station centers in source pixels + the t at which the hand reaches each.
+// TUNE in Task 6 (measure against code-brain-dial.webp). NOTES IN is the start.
+const NODES = [
+  { key: "capture",  x: 1075, y: 378, t: 0.235 },
+  { key: "synth",    x: 1108, y: 612, t: 0.382 },
+  { key: "criticR",  x: 940,  y: 760, t: 0.516 },
+  { key: "criticL",  x: 715,  y: 760, t: 0.661 },
+  { key: "vault",    x: 505,  y: 620, t: 0.820 },
+];
+const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
+---
+
+<InteractiveExplainer
+  variant="code-brain"
+  aspectRatio="16 / 9"
+  scrub={{
+    title: "The night shift",
+    hint: "Drag from dusk to dawn →",
+    ariaLabel:
+      "Drag from dusk to dawn to watch the fleet capture, synthesize, vet, and vault the day's notes by 08:30",
+    ticks: ["Dusk", "Midnight", "Dawn"],
+  }}
+>
+  {/* no-JS / reduced-motion floor — the complete diagram */}
+  <img class="cb-static" src={src} alt={alt} draggable="false" decoding="async" />
+
+  {/* interactive layers — shown only when JS adds is-interactive */}
+  <div class="cb-interactive">
+    {/* overpainted base (dawn cluster removed) */}
+    <img class="cb-base" src={dialArt} alt={alt} draggable="false" decoding="async" />
+
+    {/* overlay SVG in image-pixel space — hand (Task 3), node glows + note (Task 4) */}
+    <svg
+      class="cb-svg"
+      viewBox="0 0 1672 941"
+      preserveAspectRatio="xMidYMid meet"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* night-hand: a line from the dial center pointing up at rest, rotated by render(t) */}
+      <g class="cb-hand" transform={`rotate(0 ${CX} ${CY})`}>
+        <line x1={CX} y1={CY} x2={CX} y2={CY - R} stroke="var(--teal)" stroke-width="3" stroke-linecap="round" />
+      </g>
+
+      {/* per-station glow rings — lit as the hand passes (render sets opacity) */}
+      {NODES.map((n) => (
+        <circle class="cb-node" data-node={n.key} cx={n.x} cy={n.y} r="44" stroke="var(--teal)" stroke-width="3" opacity="0" />
+      ))}
+
+      {/* two-critic verdicts — quick glance at the gate (render toggles opacity) */}
+      <g class="cb-verdict cb-approve" data-verdict="approve" opacity="0">
+        <path d="M925 760 l10 12 l22 -26" stroke="var(--teal)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <g class="cb-verdict cb-reject" data-verdict="reject" opacity="0">
+        <path d="M702 748 l26 26 M728 748 l-26 26" stroke="var(--ink-secondary)" stroke-width="5" stroke-linecap="round" />
+      </g>
+
+      {/* the single note-card — snaps to the active station, glyph transforms by stage */}
+      <g class="cb-note" data-note transform={`translate(${NOTE0.x} ${NOTE0.y})`} opacity="0">
+        <rect x="-26" y="-20" width="52" height="40" rx="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5" />
+        {/* stage glyphs, toggled by render: raw lines / connected concept / vetted check */}
+        <g class="cb-note-raw">
+          <line x1="-16" y1="-8" x2="16" y2="-8" stroke="var(--ink-secondary)" stroke-width="2.5" />
+          <line x1="-16" y1="0" x2="16" y2="0" stroke="var(--ink-secondary)" stroke-width="2.5" />
+          <line x1="-16" y1="8" x2="6" y2="8" stroke="var(--ink-secondary)" stroke-width="2.5" />
+        </g>
+        <g class="cb-note-concept" opacity="0">
+          <circle cx="-12" cy="-6" r="3.5" fill="var(--teal)" /><circle cx="10" cy="-9" r="3.5" fill="var(--teal)" />
+          <circle cx="2" cy="8" r="3.5" fill="var(--teal)" />
+          <path d="M-12 -6 L10 -9 L2 8 Z" stroke="var(--teal)" stroke-width="2" fill="none" />
+        </g>
+        <g class="cb-note-vetted" opacity="0">
+          <path d="M-14 0 l9 10 l19 -22" stroke="var(--success-teal)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </g>
+
+      <circle cx={CX} cy={CY} r="6" fill="var(--teal)" />
+    </svg>
+  </div>
+
+  {/* state narration for screen readers */}
+  <span class="ie-sr-only" aria-live="polite" data-cb-sr>The night shift: dusk.</span>
+</InteractiveExplainer>
+
+<style>
+  .cb-static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cb-interactive {
+    display: none;
+    position: absolute;
+    inset: 0;
+    container-type: inline-size; /* cqw drives any in-stage DOM typography (Task 5) */
+  }
+  :global(.ie-root.is-interactive) .cb-interactive { display: block; }
+  :global(.ie-root.is-interactive) .cb-static { display: none; }
+
+  .cb-base {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  .cb-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ie-sr-only {
+    position: absolute;
+    width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+
+  .cb-note { transition: transform 0.28s var(--ease-out, ease-out); }
+  .cb-node, .cb-verdict, .cb-note-raw, .cb-note-concept, .cb-note-vetted { transition: opacity 0.18s linear; }
+</style>
+
+<script>
+  import { wireScrubber, easeInOut } from "~/scripts/interactive-explainer";
+
+  const CX = 800, CY = 478;
+  const HAND_SWEEP_DEG = 240;
+  const SWEEP_END = 0.82;
+  const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+
+  // Station centers + activation t (must match the .astro NODES table). TUNE in Task 6.
+  const NODES = [
+    { key: "capture", x: 1075, y: 378, t: 0.235 },
+    { key: "synth",   x: 1108, y: 612, t: 0.382 },
+    { key: "criticR", x: 940,  y: 760, t: 0.516 },
+    { key: "criticL", x: 715,  y: 760, t: 0.661 },
+    { key: "vault",   x: 505,  y: 620, t: 0.820 },
+  ];
+  const at = (k: string) => NODES.find((n) => n.key === k)!;
+
+  document
+    .querySelectorAll<HTMLElement>('[data-interactive-explainer="code-brain"]')
+    .forEach((root) => {
+      const hand = root.querySelector<SVGGElement>(".cb-hand");
+      const note = root.querySelector<SVGGElement>("[data-note]");
+      const noteRaw = root.querySelector<SVGGElement>(".cb-note-raw");
+      const noteConcept = root.querySelector<SVGGElement>(".cb-note-concept");
+      const noteVetted = root.querySelector<SVGGElement>(".cb-note-vetted");
+      const approve = root.querySelector<SVGGElement>('[data-verdict="approve"]');
+      const reject = root.querySelector<SVGGElement>('[data-verdict="reject"]');
+      const nodeEls = new Map(
+        Array.from(root.querySelectorAll<SVGCircleElement>(".cb-node")).map((el) => [el.dataset.node!, el]),
+      );
+      const sr = root.querySelector<HTMLElement>("[data-cb-sr]");
+      if (!hand) return;
+
+      const setOp = (el: Element | null, v: number) => el && ((el as HTMLElement).style.opacity = v.toFixed(3));
+
+      wireScrubber(root, (t) => {
+        // 1) night-hand sweep
+        const rot = HAND_SWEEP_DEG * easeInOut(clamp01(t / SWEEP_END));
+        hand.setAttribute("transform", `rotate(${rot.toFixed(2)} ${CX} ${CY})`);
+
+        // 2) nodes light as the hand reaches each station t
+        for (const n of NODES) setOp(nodeEls.get(n.key) ?? null, t >= n.t ? 1 : 0);
+
+        // 3) the single note snaps to the latest reached station, glyph by stage
+        let pos = { x: 800, y: 188 }; // NOTES IN
+        let stage = 0; // 0 raw, 1 concept, 2 vetted
+        if (t >= at("capture").t) { pos = at("capture"); stage = 0; }
+        if (t >= at("synth").t)   { pos = at("synth");   stage = 1; }
+        if (t >= at("criticR").t) { pos = { x: 828, y: 815 }; stage = 1; } // the fork's rejoin point
+        if (t >= at("criticL").t) { stage = 2; }                            // survived the gate
+        if (t >= at("vault").t)   { pos = at("vault"); stage = 2; }
+        if (note) {
+          note.setAttribute("transform", `translate(${pos.x} ${pos.y})`);
+          setOp(note, t >= 0.06 ? 1 : 0); // appears just after dusk
+        }
+        setOp(noteRaw, stage === 0 ? 1 : 0);
+        setOp(noteConcept, stage === 1 ? 1 : 0);
+        setOp(noteVetted, stage === 2 ? 1 : 0);
+
+        // 4) two-critic quick glance: ✓ + ✗ flash on between the two critic t's
+        const inGate = t >= at("criticR").t && t <= at("criticL").t + 0.06;
+        setOp(approve, inGate ? 1 : 0);
+        setOp(reject, inGate ? 1 : 0);
+
+        if (sr) {
+          sr.textContent =
+            t < at("capture").t ? "The night shift: dusk, one note in." :
+            t < at("synth").t   ? "Captured." :
+            t < at("criticR").t ? "Synthesized into a concept." :
+            t < at("vault").t   ? "Two critics: one rejects, one approves." :
+            t < SWEEP_END       ? "Vaulted as vetted knowledge." :
+                                  "Ready at 08:30.";
+        }
+      });
+    });
+</script>
