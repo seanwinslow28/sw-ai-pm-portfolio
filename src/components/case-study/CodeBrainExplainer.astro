@@ -1,0 +1,45 @@
+---
+/**
+ * <CodeBrainExplainer /> — interactive variant of the code-brain case-study
+ * explainer ("Drag the night", rollout §2 / spec 2026-06-21). Consumes the
+ * shared <InteractiveExplainer/> base for chrome + the progressive-enhancement
+ * contract; owns the radial night-dial interaction (added in Tasks 3-5).
+ *
+ * Progressive enhancement: no-JS / prefers-reduced-motion shows the original
+ * code-brain.webp (the complete diagram, honest final state) with the scrubber
+ * hidden. This task ships that fallback only.
+ */
+import InteractiveExplainer from "./InteractiveExplainer.astro";
+
+interface Props {
+  /** Frontmatter static src — the no-JS / reduced-motion fallback image. */
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+---
+
+<InteractiveExplainer
+  variant="code-brain"
+  aspectRatio="16 / 9"
+  scrub={{
+    title: "The night shift",
+    hint: "Drag from dusk to dawn →",
+    ariaLabel:
+      "Drag from dusk to dawn to watch the fleet capture, synthesize, vet, and vault the day's notes by 08:30",
+    ticks: ["Dusk", "Midnight", "Dawn"],
+  }}
+>
+  {/* no-JS / reduced-motion floor — the complete diagram */}
+  <img class="cb-static" src={src} alt={alt} draggable="false" decoding="async" />
+</InteractiveExplainer>
+
+<style>
+  .cb-static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
