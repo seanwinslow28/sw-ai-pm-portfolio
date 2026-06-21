@@ -22,8 +22,6 @@
  * code-brain.webp (complete diagram) with the scrubber hidden.
  */
 import InteractiveExplainer from "./InteractiveExplainer.astro";
-import { dateline } from "~/lib/dateline";
-const stamp = dateline(); // e.g. "BOSTON, JUNE 21, 2026"
 
 interface Props {
   src: string;
@@ -37,7 +35,7 @@ const dialArt = `/assets/projects/explainers/code-brain-dial.webp${V}`;
 // Dial geometry in source pixels (1672x941). TUNE in Task 6.
 const CX = 800;
 const CY = 478;
-const R = 300; // hand length — SSR-only (baked into the <line>; the script only rotates the group)
+const R = 300;
 
 // Station centers in source pixels + the t at which the hand reaches each.
 // TUNE in Task 6 (measure against code-brain-dial.webp). NOTES IN is the start.
@@ -117,36 +115,6 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
 
       <circle cx={CX} cy={CY} r="6" fill="var(--teal)" />
     </svg>
-
-    {/* dawn wash + SVG sun — drawn in the same image-pixel space, above the base */}
-    <svg class="cb-dawn-svg" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-      <defs>
-        <radialGradient id="cb-dawn-grad" cx="80%" cy="92%" r="70%">
-          <stop offset="0%" stop-color="var(--stamp-amber)" stop-opacity="0.22" />
-          <stop offset="100%" stop-color="var(--stamp-amber)" stop-opacity="0" />
-        </radialGradient>
-      </defs>
-      <rect class="cb-wash" x="0" y="0" width="1672" height="941" fill="url(#cb-dawn-grad)" opacity="0" />
-      {/* simple amber sun rising lower-right (echoes the original glyph) */}
-      <g class="cb-sun" opacity="0">
-        <circle cx="1180" cy="820" r="34" stroke="var(--stamp-amber)" stroke-width="4" fill="none" />
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
-          <line
-            x1={1180 + Math.cos((a * Math.PI) / 180) * 46}
-            y1={820 + Math.sin((a * Math.PI) / 180) * 46}
-            x2={1180 + Math.cos((a * Math.PI) / 180) * 60}
-            y2={820 + Math.sin((a * Math.PI) / 180) * 60}
-            stroke="var(--stamp-amber)" stroke-width="3.5" stroke-linecap="round"
-          />
-        ))}
-      </g>
-    </svg>
-
-    {/* dawn DOM card: 08:30 + dateline-style masthead (real text for screen readers) */}
-    <div class="cb-dawn">
-      <span class="cb-clock" data-cb-clock>08:30</span>
-      <span class="cb-masthead">{stamp}</span>
-    </div>
   </div>
 
   {/* state narration for screen readers */}
@@ -194,51 +162,8 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
     overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
 
-  /* The note SNAPS station-to-station (decision #4: snap, not path-follow). No
-     transform transition: the position is driven by the SVG `transform` ATTRIBUTE
-     (setAttribute), which CSS transitions don't observe, so a rule here would be
-     dead. Only the opacity changes (driven via style.opacity) actually ease. */
+  .cb-note { transition: transform 0.28s var(--ease-out, ease-out); }
   .cb-node, .cb-verdict, .cb-note-raw, .cb-note-concept, .cb-note-vetted { transition: opacity 0.18s linear; }
-
-  .cb-dawn-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    overflow: visible;
-    pointer-events: none;
-  }
-  .cb-wash, .cb-sun { transition: opacity 0.2s linear; }
-
-  /* dawn DOM card, lower-right, in container-query units so it scales with the figure */
-  .cb-dawn {
-    position: absolute;
-    right: 5cqw;
-    bottom: 7cqw;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.6cqw;
-    opacity: 0;
-    transition: opacity 0.25s linear;
-    text-align: right;
-  }
-  .cb-clock {
-    font-family: var(--font-mono);
-    font-size: 4cqw;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--stamp-amber);
-    line-height: 1;
-  }
-  .cb-masthead {
-    font-family: var(--font-mono);
-    font-size: 1.5cqw;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    color: var(--stamp-amber);
-    border-top: 0.5px solid var(--border-paper);
-    padding-top: 0.5cqw;
-  }
 </style>
 
 <script>
@@ -249,8 +174,7 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
   const SWEEP_END = 0.82;
   const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 
-  // Tunable geometry (TUNE in Task 6). NODES + CX/CY must stay byte-identical to
-  // the .astro frontmatter copies (intentional SSR/client duplication).
+  // Station centers + activation t (must match the .astro NODES table). TUNE in Task 6.
   const NODES = [
     { key: "capture", x: 1075, y: 378, t: 0.235 },
     { key: "synth",   x: 1108, y: 612, t: 0.382 },
@@ -258,7 +182,6 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
     { key: "criticL", x: 715,  y: 760, t: 0.661 },
     { key: "vault",   x: 505,  y: 620, t: 0.820 },
   ];
-  const REJOIN = { x: 828, y: 815 }; // the two-critic fork rejoin point (note passes through here)
   const at = (k: string) => NODES.find((n) => n.key === k)!;
 
   document
@@ -277,24 +200,6 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
       const sr = root.querySelector<HTMLElement>("[data-cb-sr]");
       if (!hand) return;
 
-      const wash = root.querySelector<SVGRectElement>(".cb-wash");
-      const sun = root.querySelector<SVGGElement>(".cb-sun");
-      const dawn = root.querySelector<HTMLElement>(".cb-dawn");
-      const clock = root.querySelector<HTMLElement>("[data-cb-clock]");
-
-      const css = getComputedStyle(document.documentElement);
-      const stampAmber = css.getPropertyValue("--stamp-amber").trim() || "#7C2D12";
-      let annotation: { show(): void; hide(): void } | null = null;
-      let circleOn = false;
-      async function ensureCircle() {
-        if (!annotation && clock) {
-          const { annotate } = await import("rough-notation");
-          annotation = annotate(clock, { type: "circle", color: stampAmber, strokeWidth: 2, padding: 6, animationDuration: 500 });
-        }
-        if (annotation && !circleOn) { annotation.show(); circleOn = true; }
-      }
-      function hideCircle() { if (annotation && circleOn) { annotation.hide(); circleOn = false; } }
-
       const setOp = (el: Element | null, v: number) => el && ((el as HTMLElement).style.opacity = v.toFixed(3));
 
       wireScrubber(root, (t) => {
@@ -310,7 +215,7 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
         let stage = 0; // 0 raw, 1 concept, 2 vetted
         if (t >= at("capture").t) { pos = at("capture"); stage = 0; }
         if (t >= at("synth").t)   { pos = at("synth");   stage = 1; }
-        if (t >= at("criticR").t) { pos = REJOIN; stage = 1; } // the fork's rejoin point
+        if (t >= at("criticR").t) { pos = { x: 828, y: 815 }; stage = 1; } // the fork's rejoin point
         if (t >= at("criticL").t) { stage = 2; }                            // survived the gate
         if (t >= at("vault").t)   { pos = at("vault"); stage = 2; }
         if (note) {
@@ -335,13 +240,6 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
             t < SWEEP_END       ? "Vaulted as vetted knowledge." :
                                   "Ready at 08:30.";
         }
-
-        // 5) dawn: wash + sun + 08:30 + masthead ramp in over [SWEEP_END, 1]
-        const dawnT = clamp01((t - SWEEP_END) / (1 - SWEEP_END));
-        setOp(wash, dawnT);
-        setOp(sun, dawnT);
-        if (dawn) dawn.style.opacity = dawnT.toFixed(3);
-        if (t >= 0.97) ensureCircle(); else hideCircle();
       });
     });
 </script>

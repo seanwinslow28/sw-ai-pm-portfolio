@@ -1,0 +1,28 @@
+CONCEPT: "The Cooled Newsroom" — A-4 · The Block — Campus + RevOps (ARCHIVED)
+
+An eye-level still-life illustration of a quieted media desk at the end of a chapter — a closed, archived workspace lit by cool window light. Warm cream paper substrate, but the scene is rendered COOL and desaturated. Zero text anywhere. This is the only fully amber-free tile — its coolness IS the ARCHIVED status signal.
+
+Composition: 4:5 portrait, 800×1000 pixels. Eye-level, slightly across the desk surface.
+
+The scene:
+- A still life of a desk being left behind. Arranged with quiet, settled spacing:
+  - A folded BROADSHEET NEWSPAPER (the Block was a media company), its columns suggested by fine horizontal HATCHING — texture of text, never legible words.
+  - A coffee mug gone cold, a faint dried ring on the paper beneath it.
+  - A smooth blank CHALLENGE-COIN / token used as a paperweight — a plain metal disc with NO stamped text, NO emblem-with-words, just a clean machined surface (a subtle crypto nod without a logo).
+  - A closed LEDGER book (the RevOps nod), cover plain, spine worn.
+- Raking COOL window light crosses the desk from one side — long quiet shadows, faint floating dust motes in the light beam. The whole scene is hushed, desaturated, end-of-day.
+
+Technique: cool graphite tonal still life — restrained, muted, no warm accents. Desaturated grayscale-leaning render on cream paper. Hand-made, soft pencil tonal shading. The register stays cool and quiet (this is a closed chapter).
+
+Palette (strict): paper cream #FFF9F0 (desk surface, paper), ink primary #1A1A1E (objects, line work, shadows), ink-secondary cool gray #546E71 (the dominant tonal shading, the cool window light, the muted atmosphere). NO amber. NO teal. NO warm accents. The image leans monochrome-cool by design.
+
+The bottom ~250px is quiet clean desk surface in soft cool shadow — no objects. Reserved for an HTML metadata strip.
+
+NEGATIVES — ZERO TEXT:
+- No text, no letters, no numbers, no headlines, no newspaper words, no ledger writing, no coin stamping, no captions, no logos, no legible glyphs of ANY kind. The newspaper shows HATCHED column texture only; the ledger is closed/plain; the coin is a BLANK disc.
+- No drawn human figure.
+- No amber, no teal, no warm accents — cool desaturated palette only (this signals ARCHIVED).
+- No clean vector graphics — hand-drawn tonal still life.
+- No institutional or company logos.
+- No project title or tagline anywhere.
+- No watermarks or signatures.

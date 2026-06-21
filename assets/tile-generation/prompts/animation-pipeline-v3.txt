@@ -1,0 +1,27 @@
+CONCEPT: "The Light Table" — A-1 · 2D Animation Pipeline (ACTIVE)
+REFERENCE: pass sw-portfolio-animation-2026/anchor-images/ai-companion-turnaround-anchor.png as a style/character reference for the figure drawn ON the sheets.
+
+A top-down (flat-lay, looking straight down) editorial illustration of an animator's backlit light table on a warm cream paper surface. Zero text anywhere.
+
+Composition: 4:5 portrait, 800×1000 pixels. Camera directly overhead.
+
+The scene:
+- Centered in the upper 75% of the image, a rectangular light table — a glowing frosted panel whose surface emits a soft warm AMBER light from beneath the paper laid on it.
+- Across the panel, a loose FAN of 4–5 translucent animation sheets (onion-skin pencil-test pages), overlapping, slightly rotated from one another so the fan reads as a sequence. The warm light glows up through the translucent paper.
+- The top 3 sheets each show a hand-drawn rendering of a soft, rounded, peach-colored AI-companion character (sourced from the reference: a stout friendly character with a rounded-square body, two small ear-knobs, simple dot eyes, four small leg-stubs) caught at three successive stages of a WALK — the same character, different phase, so the fanned sheets imply motion. Drawings are rough pencil-test register: visible construction circles, light guidelines, soft graphite shading, minimal ink.
+- A metal PEG BAR runs along the top edge of the sheets (a flat strip with two round registration pegs); the sheets are punched onto it. Faint hole-punch marks down the sheet edges.
+- A wooden pencil and a kneaded eraser rest beside the fan, casting soft shadows under the warm glow.
+
+Technique: warm graphite + light-table glow. Painterly enough to feel like a real lit object on a desk, but the drawings on the sheets stay in rough pencil-test register. Hand-made imperfection throughout — no two sheets perfectly aligned, hairlines that waver.
+
+Palette (strict): paper cream #FFF9F0 (the surrounding desk surface), warm amber glow #7C2D12 → #FAC775 (the light emitted through/under the sheets — the ONE splash), ink primary #1A1A1E (pencil drawings, peg bar, pencil), soft peach (the companion's body, from the reference). No other colors. No teal.
+
+The bottom ~250px (lowest quarter) is quiet clean cream desk surface — soft shadow only, no sheets, no tools. Reserved for an HTML metadata strip.
+
+NEGATIVES — ZERO TEXT:
+- No text, no letters, no numbers, no frame numbers, no pose labels, no captions, no logos, no UI copy, no legible glyphs of ANY kind. The sheets carry DRAWINGS ONLY — no writing in the margins, no annotations, no dope-sheet numbers.
+- No human character. The peach companion (on the sheets) is the only character; it is drawn content, not present in the room.
+- No clean vector / flat digital rendering. Hand-drawn, lit, real.
+- No project title or tagline anywhere.
+- No watermarks or signatures.
+- No teal, no second splash color — amber glow only.

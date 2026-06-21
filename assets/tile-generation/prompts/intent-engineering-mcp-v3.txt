@@ -1,0 +1,26 @@
+CONCEPT: "Drawing Up an Agent" — A-3 · Intent Engineering MCP (SHIPPED)
+
+An angled top-down editorial illustration of a drafting table, where a blueprint-style orthographic turnaround of a small agent/robot is being drawn up. Warm cream paper world, faint teal drafting lines. Zero text anywhere. THIS TILE IS THE HIGHEST TEXT-TRAP RISK — every surface that normally carries writing MUST be blank.
+
+Composition: 4:5 portrait, 800×1000 pixels. Camera angled down over a drafting table (slight perspective, not perfectly flat).
+
+The scene:
+- A large drafting sheet is pinned to the table. On it, an ORTHOGRAPHIC TURNAROUND of a small, friendly agent/robot character drawn as a technical blueprint: FRONT view, SIDE view, and TOP view, three clean projections side by side, rendered in fine drafting line work with faint teal construction lines, centerlines, and projection guides connecting the views.
+- The agent is simple and characterful — a compact rounded automaton, the kind of "agent" you'd draft as infrastructure, not a scary mech. Construction circles and guidelines visible, mid-draft.
+- Drafting TOOLS rest on the sheet, casting soft shadows: a metal compass, a 45° set square, a ruler/scale, and a mechanical pencil laid mid-stroke at the edge of one projection (as if the line was just drawn).
+- The corner TITLE BLOCK of the blueprint (the boxed rectangle that normally holds drawing labels) is drawn as empty ruled boxes — HATCHED or BLANK, containing NO text, NO numbers, NO dimensions. Likewise dimension lines may appear but carry NO measurement numbers — just the arrows and ticks.
+
+Technique: blueprint drafting — fine technical ink/graphite on cream paper, faint teal construction grid as the single splash. The coolest, most precise, most "infrastructure" technique in the tile set. Still hand-made: a slightly wavering hand-ruled line, the human in the draftsmanship.
+
+Palette (strict): paper cream #FFF9F0 (drafting sheet, table), ink primary #1A1A1E (line work, tools, the agent), teal #0A3E42 (faint drafting construction lines, centerlines, projection guides — the ONE splash, used sparingly). No amber. No other colors.
+
+The bottom ~250px is quiet clean table/sheet — no projections, no tools, no title block. Reserved for an HTML metadata strip.
+
+NEGATIVES — ZERO TEXT (CRITICAL FOR THIS TILE):
+- No text, no letters, no numbers, no dimension values, no title-block labels, no annotations, no part numbers, no scale notations, no captions, no logos, no legible glyphs of ANY kind. The title block is EMPTY ruled boxes. Dimension lines have arrows but NO numbers. The blueprint shows GEOMETRY ONLY.
+- No drawn human figure. The only "character" is the drafted agent on the sheet (a drawing, not present in the room).
+- No macOS/Windows/terminal chrome, no screens, no UI — this is a paper blueprint, not a software screenshot.
+- No photorealism — editorial drafting-table render.
+- No project title or tagline anywhere.
+- No watermarks or signatures.
+- No amber, no second splash — teal construction lines only.

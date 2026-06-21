@@ -15,14 +15,10 @@ See docs/superpowers/specs/2026-06-21-codebrain-interactive-explainer-design.md 
 Usage: python3 scripts/prep-explainer-codebrain.py
 Requires: pip install Pillow
 """
-from pathlib import Path
 from PIL import Image, ImageDraw
 
-# Resolve paths against the repo root (parent of scripts/) so the script works
-# regardless of the current working directory.
-ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "public/assets/projects/explainers/code-brain.webp"
-OUT = ROOT / "public/assets/projects/explainers/code-brain-dial.webp"
+SRC = "public/assets/projects/explainers/code-brain.webp"
+OUT = "public/assets/projects/explainers/code-brain-dial.webp"
 
 # Dawn cluster bounding box, in source pixels (1672x941). The dial's bottom arc
 # stays left of x~960 at these y's, so this rectangle is clear of the dial.
@@ -31,9 +27,7 @@ OUT = ROOT / "public/assets/projects/explainers/code-brain-dial.webp"
 BOX = (1075, 695, 1672, 905)  # (x0, y0, x1, y1)
 
 im = Image.open(SRC).convert("RGB")
-# (12, 12) is margin in this white-card illustration (no bleed/border art there),
-# so it reliably samples the paper background — verified (255, 255, 255).
-bg = im.getpixel((12, 12))
+bg = im.getpixel((12, 12))  # clean top-left corner = the background color
 ImageDraw.Draw(im).rectangle(BOX, fill=bg)
 im.save(OUT, "WEBP", lossless=True, method=6)
 print(f"overpainted {SRC} -> {OUT}  size={im.size}  bg={bg}  box={BOX}")
