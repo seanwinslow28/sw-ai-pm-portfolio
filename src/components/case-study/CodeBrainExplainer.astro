@@ -1,25 +1,28 @@
 ---
 /**
  * <CodeBrainExplainer /> — interactive "Drag the night" radial dial
- * (rollout §2 / spec 2026-06-21). Consumes <InteractiveExplainer/> for chrome +
- * the progressive-enhancement contract; owns the radial interaction.
+ * (rollout §2). Consumes <InteractiveExplainer/> for the chrome + the
+ * progressive-enhancement contract; owns the radial interaction.
  *
- * The reader sweeps a "now" hand dusk -> dawn around the clock dial. As the hand
- * passes each station the node lights teal and a note resolves in place
- * (capture -> synthesize -> two-critic gate -> vault); the figure stays asleep.
- * At dawn an amber wash sweeps in, an SVG sun rises, 08:30 prints, and a
- * dateline-style masthead resolves. (Stations: Task 4. Dawn: Task 5.)
+ * The reader sweeps a "now" hand dusk → dawn. A note-card rides an offset-path
+ * ARC around the dial (CAPTURE → SYNTHESIZE), the nodes light as the hand passes,
+ * and at the two-critic gate a second card is REJECTED (drops out) while the
+ * survivor is APPROVED and lands in the VAULT as vetted knowledge. At dawn an
+ * amber wash sweeps in, an SVG sun rises, and 08:30 + a masthead strip print —
+ * the same 08:30 the Daily Driver writes at the top of this very portfolio.
+ *
+ * Geometry is image-pixel space: base art is 1672×941 (16:9), SVG viewBox aligns
+ * 1:1. Ring calibrated against the live render (overlay the SVG on the dial and
+ * match the drawn node ring): center (810,516), radius 325, on-ring glow radius
+ * 56. The card rides the ring via offset-path; the hand auto-points at the card
+ * (handDeg = off%×3.6) and stops at the active node's inner edge (no overshoot).
  *
  * Art: the colored dial with the dawn cluster overpainted out
- * (code-brain-dial.webp, NOT keyed). The base stays a bordered white card like
- * the shipped static; the hand / glows / note / sun / masthead are live SVG/DOM.
+ * (code-brain-dial.webp, scripts/prep-explainer-codebrain.py). The hand, glows,
+ * cards, verdicts, sun, wash, 08:30 + masthead are all live SVG/CSS.
  *
- * Geometry is in image-pixel space: the base art is 1672x941 (exactly 16:9), so
- * the overlay SVG viewBox 0 0 1672 941 aligns 1:1 with the contained image, and
- * the "radial" is just render(t) rotating the hand. The control stays linear.
- *
- * Progressive enhancement: no-JS / prefers-reduced-motion shows the original
- * code-brain.webp (complete diagram) with the scrubber hidden.
+ * Progressive enhancement: no-JS / prefers-reduced-motion shows the complete
+ * static code-brain.webp with the scrubber hidden.
  */
 import InteractiveExplainer from "./InteractiveExplainer.astro";
 
@@ -29,24 +32,44 @@ interface Props {
 }
 const { src, alt } = Astro.props;
 
-const V = "?v=2026-06-21";
+const V = "?v=2026-06-21c";
 const dialArt = `/assets/projects/explainers/code-brain-dial.webp${V}`;
 
-// Dial geometry in source pixels (1672x941). TUNE in Task 6.
-const CX = 800;
-const CY = 478;
-const R = 300;
+// Dial geometry in source pixels (1672×941). Calibrated against the keyed art
+// by overlaying the live SVG on the dial and matching the drawn node ring.
+const CX = 810;
+const CY = 516;
+const R = 325;
+const NODE_R = 56; // glow radius for the on-ring stations — covers the drawn icon circle
+const CRITIC_GLOW_R = 50; // the critic magnifiers are drawn a touch smaller
+const HAND_LEN = R - NODE_R - 3; // tip lands just shy of the active node's inner edge (no overshoot)
 
-// Station centers in source pixels + the t at which the hand reaches each.
-// TUNE in Task 6 (measure against code-brain-dial.webp). NOTES IN is the start.
+const DEBUG = false; // station/critic placement markers — off for ship.
+
+// Station offsets as % along the ring path (top = 0, clockwise). Keep in sync
+// with the client-script copy below.
+const ST = { notes: 0, capture: 18, synth: 30, vault: 70 };
+const onRing = (pct: number) => {
+  const th = (pct * 3.6 * Math.PI) / 180;
+  return { x: CX + R * Math.sin(th), y: CY - R * Math.cos(th) };
+};
+// Critic nodes sit just *inside* the ring at the bottom fork — use measured
+// coords, not on-ring positions.
+const CRR = { x: 933, y: 757 }; // right critic — the rejecter
+const CRL = { x: 716, y: 758 }; // left critic — the approver
+
 const NODES = [
-  { key: "capture",  x: 1075, y: 378, t: 0.235 },
-  { key: "synth",    x: 1108, y: 612, t: 0.382 },
-  { key: "criticR",  x: 940,  y: 760, t: 0.516 },
-  { key: "criticL",  x: 715,  y: 760, t: 0.661 },
-  { key: "vault",    x: 505,  y: 620, t: 0.820 },
+  { key: "capture", r: NODE_R, ...onRing(ST.capture) },
+  { key: "synth", r: NODE_R, ...onRing(ST.synth) },
+  { key: "criticR", r: CRITIC_GLOW_R, ...CRR },
+  { key: "criticL", r: CRITIC_GLOW_R, ...CRL },
+  { key: "vault", r: NODE_R, ...onRing(ST.vault) },
 ];
-const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
+
+// Dawn cluster anchors (lower-right, where the art's sun/08:30/newspaper were).
+const SUN = { x: 1153, y: 805 };
+
+const RING_PATH = `M ${CX} ${CY - R} A ${R} ${R} 0 1 1 ${CX} ${CY + R} A ${R} ${R} 0 1 1 ${CX} ${CY - R}`;
 ---
 
 <InteractiveExplainer
@@ -56,8 +79,8 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
     title: "The night shift",
     hint: "Drag from dusk to dawn →",
     ariaLabel:
-      "Drag from dusk to dawn to watch the fleet capture, synthesize, vet, and vault the day's notes by 08:30",
-    ticks: ["Dusk", "Midnight", "Dawn"],
+      "Drag from dusk to dawn to watch the fleet capture, synthesize, vet through two critics, and vault the day's notes by 08:30",
+    ticks: ["Dusk", "Critics", "08:30"],
   }}
 >
   {/* no-JS / reduced-motion floor — the complete diagram */}
@@ -65,10 +88,8 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
 
   {/* interactive layers — shown only when JS adds is-interactive */}
   <div class="cb-interactive">
-    {/* overpainted base (dawn cluster removed) */}
     <img class="cb-base" src={dialArt} alt={alt} draggable="false" decoding="async" />
 
-    {/* overlay SVG in image-pixel space — hand (Task 3), node glows + note (Task 4) */}
     <svg
       class="cb-svg"
       viewBox="0 0 1672 941"
@@ -76,44 +97,86 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
       fill="none"
       aria-hidden="true"
     >
-      {/* night-hand: a line from the dial center pointing up at rest, rotated by render(t) */}
-      <g class="cb-hand" transform={`rotate(0 ${CX} ${CY})`}>
-        <line x1={CX} y1={CY} x2={CX} y2={CY - R} stroke="var(--teal)" stroke-width="3" stroke-linecap="round" />
-      </g>
+      {/* dawn wash — warm overlay that ramps in near t≈1 (render sets opacity) */}
+      <rect class="cb-wash" x="0" y="0" width="1672" height="941" fill="var(--amber-mid)" opacity="0" />
 
-      {/* per-station glow rings — lit as the hand passes (render sets opacity) */}
+      {DEBUG && <path d={RING_PATH} stroke="magenta" stroke-width="1.5" opacity="0.4" fill="none" />}
+      {DEBUG && NODES.map((n) => <circle cx={n.x} cy={n.y} r="4" fill="magenta" />)}
+
+      {/* per-station glow — lit as the hand reaches each (render sets opacity).
+          Filled teal tint so it reads as "on" against the already-teal base node. */}
       {NODES.map((n) => (
-        <circle class="cb-node" data-node={n.key} cx={n.x} cy={n.y} r="44" stroke="var(--teal)" stroke-width="3" opacity="0" />
+        <circle class="cb-node" data-node={n.key} cx={n.x} cy={n.y} r={n.r} fill="var(--teal)" fill-opacity="0.16" stroke="var(--teal)" stroke-width="4" opacity="0" />
       ))}
 
-      {/* two-critic verdicts — quick glance at the gate (render toggles opacity) */}
-      <g class="cb-verdict cb-approve" data-verdict="approve" opacity="0">
-        <path d="M925 760 l10 12 l22 -26" stroke="var(--teal)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-      </g>
-      <g class="cb-verdict cb-reject" data-verdict="reject" opacity="0">
-        <path d="M702 748 l26 26 M728 748 l-26 26" stroke="var(--ink-secondary)" stroke-width="5" stroke-linecap="round" />
+      {/* APPROVE ✓ stamp at the left critic */}
+      <g class="cb-approve" data-approve opacity="0">
+        <path d={`M ${CRL.x - 17} ${CRL.y} l 11 13 l 22 -28`} stroke="var(--success-teal)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
       </g>
 
-      {/* the single note-card — snaps to the active station, glyph transforms by stage */}
-      <g class="cb-note" data-note transform={`translate(${NOTE0.x} ${NOTE0.y})`} opacity="0">
-        <rect x="-26" y="-20" width="52" height="40" rx="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5" />
-        {/* stage glyphs, toggled by render: raw lines / connected concept / vetted check */}
-        <g class="cb-note-raw">
-          <line x1="-16" y1="-8" x2="16" y2="-8" stroke="var(--ink-secondary)" stroke-width="2.5" />
-          <line x1="-16" y1="0" x2="16" y2="0" stroke="var(--ink-secondary)" stroke-width="2.5" />
-          <line x1="-16" y1="8" x2="6" y2="8" stroke="var(--ink-secondary)" stroke-width="2.5" />
-        </g>
-        <g class="cb-note-concept" opacity="0">
-          <circle cx="-12" cy="-6" r="3.5" fill="var(--teal)" /><circle cx="10" cy="-9" r="3.5" fill="var(--teal)" />
-          <circle cx="2" cy="8" r="3.5" fill="var(--teal)" />
-          <path d="M-12 -6 L10 -9 L2 8 Z" stroke="var(--teal)" stroke-width="2" fill="none" />
-        </g>
-        <g class="cb-note-vetted" opacity="0">
-          <path d="M-14 0 l9 10 l19 -22" stroke="var(--success-teal)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-        </g>
+      {/* night-hand: points up at rest, render() rotates it to track the card */}
+      <g class="cb-hand" transform={`rotate(0 ${CX} ${CY})`}>
+        <line x1={CX} y1={CY} x2={CX} y2={CY - HAND_LEN} stroke="var(--teal)" stroke-width="3" stroke-linecap="round" />
       </g>
-
       <circle cx={CX} cy={CY} r="6" fill="var(--teal)" />
+
+      {/* REJECT card — peels to the right critic, gets ✗, drops out */}
+      <g class="cb-reject" data-reject transform={`translate(${CRR.x} ${CRR.y})`} opacity="0">
+        <rect x="-24" y="-18" width="48" height="36" rx="3" fill="var(--paper)" stroke="var(--ink-secondary)" stroke-width="2.5" />
+        <path d="M -11 -9 l 22 18 M 11 -9 l -22 18" stroke="var(--ink-secondary)" stroke-width="4" stroke-linecap="round" />
+      </g>
+
+      {/* the surviving note-card riding the ring via offset-path (single-sourced
+          from RING_PATH so it tracks CX/CY/R; offset-distance driven by render(t)) */}
+      <g class="cb-card" data-card opacity="0" style={`offset-path: path("${RING_PATH}"); offset-rotate: 0deg; offset-distance: 0%;`}>
+        <rect x="-28" y="-21" width="56" height="42" rx="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5" />
+        {/* raw scribble */}
+        <g class="cb-raw">
+          <line x1="-17" y1="-9" x2="17" y2="-9" stroke="var(--ink-secondary)" stroke-width="2.5" />
+          <line x1="-17" y1="0" x2="17" y2="0" stroke="var(--ink-secondary)" stroke-width="2.5" />
+          <line x1="-17" y1="9" x2="6" y2="9" stroke="var(--ink-secondary)" stroke-width="2.5" />
+        </g>
+        {/* connected concept */}
+        <g class="cb-concept" opacity="0">
+          <circle cx="-13" cy="-7" r="4" fill="var(--teal)" /><circle cx="12" cy="-9" r="4" fill="var(--teal)" />
+          <circle cx="3" cy="9" r="4" fill="var(--teal)" />
+          <path d="M -13 -7 L 12 -9 L 3 9 Z" stroke="var(--teal)" stroke-width="2.2" fill="none" />
+        </g>
+        {/* vetted */}
+        <g class="cb-vetted" opacity="0">
+          <path d="M -15 0 l 10 11 l 20 -23" stroke="var(--success-teal)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </g>
+
+      {/* ───────── dawn payoff (lower-right, where the art's dawn cluster was) ───────── */}
+      <g class="cb-dawn" opacity="0">
+        {/* rising sun */}
+        <g class="cb-sun">
+          <circle cx={SUN.x} cy={SUN.y} r="30" fill="var(--amber-mid)" stroke="var(--amber-warm)" stroke-width="2" />
+          {[...Array(8)].map((_, i) => {
+            const a = (i * 45 * Math.PI) / 180;
+            const r0 = 40, r1 = 56;
+            return (
+              <line
+                x1={SUN.x + r0 * Math.cos(a)} y1={SUN.y + r0 * Math.sin(a)}
+                x2={SUN.x + r1 * Math.cos(a)} y2={SUN.y + r1 * Math.sin(a)}
+                stroke="var(--amber-warm)" stroke-width="3" stroke-linecap="round"
+              />
+            );
+          })}
+        </g>
+        {/* the 08:30 the Daily Driver writes — static-reading, not live data */}
+        <text class="cb-clock" x={SUN.x + 92} y={SUN.y + 11} fill="var(--stamp-amber)">08:30</text>
+        {/* masthead strip — the paper prints */}
+        <g class="cb-paper" transform={`translate(${SUN.x + 248} ${SUN.y - 38})`}>
+          <rect x="0" y="0" width="96" height="74" rx="2" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" />
+          <rect x="9" y="9" width="78" height="11" fill="var(--stamp-amber)" />
+          <line x1="9" y1="31" x2="87" y2="31" stroke="var(--ink-secondary)" stroke-width="2" />
+          <line x1="9" y1="42" x2="87" y2="42" stroke="var(--ink-secondary)" stroke-width="2" />
+          <line x1="9" y1="53" x2="87" y2="53" stroke="var(--ink-secondary)" stroke-width="2" />
+          <line x1="9" y1="64" x2="60" y2="64" stroke="var(--ink-secondary)" stroke-width="2" />
+        </g>
+      </g>
     </svg>
   </div>
 
@@ -122,123 +185,144 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
 </InteractiveExplainer>
 
 <style>
-  .cb-static {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+  .cb-static { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
   .cb-interactive {
     display: none;
     position: absolute;
     inset: 0;
-    container-type: inline-size; /* cqw drives any in-stage DOM typography (Task 5) */
+    container-type: inline-size;
   }
   :global(.ie-root.is-interactive) .cb-interactive { display: block; }
   :global(.ie-root.is-interactive) .cb-static { display: none; }
 
-  .cb-base {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    user-select: none;
+  .cb-base { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; user-select: none; }
+  .cb-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  .cb-clock {
+    font-family: var(--font-mono, monospace);
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: 1px;
   }
 
-  .cb-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
+  /* settle transitions; gated so they only apply once interactive */
+  :global(.ie-root.is-interactive) .cb-node,
+  :global(.ie-root.is-interactive) .cb-approve,
+  :global(.ie-root.is-interactive) .cb-raw,
+  :global(.ie-root.is-interactive) .cb-concept,
+  :global(.ie-root.is-interactive) .cb-vetted { transition: opacity 0.2s var(--ease-out, ease-out); }
 
   .ie-sr-only {
-    position: absolute;
-    width: 1px; height: 1px; padding: 0; margin: -1px;
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
-
-  .cb-note { transition: transform 0.28s var(--ease-out, ease-out); }
-  .cb-node, .cb-verdict, .cb-note-raw, .cb-note-concept, .cb-note-vetted { transition: opacity 0.18s linear; }
 </style>
 
 <script>
   import { wireScrubber, easeInOut } from "~/scripts/interactive-explainer";
 
-  const CX = 800, CY = 478;
-  const HAND_SWEEP_DEG = 240;
-  const SWEEP_END = 0.82;
+  const CX = 810, CY = 516; // pivot — keep in sync with the .astro geometry block
   const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+  const setOp = (el: Element | null, v: number) => el && ((el as HTMLElement).style.opacity = v.toFixed(3));
 
-  // Station centers + activation t (must match the .astro NODES table). TUNE in Task 6.
-  const NODES = [
-    { key: "capture", x: 1075, y: 378, t: 0.235 },
-    { key: "synth",   x: 1108, y: 612, t: 0.382 },
-    { key: "criticR", x: 940,  y: 760, t: 0.516 },
-    { key: "criticL", x: 715,  y: 760, t: 0.661 },
-    { key: "vault",   x: 505,  y: 620, t: 0.820 },
+  // Station offsets — must match the .astro ST table.
+  const NOTES = 0, CAPTURE = 18, SYNTH = 30, CRITIC_L = 56, VAULT = 70;
+  const CRR = { x: 933, y: 757 };
+
+  // t → offset% with eased hops + holds (Nicky Case "climb": step, dwell, step).
+  const SEGS: [number, number, number, number][] = [
+    [0.00, 0.08, NOTES, NOTES],     // dusk — card waits on the desk, human asleep
+    [0.08, 0.24, NOTES, CAPTURE],   // → CAPTURE
+    [0.24, 0.34, CAPTURE, CAPTURE], // dwell
+    [0.34, 0.48, CAPTURE, SYNTH],   // → SYNTHESIZE
+    [0.48, 0.56, SYNTH, SYNTH],     // dwell — concept forms
+    [0.56, 0.72, SYNTH, CRITIC_L],  // → through the two-critic gate
+    [0.72, 0.84, CRITIC_L, VAULT],  // → VAULT
+    [0.84, 1.00, VAULT, VAULT],     // dawn — vaulted
   ];
-  const at = (k: string) => NODES.find((n) => n.key === k)!;
+  function offsetForT(t: number): number {
+    for (const [a, b, da, db] of SEGS) {
+      if (t <= b) return da + (db - da) * easeInOut(clamp01((t - a) / (b - a)));
+    }
+    return VAULT;
+  }
+
+  // ramp helper: 0 before `a`, eased 0→1 across [a,b]
+  const ramp = (t: number, a: number, b: number) => easeInOut(clamp01((t - a) / (b - a)));
 
   document
     .querySelectorAll<HTMLElement>('[data-interactive-explainer="code-brain"]')
     .forEach((root) => {
       const hand = root.querySelector<SVGGElement>(".cb-hand");
-      const note = root.querySelector<SVGGElement>("[data-note]");
-      const noteRaw = root.querySelector<SVGGElement>(".cb-note-raw");
-      const noteConcept = root.querySelector<SVGGElement>(".cb-note-concept");
-      const noteVetted = root.querySelector<SVGGElement>(".cb-note-vetted");
-      const approve = root.querySelector<SVGGElement>('[data-verdict="approve"]');
-      const reject = root.querySelector<SVGGElement>('[data-verdict="reject"]');
-      const nodeEls = new Map(
+      const card = root.querySelector<SVGGElement>("[data-card]");
+      const raw = root.querySelector<SVGGElement>(".cb-raw");
+      const concept = root.querySelector<SVGGElement>(".cb-concept");
+      const vetted = root.querySelector<SVGGElement>(".cb-vetted");
+      const reject = root.querySelector<SVGGElement>("[data-reject]");
+      const approve = root.querySelector<SVGGElement>("[data-approve]");
+      const dawn = root.querySelector<SVGGElement>(".cb-dawn");
+      const sun = root.querySelector<SVGGElement>(".cb-sun");
+      const wash = root.querySelector<SVGRectElement>(".cb-wash");
+      const sr = root.querySelector<HTMLElement>("[data-cb-sr]");
+      const nodes = new Map(
         Array.from(root.querySelectorAll<SVGCircleElement>(".cb-node")).map((el) => [el.dataset.node!, el]),
       );
-      const sr = root.querySelector<HTMLElement>("[data-cb-sr]");
-      if (!hand) return;
+      if (!hand || !card) return;
 
-      const setOp = (el: Element | null, v: number) => el && ((el as HTMLElement).style.opacity = v.toFixed(3));
+      // node light thresholds (t at which the card reaches each)
+      const NODE_T: Record<string, number> = {
+        capture: 0.24, synth: 0.48, criticR: 0.60, criticL: 0.72, vault: 0.84,
+      };
 
       wireScrubber(root, (t) => {
-        // 1) night-hand sweep
-        const rot = HAND_SWEEP_DEG * easeInOut(clamp01(t / SWEEP_END));
-        hand.setAttribute("transform", `rotate(${rot.toFixed(2)} ${CX} ${CY})`);
+        // 1) survivor rides the ring; hand tracks it
+        const off = offsetForT(t);
+        card.style.offsetDistance = off.toFixed(2) + "%";
+        setOp(card, t >= 0.04 ? 1 : 0);
+        hand.setAttribute("transform", `rotate(${(off * 3.6).toFixed(2)} ${CX} ${CY})`);
+        // Lift the survivor inward (toward center) only across the bottom arc, so it
+        // rides UP THROUGH the two-critic gate instead of dipping into the CRITIC
+        // labels at the ring's lowest point. Ramps to 0 away from the gate, so the
+        // CAPTURE/SYNTHESIZE/VAULT stations are untouched.
+        const ang = (off * 3.6 * Math.PI) / 180;
+        const gate = Math.max(0, 1 - Math.abs(off - 52) / 16);
+        const lift = 54 * gate;
+        card.style.transform = `translate(${(-Math.sin(ang) * lift).toFixed(1)}px, ${(Math.cos(ang) * lift).toFixed(1)}px)`;
 
-        // 2) nodes light as the hand reaches each station t
-        for (const n of NODES) setOp(nodeEls.get(n.key) ?? null, t >= n.t ? 1 : 0);
+        // 2) glyph evolves: raw → concept (after synth) → vetted (after the gate)
+        setOp(raw, t < 0.5 ? 1 : 0);
+        setOp(concept, t >= 0.5 && t < 0.74 ? 1 : 0);
+        setOp(vetted, t >= 0.74 ? 1 : 0);
 
-        // 3) the single note snaps to the latest reached station, glyph by stage
-        let pos = { x: 800, y: 188 }; // NOTES IN
-        let stage = 0; // 0 raw, 1 concept, 2 vetted
-        if (t >= at("capture").t) { pos = at("capture"); stage = 0; }
-        if (t >= at("synth").t)   { pos = at("synth");   stage = 1; }
-        if (t >= at("criticR").t) { pos = { x: 828, y: 815 }; stage = 1; } // the fork's rejoin point
-        if (t >= at("criticL").t) { stage = 2; }                            // survived the gate
-        if (t >= at("vault").t)   { pos = at("vault"); stage = 2; }
-        if (note) {
-          note.setAttribute("transform", `translate(${pos.x} ${pos.y})`);
-          setOp(note, t >= 0.06 ? 1 : 0); // appears just after dusk
+        // 3) nodes light as the hand reaches each
+        for (const [key, el] of nodes) setOp(el, t >= NODE_T[key] ? 1 : 0);
+
+        // 4) two-critic fork: reject card peels to the right critic, ✗, drops out;
+        //    the survivor is approved at the left critic (✓)
+        const rin = ramp(t, 0.58, 0.64);          // reject card peels in
+        const rdrop = ramp(t, 0.66, 0.76);         // then falls down-right + fades out
+        if (reject) {
+          setOp(reject, Math.max(0, rin - rdrop));
+          reject.setAttribute("transform", `translate(${CRR.x + 34 * rdrop} ${CRR.y + 104 * rdrop})`);
         }
-        setOp(noteRaw, stage === 0 ? 1 : 0);
-        setOp(noteConcept, stage === 1 ? 1 : 0);
-        setOp(noteVetted, stage === 2 ? 1 : 0);
+        setOp(approve, t >= 0.7 ? 1 : 0);
 
-        // 4) two-critic quick glance: ✓ + ✗ flash on between the two critic t's
-        const inGate = t >= at("criticR").t && t <= at("criticL").t + 0.06;
-        setOp(approve, inGate ? 1 : 0);
-        setOp(reject, inGate ? 1 : 0);
+        // 5) dawn payoff — wash + rising sun + 08:30 + masthead print in
+        const d = ramp(t, 0.84, 1.0);
+        setOp(dawn, d);
+        if (wash) wash.style.opacity = (0.16 * d).toFixed(3);
+        if (sun) sun.setAttribute("transform", `translate(0 ${(34 * (1 - d)).toFixed(1)})`);
 
+        // 6) screen-reader narration per act
         if (sr) {
           sr.textContent =
-            t < at("capture").t ? "The night shift: dusk, one note in." :
-            t < at("synth").t   ? "Captured." :
-            t < at("criticR").t ? "Synthesized into a concept." :
-            t < at("vault").t   ? "Two critics: one rejects, one approves." :
-            t < SWEEP_END       ? "Vaulted as vetted knowledge." :
-                                  "Ready at 08:30.";
+            t < 0.08 ? "The night shift: dusk, one note on the desk, the human asleep." :
+            t < 0.34 ? "Captured." :
+            t < 0.56 ? "Synthesized into a concept." :
+            t < 0.72 ? "Two critics: one rejects its card, one approves." :
+            t < 0.84 ? "The survivor is vaulted as vetted knowledge." :
+            "Dawn: 08:30, the paper prints, the night's work handed back.";
         }
       });
     });
