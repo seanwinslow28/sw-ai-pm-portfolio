@@ -32,14 +32,17 @@ import numpy as np
 from PIL import Image
 
 
-def key(inp, out, *, dark_anchor=0.50, alpha_floor=36.0, graphite=(50, 48, 45), pad=24, crop=None):
+def key(inp, out, *, dark_anchor=0.50, alpha_floor=36.0, graphite=(50, 48, 45), pad=24,
+        crop=None, no_trim=False, resize=None, paper_pct=None):
     im = Image.open(inp).convert("RGB")
     if crop is not None:
         x, y, w, h = crop
         im = im.crop((x, y, x + w, y + h))
     a = np.asarray(im).astype(np.float32) / 255.0
     L = 0.2126 * a[..., 0] + 0.7152 * a[..., 1] + 0.0722 * a[..., 2]
-    paperL = float(np.median(L[:40, :40]))          # sample a clean corner = the paper white
+    # paper white: a clean corner by default, or a robust bright-percentile when
+    # the corner isn't clean (e.g. a diagram with a title in the top-left).
+    paperL = float(np.percentile(L, paper_pct)) if paper_pct else float(np.median(L[:40, :40]))
     d = np.clip(paperL - L, 0, 1)                    # darkness below paper
     gain = 255.0 / max(paperL - dark_anchor, 0.30)   # darkest ink -> fully opaque
     alpha = np.clip(d * gain, 0, 255)
@@ -51,10 +54,14 @@ def key(inp, out, *, dark_anchor=0.50, alpha_floor=36.0, graphite=(50, 48, 45), 
     rgba[..., 3] = alpha.astype(np.uint8)
     img = Image.fromarray(rgba, "RGBA")
 
-    ys, xs = np.where(alpha > 0)                     # trim to content bbox (+pad)
-    if len(xs):
-        img = img.crop((max(xs.min() - pad, 0), max(ys.min() - pad, 0),
-                        min(xs.max() + pad, W), min(ys.max() + pad, H)))
+    if not no_trim:                                  # trim to content bbox (+pad)
+        ys, xs = np.where(alpha > 0)
+        if len(xs):
+            img = img.crop((max(xs.min() - pad, 0), max(ys.min() - pad, 0),
+                            min(xs.max() + pad, W), min(ys.max() + pad, H)))
+
+    if resize is not None:                           # force an exact frame (keeps SVG viewBox aligned)
+        img = img.resize(resize, Image.LANCZOS)
 
     if out.lower().endswith(".webp"):
         img.save(out, "WEBP", lossless=True, method=6)
@@ -72,8 +79,13 @@ if __name__ == "__main__":
     p.add_argument("--graphite", default="50,48,45", help="R,G,B of the uniform line color")
     p.add_argument("--pad", type=int, default=24)
     p.add_argument("--crop", default=None, help="X,Y,W,H — carve one cell from a multi-cell sheet before keying")
+    p.add_argument("--no-trim", action="store_true", help="keep the full frame (don't crop to content bbox) — needed when an SVG overlay aligns to the image frame")
+    p.add_argument("--resize", default=None, help="WxH — resize the keyed output to an exact frame (e.g. 1672x941)")
+    p.add_argument("--paper-pct", type=float, default=None, help="estimate paper white from this brightness percentile instead of the top-left corner (use when the corner isn't clean)")
     args = p.parse_args()
     crop = tuple(int(v) for v in args.crop.split(",")) if args.crop else None
+    resize = tuple(int(v) for v in args.resize.lower().split("x")) if args.resize else None
     key(args.input, args.output,
         dark_anchor=args.dark_anchor, alpha_floor=args.alpha_floor,
-        graphite=tuple(int(x) for x in args.graphite.split(",")), pad=args.pad, crop=crop)
+        graphite=tuple(int(x) for x in args.graphite.split(",")), pad=args.pad, crop=crop,
+        no_trim=args.no_trim, resize=resize, paper_pct=args.paper_pct)
