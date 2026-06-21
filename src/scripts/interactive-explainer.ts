@@ -18,6 +18,27 @@ export function easeInOut(x: number): number {
   return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 }
 
+/** True when the reader has asked the OS to reduce motion. */
+export function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
+ * The progressive-enhancement opt-in for explainers driven by their OWN slotted
+ * controls (checkboxes, buttons) rather than the `.ie-range` scrubber — so they
+ * get the same `is-interactive` contract `wireScrubber` gives the range islands
+ * without faking a range. Adds `is-interactive` (revealing the interactive layer
+ * + hiding the static floor) and returns `{ reduced }` so the caller can drop
+ * tweens under reduced motion. Unlike `wireScrubber`, this does NOT bail under
+ * reduced motion: discrete-state interactions (the-block's switchboard) stay
+ * operable with instant, un-tweened state changes — more accessible than hiding
+ * them. Motion itself is gated in CSS via `@media (prefers-reduced-motion: …)`.
+ */
+export function enableInteractive(root: HTMLElement): { reduced: boolean } {
+  root.classList.add("is-interactive");
+  return { reduced: prefersReducedMotion() };
+}
+
 export interface ScrubberOptions {
   /** CSS color for the filled portion of the range track. Default: var(--teal). */
   fill?: string;
