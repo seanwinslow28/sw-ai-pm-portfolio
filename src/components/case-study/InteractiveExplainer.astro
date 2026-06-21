@@ -1,0 +1,165 @@
+---
+/**
+ * <InteractiveExplainer /> — the shared base for every interactive case-study
+ * explainer (extracted from the animation-pipeline pilot, 2026-06-20, during
+ * build #2 / Intent MCP per docs/specs/interactive-explainer-rollout-v1.md §6).
+ *
+ * It owns the chrome + the progressive-enhancement contract: the CLS-safe stage
+ * (height reserved before paint via the `aspectRatio` prop), the optional zones
+ * label row, and the native range scrubber — which stays hidden until a
+ * per-project script adds `is-interactive` (and never does so under
+ * prefers-reduced-motion). The interaction itself is NOT here: each project slots
+ * its own keyed-art layers into the default <slot/> and wires its own render(t)
+ * through src/scripts/interactive-explainer.ts.
+ *
+ * Scope note (Astro): this component styles only the elements it renders here
+ * (.ie-*). Slotted stage layers keep the *per-project* component's style scope,
+ * so their CSS — and any rule gating them on `.ie-root.is-interactive` — must
+ * live in that component (wrap the ancestor in :global() there).
+ */
+interface Zone {
+  label: string;
+  sublabel: string;
+  /** CSS color token for the label, e.g. "var(--teal)". */
+  token: string;
+}
+interface Scrub {
+  title: string;
+  hint: string;
+  ariaLabel: string;
+  ticks: (string | number)[];
+}
+interface Props {
+  /** Distinct key → `data-interactive-explainer`; the per-project script selects on it. */
+  variant: string;
+  /** e.g. "1376 / 457" or "16 / 9" — reserves stage height before paint (CLS). */
+  aspectRatio: string;
+  /** Optional initial `--reveal` for mask-based variants (omit for cross-fade variants). */
+  initialReveal?: string;
+  zones?: Zone[];
+  scrub: Scrub;
+}
+const { variant, aspectRatio, initialReveal, zones = [], scrub } = Astro.props;
+const stageStyle = `aspect-ratio: ${aspectRatio};` + (initialReveal ? ` --reveal: ${initialReveal};` : "");
+---
+
+<div class="ie-root" data-interactive-explainer={variant}>
+  <div class="ie-stage" style={stageStyle}>
+    <slot />
+  </div>
+
+  {zones.length > 0 && (
+    <div class="ie-zones" aria-hidden="true">
+      {zones.map((z) => (
+        <div class="ie-z">
+          <b style={`color: ${z.token}`}>{z.label}</b>
+          <i>{z.sublabel}</i>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <div class="ie-scrub">
+    <div class="ie-scrub-head">
+      <span class="ie-scrub-title">{scrub.title}</span>
+      <span class="ie-hint" aria-hidden="true">{scrub.hint}</span>
+    </div>
+    <input
+      class="ie-range"
+      type="range"
+      min="0"
+      max="1000"
+      value="0"
+      aria-label={scrub.ariaLabel}
+    />
+    <div class="ie-ticks" aria-hidden="true">
+      {scrub.ticks.map((t) => <span>{t}</span>)}
+    </div>
+  </div>
+</div>
+
+<style>
+  .ie-root { display: block; width: 100%; }
+
+  .ie-stage {
+    position: relative;
+    width: 100%;
+    /* aspect-ratio supplied inline -> reserves height before paint (CLS-safe). */
+  }
+
+  .ie-zones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+  }
+  .ie-z { display: flex; flex-direction: column; gap: 2px; }
+  .ie-z:nth-child(2) { align-items: center; text-align: center; }
+  .ie-z:last-child { align-items: flex-end; text-align: right; }
+  .ie-z b {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+  .ie-z i {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+
+  /* Scrubber: progressive enhancement, hidden until a script adds is-interactive. */
+  .ie-scrub { display: none; margin-top: 22px; }
+  .ie-root.is-interactive .ie-scrub { display: block; }
+  .ie-scrub-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .ie-scrub-title,
+  .ie-hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+  .ie-hint { font-weight: 400; }
+
+  .ie-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    background: var(--border-paper);
+    outline: none;
+    cursor: ew-resize;
+  }
+  .ie-range::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 6px; height: 24px;
+    background: var(--teal); border-radius: 1px; cursor: ew-resize;
+  }
+  .ie-range::-moz-range-thumb {
+    width: 6px; height: 24px;
+    background: var(--teal); border: none; border-radius: 1px; cursor: ew-resize;
+  }
+  .ie-range:focus-visible { outline: 2px solid var(--stamp-amber); outline-offset: 6px; }
+
+  .ie-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: var(--ink-secondary);
+  }
+
+  @media (max-width: 767px) {
+    .ie-z b { font-size: 12px; }
+    .ie-z i { font-size: 10px; }
+  }
+</style>

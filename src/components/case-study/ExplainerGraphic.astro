@@ -3,15 +3,36 @@
  * <ExplainerGraphic /> — the "what this does at a glance" figure on a case
  * study, between the 4Q and Methods bands (critique W3). Renders only when
  * the project's frontmatter carries an `explainer:` block.
+ *
+ * When `explainer.interactive` names a known interactive variant, the static
+ * <img> is swapped for the matching component (registry below, 2026-06-20). The
+ * static `src` stays in frontmatter as the alt-text source and the ultimate
+ * fallback — an unknown/typo'd `interactive:` value degrades to the <img>, never
+ * a build error. Add a new explainer by importing it and adding one map entry.
  */
+import AnimationPipelineExplainer from "./AnimationPipelineExplainer.astro";
+import IntentExplainer from "./IntentExplainer.astro";
+
+const INTERACTIVE = {
+  "animation-pipeline": AnimationPipelineExplainer,
+  "intent-engineering-mcp": IntentExplainer,
+} as const;
+
 interface Props {
-  explainer: { src: string; alt: string; caption?: string };
+  explainer: { src: string; alt: string; caption?: string; interactive?: string };
 }
 const { explainer } = Astro.props;
+const Interactive = explainer.interactive
+  ? (INTERACTIVE[explainer.interactive as keyof typeof INTERACTIVE] ?? null)
+  : null;
 ---
 
 <figure class="explainer-graphic">
-  <img src={explainer.src} alt={explainer.alt} loading="lazy" decoding="async" />
+  {Interactive ? (
+    <Interactive src={explainer.src} alt={explainer.alt} />
+  ) : (
+    <img src={explainer.src} alt={explainer.alt} loading="lazy" decoding="async" />
+  )}
   {explainer.caption && <figcaption>{explainer.caption}</figcaption>}
 </figure>
 
