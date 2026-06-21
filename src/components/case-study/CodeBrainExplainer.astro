@@ -37,7 +37,7 @@ const dialArt = `/assets/projects/explainers/code-brain-dial.webp${V}`;
 // Dial geometry in source pixels (1672x941). TUNE in Task 6.
 const CX = 800;
 const CY = 478;
-const R = 300;
+const R = 300; // hand length — SSR-only (baked into the <line>; the script only rotates the group)
 
 // Station centers in source pixels + the t at which the hand reaches each.
 // TUNE in Task 6 (measure against code-brain-dial.webp). NOTES IN is the start.
@@ -249,7 +249,8 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
   const SWEEP_END = 0.82;
   const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 
-  // Station centers + activation t (must match the .astro NODES table). TUNE in Task 6.
+  // Tunable geometry (TUNE in Task 6). NODES + CX/CY must stay byte-identical to
+  // the .astro frontmatter copies (intentional SSR/client duplication).
   const NODES = [
     { key: "capture", x: 1075, y: 378, t: 0.235 },
     { key: "synth",   x: 1108, y: 612, t: 0.382 },
@@ -257,6 +258,7 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
     { key: "criticL", x: 715,  y: 760, t: 0.661 },
     { key: "vault",   x: 505,  y: 620, t: 0.820 },
   ];
+  const REJOIN = { x: 828, y: 815 }; // the two-critic fork rejoin point (note passes through here)
   const at = (k: string) => NODES.find((n) => n.key === k)!;
 
   document
@@ -308,7 +310,7 @@ const NOTE0 = { x: 800, y: 188 }; // NOTES IN — where the raw note starts
         let stage = 0; // 0 raw, 1 concept, 2 vetted
         if (t >= at("capture").t) { pos = at("capture"); stage = 0; }
         if (t >= at("synth").t)   { pos = at("synth");   stage = 1; }
-        if (t >= at("criticR").t) { pos = { x: 828, y: 815 }; stage = 1; } // the fork's rejoin point
+        if (t >= at("criticR").t) { pos = REJOIN; stage = 1; } // the fork's rejoin point
         if (t >= at("criticL").t) { stage = 2; }                            // survived the gate
         if (t >= at("vault").t)   { pos = at("vault"); stage = 2; }
         if (note) {
