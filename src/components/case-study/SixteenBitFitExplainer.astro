@@ -1,0 +1,504 @@
+---
+/**
+ * <SixteenBitFitExplainer /> — "Watch the fighter drift, then lock it" (rollout §5).
+ * Consumes <InteractiveExplainer/> for the chrome + progressive-enhancement
+ * contract; owns the Game Boy LCD loop + the PIPELINE OFF/ON toggle. The ONLY
+ * continuous-motion explainer, so it obeys the Licensed-Infinite-Motion rule: the
+ * jab loop runs only while the band is in view (IntersectionObserver), and
+ * reduced-motion renders a single locked frame with no loop and no jitter.
+ *
+ * The honest mechanic (rollout §3): ON and OFF play the SAME source frames — a
+ * 3-pose jab (cocked → mid → extended) generated as one consistent fighter on the
+ * Game Boy DMG green palette (scripts/gen-explainer-16bitfit.sh, the PIXEL skill).
+ * The toggle only adds/removes a runtime jitter layer: OFF = a 1-2px silhouette
+ * wander + a stray/missing edge pixel + an occasional green-band flip, so the
+ * fighter subtly becomes a slightly different fighter (identity drift = flicker,
+ * the four_q.break bug), NOT random chaos. ON = the clean locked loop.
+ *
+ * Color-as-actor: the Game-Boy-green LCD is the register; PAUSED / PIPELINE 47% /
+ * ON THE SHELF stay --stamp-amber (the game is shelved regardless of the toggle);
+ * flipping the pipeline ON resolves the dotted "inherits the pipeline when Anima
+ * ships ~2026-08" arrow to --success-teal. Flat, sharp, no Rough.js in this island.
+ *
+ * Progressive enhancement: no-JS shows the static 16bitfit.webp (the honest final
+ * state). prefers-reduced-motion keeps the toggle as a static OFF↔ON comparison
+ * but nothing animates.
+ */
+import InteractiveExplainer from "./InteractiveExplainer.astro";
+
+interface Props {
+  /** Frontmatter static src — the no-JS / reduced-motion fallback + alt source. */
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+const SHEET = "/assets/projects/explainers/16bitfit-fighter-sheet.png?v=2026-06-21";
+---
+
+<InteractiveExplainer variant="16bitfit" aspectRatio="16 / 9">
+  {/* no-JS / pre-JS floor — the honest final state */}
+  <img class="bbf-static" src={src} alt={alt} draggable="false" decoding="async" />
+
+  {/* interactive Game Boy — revealed only when JS adds is-interactive */}
+  <div class="bbf" data-bbf>
+    <div class="bbf-device">
+      <div class="bbf-top">
+        <span class="bbf-dot" aria-hidden="true"></span>
+        <span class="bbf-brand">16BITFIT</span>
+      </div>
+      <div class="bbf-screen">
+        <span class="bbf-paused" aria-hidden="true">❚❚ PAUSED</span>
+        <div class="bbf-lcd"><canvas data-lcd aria-hidden="true"></canvas></div>
+      </div>
+      <div class="bbf-controls" aria-hidden="true">
+        <svg class="bbf-dpad" viewBox="0 0 30 30" fill="none">
+          <path d="M11 3 h8 v8 h8 v8 h-8 v8 h-8 v-8 h-8 v-8 h8 z"
+                stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+        </svg>
+        <span class="bbf-ab"><i>B</i><i>A</i></span>
+      </div>
+      <div class="bbf-shelf" aria-hidden="true">
+        <span class="bbf-prog"><b style="width:47%"></b></span>
+        <span>PIPELINE 47% · ON THE SHELF</span>
+      </div>
+    </div>
+
+    <div class="bbf-side">
+      <p class="bbf-status" data-status aria-hidden="true"></p>
+
+      <button class="bbf-toggle" type="button" role="switch" aria-checked="false"
+              aria-label="Anima pipeline: off or on" data-toggle>
+        <span class="bbf-tl">Pipeline</span>
+        <span class="bbf-sw"><span class="bbf-knob"></span></span>
+        <span class="bbf-state" data-toggle-state>Off</span>
+      </button>
+
+      <div class="bbf-inherit" data-inherit aria-hidden="true">
+        <svg class="bbf-arrow" viewBox="0 0 120 16" preserveAspectRatio="none">
+          <path class="bbf-arrow-line" d="M2 8 H104" pathLength="1" />
+          <path class="bbf-arrow-head" d="M98 3 L110 8 L98 13" fill="none" />
+        </svg>
+        <span class="bbf-anima">ANIMA</span>
+        <span class="bbf-inherit-note">inherits the pipeline when Anima ships ~2026-08</span>
+      </div>
+    </div>
+  </div>
+
+  {/* live state, announced politely to screen readers (JS fills it; empty under no-JS) */}
+  <span class="ie-sr-only" aria-live="polite" data-bbf-sr></span>
+</InteractiveExplainer>
+
+<style>
+  /* Slotted into the base stage → keeps this component's scope; the is-interactive
+     toggles wrap the base-rendered ancestor in :global(). */
+  .bbf-static { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+  .bbf {
+    display: none;
+    position: absolute;
+    inset: 0;
+    container-type: inline-size;
+    align-items: center;
+    justify-content: center;            /* center the device+story pair in the 16:9 figure */
+    gap: clamp(14px, 4cqw, 52px);
+    padding: clamp(8px, 2.4cqw, 26px) clamp(10px, 3cqw, 36px);
+  }
+  :global(.ie-root.is-interactive) .bbf { display: flex; }
+  :global(.ie-root.is-interactive) .bbf-static { display: none; }
+
+  /* ── the Game Boy device (ink line on paper, flat — no shadow/glass) ── */
+  .bbf-device {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 1cqw, 10px);
+    width: clamp(118px, 30cqw, 232px);
+    padding: clamp(8px, 1.6cqw, 16px) clamp(8px, 1.6cqw, 15px) clamp(9px, 1.8cqw, 17px);
+    background: #f3ecdd;                 /* a touch off the paper, so it reads as a device */
+    border: 2.5px solid var(--ink);
+    border-radius: 10px 10px 26px 10px;  /* the GB's signature asymmetric corner */
+  }
+  .bbf-top { display: flex; align-items: center; gap: 7px; }
+  .bbf-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--stamp-amber);      /* power LED, amber = paused, not running */
+    border: 1px solid var(--ink);
+  }
+  .bbf-brand {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 1.1cqw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+  }
+
+  .bbf-screen {
+    position: relative;
+    background: var(--teal);             /* the LCD bezel */
+    border-radius: 5px 5px 14px 5px;
+    padding: clamp(7px, 1.4cqw, 13px) clamp(7px, 1.4cqw, 12px) clamp(11px, 2cqw, 18px);
+  }
+  .bbf-paused {
+    position: absolute; top: 5px; right: 8px; z-index: 2;
+    font-family: var(--font-mono);
+    font-size: clamp(6.5px, 0.92cqw, 9px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--stamp-amber);
+    background: #fbe9d6;
+    border: 1px solid var(--stamp-amber);
+    padding: 1px 4px; border-radius: 2px;
+  }
+  .bbf-lcd {
+    aspect-ratio: 115 / 120;             /* set precisely from the sheet at runtime */
+    background: #9bbc0f;                 /* DMG lightest — the LCD ground */
+    border: 1px solid #0f380f;
+    overflow: hidden;
+  }
+  .bbf-lcd canvas {
+    display: block; width: 100%; height: 100%;
+    image-rendering: pixelated; image-rendering: crisp-edges;
+  }
+
+  .bbf-controls {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2px; color: var(--ink);
+  }
+  .bbf-dpad { width: clamp(20px, 3.4cqw, 30px); height: clamp(20px, 3.4cqw, 30px); }
+  .bbf-ab { display: inline-flex; gap: clamp(5px, 1cqw, 9px); }
+  .bbf-ab i {
+    width: clamp(13px, 2.1cqw, 19px); height: clamp(13px, 2.1cqw, 19px);
+    border: 1.6px solid var(--ink); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-style: normal;
+    font-size: clamp(6px, 0.9cqw, 9px); font-weight: 700; color: var(--ink);
+  }
+
+  .bbf-shelf {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: clamp(6.5px, 0.92cqw, 9.5px);
+    letter-spacing: 0.06em;
+    color: var(--stamp-amber);          /* the game's real state — amber */
+  }
+  .bbf-prog {
+    flex: 0 0 auto; width: clamp(22px, 4cqw, 38px); height: 5px;
+    border: 1px solid var(--stamp-amber); border-radius: 2px; overflow: hidden;
+  }
+  .bbf-prog b { display: block; height: 100%; background: var(--stamp-amber); }
+
+  /* ── the side: status line, the toggle (the interaction), the inherit arrow ── */
+  .bbf-side {
+    /* grow to fill (capped at 34ch so desktop whitespace stays balanced under
+       justify-content:center) AND shrink below content on a phone so it never
+       pushes past the 16:9 figure edge */
+    flex: 1 1 auto; min-width: 0; max-width: 34ch;
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: clamp(12px, 2.6cqw, 22px);
+  }
+  .bbf-status {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.5cqw, 15px);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--stamp-amber);          /* OFF = amber; flips to teal when ON */
+    max-width: 34ch;
+  }
+  .bbf.is-on .bbf-status { color: var(--success-teal); }
+
+  .bbf-toggle {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 44px;                   /* touch target */
+    padding: 8px 14px;
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1.2cqw, 12px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .bbf-toggle:hover { background: rgba(10, 62, 66, 0.05); }
+  .bbf-toggle:active { background: rgba(10, 62, 66, 0.1); }
+  .bbf-tl { color: var(--ink-secondary); }
+  .bbf-sw {
+    position: relative; width: 44px; height: 22px;
+    border: 1.5px solid var(--stamp-amber); border-radius: 999px;
+    background: rgba(124, 45, 18, 0.08);
+  }
+  .bbf-knob {
+    position: absolute; top: 2px; left: 2px;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--stamp-amber);
+    transform: translateX(0);
+  }
+  .bbf-state { color: var(--stamp-amber); font-weight: 600; min-width: 2.2em; }
+  .bbf.is-on .bbf-sw { border-color: var(--success-teal); background: rgba(15, 110, 86, 0.1); }
+  .bbf.is-on .bbf-knob { background: var(--success-teal); transform: translateX(22px); }
+  .bbf.is-on .bbf-state { color: var(--success-teal); }
+  .bbf-toggle:focus-visible { outline: 2px solid var(--stamp-amber); outline-offset: 4px; }
+
+  .bbf-inherit {
+    display: grid;
+    grid-template-columns: clamp(54px, 12cqw, 104px) auto;
+    align-items: center;
+    column-gap: 8px; row-gap: 2px;
+    color: var(--ink-secondary);
+  }
+  .bbf-arrow { width: 100%; height: 14px; overflow: visible; }
+  .bbf-arrow-line {
+    fill: none; stroke: var(--ink-secondary); stroke-width: 1.4;
+    stroke-linecap: round; stroke-dasharray: 0.04 0.05;   /* dotted while paused */
+  }
+  .bbf-arrow-head { stroke: var(--ink-secondary); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .bbf-anima {
+    font-family: var(--font-mono); font-size: clamp(9px, 1.2cqw, 13px); font-weight: 700;
+    letter-spacing: 0.12em; color: var(--ink-secondary);
+  }
+  .bbf-inherit-note {
+    grid-column: 1 / -1;
+    font-family: var(--font-mono); font-size: clamp(7px, 0.95cqw, 10px);
+    letter-spacing: 0.02em; color: var(--ink-secondary); line-height: 1.4;
+  }
+  .bbf.is-on .bbf-arrow-line { stroke: var(--success-teal); stroke-dasharray: none; }
+  .bbf.is-on .bbf-arrow-head { stroke: var(--success-teal); }
+  .bbf.is-on .bbf-anima { color: var(--success-teal); }
+
+  /* Motion is gated by the reader's preference (media feature — NOT a container
+     query). Under reduced motion the toggle still flips state, just instantly. */
+  @media (prefers-reduced-motion: no-preference) {
+    .bbf-knob { transition: transform 0.2s var(--ease-out), background 0.2s var(--ease-out); }
+    .bbf-sw { transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out); }
+    .bbf-status, .bbf-anima { transition: color 0.25s var(--ease-out); }
+    .bbf-arrow-line, .bbf-arrow-head { transition: stroke 0.3s var(--ease-out); }
+    .bbf-toggle { transition: background 0.18s var(--ease-out); }
+  }
+
+  /* Stays side-by-side at every width — both columns scale via cqw and fit inside
+     the 16:9 stage even on a phone, so it never overflows into the caption. The
+     inherit note (a restatement of the status line) drops on the narrowest figures
+     to keep the side column short. */
+  @container (max-width: 360px) {
+    .bbf-inherit-note { display: none; }
+  }
+
+  .ie-sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+</style>
+
+<script>
+  import { enableInteractive } from "~/scripts/interactive-explainer";
+
+  const SHEET = "/assets/projects/explainers/16bitfit-fighter-sheet.png?v=2026-06-21";
+  const N = 3;                          // cells: 0=cocked, 1=mid, 2=extended
+  const MARGIN_X = 12, MARGIN_TOP = 8, MARGIN_BOT = 8;
+
+  // a jab played out-and-back, per 2d-animation-principles holds (ms):
+  // cocked (anticipation) → mid (fast travel) → extended (impact, held) → mid (return).
+  const SEQ = [
+    { f: 0, ms: 200 }, { f: 1, ms: 55 }, { f: 2, ms: 150 }, { f: 1, ms: 70 },
+  ];
+
+  // approved drift spec (Sean, 2026-06-21): identity-bearing, reads as flicker.
+  const WANDER = 2, P_EDGE = 0.7, EDGE_K = 2, P_PAL = 0.4;
+  const MID = [0x30, 0x62, 0x30], LIGHT = [0x8b, 0xac, 0x0f], DARK = [0x0f, 0x38, 0x0f];
+
+  const STATUS = {
+    off: "Identity drift. The silhouette wanders frame to frame, so it flickers.",
+    on: "Anima locks every frame to one fighter. The paused game inherits the pipeline when Anima ships, ~2026-08.",
+  };
+  const SR = {
+    off: "Pipeline off: the fighter's silhouette drifts frame to frame, so it flickers.",
+    on: "Pipeline on: Anima locks every frame to one fighter and the loop runs clean. The paused game inherits the pipeline when Anima ships, around August 2026.",
+  };
+
+  function clamp(v: number, a: number, b: number) { return v < a ? a : v > b ? b : v; }
+  function step() { return ((Math.random() * 3) | 0) - 1; }
+  function eq(d: Uint8ClampedArray, i: number, c: number[]) {
+    return d[i] === c[0] && d[i + 1] === c[1] && d[i + 2] === c[2];
+  }
+
+  type Frame = { clean: ImageData; inner: [number, number][]; outer: [number, number][] };
+  type Jit = { dx: number; dy: number; pal: number[][] | null; edits: [string, [number, number]][] };
+
+  function setup(root: HTMLElement) {
+    const bbf = root.querySelector<HTMLElement>("[data-bbf]");
+    const lcdBox = root.querySelector<HTMLElement>(".bbf-lcd");
+    const canvas = root.querySelector<HTMLCanvasElement>("[data-lcd]");
+    const toggle = root.querySelector<HTMLButtonElement>("[data-toggle]");
+    const toggleState = root.querySelector<HTMLElement>("[data-toggle-state]");
+    const statusEl = root.querySelector<HTMLElement>("[data-status]");
+    const sr = root.querySelector<HTMLElement>("[data-bbf-sr]");
+    if (!bbf || !lcdBox || !canvas || !toggle) return;
+
+    const { reduced } = enableInteractive(root);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let FW = 91, FH = 104, LW = 115, LH = 120, FX = 12, FY = 8;
+    let frames: Frame[] = [];
+    let tmp: HTMLCanvasElement, tctx: CanvasRenderingContext2D;
+    let pipelineOn = false;              // start OFF (flicker) — the 3-act open
+    const jit: Jit = { dx: 0, dy: 0, pal: null, edits: [] };
+
+    function buildFrames(img: HTMLImageElement) {
+      FW = Math.round(img.naturalWidth / N);
+      FH = img.naturalHeight;
+      LW = FW + MARGIN_X * 2;
+      LH = FH + MARGIN_TOP + MARGIN_BOT;
+      FX = Math.round((LW - FW) / 2);
+      FY = LH - FH - MARGIN_BOT;
+      canvas.width = LW; canvas.height = LH;
+      lcdBox!.style.aspectRatio = `${LW} / ${LH}`;
+
+      const oc = document.createElement("canvas");
+      oc.width = N * FW; oc.height = FH;
+      const ox = oc.getContext("2d")!;
+      ox.imageSmoothingEnabled = false;
+      ox.drawImage(img, 0, 0);
+      for (let i = 0; i < N; i++) {
+        const id = ox.getImageData(i * FW, 0, FW, FH);
+        const d = id.data;
+        const A = (x: number, y: number) =>
+          x < 0 || y < 0 || x >= FW || y >= FH ? 0 : d[(y * FW + x) * 4 + 3];
+        const inner: [number, number][] = [], outer: [number, number][] = [];
+        for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+          const op = A(x, y) > 0;
+          let t = false, o = false;
+          for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            A(x + dx, y + dy) === 0 ? (t = true) : (o = true);
+          }
+          if (op && t) inner.push([x, y]);
+          if (!op && o) outer.push([x, y]);
+        }
+        frames.push({ clean: id, inner, outer });
+      }
+      tmp = document.createElement("canvas");
+      tmp.width = FW; tmp.height = FH;
+      tctx = tmp.getContext("2d")!;
+    }
+
+    function rollJitter(fi: number) {
+      jit.dx = clamp(jit.dx + step(), -WANDER, WANDER);
+      jit.dy = clamp(jit.dy + step(), -WANDER, WANDER);
+      jit.pal = Math.random() < P_PAL
+        ? (Math.random() < 0.5 ? [MID, LIGHT] : [LIGHT, MID]) : null;
+      jit.edits = [];
+      if (Math.random() < P_EDGE) {
+        const F = frames[fi];
+        for (let k = 0; k < EDGE_K; k++) {
+          if (Math.random() < 0.5 && F.inner.length) {
+            jit.edits.push(["rm", F.inner[(F.inner.length * Math.random()) | 0]]);
+          } else if (F.outer.length) {
+            jit.edits.push(["add", F.outer[(F.outer.length * Math.random()) | 0]]);
+          }
+        }
+      }
+    }
+
+    function drifted(fi: number): HTMLCanvasElement {
+      const src = frames[fi].clean.data;
+      const id = new ImageData(new Uint8ClampedArray(src), FW, FH);
+      const d = id.data;
+      if (jit.pal) {
+        const [a, b] = jit.pal;
+        for (let i = 0; i < d.length; i += 4) {
+          if (d[i + 3] > 0 && eq(d, i, a)) { d[i] = b[0]; d[i + 1] = b[1]; d[i + 2] = b[2]; }
+        }
+      }
+      for (const [type, p] of jit.edits) {
+        const idx = (p[1] * FW + p[0]) * 4;
+        if (type === "rm") d[idx + 3] = 0;
+        else { d[idx] = DARK[0]; d[idx + 1] = DARK[1]; d[idx + 2] = DARK[2]; d[idx + 3] = 255; }
+      }
+      tctx.clearRect(0, 0, FW, FH);
+      tctx.putImageData(id, 0, 0);
+      return tmp;
+    }
+
+    const cleanCanvas = (() => {
+      const c = document.createElement("canvas");
+      return { c, ctx: null as CanvasRenderingContext2D | null };
+    })();
+
+    function render(fi: number, jitter: boolean) {
+      ctx!.imageSmoothingEnabled = false;
+      ctx!.fillStyle = "#9bbc0f";
+      ctx!.fillRect(0, 0, LW, LH);
+      if (jitter) {
+        ctx!.drawImage(drifted(fi), FX + jit.dx, FY + jit.dy);
+      } else {
+        if (!cleanCanvas.ctx) {
+          cleanCanvas.c.width = FW; cleanCanvas.c.height = FH;
+          cleanCanvas.ctx = cleanCanvas.c.getContext("2d");
+        }
+        cleanCanvas.ctx!.clearRect(0, 0, FW, FH);
+        cleanCanvas.ctx!.putImageData(frames[fi].clean, 0, 0);
+        ctx!.drawImage(cleanCanvas.c, FX, FY);
+      }
+    }
+
+    function applyState() {
+      bbf!.classList.toggle("is-on", pipelineOn);
+      toggle!.setAttribute("aria-checked", String(pipelineOn));
+      if (toggleState) toggleState.textContent = pipelineOn ? "On" : "Off";
+      if (statusEl) statusEl.textContent = pipelineOn ? STATUS.on : STATUS.off;
+      if (sr) sr.textContent = pipelineOn ? SR.on : SR.off;
+    }
+
+    // ── animated path: rAF loop, gated to in-view (Licensed-Infinite-Motion) ──
+    let raf = 0, cur = 0, acc = 0, last = 0, running = false;
+    function tick(t: number) {
+      if (!running) return;
+      if (!last) last = t;
+      acc += t - last; last = t;
+      if (acc >= SEQ[cur].ms) {
+        acc = 0; cur = (cur + 1) % SEQ.length;
+        if (!pipelineOn) rollJitter(SEQ[cur].f);
+      }
+      render(SEQ[cur].f, !pipelineOn);
+      raf = requestAnimationFrame(tick);
+    }
+    function start() { if (running) return; running = true; last = 0; raf = requestAnimationFrame(tick); }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+    function init(img: HTMLImageElement) {
+      buildFrames(img);
+      applyState();
+
+      if (reduced) {
+        // single locked frame, no loop, no jitter; the toggle stays a static
+        // OFF↔ON comparison (the impact pose), nothing animates.
+        const still = () => { if (!pipelineOn) rollJitter(2); render(2, !pipelineOn); };
+        still();
+        toggle!.addEventListener("click", () => { pipelineOn = !pipelineOn; applyState(); still(); });
+        return;
+      }
+
+      toggle!.addEventListener("click", () => {
+        pipelineOn = !pipelineOn;
+        applyState();
+        if (!running) render(SEQ[cur].f, !pipelineOn);   // reflect immediately if paused
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => { entries.forEach((e) => (e.isIntersecting ? start() : stop())); },
+        { threshold: 0.2 },
+      );
+      io.observe(canvas!);
+    }
+
+    const img = new Image();
+    img.onload = () => init(img);
+    img.src = SHEET;
+  }
+
+  document
+    .querySelectorAll<HTMLElement>('[data-interactive-explainer="16bitfit"]')
+    .forEach(setup);
+</script>
