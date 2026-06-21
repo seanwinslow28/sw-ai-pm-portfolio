@@ -1,22 +1,41 @@
 ---
 /**
- * <CodeBrainExplainer /> — interactive variant of the code-brain case-study
- * explainer ("Drag the night", rollout §2 / spec 2026-06-21). Consumes the
- * shared <InteractiveExplainer/> base for chrome + the progressive-enhancement
- * contract; owns the radial night-dial interaction (added in Tasks 3-5).
+ * <CodeBrainExplainer /> — interactive "Drag the night" radial dial
+ * (rollout §2 / spec 2026-06-21). Consumes <InteractiveExplainer/> for chrome +
+ * the progressive-enhancement contract; owns the radial interaction.
+ *
+ * The reader sweeps a "now" hand dusk -> dawn around the clock dial. As the hand
+ * passes each station the node lights teal and a note resolves in place
+ * (capture -> synthesize -> two-critic gate -> vault); the figure stays asleep.
+ * At dawn an amber wash sweeps in, an SVG sun rises, 08:30 prints, and a
+ * dateline-style masthead resolves. (Stations: Task 4. Dawn: Task 5.)
+ *
+ * Art: the colored dial with the dawn cluster overpainted out
+ * (code-brain-dial.webp, NOT keyed). The base stays a bordered white card like
+ * the shipped static; the hand / glows / note / sun / masthead are live SVG/DOM.
+ *
+ * Geometry is in image-pixel space: the base art is 1672x941 (exactly 16:9), so
+ * the overlay SVG viewBox 0 0 1672 941 aligns 1:1 with the contained image, and
+ * the "radial" is just render(t) rotating the hand. The control stays linear.
  *
  * Progressive enhancement: no-JS / prefers-reduced-motion shows the original
- * code-brain.webp (the complete diagram, honest final state) with the scrubber
- * hidden. This task ships that fallback only.
+ * code-brain.webp (complete diagram) with the scrubber hidden.
  */
 import InteractiveExplainer from "./InteractiveExplainer.astro";
 
 interface Props {
-  /** Frontmatter static src — the no-JS / reduced-motion fallback image. */
   src: string;
   alt: string;
 }
 const { src, alt } = Astro.props;
+
+const V = "?v=2026-06-21";
+const dialArt = `/assets/projects/explainers/code-brain-dial.webp${V}`;
+
+// Dial geometry in source pixels (1672x941). TUNE in Task 6.
+const CX = 800;
+const CY = 478;
+const R = 300;
 ---
 
 <InteractiveExplainer
@@ -32,6 +51,30 @@ const { src, alt } = Astro.props;
 >
   {/* no-JS / reduced-motion floor — the complete diagram */}
   <img class="cb-static" src={src} alt={alt} draggable="false" decoding="async" />
+
+  {/* interactive layers — shown only when JS adds is-interactive */}
+  <div class="cb-interactive">
+    {/* overpainted base (dawn cluster removed) */}
+    <img class="cb-base" src={dialArt} alt={alt} draggable="false" decoding="async" />
+
+    {/* overlay SVG in image-pixel space — hand (Task 3), node glows + note (Task 4) */}
+    <svg
+      class="cb-svg"
+      viewBox="0 0 1672 941"
+      preserveAspectRatio="xMidYMid meet"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* night-hand: a line from the dial center pointing up at rest, rotated by render(t) */}
+      <g class="cb-hand" transform={`rotate(0 ${CX} ${CY})`}>
+        <line x1={CX} y1={CY} x2={CX} y2={CY - R} stroke="var(--teal)" stroke-width="3" stroke-linecap="round" />
+      </g>
+      <circle cx={CX} cy={CY} r="6" fill="var(--teal)" />
+    </svg>
+  </div>
+
+  {/* state narration for screen readers */}
+  <span class="ie-sr-only" aria-live="polite" data-cb-sr>The night shift: dusk.</span>
 </InteractiveExplainer>
 
 <style>
@@ -42,4 +85,61 @@ const { src, alt } = Astro.props;
     height: 100%;
     object-fit: contain;
   }
+
+  .cb-interactive {
+    display: none;
+    position: absolute;
+    inset: 0;
+    container-type: inline-size; /* cqw drives any in-stage DOM typography (Task 5) */
+  }
+  :global(.ie-root.is-interactive) .cb-interactive { display: block; }
+  :global(.ie-root.is-interactive) .cb-static { display: none; }
+
+  .cb-base {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  .cb-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ie-sr-only {
+    position: absolute;
+    width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 </style>
+
+<script>
+  import { wireScrubber, easeInOut } from "~/scripts/interactive-explainer";
+
+  const CX = 800, CY = 478;          // dial center (px) — TUNE in Task 6
+  const HAND_SWEEP_DEG = 240;        // 12 o'clock -> ~8 o'clock (vault), clockwise
+  const SWEEP_END = 0.82;            // hand reaches the vault at t=0.82; 0.82-1.0 = dawn
+  const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+
+  document
+    .querySelectorAll<HTMLElement>('[data-interactive-explainer="code-brain"]')
+    .forEach((root) => {
+      const hand = root.querySelector<SVGGElement>(".cb-hand");
+      const sr = root.querySelector<HTMLElement>("[data-cb-sr]");
+      if (!hand) return;
+
+      wireScrubber(root, (t) => {
+        // night-hand sweeps clockwise from 12 o'clock to the vault over [0, SWEEP_END]
+        const rot = HAND_SWEEP_DEG * easeInOut(clamp01(t / SWEEP_END));
+        hand.setAttribute("transform", `rotate(${rot.toFixed(2)} ${CX} ${CY})`);
+
+        if (sr) sr.textContent = t < SWEEP_END ? "The night shift: in progress." : "The night shift: ready at 08:30.";
+      });
+    });
+</script>
