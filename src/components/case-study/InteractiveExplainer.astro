@@ -37,7 +37,10 @@ interface Props {
   /** Optional initial `--reveal` for mask-based variants (omit for cross-fade variants). */
   initialReveal?: string;
   zones?: Zone[];
-  scrub: Scrub;
+  /** The range scrubber. Omit for variants that drive themselves with their own
+   *  slotted controls (e.g. the-block's checkbox switchboard) — the `.ie-scrub`
+   *  range block then isn't rendered at all. */
+  scrub?: Scrub;
 }
 const { variant, aspectRatio, initialReveal, zones = [], scrub } = Astro.props;
 const stageStyle = `aspect-ratio: ${aspectRatio};` + (initialReveal ? ` --reveal: ${initialReveal};` : "");
@@ -59,23 +62,25 @@ const stageStyle = `aspect-ratio: ${aspectRatio};` + (initialReveal ? ` --reveal
     </div>
   )}
 
-  <div class="ie-scrub">
-    <div class="ie-scrub-head">
-      <span class="ie-scrub-title">{scrub.title}</span>
-      <span class="ie-hint" aria-hidden="true">{scrub.hint}</span>
+  {scrub && (
+    <div class="ie-scrub">
+      <div class="ie-scrub-head">
+        <span class="ie-scrub-title">{scrub.title}</span>
+        <span class="ie-hint" aria-hidden="true">{scrub.hint}</span>
+      </div>
+      <input
+        class="ie-range"
+        type="range"
+        min="0"
+        max="1000"
+        value="0"
+        aria-label={scrub.ariaLabel}
+      />
+      <div class="ie-ticks" aria-hidden="true">
+        {scrub.ticks.map((t) => <span>{t}</span>)}
+      </div>
     </div>
-    <input
-      class="ie-range"
-      type="range"
-      min="0"
-      max="1000"
-      value="0"
-      aria-label={scrub.ariaLabel}
-    />
-    <div class="ie-ticks" aria-hidden="true">
-      {scrub.ticks.map((t) => <span>{t}</span>)}
-    </div>
-  </div>
+  )}
 </div>
 
 <style>

@@ -1,0 +1,481 @@
+---
+/**
+ * <TheBlockExplainer /> — interactive "Automate the week, get the hours back"
+ * switchboard (rollout §4). Consumes <InteractiveExplainer/> for the chrome + the
+ * progressive-enhancement contract; owns the toggle-to-automate interaction. The
+ * FIRST DOM/stateful explainer — the cards toggle, so they can't be a baked
+ * raster; the boxes are live DOM skinned with Rough.js (graphite register,
+ * V1/moderate: roughness 1.15, bowing 1.0 — Sean-approved 2026-06-21).
+ *
+ * Concept: the funnel becomes a switchboard. Four repetitive PM task cards, each
+ * with a real checkbox styled as a switch. Flip one → its recurring-loop glyph
+ * fades (the repetition is engineered away), a route draws to its human-gated
+ * tool, the gate ✓ pops --teal AND STAYS LIT (the structural honesty: AI took the
+ * repetition, a human still signs off), and the HOURS BACK readout fills. The
+ * climbing number is a literal "N / 4 ENGINEERED" count; the two real figures
+ * (~3 HRS/DEAL, ~6 HRS/WEEK from four_q.break) ink on only when their backing
+ * tasks are all engineered — no invented per-task hours. The ~6/week is a 3-skill
+ * aggregate (status + client + course), so a "n / 3 skills" progress shows until
+ * it resolves. rough-notation underlines ~6 HRS/WEEK at the all-four close.
+ *
+ * Grounded numbers (the-block.mdx four_q.break): DEAL HANDOFF = 7 manual steps →
+ * 1 Salesforce trigger (11-workflow Zapier pipeline), ~3 hrs/deal; the 3 Claude
+ * Skills together gave ~6 hrs/week.
+ *
+ * Progressive enhancement: no-JS shows the static the-block.webp (the honest final
+ * state), toggles hidden. prefers-reduced-motion keeps the switchboard fully
+ * operable but with instant, un-tweened state changes (all motion is CSS-gated
+ * behind @media prefers-reduced-motion) — more accessible than hiding a discrete
+ * interaction. Nothing autoplays (Licensed-Infinite-Motion): the recurring-loop
+ * glyph is a STATIC icon meaning "recurring," not a 4th infinite animation.
+ */
+import InteractiveExplainer from "./InteractiveExplainer.astro";
+
+interface Props {
+  /** Frontmatter static src — the no-JS fallback + alt-text source. */
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+
+// Four repetitive PM tasks → their human-gated tool → the metric each backs.
+// `metric: deal` is its own real figure (~3 hrs/deal); the three `metric: week`
+// tasks collectively back the one real ~6 hrs/week aggregate.
+const TASKS = [
+  {
+    key: "deal",
+    name: "Deal Handoff",
+    sub: "7 steps → 1 trigger",
+    tool: "Salesforce → Zapier",
+    metric: "deal",
+    cardSeed: 11,
+    toolSeed: 111,
+    aria:
+      "Automate deal handoff. Routes a seven-step manual close through a single Salesforce-triggered Zapier pipeline, keeping a human review gate. About three hours back per deal.",
+  },
+  {
+    key: "status",
+    name: "Status Updates",
+    sub: "every week",
+    tool: "stakeholder-update",
+    metric: "week",
+    cardSeed: 22,
+    toolSeed: 222,
+    aria:
+      "Automate status updates. Routes through the stakeholder-update Claude Skill, keeping a human review gate. Part of about six hours back per week.",
+  },
+  {
+    key: "client",
+    name: "Client Setup",
+    sub: "every onboarding",
+    tool: "jira-automation",
+    metric: "week",
+    cardSeed: 33,
+    toolSeed: 333,
+    aria:
+      "Automate client setup. Routes through the jira-automation Claude Skill, keeping a human review gate. Part of about six hours back per week.",
+  },
+  {
+    key: "course",
+    name: "Course Launch",
+    sub: "every cohort",
+    tool: "etf-page-creator",
+    metric: "week",
+    cardSeed: 44,
+    toolSeed: 444,
+    aria:
+      "Automate course launch. Routes through the etf-page-creator Claude Skill, keeping a human review gate. Part of about six hours back per week.",
+  },
+] as const;
+---
+
+<InteractiveExplainer variant="the-block" aspectRatio="16 / 9">
+  {/* no-JS / pre-JS floor — the honest final state */}
+  <img class="tb-static" src={src} alt={alt} draggable="false" decoding="async" />
+
+  {/* interactive switchboard — revealed only when JS adds is-interactive */}
+  <div class="tb">
+    <div class="tb-head">
+      <span class="tb-hint" data-hint>Flip a task to engineer it away →</span>
+      <span class="tb-tally" aria-hidden="true"><b data-count>0</b> / 4 engineered</span>
+    </div>
+
+    <div class="tb-board">
+      {TASKS.map((t) => (
+        <div class="tb-row" data-row={t.key} data-metric={t.metric}>
+          <label class="tb-card">
+            <svg class="tb-rough" data-rough data-seed={t.cardSeed} preserveAspectRatio="none" aria-hidden="true"></svg>
+            <span class="tb-loop" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M20 12a8 8 0 1 1-2.3-5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M18 3.5 L18 7 L14.5 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="tb-name">{t.name}<i>{t.sub}</i></span>
+            <input class="tb-input" type="checkbox" data-task={t.key} aria-label={t.aria} />
+            <span class="tb-switch" aria-hidden="true"><span class="tb-knob"></span></span>
+          </label>
+
+          <svg class="tb-route" viewBox="0 0 60 24" preserveAspectRatio="none" aria-hidden="true">
+            <path class="tb-route-line" d="M2 12 H50" pathLength="1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none" />
+            <path class="tb-route-head" d="M44 6 L52 12 L44 18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>
+
+          <div class="tb-tool">
+            <svg class="tb-rough" data-rough data-seed={t.toolSeed} preserveAspectRatio="none" aria-hidden="true"></svg>
+            <span class="tb-tool-name">{t.tool}</span>
+            <span class="tb-gate" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5 l3 3 l7 -8.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              Human ✓
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="tb-foot" aria-hidden="true">
+      <span class="tb-foot-label">Hours back</span>
+      <span class="tb-metrics">
+        <span class="tb-metric" data-metric-fig="deal">~3 hrs / deal</span>
+        <span class="tb-metric tb-metric-week" data-metric-fig="week">
+          <span class="tb-week-num" data-week-num>~6 hrs / week</span>
+          <span class="tb-week-prog" data-week-prog>0 / 3 skills</span>
+        </span>
+      </span>
+    </div>
+  </div>
+
+  {/* live state, announced politely to screen readers (JS fills it; empty under no-JS) */}
+  <span class="ie-sr-only" aria-live="polite" data-tb-sr></span>
+</InteractiveExplainer>
+
+<style>
+  /* Layers are slotted into the base stage, so they keep this component's scope;
+     the is-interactive toggles wrap the base-rendered ancestor in :global(). */
+  .tb-static { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+  .tb {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    gap: clamp(6px, 1.4cqw, 16px);
+    padding: clamp(10px, 2cqw, 24px);
+    container-type: inline-size;
+  }
+  :global(.ie-root.is-interactive) .tb { display: flex; }
+  :global(.ie-root.is-interactive) .tb-static { display: none; }
+
+  /* ── header: open prompt + the climbing engineered count ── */
+  .tb-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .tb-hint,
+  .tb-tally {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.4cqw, 14px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+  .tb-hint { transition: none; }
+  .tb.tb-touched .tb-hint { opacity: 0; }
+  .tb-tally b { color: var(--ink); font-weight: 500; }
+
+  /* ── board: four switchboard rows ── */
+  .tb-board { flex: 1; display: grid; grid-template-rows: repeat(4, 1fr); gap: clamp(6px, 1.2cqw, 14px); min-height: 0; }
+  .tb-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) clamp(26px, 5cqw, 58px) minmax(0, 1fr);
+    align-items: center;
+    min-height: 0;
+  }
+
+  /* the task card (a real <label> wrapping the checkbox — big tap target) */
+  .tb-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: clamp(7px, 1.2cqw, 14px);
+    height: 100%;
+    padding: 0 clamp(10px, 1.6cqw, 18px);
+    color: var(--ink);            /* rough box (currentColor) + name */
+    cursor: pointer;
+  }
+  .tb-rough { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+
+  .tb-loop { flex: 0 0 auto; color: var(--ink-secondary); display: flex; }
+  .tb-loop svg { width: clamp(15px, 1.9cqw, 21px); height: clamp(15px, 1.9cqw, 21px); }
+  .tb.tb-has-motion .tb-loop { transition: opacity 0.24s var(--ease-out); }
+  .tb-row.on .tb-loop { opacity: 0; }      /* the manual repetition, engineered away */
+
+  .tb-name {
+    flex: 1 1 auto; min-width: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.45cqw, 15px);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .tb-name i {
+    display: block;
+    font-style: normal;
+    font-size: clamp(8.5px, 0.95cqw, 11px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--ink-secondary);
+    margin-top: 2px;
+  }
+
+  /* the checkbox: visually-hidden but focusable; the .tb-switch is its skin */
+  .tb-input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .tb-switch {
+    flex: 0 0 auto;
+    position: relative;
+    width: 46px; height: 24px;
+    border-radius: 12px;
+    border: 1.5px solid var(--ink-secondary);
+    background: transparent;
+  }
+  .tb-knob {
+    position: absolute; top: 2.5px; left: 2.5px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--ink-secondary);
+    transform: translateX(0);
+  }
+  .tb-row.on .tb-switch { border-color: var(--teal); background: rgba(10, 62, 66, 0.08); }
+  .tb-row.on .tb-knob { background: var(--teal); transform: translateX(22px); }
+  .tb-input:focus-visible + .tb-switch { outline: 2px solid var(--stamp-amber); outline-offset: 4px; }
+
+  /* the routing wire (card → tool), drawn on flip */
+  .tb-route { width: 100%; height: clamp(16px, 2.4cqw, 26px); color: var(--ink-secondary); overflow: visible; }
+  .tb-route-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .tb-route-head { opacity: 0; }
+  .tb-row.on .tb-route-line { stroke-dashoffset: 0; }
+  .tb-row.on .tb-route-head { opacity: 1; }
+
+  /* the human-gated tool box */
+  .tb-tool {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: clamp(3px, 0.7cqw, 7px);
+    height: 100%;
+    padding: 0 clamp(9px, 1.4cqw, 16px);
+    color: var(--ink-secondary);   /* dim destination off; recolors to ink on */
+  }
+  .tb.tb-has-motion .tb-tool { transition: color 0.24s var(--ease-out); }
+  .tb-row.on .tb-tool { color: var(--ink); }
+  .tb-tool-name {
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1.05cqw, 12px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .tb-gate {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: clamp(8.5px, 1cqw, 11px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: left center;
+  }
+  .tb-gate svg { width: clamp(11px, 1.3cqw, 15px); height: clamp(11px, 1.3cqw, 15px); flex: 0 0 auto; }
+  .tb-row.on .tb-gate { opacity: 1; transform: scale(1); }   /* lit AND it stays lit */
+
+  /* ── footer: the HOURS BACK payoff ── */
+  .tb-foot {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: clamp(10px, 2cqw, 26px);
+    font-family: var(--font-mono);
+  }
+  .tb-foot-label {
+    font-size: clamp(9px, 1.1cqw, 12px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+  }
+  .tb-metrics { display: flex; align-items: baseline; gap: clamp(12px, 2.4cqw, 30px); }
+  .tb-metric {
+    font-size: clamp(12px, 1.7cqw, 18px);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-secondary);    /* dim until its backing work is engineered */
+    white-space: nowrap;
+  }
+  .tb-metric.lit { color: var(--stamp-amber); }    /* the only readable warm on paper */
+  .tb-metric-week { position: relative; display: inline-flex; align-items: baseline; gap: 8px; }
+  .tb-week-prog {
+    font-size: clamp(8px, 0.92cqw, 11px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink-secondary);
+  }
+  .tb-metric-week.lit .tb-week-prog { display: none; }
+
+  /* ── motion: ONLY when the reader hasn't asked to reduce it. Under reduced
+        motion every state change above is instant (no transitions/animations),
+        keeping the switchboard fully operable without movement. ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .tb.tb-has-motion .tb-hint { transition: opacity 0.3s var(--ease-out); }
+    .tb.tb-has-motion .tb-switch { transition: border-color 0.22s var(--ease-out), background 0.22s var(--ease-out); }
+    .tb.tb-has-motion .tb-route-line { transition: stroke-dashoffset 0.42s var(--ease-out); }
+    .tb.tb-has-motion .tb-route-head { transition: opacity 0.2s var(--ease-out) 0.3s; }
+    .tb.tb-has-motion .tb-metric { transition: color 0.3s var(--ease-out); }
+    .tb.tb-has-motion .tb-gate { transition: opacity 0.2s var(--ease-out); }
+    .tb.tb-has-motion .tb-row.on .tb-knob { animation: tb-knob-on 0.26s var(--ease-out); }
+    .tb.tb-has-motion .tb-row.on .tb-gate { animation: tb-pop 0.26s var(--ease-out); }
+  }
+  /* knob anticipation dip → slide → settle (the acting beat) */
+  @keyframes tb-knob-on {
+    0%   { transform: translateX(0); }
+    16%  { transform: translateX(-2px); }
+    100% { transform: translateX(22px); }
+  }
+  /* gate secondary-action pop (overshoot → settle) */
+  @keyframes tb-pop {
+    0%   { transform: scale(0); }
+    60%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  /* ── narrow figures: drop the wire + tool name, keep the gate beside the switch ── */
+  @container (max-width: 540px) {
+    .tb-route { display: none; }
+    .tb-row { grid-template-columns: 1fr auto; }
+    .tb-tool { align-items: flex-end; }
+    .tb-tool .tb-rough,
+    .tb-tool-name { display: none; }
+  }
+
+  .ie-sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+</style>
+
+<script>
+  import rough from "roughjs";
+  import { enableInteractive, prefersReducedMotion } from "~/scripts/interactive-explainer";
+
+  document
+    .querySelectorAll<HTMLElement>('[data-interactive-explainer="the-block"]')
+    .forEach((root) => {
+      const tb = root.querySelector<HTMLElement>(".tb");
+      if (!tb) return;
+
+      const inputs = Array.from(root.querySelectorAll<HTMLInputElement>(".tb-input"));
+      const rows = new Map(
+        Array.from(root.querySelectorAll<HTMLElement>(".tb-row")).map((r) => [r.dataset.row!, r]),
+      );
+      const countEl = root.querySelector<HTMLElement>("[data-count]");
+      const dealFig = root.querySelector<HTMLElement>('[data-metric-fig="deal"]');
+      const weekFig = root.querySelector<HTMLElement>('[data-metric-fig="week"]');
+      const weekProg = root.querySelector<HTMLElement>("[data-week-prog]");
+      const weekNum = root.querySelector<HTMLElement>("[data-week-num]");
+      const sr = root.querySelector<HTMLElement>("[data-tb-sr]");
+
+      // Progressive-enhancement opt-in: reveals .tb, hides the static floor.
+      // Under reduced motion the switchboard still works — only the tweens drop.
+      const { reduced } = enableInteractive(root);
+      if (!reduced) tb.classList.add("tb-has-motion");
+
+      const SKILLS = ["status", "client", "course"];
+
+      // ── Rough.js graphite boxes (V1/moderate, Sean-approved). stroke =
+      //    currentColor so the card/tool CSS recolors them on toggle without a
+      //    redraw. Fixed seed per box → stable across re-draws (no re-randomize). ──
+      function drawBoxes() {
+        root.querySelectorAll<SVGSVGElement>(".tb-rough[data-seed]").forEach((svg) => {
+          const w = svg.clientWidth;
+          const h = svg.clientHeight;
+          if (!w || !h) return;
+          const seed = parseInt(svg.dataset.seed || "1", 10);
+          svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+          svg.replaceChildren();
+          const rc = rough.svg(svg);
+          const pad = 3;
+          const node = rc.rectangle(pad, pad, w - pad * 2, h - pad * 2, {
+            stroke: "currentColor",
+            strokeWidth: 1.6,
+            roughness: 1.15,
+            bowing: 1.0,
+            seed,
+            fill: "none",
+          });
+          svg.appendChild(node);
+        });
+      }
+
+      // rough-notation underline on ~6 HRS/WEEK at the all-four close (lazy, this
+      // island only). animate only when motion is allowed.
+      let underline: { show(): void; hide(): void } | null = null;
+      let underlineOn = false;
+      async function ensureUnderline() {
+        if (!weekNum) return;
+        if (!underline) {
+          const { annotate } = await import("rough-notation");
+          underline = annotate(weekNum, {
+            type: "underline",
+            color: getComputedStyle(document.documentElement).getPropertyValue("--stamp-amber").trim() || "#7C2D12",
+            strokeWidth: 2,
+            padding: 3,
+            animate: !reduced,
+            animationDuration: 500,
+          });
+        }
+        if (!underlineOn) { underline.show(); underlineOn = true; }
+      }
+      function hideUnderline() {
+        if (underline && underlineOn) { underline.hide(); underlineOn = false; }
+      }
+
+      function render() {
+        const on = new Set(inputs.filter((i) => i.checked).map((i) => i.dataset.task!));
+        rows.forEach((row, key) => row.classList.toggle("on", on.has(key)));
+
+        const count = on.size;
+        if (countEl) countEl.textContent = String(count);
+        if (count > 0) tb.classList.add("tb-touched");
+
+        const dealOn = on.has("deal");
+        const skillsOn = SKILLS.filter((k) => on.has(k)).length;
+        const weekDone = skillsOn === SKILLS.length;
+
+        dealFig?.classList.toggle("lit", dealOn);
+        weekFig?.classList.toggle("lit", weekDone);
+        if (weekProg) weekProg.textContent = `${skillsOn} / 3 skills`;
+
+        if (count === 4) ensureUnderline();
+        else hideUnderline();
+
+        if (sr) {
+          const bits = [`${count} of 4 tasks engineered, each keeping a human review gate.`];
+          if (dealOn) bits.push("About three hours back per deal.");
+          if (weekDone) bits.push("About six hours back per week.");
+          if (count === 4) bits.push("The PM stops being the bottleneck.");
+          sr.textContent = bits.join(" ");
+        }
+      }
+
+      inputs.forEach((i) => i.addEventListener("change", render));
+
+      // initial paint: draw boxes after the stage is visible, set start state.
+      drawBoxes();
+      render();
+
+      // redraw rough boxes on resize (debounced) so they stay crisp + fitted.
+      let raf = 0;
+      new ResizeObserver(() => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(drawBoxes);
+      }).observe(tb);
+    });
+</script>
