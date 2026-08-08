@@ -25,6 +25,7 @@ character_alt: A pencil-test rendering of Sean Winslow, full-body, the human-sel
 ---
 
 import NowPulse from "~/components/about/NowPulse.astro";
+import BiestyCutaway from "~/components/about/BiestyCutaway.astro";
 import ProofPoints from "~/components/about/ProofPoints.astro";
 import RecruiterCallout from "~/components/about/RecruiterCallout.astro";
 import PullQuote from "~/components/about/PullQuote.astro";
@@ -39,8 +40,7 @@ import PullQuote from "~/components/about/PullQuote.astro";
 
 <NowPulse />
 
-{/* The Biesty Cutaway band lands here (sidecar L7-L10): the route-c plate,
-    six pairing-grammar cards, lens interaction. Inserted in the C4 commit. */}
+<BiestyCutaway />
 
 <ProofPoints
   linkedinUrl={frontmatter.linkedin_url}
