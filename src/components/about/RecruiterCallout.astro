@@ -31,8 +31,11 @@ const { visible } = Astro.props;
 
 <style>
   .recruiter-callout {
-    margin: 32px 0 0 0;
-    padding: 16px 0;
+    /* Self-centering since the About v2 recut (2026-08-08): the B-4 section
+     * wrapper that used to position this component is gone; it now renders
+     * standalone directly under ProofPoints (sidecar L14b). */
+    margin: 32px auto 0;
+    padding: 16px 24px;
     max-width: 680px;
     border-top: 0.5px solid var(--border-paper);
     border-bottom: 0.5px solid var(--border-paper);

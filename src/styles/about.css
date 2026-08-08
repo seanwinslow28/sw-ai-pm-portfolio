@@ -1,74 +1,30 @@
 /* ----------------------------------------------------------------------
  * src/styles/about.css — /about/ page-scoped layout polish + print
  * Loaded by src/pages/about.astro.
- * Per about-spec §3 vertical budget + §16 build-stack print row.
+ *
+ * v2 anatomy (2026-08-08, sidecar L11-L14): Hero → paragraph → NowPulse
+ * → Biesty Cutaway → ProofPoints → RecruiterCallout → PullQuote.
+ * The old band classes (beats / b2 / canon / b4 / b5) died with the
+ * 10-band anatomy — see CHANGELOG under about-spec.
  * ---------------------------------------------------------------------- */
 
-/* ===== Section spacing (vertical budget per §3) ===== */
+/* ===== Section spacing ===== */
 
 .about-page {
   position: relative;
-}
-
-.about-page__band {
-  padding-top: 60px;
 }
 
 .about-page__band--hero {
   padding-top: 60px;
 }
 
-.about-page__band--pulse {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
+/* MDX flow spacing: the paragraph, pulse strip, cutaway, proof points,
+ * recruiter callout, and pull quote each get their rhythm here. */
 
-.about-page__band--beats,
-.about-page__band--b2,
-.about-page__band--canon,
-.about-page__band--b4,
-.about-page__band--b5 {
-  padding-top: 100px;
-}
-
-.about-page__band--pull-quote {
-  padding-top: 120px;
-  padding-bottom: 80px;
-}
-
-/* ===== B-2 + B-4 section heading styles (shared with Beats / CartoonCanon / ProofPoints) ===== */
-
-.about-section {
+.about-page__mdx .about-paragraph {
   max-width: 680px;
   margin: 0 auto;
-  padding: 0 24px;
-}
-
-.about-section__frame-prefix {
-  margin: 0 0 8px 0;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1.8px;
-  color: var(--amber-mid);
-}
-
-.about-section__heading {
-  margin: 0 0 32px 0;
-  font-family: var(--font-serif);
-  font-size: 48px;
-  font-weight: 400;
-  letter-spacing: -0.2px;
-  line-height: 1.1;
-  color: var(--teal);
-}
-
-.about-section--b2 {
-  max-width: 680px;
-}
-
-.about-section--b2 p {
-  margin: 0 0 24px 0;
+  padding: 60px 24px 60px;
   font-family: var(--font-serif);
   font-size: 22px;
   font-weight: 300;
@@ -77,47 +33,14 @@
   color: var(--ink);
 }
 
-.about-section--b2 p:last-child {
-  margin-bottom: 0;
-}
-
-.about-section--b4 .about-section__b4-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.about-section--b4 .about-section__heading {
-  margin-bottom: 0;
-}
+/* NOTE: ProofPoints / RecruiterCallout / PullQuote own their vertical rhythm
+ * in their scoped component styles — their scoped `margin` declarations
+ * out-cascade rules here (same specificity, later stylesheet), so page-level
+ * margin overrides on them silently lose. Edit the components instead. */
 
 @media (max-width: 767px) {
-  .about-page__band--beats,
-  .about-page__band--b2,
-  .about-page__band--canon,
-  .about-page__band--b4,
-  .about-page__band--b5 {
-    padding-top: 60px;
-  }
-
-  .about-page__band--pull-quote {
-    padding-top: 80px;
-    padding-bottom: 60px;
-  }
-
-  .about-section {
-    padding: 0 20px;
-  }
-
-  .about-section__heading {
-    font-size: 36px;
-    margin-bottom: 24px;
-  }
-
-  .about-section--b2 p {
+  .about-page__mdx .about-paragraph {
+    padding: 40px 20px 48px;
     font-size: 18px;
   }
 }
@@ -127,17 +50,6 @@
 @media print {
   .about-page {
     background: none;
-  }
-
-  /* Single column — disable any grid layouts */
-  .cartoon-canon__grid {
-    display: block;
-  }
-
-  .cartoon-cel {
-    transform: none !important;
-    page-break-inside: avoid;
-    margin-bottom: 32px;
   }
 
   /* Print the link URL after each proof-point link (handled in ProofPoints scoped CSS).
