@@ -2,31 +2,31 @@
 /**
  * <PullQuote /> — closing pull quote.
  *
- * Echoes the home-hero tagline verbatim per spec §2 anatomy +
- * §7.2 ("Cross-page closeout via pull quote"). The visitor's
- * last beat on /about/ is a callback to the page they entered
- * through.
+ * Echoes the home About-teaser hook byte-identical: the visitor's
+ * last beat on /about/ is a callback to the line that pulled them
+ * in. The lockstep contract MIGRATED from hero↔PullQuote to
+ * teaser↔PullQuote per the 2026-08-06 partner-session sidecar L6
+ * (the hero is a statement hero now; the hook lives on the teaser).
  *
- * The string is LOCKED in the component — it's the home-hero
- * tagline reproduced byte-identical, and PMP §4 row 1 is the
- * source of truth. If PMP §4 row 1 changes, update both here
- * and in src/components/hero/Hero.astro in lockstep.
+ * The old contract was comment-only and drifted once (the D8
+ * hero edit missed this echo — audit 2026-06-10), so the string
+ * is now the shared ABOUT_HOOK constant in src/lib/site.ts,
+ * imported by both AboutTeaser.astro and this component.
+ * Byte-identical by construction; change it there or not at all.
  *
  * Per about-spec §1.2: this is also where the v1 page closes
  * (no signature SVG, no registration mark — both deferred to
  * v2). The torn-paper edge into the chrome footer follows.
  *
  * Source: about-spec-v1.md §2 anatomy + §7.2 + §1.2 + §4
- * type table (pull-quote row).
+ * type table (pull-quote row); sidecar L6.
  */
+import { ABOUT_HOOK } from "~/lib/site";
 ---
 
 <section class="pull-quote" aria-label="Closing pull quote">
-  <!-- Lockstep with the home-hero tagline per the contract above: D8
-       (SHIP-PLAN-2026-05-29, 2026-05-30) dropped the "Product Manager."
-       sentence from the hero; this echo missed the update. Audit 2026-06-10. -->
   <blockquote class="pull-quote__body">
-    "The agents handle the loops. I handle the taste."
+    "{ABOUT_HOOK}"
   </blockquote>
 </section>
 

@@ -1,25 +1,27 @@
 ---
 /**
- * Hero — composition wrapper. Layouts the dateline, name, role tag, tagline,
+ * Hero — composition wrapper. Layouts the dateline, name, statement,
  * and the absolute-positioned character lane.
- * Source: hero-spec §2-§6.
+ *
+ * Statement hero per the 2026-08-06 sidecar L6: the tagline and the
+ * "/ AI PRODUCT MANAGER" tag are superseded (recorded in CHANGELOG +
+ * PMP §4); under the name sits the plain statement. The dateline strip
+ * and the character animation are the screen-one differentiators — any
+ * "simplification" that trims them is the template trap.
+ * Source: hero-spec §2-§6 + sidecar L6.
  */
 import Dateline from "./Dateline.astro";
 import CharacterLane from "./CharacterLane.astro";
+import { HERO_STATEMENT } from "~/lib/site";
 
 const NAME = "Sean Winslow";
-const ROLE = "AI PRODUCT MANAGER";
 ---
 
 <section class="hero page-sheet">
   <div class="hero-inner">
     <Dateline />
     <h1 class="hero-name">{NAME}</h1>
-    <p class="hero-role">/ {ROLE}</p>
-    <p class="hero-tagline">
-      <span class="line line-1">The agents handle the loops.</span>
-      <span class="line line-2">I handle the taste.</span>
-    </p>
+    <p class="hero-role">{HERO_STATEMENT}</p>
   </div>
   <CharacterLane />
 </section>
@@ -50,37 +52,20 @@ const ROLE = "AI PRODUCT MANAGER";
     animation: heroNameIn 600ms var(--ease-out) 400ms forwards;
   }
   .hero-role {
-    /* D8 2026-05-30: enlarged so the role reads immediately on the 5s scan. */
+    /* D8 2026-05-30: enlarged so the role reads immediately on the 5s scan.
+     * 2026-08-08 (sidecar L6): now the plain statement — no "/" prefix, no
+     * forced uppercase. Mono treatment + entrance timing kept. */
     font-family: var(--font-mono);
     font-size: clamp(16px, 1.5vw, 20px);
     font-weight: 500;
     letter-spacing: 1.6px;
     line-height: 1.4;
     color: var(--ink-secondary);
-    text-transform: uppercase;
     margin-top: 14px;
     opacity: 0;
     transform: translateY(8px);
     animation: heroRoleIn 300ms var(--ease-out) 700ms forwards;
   }
-  .hero-tagline {
-    font-family: var(--font-serif);
-    font-size: clamp(28px, 3.4vw, 60px);
-    font-weight: 300;
-    line-height: 1.18;
-    letter-spacing: -0.3px;
-    color: var(--ink);
-    max-width: 680px;
-    margin-top: 56px;
-  }
-  .hero-tagline .line {
-    display: block;
-    opacity: 0;
-    transform: translateY(28px);
-    animation: heroTaglineIn 700ms var(--ease-out-quart) forwards;
-  }
-  .hero-tagline .line-1 { animation-delay: 900ms; }
-  .hero-tagline .line-2 { animation-delay: 1040ms; }
 
   @keyframes heroNameIn {
     to {
@@ -88,12 +73,6 @@ const ROLE = "AI PRODUCT MANAGER";
     }
   }
   @keyframes heroRoleIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes heroTaglineIn {
     to {
       opacity: 1;
       transform: translateY(0);
@@ -108,15 +87,10 @@ const ROLE = "AI PRODUCT MANAGER";
     .hero-name {
       font-size: 56px;
     }
-    .hero-tagline {
-      font-size: 28px;
-      max-width: none;
-    }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-name,
-    .hero-role,
-    .hero-tagline .line {
+    .hero-role {
       opacity: 1;
       transform: none;
       animation: none;
