@@ -1,0 +1,236 @@
+---
+/**
+ * /labs/overture/: BRANCH-ONLY decision artifact (sidecar L15 open
+ * question 1, d16 Customs House graft). NOT part of the shipped site:
+ * unlinked, noindexed, and either integrated into <BiestyCutaway /> as
+ * its one-shot entry overture or DELETED before this branch merges.
+ *
+ * What it shows: one drawn parcel (a task entering the room) travels
+ * the route-c plate through the four gates in true causal order:
+ * RESERVED (the money moves first) → PROPOSED (the 8-field proposal)
+ * → JUDGED (the eval wall) → HUMAN SIGNS (the last word), in under
+ * 20 seconds, one-shot, then rests. Sean rules with eyes on this.
+ *
+ * Motion: GSAP core + MotionPathPlugin (licensed modules; the registry
+ * row is added only if this integrates). Reduced-motion: no animation
+ * mounts; the static plate + a note render instead.
+ */
+import { Picture } from "astro:assets";
+import plate from "~/assets/about/biesty-plate.webp";
+import "~/styles/global.css";
+import "@fontsource/newsreader/300.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>labs / overture preview</title>
+  </head>
+  <body>
+    <main class="overture">
+      <p class="overture__label">LABS · ENTRY OVERTURE PREVIEW · BRANCH-ONLY, DECIDES THE d16 GRAFT</p>
+
+      <div class="overture__plate" data-plate>
+        <Picture
+          src={plate}
+          widths={[1408, 2016, 2688]}
+          sizes="100vw"
+          formats={["webp"]}
+          fallbackFormat="webp"
+          alt="The build-room plate, used as the stage for the entry overture preview."
+          loading="eager"
+          decoding="async"
+        />
+
+        <svg class="overture__parcel" data-parcel viewBox="0 0 48 44" aria-hidden="true">
+          <!-- a hand-drawn-ish parcel: box, flap lines, twine -->
+          <g fill="none" stroke="#3a3a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 14 L24 5 L43 14 L43 34 L24 41 L5 34 Z" fill="#FFF9F0" />
+            <path d="M5 14 L24 22 L43 14" />
+            <path d="M24 22 L24 41" />
+            <path d="M14 9.5 L33 18.5" stroke-width="1.2" />
+          </g>
+        </svg>
+
+        <div class="overture__stamp" data-stamp="reserve"  style="left:76%; top:31%;">RESERVED</div>
+        <div class="overture__stamp" data-stamp="propose"  style="left:28%; top:22%;">PROPOSED</div>
+        <div class="overture__stamp" data-stamp="judge"    style="left:64%; top:29%;">JUDGED</div>
+        <div class="overture__stamp" data-stamp="human"    style="left:48%; top:38%;">HUMAN SIGNS</div>
+      </div>
+
+      <div class="overture__bar">
+        <button class="overture__replay" data-replay type="button">→ REPLAY</button>
+        <p class="overture__note" data-note>the parcel enters at the doorway, then: reserved → proposed → judged → a human signs. under 20s, one-shot, then the lens takes over.</p>
+      </div>
+
+      <p class="overture__rm-note" data-rm-note hidden>reduced motion is on: the overture never plays, the room simply stands. this IS the integrated behavior, not a missing feature.</p>
+    </main>
+
+    <script>
+      import { gsap } from "gsap";
+      import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+
+      gsap.registerPlugin(MotionPathPlugin);
+
+      const plateEl = document.querySelector<HTMLElement>("[data-plate]")!;
+      const parcel = document.querySelector<HTMLElement>("[data-parcel]")!;
+      const stamps = Array.from(document.querySelectorAll<HTMLElement>("[data-stamp]"));
+      const replay = document.querySelector<HTMLButtonElement>("[data-replay]")!;
+
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        parcel.style.display = "none";
+        replay.style.display = "none";
+        document.querySelector<HTMLElement>("[data-rm-note]")!.hidden = false;
+      } else {
+        // Gate waypoints (percent of plate) in true causal order. The parcel
+        // enters at the doorway (the user holds the problem), then:
+        // Grok/reserve → Codex/propose → Gemini/judge → Sean/human.
+        const GATES = [
+          { x: 6.5, y: 42, stamp: null },      // the doorway: the problem arrives
+          { x: 76,  y: 45, stamp: "reserve" },
+          { x: 28,  y: 36, stamp: "propose" },
+          { x: 64,  y: 43, stamp: "judge" },
+          { x: 48,  y: 52, stamp: "human" },
+        ];
+
+        let tl: gsap.core.Timeline | null = null;
+
+        function play(): void {
+          tl?.kill();
+          stamps.forEach((s) => gsap.set(s, { opacity: 0, scale: 0.7, rotate: -4 }));
+          const r = plateEl.getBoundingClientRect();
+          const pts = GATES.map((g) => ({ x: (g.x / 100) * r.width, y: (g.y / 100) * r.height }));
+
+          gsap.set(parcel, { x: pts[0].x - 40, y: pts[0].y, opacity: 0, rotate: -6 });
+          tl = gsap.timeline();
+          tl.to(parcel, { opacity: 1, x: pts[0].x, duration: 0.8, ease: "power2.out" });
+
+          for (let i = 1; i < pts.length; i++) {
+            const leg = GATES[i];
+            tl.to(parcel, {
+              motionPath: { path: [pts[i - 1], pts[i]], curviness: 1.4 },
+              rotate: i % 2 ? 5 : -5,
+              duration: 2.6,
+              ease: "power1.inOut",
+            });
+            const stampEl = stamps.find((s) => s.dataset.stamp === leg.stamp);
+            if (stampEl) {
+              tl.to(stampEl, { opacity: 1, scale: 1, rotate: -2, duration: 0.35, ease: "back.out(2)" });
+              tl.to({}, { duration: 0.6 }); // dwell at the gate
+            }
+          }
+          tl.to(parcel, { rotate: 0, scale: 0.96, duration: 0.5, ease: "power2.out" });
+          // total ≈ 0.8 + 4×2.6 + 4×(0.35+0.6)-ish ≈ 15s, under the 20s cap.
+        }
+
+        replay.addEventListener("click", play);
+        play();
+      }
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+        background-color: var(--paper, #FFF9F0);
+      }
+
+      .overture {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .overture__label {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1.2px;
+        color: var(--stamp-amber);
+        margin: 0 0 16px 0;
+      }
+
+      .overture__plate {
+        position: relative;
+        line-height: 0;
+      }
+
+      .overture__plate :global(img) {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .overture__parcel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 48px;
+        height: 44px;
+        margin: -22px 0 0 -24px;
+        opacity: 0;
+        z-index: 3;
+        filter: drop-shadow(0 1px 0 rgba(26, 26, 26, 0.15));
+      }
+
+      .overture__stamp {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1.4px;
+        color: var(--stamp-amber);
+        border: 1px solid var(--stamp-amber);
+        padding: 3px 8px;
+        background-color: rgba(255, 249, 240, 0.85);
+        opacity: 0;
+        z-index: 4;
+      }
+
+      .overture__bar {
+        display: flex;
+        align-items: baseline;
+        gap: 24px;
+        margin-top: 16px;
+      }
+
+      .overture__replay {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        color: var(--teal);
+        background: none;
+        border: 0.5px solid var(--border-paper);
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+
+      .overture__replay:hover,
+      .overture__replay:focus-visible {
+        border-color: var(--teal);
+      }
+
+      .overture__note,
+      .overture__rm-note {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        line-height: 1.6;
+        color: var(--ink-secondary);
+        margin: 0;
+        max-width: 640px;
+      }
+
+      .overture__rm-note {
+        margin-top: 16px;
+      }
+    </style>
+  </body>
+</html>
