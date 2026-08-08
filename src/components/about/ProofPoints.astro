@@ -70,7 +70,10 @@ const resumeExists =
         <a href={resumeUrl} class="proof-points__link">
           <span class="proof-points__arrow" aria-hidden="true">→</span>
           <span class="proof-points__channel">RESUME</span>
-          <span class="proof-points__text">— one page, pdf</span>
+          {/* row copy says what the file IS — the shipped v3 export runs two
+              pages, so "one page" would be a lie the reader can falsify in
+              one click */}
+          <span class="proof-points__text">— two pages, pdf</span>
         </a>
       </li>
     )}

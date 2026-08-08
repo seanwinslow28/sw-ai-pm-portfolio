@@ -20,6 +20,14 @@ A portfolio that proves the positioning by *being* it, not by *describing* it. E
 
 **Success looks like:** Callbacks from AI PM roles. The recruiter-readable bridge (the V3 site shipping 2026-05-19 to `seanwinslow.com`) buys time; the redesign replaces it at the apex with no DNS churn once it ships.
 
+## Internal compass (never on-page)
+
+> *"A creative technologist who became a systems architect, who's really just trying to make the machine think the way he does."*
+
+The site-identity anchor locked 2026-08-06 (partner-session sidecar L3, the fusion): **identity** from this line — a creative systems architect making the machines think the way he does — and **proof standard** from the governance statement (every claim shown by a running, gated, numbered system). Animation is hinted texture, never the main attraction.
+
+This line is a compass, not copy. It contains "became," which violates the parallel-lineage rule, so it **never appears on-page in any form** — every public line derives from it with the timeline framing removed at the surface. The on-page derivation is the About hook: *"I make agents think the way I do."*
+
 ## Brand Personality
 
 **Three words:** handmade, comedic-confident, evidence-based.
