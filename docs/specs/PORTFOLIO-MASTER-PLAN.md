@@ -253,7 +253,7 @@ The non-obvious calls:
 - **The hero gets zero splash color.** The dateline's transaction-stamp amber is the only chromatic moment. The first full splash is the projects section — a reward for scrolling.
 - **The dateline reads from a real file.** `/api/dateline.json`, written by the Daily Driver agent at 08:45 daily. Four rotation patterns (fleet pulse / ship log / reading log / now line).
 - **The framing is daily-dated, not live.** The Daily Driver writes the dateline once at 08:45; that's daily-fresh, which is what the page claims. The footer's agent-fleet feed is the only sub-daily surface — that one is "live" in the streaming sense.
-- **No GSAP, no Framer, no Lenis.** Native CSS + IntersectionObserver + one RAF loop for the cursor.
+- **No Framer, no Lenis.** Native CSS + IntersectionObserver + one RAF loop for the cursor. (2026-08-08: the original "No GSAP" clause is superseded — GSAP core + DrawSVG/MotionPath/CustomEase licensed per DESIGN.md's Licensed Motion Registry, no ScrollTrigger scroll-jacking. The hero itself keeps its native CSS motion.)
 - Full 15-section spec + a copy-paste build hand-off prompt (Appendix B).
 
 ### 6.2 Projects Section v1 — `docs/projects-section-spec-v1.md`

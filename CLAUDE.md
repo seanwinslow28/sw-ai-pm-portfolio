@@ -54,7 +54,7 @@ The pre-build "Phase 0 / Phase 2 / all-specs-LOCKED" status that used to live he
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
 - **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. The full sticky SiteNav stays off on home (`noChrome={true}`), but a minimal corner nav (`HomeCornerNav.astro`, wordmark + work/about) sits top-right so recruiters know there's more (critique W2, 2026-06-16).
 - **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
-- **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
+- **Stack:** Astro 5 + Tailwind 4. No Next.js, no Framer, no Lenis, no CMS. GSAP core + DrawSVG/MotionPath/CustomEase licensed per DESIGN.md's Licensed Motion Registry (ban lifted 2026-08-08, sidecar L4/L5) — no ScrollTrigger scroll-jacking, reduced-motion/no-JS floors inviolable.
 
 ## File map
 
@@ -126,6 +126,7 @@ sw-ai-pm-portfolio/
 - `.claude/skills/gemini-pencil-animation-image-gen` — 2D pencil-test character art, anchored to [`reference-images/2D-Character-Sketch-Sean-v1.png`](reference-images/2D-Character-Sketch-Sean-v1.png)
 - `.claude/skills/gemini-image-gen` (Nano Banana 2) + `.claude/skills/openai-image-gen` — image generation for stylized cards and the per-project explainer graphics
 - `.claude/skills/image-generator-prompt-science` — prompt-engineering reference for image gen
+- `.claude/skills/gsap-*` — official GSAP skills (core, timeline, plugins, utils, performance, frameworks, react), installed 2026-08-08 from github.com/greensock/gsap-skills for the licensed-motion work. `gsap-scrolltrigger` deliberately not installed: ScrollTrigger scroll-jacking is banned per DESIGN.md's Licensed Motion Registry.
 
 ## Related context (outside this repo)
 
