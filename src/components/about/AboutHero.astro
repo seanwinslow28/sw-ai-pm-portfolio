@@ -52,7 +52,10 @@ const { lead, characterImage, characterAlt } = Astro.props;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 60px;
     align-items: center;
-    min-height: 640px;
+    /* 2026-08-08 layout pass: 640px fixed height fed the void between the
+     * lead and the paragraph below; fluid and shorter, the paragraph now
+     * reads as the lead's continuation. */
+    min-height: clamp(440px, 62vh, 560px);
   }
 
   .about-hero__lead-col {

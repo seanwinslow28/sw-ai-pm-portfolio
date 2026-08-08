@@ -3,7 +3,7 @@
  * Loaded by src/pages/about.astro.
  *
  * v2 anatomy (2026-08-08, sidecar L11-L14): Hero → paragraph → NowPulse
- * → Biesty Cutaway → ProofPoints → RecruiterCallout → PullQuote.
+ * → Biesty Cutaway → ProofPoints → PullQuote.
  * The old band classes (beats / b2 / canon / b4 / b5) died with the
  * 10-band anatomy — see CHANGELOG under about-spec.
  * ---------------------------------------------------------------------- */
@@ -23,8 +23,11 @@
 
 .about-page__mdx .about-paragraph {
   max-width: 680px;
-  margin: 0 auto;
-  padding: 60px 24px 60px;
+  /* Left edge rides the 1120px rail (same edge as the hero lead above), not
+   * a center axis nothing else on the page uses — the 2026-08-08 layout pass
+   * found the centered 680px block was why the paragraph read as floating. */
+  margin: 0 auto 0 max(24px, calc((100% - 1120px) / 2 + 24px));
+  padding: clamp(36px, 6vh, 56px) 24px clamp(40px, 6vh, 56px) 0;
   font-family: var(--font-serif);
   font-size: 22px;
   font-weight: 300;
@@ -33,13 +36,14 @@
   color: var(--ink);
 }
 
-/* NOTE: ProofPoints / RecruiterCallout / PullQuote own their vertical rhythm
+/* NOTE: ProofPoints / PullQuote own their vertical rhythm
  * in their scoped component styles — their scoped `margin` declarations
  * out-cascade rules here (same specificity, later stylesheet), so page-level
  * margin overrides on them silently lose. Edit the components instead. */
 
 @media (max-width: 767px) {
   .about-page__mdx .about-paragraph {
+    margin: 0;
     padding: 40px 20px 48px;
     font-size: 18px;
   }
@@ -53,13 +57,8 @@
   }
 
   /* Print the link URL after each proof-point link (handled in ProofPoints scoped CSS).
-     The dateline strip + pulse strip + recruiter callout retain their wire-service
-     styling; the editorial sections retain their type scale. */
-
-  .recruiter-callout {
-    border: 1px solid var(--ink);
-    background: none;
-  }
+     The dateline strip + pulse strip retain their wire-service styling; the
+     editorial sections retain their type scale. */
 
   .pull-quote {
     background: none;

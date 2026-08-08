@@ -30,8 +30,13 @@ const NAME = "Sean Winslow";
   .hero {
     position: relative;
     overflow: hidden;
-    min-height: 880px;
-    padding: 60px 52px 120px;
+    /* 2026-08-08 rebalance: 880px was headroom for the two-line tagline the
+     * statement hero removed; the shorter box + the name riding lower turn
+     * the leftover void into a deliberate diagonal (dateline → name →
+     * character). The character lane anchors bottom-right and rides the
+     * shorter box automatically. */
+    min-height: clamp(680px, 82vh, 780px);
+    padding: 60px 52px 96px;
   }
   .hero-inner {
     position: relative;
@@ -46,7 +51,9 @@ const NAME = "Sean Winslow";
     line-height: 1.05;
     letter-spacing: -0.8px;
     color: var(--teal);
-    margin: 0;
+    /* Pull the name block down into the character's vertical band
+     * (asymmetric composition) instead of stacking void beneath it. */
+    margin: clamp(16px, 5vh, 56px) 0 0;
     /* Stagger entrance */
     opacity: 0;
     animation: heroNameIn 600ms var(--ease-out) 400ms forwards;
@@ -54,14 +61,17 @@ const NAME = "Sean Winslow";
   .hero-role {
     /* D8 2026-05-30: enlarged so the role reads immediately on the 5s scan.
      * 2026-08-08 (sidecar L6): now the plain statement — no "/" prefix, no
-     * forced uppercase. Mono treatment + entrance timing kept. */
+     * forced uppercase. Mono treatment + entrance timing kept.
+     * 2026-08-08 layout pass: promoted a full hierarchy level (Sean: "too
+     * small") — larger clamp, teal, tracking eased as size grew. Ratio to
+     * the name ~4.8:1, clearly subordinate but legible on the scan. */
     font-family: var(--font-mono);
-    font-size: clamp(16px, 1.5vw, 20px);
+    font-size: clamp(19px, 2vw, 27px);
     font-weight: 500;
-    letter-spacing: 1.6px;
+    letter-spacing: 1.2px;
     line-height: 1.4;
-    color: var(--ink-secondary);
-    margin-top: 14px;
+    color: var(--teal);
+    margin-top: 18px;
     opacity: 0;
     transform: translateY(8px);
     animation: heroRoleIn 300ms var(--ease-out) 700ms forwards;
@@ -81,11 +91,12 @@ const NAME = "Sean Winslow";
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 720px;
+      min-height: 600px;
       padding: 40px 24px 80px;
     }
     .hero-name {
       font-size: 56px;
+      margin-top: 12px;
     }
   }
   @media (prefers-reduced-motion: reduce) {

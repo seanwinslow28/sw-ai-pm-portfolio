@@ -33,8 +33,10 @@ import { ABOUT_HOOK } from "~/lib/site";
 <style>
   .pull-quote {
     max-width: 880px;
-    /* Vertical rhythm owned here since the About v2 recut (2026-08-08). */
-    margin: 120px auto 80px;
+    /* Vertical rhythm owned here since the About v2 recut (2026-08-08).
+     * Layout pass: pulled tight against ProofPoints so links → quote read
+     * as one closing beat; the bottom hands off to the footer tear. */
+    margin: clamp(48px, 7vh, 64px) auto clamp(64px, 9vh, 88px);
     padding: 40px 24px;
     background-color: rgba(10, 62, 66, 0.04);
     border-top: 0.5px solid var(--border-paper);
@@ -55,7 +57,7 @@ import { ABOUT_HOOK } from "~/lib/site";
 
   @media (max-width: 767px) {
     .pull-quote {
-      margin: 80px auto 60px;
+      margin: 48px auto 56px;
       padding: 32px 20px;
     }
     .pull-quote__body {

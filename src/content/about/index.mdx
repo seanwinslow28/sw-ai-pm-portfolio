@@ -14,8 +14,8 @@ github_url: https://github.com/seanwinslow28
 transactions_url: /transactions/
 resume_url: /resume/sean-winslow.pdf
 
-# --- Employment state (drives RecruiterCallout) ---
-# Flip these two together when employment state changes. Zero prose edits required.
+# --- Employment state (inert since 2026-08-08 — RecruiterCallout removed at
+# Sean's direction; keys kept in case a future surface reads them) ---
 available: true
 current_company: null
 
@@ -27,7 +27,6 @@ character_alt: A pencil-test rendering of Sean Winslow, full-body, the human-sel
 import NowPulse from "~/components/about/NowPulse.astro";
 import BiestyCutaway from "~/components/about/BiestyCutaway.astro";
 import ProofPoints from "~/components/about/ProofPoints.astro";
-import RecruiterCallout from "~/components/about/RecruiterCallout.astro";
 import PullQuote from "~/components/about/PullQuote.astro";
 
 {/* The page's ONLY prose (2026-08-06 sidecar L11/L13 — final text verbatim,
@@ -48,7 +47,5 @@ import PullQuote from "~/components/about/PullQuote.astro";
   transactionsUrl={frontmatter.transactions_url}
   resumeUrl={frontmatter.resume_url}
 />
-
-<RecruiterCallout visible={frontmatter.available} />
 
 <PullQuote />

@@ -116,7 +116,7 @@ const PLATE_ALT =
     <Picture
       src={plate}
       widths={[768, 1408, 2016, 2688]}
-      sizes="100vw"
+      sizes="(min-width: 1328px) 1280px, calc(100vw - 48px)"
       formats={["webp"]}
       fallbackFormat="webp"
       alt={PLATE_ALT}
@@ -164,13 +164,20 @@ const PLATE_ALT =
 
 <style>
   .biesty-cutaway {
-    /* Full-bleed band: the plate is the page's single big visual payoff. */
-    margin: 100px 0 0;
+    /* 2026-08-08 layout pass (Sean: "the judgment image is HUGE"): contained,
+     * not full-bleed. It bleeds past the 1120px rail to 1280px so it stays
+     * the widest element on the page — a crescendo against a container, not
+     * a viewport takeover. Card/hotspot math is section-relative and percent-
+     * based, so containment leaves the lens geometry intact. */
+    margin: clamp(72px, 10vh, 96px) auto 0;
+    max-width: min(1280px, calc(100vw - 48px));
   }
 
   .cutaway-plate {
     position: relative;
     line-height: 0;
+    /* Frame the drawing like the technical plate it is: one hairline. */
+    border: 0.5px solid var(--border-paper);
   }
 
   .cutaway-plate :global(img) {
@@ -238,9 +245,9 @@ const PLATE_ALT =
   /* --- The hint line (lens mode only) --- */
 
   .cutaway-hint {
-    max-width: 1120px;
-    margin: 12px auto 0;
-    padding: 0 24px;
+    max-width: none;
+    margin: 12px 0 0;
+    padding: 0;
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 400;

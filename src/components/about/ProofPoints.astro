@@ -84,8 +84,10 @@ const resumeExists =
   .proof-points {
     max-width: 680px;
     /* Top rhythm owned here since the About v2 recut (2026-08-08): the band
-     * wrappers died, and the scoped margin would out-cascade about.css. */
-    margin: 100px auto 0;
+     * wrappers died, and the scoped margin would out-cascade about.css.
+     * Layout pass: matches the cutaway's top gap — one "movement gap" value
+     * bracketing the plate; the close below stays tight. */
+    margin: clamp(72px, 10vh, 96px) auto 0;
     padding: 0 24px;
   }
 
