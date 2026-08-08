@@ -14,26 +14,37 @@
   position: relative;
 }
 
-.about-page__band--hero {
-  padding-top: 60px;
+/* ===== The opening spread (v3, 2026-08-08 round 2) =====
+ * The lead title is retired; the page opens with the one paragraph beside
+ * the character — prose left, drawing right, one movement on the 1120 rail. */
+
+.about-page__mdx .about-open {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 80px) 24px clamp(40px, 6vh, 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 44%);
+  gap: 60px;
+  align-items: center;
 }
 
-/* MDX flow spacing: the paragraph, pulse strip, cutaway, proof points,
- * recruiter callout, and pull quote each get their rhythm here. */
-
 .about-page__mdx .about-paragraph {
-  max-width: 680px;
-  /* Left edge rides the 1120px rail (same edge as the hero lead above), not
-   * a center axis nothing else on the page uses — the 2026-08-08 layout pass
-   * found the centered 680px block was why the paragraph read as floating. */
-  margin: 0 auto 0 max(24px, calc((100% - 1120px) / 2 + 24px));
-  padding: clamp(36px, 6vh, 56px) 24px clamp(40px, 6vh, 56px) 0;
+  max-width: 640px;
   font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: clamp(19px, 1.8vw, 23px);
   font-weight: 300;
   letter-spacing: -0.2px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--ink);
+}
+
+.about-page__mdx .about-open__character img {
+  display: block;
+  max-height: 560px;
+  width: auto;
+  height: auto;
+  margin: 0 0 0 auto;
+  object-fit: contain;
 }
 
 /* NOTE: ProofPoints / PullQuote own their vertical rhythm
@@ -42,9 +53,28 @@
  * margin overrides on them silently lose. Edit the components instead. */
 
 @media (max-width: 767px) {
+  .about-page__mdx .about-open {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 20px 40px;
+  }
+
+  /* Character first, prose below — mirrors the retired AboutHero's mobile
+   * order so the drawing still opens the page. */
+  .about-page__mdx .about-open__character {
+    order: 1;
+  }
+
+  .about-page__mdx .about-open__character img {
+    max-height: 340px;
+    margin: 0 auto;
+  }
+
+  .about-page__mdx .about-open__text {
+    order: 2;
+  }
+
   .about-page__mdx .about-paragraph {
-    margin: 0;
-    padding: 40px 20px 48px;
     font-size: 18px;
   }
 }

@@ -2,15 +2,15 @@
 /**
  * /about/ — Sean's human-self surface.
  *
- * v2 anatomy per the 2026-08-06 partner-session sidecar (L11-L14),
- * content-complete, top to bottom:
+ * v3 anatomy (2026-08-08, Sean's preview-review round 2), top to bottom:
  *   1. (BaseLayout dateline / nav / etc. — chrome is on)
- *   2. AboutHero        — lead + character PNG (assembled here)
- *   3. (MDX body) the paragraph — the page's ONLY prose (L13, byte-locked)
- *   4. (MDX body) NowPulse + machinery line
- *   5. (MDX body) Biesty Cutaway — plate + six pairing-grammar cards (C4)
- *   6. (MDX body) ProofPoints (+ resume when the PDF exists)
- *   7. (MDX body) PullQuote — byte-lockstep with the home teaser hook
+ *   2. (MDX body) the opening spread — the L13 paragraph (byte-locked)
+ *      beside the character; the lead title is retired (the "Raised by..."
+ *      line lives on in the meta description)
+ *   3. (MDX body) NowPulse + machinery line
+ *   4. (MDX body) Biesty Cutaway — plate + six pairing-grammar cards
+ *   5. (MDX body) ProofPoints (+ resume; heading centered)
+ *   6. (MDX body) PullQuote — byte-lockstep with the home teaser hook
  *   (RecruiterCallout removed 2026-08-08 at Sean's direction — an applicant's
  *   site needs no availability disclaimer; supersedes the L14b restore.)
  *
@@ -25,7 +25,6 @@
  */
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import AboutHero from "~/components/about/AboutHero.astro";
 import "~/styles/about.css";
 
 const aboutEntries = await getCollection("about");
@@ -42,13 +41,10 @@ const pageDescription = fm.description;
 
 <BaseLayout title={fm.title} description={pageDescription} ogImage="/og-default.png">
   <main id="main" class="about-page page-sheet">
-    <div class="about-page__band about-page__band--hero">
-      <AboutHero
-        lead={fm.lead}
-        characterImage={fm.character_image}
-        characterAlt={fm.character_alt}
-      />
-    </div>
+    <!-- The visible lead title was retired 2026-08-08 (Sean's call); the page
+         still needs its one h1 for heading order, so it rides screen-reader
+         only. -->
+    <h1 class="sr-only">About Sean Winslow</h1>
 
     <div class="about-page__mdx">
       <Content frontmatter={fm} />

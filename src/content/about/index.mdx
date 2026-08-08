@@ -1,6 +1,7 @@
 ---
-# --- Lead (LOCKED — byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
-lead: "Raised by Saturday morning cartoons and Vercel deployment logs."
+# (The on-page lead title was retired 2026-08-08 at Sean's direction — round 2
+# of his preview review. The "Raised by..." line survives in the description
+# below and in the meta-description lock; see CHANGELOG under about-spec.)
 
 # --- Meta ---
 slug: about
@@ -29,12 +30,25 @@ import BiestyCutaway from "~/components/about/BiestyCutaway.astro";
 import ProofPoints from "~/components/about/ProofPoints.astro";
 import PullQuote from "~/components/about/PullQuote.astro";
 
-{/* The page's ONLY prose (2026-08-06 sidecar L11/L13 — final text verbatim,
-    byte-validated by scripts/validate_about.mjs). The six life beats are
-    banked in the anima brief lane as film material; do not resurrect them. */}
+{/* The opening spread (2026-08-08, Sean's preview-review round 2): the lead
+    title is retired; the page's ONLY prose (sidecar L13 — final text verbatim,
+    byte-validated by scripts/validate_about.mjs) sits directly beside the
+    character. The six life beats stay banked in the anima brief lane. */}
 
-<section class="about-paragraph" aria-label="About Sean">
-  I studied film in college and taught myself animation in my parents' basement. I managed teams in studios and timelines in editing software. One day, I played around with generating images and my whole world changed. I fell down the AI rabbit hole and never looked back. I was suddenly deep into product meetings, agentic frameworks, and prototypes. Now I spend my days building agent systems and holding them to the same bar I held my drawings to. It ships when it's right.
+<section class="about-open" aria-label="About Sean">
+  <div class="about-open__text about-paragraph">
+    I studied film in college and taught myself animation in my parents' basement. I managed teams in studios and timelines in editing software. One day, I played around with generating images and my whole world changed. I fell down the AI rabbit hole and never looked back. I was suddenly deep into product meetings, agentic frameworks, and prototypes. Now I spend my days building agent systems and holding them to the same bar I held my drawings to. It ships when it's right.
+  </div>
+  <div class="about-open__character">
+    <img
+      src={frontmatter.character_image}
+      alt={frontmatter.character_alt}
+      loading="eager"
+      decoding="async"
+      width="640"
+      height="640"
+    />
+  </div>
 </section>
 
 <NowPulse />

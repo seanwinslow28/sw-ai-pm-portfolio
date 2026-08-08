@@ -272,8 +272,8 @@ const teaserDeck = defineCollection({
 const about = defineCollection({
   type: "content",
   schema: z.object({
-    // --- Lead (locked, byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
-    lead: z.string().min(1),
+    // (lead removed 2026-08-08 — the on-page title retired in Sean's round-2
+    // preview review; the "Raised by..." line lives on in `description`.)
 
     // --- Meta ---
     // (slug is reserved by Astro content collections — auto-derived from filename;
