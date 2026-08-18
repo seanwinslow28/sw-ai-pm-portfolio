@@ -1,7 +1,7 @@
 {
-  "date_iso": "2026-08-17",
-  "date_display": "BOSTON, AUGUST 17, 2026",
+  "date_iso": "2026-08-18",
+  "date_display": "BOSTON, AUGUST 18, 2026",
   "pattern": "fleet_pulse",
-  "body": "morning fleet ran clean. indexer wrote 323 chunks at 02:00. synth landed 105 concepts + 25 connections. critic returned ok. fleet green.",
-  "updated_at": "2026-08-17T08:31:56-04:00"
+  "body": "morning fleet ran clean. indexer wrote 177 chunks at 02:00. synth landed 108 concepts + 26 connections. critic returned ok. fleet green.",
+  "updated_at": "2026-08-18T08:31:25-04:00"
 }
