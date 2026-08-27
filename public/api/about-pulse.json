@@ -1,5 +1,5 @@
 {
-  "date_iso": "2026-08-26",
+  "date_iso": "2026-08-27",
   "items": [
     {
       "type": "commits",
@@ -8,8 +8,8 @@
     },
     {
       "type": "fleet_runs",
-      "count": 2,
-      "label": "2 fleet runs (indexer · critic)"
+      "count": 3,
+      "label": "3 fleet runs (indexer · synthesizer · critic)"
     },
     {
       "type": "reading",
@@ -17,5 +17,5 @@
       "label": "1 daily note"
     }
   ],
-  "updated_at": "2026-08-26T08:31:24-04:00"
+  "updated_at": "2026-08-27T08:31:47-04:00"
 }
