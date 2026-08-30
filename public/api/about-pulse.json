@@ -1,10 +1,10 @@
 {
-  "date_iso": "2026-08-29",
+  "date_iso": "2026-08-30",
   "items": [
     {
       "type": "commits",
-      "count": 10,
-      "label": "10 commits"
+      "count": 0,
+      "label": "0 commits"
     },
     {
       "type": "fleet_runs",
@@ -17,5 +17,5 @@
       "label": "1 daily note"
     }
   ],
-  "updated_at": "2026-08-29T08:31:38-04:00"
+  "updated_at": "2026-08-30T08:31:26-04:00"
 }
