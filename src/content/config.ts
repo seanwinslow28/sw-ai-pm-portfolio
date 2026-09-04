@@ -265,23 +265,15 @@ const teaserDeck = defineCollection({
 // Phase 3d — about + cartoons collections
 // Source: about-spec-v1.md Appendix B (about) + §11.6 (cartoons).
 // `about` is a singleton — exactly one entry at src/content/about/index.mdx.
-// `cartoons` is a 6-entry collection consumed by <CartoonCanon />.
+// `cartoons` entries are retained content (banked); their consumer
+// <CartoonCanon /> died in the 2026-08-08 About v2 recut (sidecar L11).
 // ============================================================
-
-const LANE_ENUM = ["animator", "pm", "braided"] as const;
-
-const aboutBeat = z.object({
-  age: z.number().int().min(0).max(100),
-  year: z.number().int().min(1900).max(2100),
-  body: z.string().min(1),
-  lane: z.enum(LANE_ENUM),
-});
 
 const about = defineCollection({
   type: "content",
   schema: z.object({
-    // --- Lead (locked, byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
-    lead: z.string().min(1),
+    // (lead removed 2026-08-08 — the on-page title retired in Sean's round-2
+    // preview review; the "Raised by..." line lives on in `description`.)
 
     // --- Meta ---
     // (slug is reserved by Astro content collections — auto-derived from filename;
@@ -305,11 +297,9 @@ const about = defineCollection({
     character_image: z.string(),
     character_alt: z.string(),
 
-    // --- B-1 stacked beats (6-8 entries; validator-side rule: ≥2 lane: braided) ---
-    beats: z.array(aboutBeat).min(6).max(8),
-
-    // --- B-3 annotation hook (deferred to v2 per spec §1.2; field retained for v1.1) ---
-    b3_load_bearing_cel: z.number().int().min(1).max(6),
+    // (beats[] + b3_load_bearing_cel removed 2026-08-08 — the Beats band and
+    // CartoonCanon died in the sidecar-L11 About v2 recut; the six life beats
+    // are banked in the anima brief lane as film material.)
   }),
 });
 

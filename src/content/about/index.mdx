@@ -1,94 +1,59 @@
 ---
-# --- Lead (LOCKED — byte-validated against PMP §4 row 2 by scripts/validate_about.mjs) ---
-lead: "Raised by Saturday morning cartoons and Vercel deployment logs."
+# (The on-page lead title was retired 2026-08-08 at Sean's direction — round 2
+# of his preview review. The "Raised by..." line survives in the description
+# below and in the meta-description lock; see CHANGELOG under about-spec.)
 
 # --- Meta ---
 slug: about
 title: About — Sean Winslow
 description: "Sean Winslow — AI Product Manager. Raised by Saturday morning cartoons and Vercel deployment logs."
-reading_time: 4
+reading_time: 2
 
-# --- Proof-point URLs (B-5) ---
+# --- Proof-point URLs ---
 linkedin_url: https://www.linkedin.com/in/sean-winslow-204390a5
 github_url: https://github.com/seanwinslow28
 transactions_url: /transactions/
 resume_url: /resume/sean-winslow.pdf
 
-# --- Employment state (drives B-4) ---
-# Flip these two together when employment state changes. Zero prose edits required.
+# --- Employment state (inert since 2026-08-08 — RecruiterCallout removed at
+# Sean's direction; keys kept in case a future surface reads them) ---
 available: true
 current_company: null
 
 # --- Character (hero band) ---
 character_image: /assets/character/about-full-body.webp
 character_alt: A pencil-test rendering of Sean Winslow, full-body, the human-self version of the character that runs the agent fleet.
-
-# --- B-1 stacked beats (6 entries; rhythm gradient→amber→amber→gradient→gradient→gradient per about-b1-b2-b4-locked-2026-05-25 §Lane mapping) ---
-beats:
-  - age: 8
-    year: 2000
-    body: "Drew Ash Ketchum and Pikachu. Sold it to a kid in second grade for a buck."
-    lane: braided
-  - age: 23
-    year: 2015
-    body: "Won \"Best Comedy\" at my college film festival. Still have the certificate."
-    lane: animator
-  - age: 28
-    year: 2020
-    body: "Spent all of Covid in my parents' basement hunched over an old desk with my iPad. Created my first animated short, \"Break Time\"."
-    lane: animator
-  - age: 30
-    year: 2023
-    body: "The WGA went on strike over AI. The writers' rooms started to shrink along with my chances of breaking in. I asked ChatGPT for advice."
-    lane: braided
-  - age: 32
-    year: 2025
-    body: "Built Super Mario with Cursor when I stumbled upon Lenny's Podcast: Mike Krieger explained what a PM does inside an AI company. My ears perked up."
-    lane: braided
-  - age: 33
-    year: 2026
-    body: "Writing PRDs. Checking evals. Sketching animatics on my iPad for the animation pipeline. Same desk, different purpose."
-    lane: braided
-
-# --- B-3 annotation hook (DEFERRED to v2 per spec §1.2; field retained for v1.1) ---
-b3_load_bearing_cel: 4
 ---
 
-import AboutHero from "~/components/about/AboutHero.astro";
 import NowPulse from "~/components/about/NowPulse.astro";
-import Beats from "~/components/about/Beats.astro";
-import CartoonCanon from "~/components/about/CartoonCanon.astro";
-import CurrentlyAtStamp from "~/components/about/CurrentlyAtStamp.astro";
-import BuildingToward from "~/components/about/BuildingToward.astro";
+import BiestyCutaway from "~/components/about/BiestyCutaway.astro";
 import ProofPoints from "~/components/about/ProofPoints.astro";
 import PullQuote from "~/components/about/PullQuote.astro";
 
-<section class="about-section about-section--b2" aria-labelledby="b2-heading">
-  <p class="about-section__frame-prefix">B-2 ·</p>
-  <h2 id="b2-heading" class="about-section__heading" aria-label="B-2: The Long Way to the Obvious Answer">
-    The Long Way to the Obvious Answer
-  </h2>
+{/* The opening spread (2026-08-08, Sean's preview-review round 2): the lead
+    title is retired; the page's ONLY prose (sidecar L13 — final text verbatim,
+    byte-validated by scripts/validate_about.mjs) sits directly beside the
+    character. The six life beats stay banked in the anima brief lane. */}
 
-  I always felt like a director. Not in title, but in the specific way my brain wouldn't shut up. Animation grabbed me because the ceiling doesn't exist. You can imagine a story about a wise-cracking chipmunk with a robotic arm and an alcohol problem, then have it rendered out on Tuesday. I loved the technical side too. The part where the craft gets its hands dirty. My path seemed set in stone. I was going to keep drawing every frame and edit every scene until carpal tunnel took hold.
-
-  Then AI happened. Not as a threat, not as a concept, but as a thing I couldn't stop using. First as a creative tool, then as a product I genuinely admired, then as a mild obsession that was starting to affect my sleep (in a good way). I started building with it, shipping with it, and somewhere in there I heard the phrase "AI Product Manager." All of a sudden, a new branch with a different future started to take shape. PM is the name for the instinct I already had. Deciding what's worth making, aligning with the people making it, and directing toward something that didn't exist yet. So yes, I changed lanes. But it felt less like a reinvention than a name being put on something I'd been doing all along.
-</section>
-
-<CartoonCanon />
-
-<section class="about-section about-section--b4" aria-labelledby="b4-heading">
-  <p class="about-section__frame-prefix">B-4 ·</p>
-  <div class="about-section__b4-header">
-    <h2 id="b4-heading" class="about-section__heading" aria-label="B-4: Where I'm going">
-      Where I'm going
-    </h2>
-    <CurrentlyAtStamp currentCompany={frontmatter.current_company} />
+<section class="about-open" aria-label="About Sean">
+  <div class="about-open__text about-paragraph">
+    I studied film in college and taught myself animation in my parents' basement. I managed teams in studios and timelines in editing software. One day, I played around with generating images and my whole world changed. I fell down the AI rabbit hole and never looked back. I was suddenly deep into product meetings, agentic frameworks, and prototypes. Now I spend my days building agent systems and holding them to the same bar I held my drawings to. It ships when it's right.
   </div>
-
-  <BuildingToward>
-    I want to be in the room where AI meets craft. The bet I'm making is specific: AI-native tools and pipelines that let a creative person ship at a scale that used to require a studio and permission. I'm trying to find the right problems, build toward the right solutions, and keep the humans in the loop throughout. The 2D animation pipeline I'm building isn't a side project that proves I'm still an artist. It's the bridge between my two worlds. The working theory about what the next creative studio looks like. One person, a fleet, and a very specific idea.
-  </BuildingToward>
+  <div class="about-open__character">
+    <img
+      src={frontmatter.character_image}
+      alt={frontmatter.character_alt}
+      loading="eager"
+      decoding="async"
+      width="640"
+      height="640"
+    />
+  </div>
 </section>
+
+<NowPulse />
+
+<BiestyCutaway />
 
 <ProofPoints
   linkedinUrl={frontmatter.linkedin_url}
