@@ -1,0 +1,379 @@
+---
+/**
+ * <BiestyCutaway /> — the About page's big visual payoff (sidecar L7-L10).
+ *
+ * The route-c plate ("How To Solve A Problem" hero frame) rendered as a
+ * Biesty/Macaulay technical cutaway: six hotspots, each peeling open a
+ * card that OBEYS THE PAIRING GRAMMAR — the card never mentions the
+ * drawing; it names only the real fleet control that rhymes with that
+ * character's failure mode. One behavior, one number, one verify link.
+ * The PROBLEM! TV is scene furniture — deliberately no hotspot.
+ *
+ * Progressive enhancement (the floor IS the markup):
+ *   - Server-rendered: plate + all six cards docked in a grid BELOW the
+ *     plate (prototype-tested floor — cards over the plate bury the
+ *     drawing and the central figure; never do that).
+ *   - Enhanced (JS + pointer:fine + hover + ≥768px + no reduced-motion):
+ *     cursor lens, glow-on-approach hotspots, click to peel a card while
+ *     an iris dims the room. See src/scripts/biesty-cutaway.ts.
+ *   - Touch / narrow / reduced-motion / no-JS all keep the docked grid.
+ *
+ * Film-swap contract: the plate lives alone inside `.cutaway-plate`; the
+ * anima short replaces that media node later WITHOUT restructuring —
+ * hotspot geometry is data (PLATE_CARDS), decoupled from the media.
+ *
+ * Motion license: GSAP core + CustomEase per DESIGN.md's Licensed Motion
+ * Registry (About row). One-shot attract on viewport entry, then settle.
+ *
+ * Copy status: card bodies ride writing-critique + writing-humanity-pass
+ * before ship (C6); headers + number lines are locked from the sidecar.
+ */
+import { Picture } from "astro:assets";
+import plate from "~/assets/about/biesty-plate.webp";
+
+interface CutawayCard {
+  id: string;
+  /** hotspot center, percent of plate width/height */
+  x: number;
+  y: number;
+  hotspotLabel: string;
+  header: string;
+  body: string;
+  number: string;
+  verifyLabel: string;
+  verifyHref: string;
+}
+
+const PLATE_CARDS: CutawayCard[] = [
+  {
+    id: "codex",
+    x: 28, y: 36,
+    hotspotLabel: "Open the card for the character at the blackboard",
+    header: "NOTHING ACTS UNASKED",
+    body: "Before any agent acts, it files an 8-field proposal. A judge reads every one; when it can't decide, a human does.",
+    number: "$0 per decision",
+    verifyLabel: "control architecture",
+    verifyHref: "https://github.com/seanwinslow28/code-brain/blob/main/agents-sdk/docs/CONTROL_ARCHITECTURE.md",
+  },
+  {
+    id: "gemini",
+    x: 64, y: 43,
+    hotspotLabel: "Open the card for the character at the concept wall",
+    header: "THE EVAL DECIDES WHAT SHIPS",
+    body: "The nightly synthesizer once regressed for nine days behind green dashboards. Now a 10-case eval built from 17 days of logs decides what ships, and it launched honest red.",
+    number: "1/10 → 7/10",
+    verifyLabel: "evals/",
+    verifyHref: "https://github.com/seanwinslow28/code-brain/tree/main/evals/vault-synthesizer",
+  },
+  {
+    id: "grok",
+    x: 76, y: 45,
+    hotspotLabel: "Open the card for the character with the sledgehammer",
+    header: "THE MONEY MOVES FIRST",
+    body: "Budget is reserved before an agent dispatches, never after. Hard caps per run, and scheduled agents get no shell.",
+    number: "cap $0.60/run",
+    verifyLabel: "transactions",
+    verifyHref: "/transactions/",
+  },
+  {
+    id: "claude",
+    x: 20, y: 78,
+    hotspotLabel: "Open the card for the character under the paper stack",
+    header: "EVERYTHING HERE CAN DIE",
+    body: "Every agent runs under a turn cap and a human-named condition for when it pauses and retires.",
+    number: "30-turn cap",
+    verifyLabel: "groundwork",
+    verifyHref: "https://github.com/seanwinslow28/groundwork/tree/main/governance",
+  },
+  {
+    id: "sean",
+    x: 48, y: 52,
+    hotspotLabel: "Open the card for the figure at the center",
+    header: "HUMANS GET THE LAST WORD",
+    body: "Every gate fails open to a person. The proposal generator will not invent an owner; five fields stay human-only.",
+    number: "5 fields · 0 invented",
+    verifyLabel: "groundwork",
+    verifyHref: "https://github.com/seanwinslow28/groundwork",
+  },
+  {
+    id: "user",
+    x: 6.5, y: 42,
+    hotspotLabel: "Open the card for the figure in the doorway",
+    header: "THE PROBLEM MUST BE REAL",
+    body: "The discovery pipeline mines real user complaints and drops any pain point it cannot trace to a real source. No invented personas.",
+    number: "every pain point → a real source",
+    verifyLabel: "code-brain",
+    verifyHref: "https://github.com/seanwinslow28/code-brain/tree/main/tools/llm-council/council/discovery",
+  },
+];
+
+const PLATE_ALT =
+  "A pencil-drawn cutaway of a chaotic build room: four mascot characters each mid-wrong-build, a calm figure at the center with palms out, and a user standing in the doorway.";
+---
+
+<section class="biesty-cutaway" aria-label="The build room, annotated" data-cutaway>
+  <div class="cutaway-plate" data-plate>
+    <Picture
+      src={plate}
+      widths={[768, 1408, 2016, 2688]}
+      sizes="(min-width: 1328px) 1280px, calc(100vw - 48px)"
+      formats={["webp"]}
+      fallbackFormat="webp"
+      alt={PLATE_ALT}
+      loading="lazy"
+      decoding="async"
+    />
+    <div class="cutaway-lens" aria-hidden="true" data-lens></div>
+    <div class="cutaway-iris" aria-hidden="true" data-iris></div>
+    {PLATE_CARDS.map((c) => (
+      <button
+        type="button"
+        class="cutaway-hotspot"
+        style={`left:${c.x}%; top:${c.y}%;`}
+        aria-controls={`cutaway-card-${c.id}`}
+        aria-expanded="false"
+        data-hotspot={c.id}
+        data-x={c.x}
+        data-y={c.y}
+      >
+        <span class="sr-only">{c.hotspotLabel}</span>
+      </button>
+    ))}
+  </div>
+
+  <p class="cutaway-hint" data-hint hidden>drag your cursor across the drawing</p>
+
+  <div class="cutaway-cards" data-cards>
+    {PLATE_CARDS.map((c) => (
+      <article class="cutaway-card" id={`cutaway-card-${c.id}`} data-card={c.id} tabindex="-1">
+        <h3 class="cutaway-card__header">{c.header}</h3>
+        <p class="cutaway-card__body">{c.body}</p>
+        <p class="cutaway-card__number">{c.number}</p>
+        <a class="cutaway-card__verify" href={c.verifyHref}>
+          <span aria-hidden="true">→ </span>VERIFY: {c.verifyLabel}
+        </a>
+      </article>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { initBiestyCutaway } from "~/scripts/biesty-cutaway";
+  initBiestyCutaway();
+</script>
+
+<style>
+  .biesty-cutaway {
+    /* 2026-08-08 layout pass (Sean: "the judgment image is HUGE"): contained,
+     * not full-bleed. It bleeds past the 1120px rail to 1280px so it stays
+     * the widest element on the page — a crescendo against a container, not
+     * a viewport takeover. Card/hotspot math is section-relative and percent-
+     * based, so containment leaves the lens geometry intact. */
+    margin: clamp(72px, 10vh, 96px) auto 0;
+    max-width: min(1280px, calc(100vw - 48px));
+  }
+
+  .cutaway-plate {
+    position: relative;
+    line-height: 0;
+    /* Frame the drawing like the technical plate it is: one hairline. */
+    border: 0.5px solid var(--border-paper);
+  }
+
+  .cutaway-plate :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* --- Lens + iris (enhanced mode only; hidden at the floor) --- */
+
+  .cutaway-lens {
+    display: none;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(10, 62, 66, 0.35);
+    backdrop-filter: brightness(1.08) contrast(1.02);
+    -webkit-backdrop-filter: brightness(1.08) contrast(1.02);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  .cutaway-iris {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 4;
+    /* background set per-open from JS (radial hole at the hotspot) */
+  }
+
+  /* --- Hotspots: invisible until approached; always visible to keyboard --- */
+
+  .cutaway-hotspot {
+    display: none;
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px; /* center on its % coordinate */
+    padding: 0;
+    background: transparent;
+    border: 0.5px solid transparent;
+    border-radius: 50%; /* a drawn lens ring, not a UI card — radius earns itself */
+    cursor: pointer;
+    z-index: 5;
+    transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+
+  .cutaway-hotspot.is-near,
+  .cutaway-hotspot:hover {
+    border-color: rgba(124, 45, 18, 0.55);
+    box-shadow: 0 0 0 3px rgba(250, 199, 117, 0.25);
+  }
+
+  .cutaway-hotspot:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+    border-color: rgba(124, 45, 18, 0.55);
+  }
+
+  /* --- The hint line (lens mode only) --- */
+
+  .cutaway-hint {
+    max-width: none;
+    margin: 12px 0 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    color: var(--ink-secondary);
+    text-transform: lowercase;
+  }
+
+  /* --- The cards: docked grid BELOW the plate (the floor state) --- */
+
+  .cutaway-cards {
+    max-width: 1120px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .cutaway-card {
+    background-color: var(--paper);
+    border: 0.5px solid var(--border-paper);
+    padding: 24px;
+  }
+
+  .cutaway-card__header {
+    margin: 0 0 12px 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    color: var(--teal);
+  }
+
+  .cutaway-card__body {
+    margin: 0 0 16px 0;
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 300;
+    letter-spacing: -0.1px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .cutaway-card__number {
+    margin: 0 0 12px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: var(--stamp-amber);
+  }
+
+  .cutaway-card__verify {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .cutaway-card__verify:hover,
+  .cutaway-card__verify:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* --- Lens mode (class set by JS only when every gate passes) --- */
+
+  .biesty-cutaway.is-lens .cutaway-lens,
+  .biesty-cutaway.is-lens .cutaway-iris,
+  .biesty-cutaway.is-lens .cutaway-hotspot {
+    display: block;
+  }
+
+  .biesty-cutaway.is-lens .cutaway-cards {
+    /* Cards leave the flow and become the plate's overlay layer. */
+    position: absolute;
+    inset: 0;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  .biesty-cutaway.is-lens {
+    position: relative;
+  }
+
+  .biesty-cutaway.is-lens .cutaway-card {
+    display: none;
+    position: absolute;
+    width: min(420px, 42%);
+    z-index: 6;
+    pointer-events: auto;
+    border: 0.5px solid rgba(10, 62, 66, 0.35);
+  }
+
+  .biesty-cutaway.is-lens .cutaway-card.is-open {
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    .biesty-cutaway {
+      margin-top: 60px;
+    }
+
+    .cutaway-cards {
+      grid-template-columns: 1fr;
+      margin-top: 24px;
+      padding: 0 20px;
+      gap: 12px;
+    }
+
+    .cutaway-card {
+      padding: 20px;
+    }
+  }
+
+  @media print {
+    /* Print is a floor state: full grid below the plate, no chrome. */
+    .cutaway-card {
+      page-break-inside: avoid;
+      border: 1px solid var(--ink);
+    }
+  }
+</style>

@@ -9,6 +9,7 @@
  */
 import TeaserSwiper from "~/components/teaser/TeaserSwiper.astro";
 import { isFresh } from "~/lib/dateline";
+import { ABOUT_HOOK } from "~/lib/site";
 
 /* Build-time fetch with fallback. The "TODAY" label only stands when the
  * fleet pulse is fresh; a stale file falls back so we never date old stats
@@ -27,8 +28,11 @@ try {
 }
 const beatPrefix = pulseFresh ? "TODAY · " : "LATEST · ";
 
-/* The editorial line is locked per spec §2. */
-const EDITORIAL_LINE = "A man, a pencil, an agent fleet. Same person, different tools.";
+/* The hook line (sidecar L6, 2026-08-08) — supersedes the prior locked
+ * editorial line ("A man, a pencil, an agent fleet. Same person, different
+ * tools.", recorded in CHANGELOG + PMP §4). Byte-lockstep with the About
+ * PullQuote via the shared ABOUT_HOOK constant; the CTA below is the
+ * read-more affordance. */
 const EYEBROW = "ABOUT — TEASER";
 const CTA = "→ READ THE FULL ABOUT";
 ---
@@ -37,7 +41,7 @@ const CTA = "→ READ THE FULL ABOUT";
   <div class="teaser-inner">
     <div class="teaser-text">
       <p id="about-teaser-heading" class="eyebrow">{EYEBROW}</p>
-      <p class="editorial">{EDITORIAL_LINE}</p>
+      <p class="editorial">{ABOUT_HOOK}</p>
       <p class="beat" aria-live="polite">
         <span class="beat-today">{beatPrefix}</span>
         <span class="beat-items">{beatItems}</span>
