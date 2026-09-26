@@ -24,6 +24,21 @@ export const COPYRIGHT_YEAR = "2026";
 /* Wordmark — site-chrome §16 OPEN-1 CONFIRMED 2026-05-21 */
 export const WORDMARK = "SW";
 
+/**
+ * The About hook — home About-teaser editorial line AND the About page's
+ * closing PullQuote, byte-identical BY CONSTRUCTION (both import this
+ * constant). The lockstep contract migrated from hero↔PullQuote to
+ * teaser↔PullQuote per the 2026-08-06 partner-session sidecar L6; the old
+ * comment-only contract drifted once (PullQuote audit note 2026-06-10),
+ * so the contract is now a shared constant instead of a convention.
+ * Change it here or not at all.
+ */
+export const ABOUT_HOOK = "I make agents think the way I do.";
+
+/* Hero statement — sits under the name per sidecar L6 (statement hero:
+ * tagline + "/ AI PRODUCT MANAGER" tag dropped). */
+export const HERO_STATEMENT = "AI Product Manager";
+
 /* Asset paths (canonical)
  * Hero loop ships as TRUE-alpha (transparent bg) so the background reads as
  * "removed" on every engine — see CharacterLane.astro for the selection logic:

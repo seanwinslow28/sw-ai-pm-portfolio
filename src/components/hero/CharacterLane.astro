@@ -125,8 +125,12 @@ import {
     position: absolute;
     width: 1024px;
     height: 576px;
-    right: -180px;
-    bottom: 80px;
+    /* 2026-08-08 (statement-hero rebalance follow-up): the shorter hero box
+     * left the character riding high and half-bled off the right edge.
+     * Pulled inboard and down; the floor shadow is a child of this box, so
+     * it tracks automatically. */
+    right: -60px;
+    bottom: 28px;
     z-index: 20;
     pointer-events: none;
   }

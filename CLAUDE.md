@@ -43,9 +43,9 @@ The pre-build "Phase 0 / Phase 2 / all-specs-LOCKED" status that used to live he
 
 ## Locked decisions (quick reference)
 
-- **Hero tagline:** "The agents handle the loops. I handle the taste." (D8 2026-05-30 dropped the redundant "Product Manager." line — role lives in the enlarged `/ AI PRODUCT MANAGER` tag.)
+- **Hero:** statement hero (2026-08-08, sidecar L6) — under the name sits the plain statement "AI Product Manager" (`HERO_STATEMENT` in `src/lib/site.ts`); the old tagline ("The agents handle the loops. I handle the taste.") and the "/ AI PRODUCT MANAGER" tag are superseded. Dateline strip + character animation survive untouched — trimming them is the template trap.
 - **About header:** "Raised by Saturday morning cartoons and Vercel deployment logs."
-- **Home About teaser editorial line:** "A man, a pencil, an agent fleet. Same person, different tools."
+- **About hook (home teaser + About PullQuote, byte-lockstep):** "I make agents think the way I do." — the shared `ABOUT_HOOK` constant in `src/lib/site.ts`; supersedes the prior teaser editorial line ("A man, a pencil, an agent fleet. Same person, different tools.").
 - **Intent Engineering MCP tile + case-study hero:** "An MCP server that checks an agent's spec before it runs." (Subtitle pass 2026-06-16: superseded the prior "Drawing up agents to act with intent." for recruiter scan-ability, follow-on to the W1 critique redesign. The baked OG-card PNG still shows the old line until the og-card generator is re-run.)
 - **Hero treatment:** the "duet" — newsroom dateline strip above the name, tagline below.
 - **Fonts:** Newsreader (serif/editorial) + JetBrains Mono (terminal/wire-service). Only two. No Inter, no Sora.
@@ -54,7 +54,7 @@ The pre-build "Phase 0 / Phase 2 / all-specs-LOCKED" status that used to live he
 - **Click-through:** full route per project (`/work/<slug>`), Astro View Transitions.
 - **Home page shape:** Hero → Projects → About teaser (9-card character deck) → universal Footer. The full sticky SiteNav stays off on home (`noChrome={true}`), but a minimal corner nav (`HomeCornerNav.astro`, wordmark + work/about) sits top-right so recruiters know there's more (critique W2, 2026-06-16).
 - **Email constant:** `sean.winslow28@gmail.com` (per SHIP-PLAN-2026-05-29 D4 — supersedes the prior `sean@seanwinslow.com`; lives in `src/lib/site.ts`).
-- **Stack:** Astro 5 + Tailwind 4. No Next.js, no GSAP, no Framer, no Lenis, no CMS.
+- **Stack:** Astro 5 + Tailwind 4. No Next.js, no Framer, no Lenis, no CMS. GSAP core + DrawSVG/MotionPath/CustomEase licensed per DESIGN.md's Licensed Motion Registry (ban lifted 2026-08-08, sidecar L4/L5) — no ScrollTrigger scroll-jacking, reduced-motion/no-JS floors inviolable.
 
 ## File map
 
@@ -126,6 +126,7 @@ sw-ai-pm-portfolio/
 - `.claude/skills/gemini-pencil-animation-image-gen` — 2D pencil-test character art, anchored to [`reference-images/2D-Character-Sketch-Sean-v1.png`](reference-images/2D-Character-Sketch-Sean-v1.png)
 - `.claude/skills/gemini-image-gen` (Nano Banana 2) + `.claude/skills/openai-image-gen` — image generation for stylized cards and the per-project explainer graphics
 - `.claude/skills/image-generator-prompt-science` — prompt-engineering reference for image gen
+- `.claude/skills/gsap-*` — official GSAP skills (core, timeline, plugins, utils, performance, frameworks, react), installed 2026-08-08 from github.com/greensock/gsap-skills for the licensed-motion work. `gsap-scrolltrigger` deliberately not installed: ScrollTrigger scroll-jacking is banned per DESIGN.md's Licensed Motion Registry.
 
 ## Related context (outside this repo)
 
