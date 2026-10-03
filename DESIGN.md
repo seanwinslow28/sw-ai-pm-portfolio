@@ -332,7 +332,7 @@ Turn a static concept diagram into something the reader *performs*. Instead of a
 - **Two layers + a masked reveal.** A faint always-on *ghost* of the whole sequence (≈0.15 opacity) under a full-opacity *ink* layer revealed by a CSS `mask-image` gradient whose edge tracks a `--reveal` custom property driven by the control. An indicator (a pencil) rides the reveal edge.
 - **Color-as-actor lives in the labels, not the art.** The drawing stays authentic (graphite); the role colors (ink / accent / success) + the one stamp accent live in the labels and the approval stamp.
 - **Production pipeline (the portable part):** (1) AI-generate a **single consistency-locked sequence sheet** — one generation across all frames dodges frame-to-frame identity drift; (2) **luminance→alpha key** it to transparent (keeps soft strokes and faint construction lines, no halos a chroma-key would leave); (3) reveal it with a CSS mask tied to a native `<input type="range">`.
-- **Discipline (non-negotiable):** progressive-enhancement — it reads as the *complete* static figure with no JS; `prefers-reduced-motion` lands on that final state with the control hidden; lightweight (no animation libraries); CLS-safe (reserve the box with `aspect-ratio`); the native range control gives keyboard operation + a focus ring for free.
+- **Discipline (non-negotiable):** progressive-enhancement — it reads as the *complete* static figure with no JS; `prefers-reduced-motion` lands on that final state with the control hidden; lightweight (no animation library needed here — this component's WAAPI/CSS spine predates and survives the Licensed Motion Registry; see Named Rules); CLS-safe (reserve the box with `aspect-ratio`); the native range control gives keyboard operation + a focus ring for free.
 - **Motion is gated, never ambient** — the reveal only moves under the reader's hand (see the Licensed-Infinite-Motion Rule). Reuse the system's house easing curve for the reveal.
 
 ### Named Rules
@@ -343,6 +343,20 @@ Turn a static concept diagram into something the reader *performs*. Instead of a
 **The No-Card-Reflex Rule.** Cards are the lazy answer. Use them only when truly the best affordance. Nested cards are always wrong. The agent-feed footer is rows, not cards. The "next in production" zone is a dashed boundary, not a card. The architecture scoreboard is a table, not a card grid.
 
 **The Licensed-Infinite-Motion Rule (2026-06-10).** Persistent (`infinite`) animation is banned on decoration — entrances are one-shot, hovers settle. Exactly three infinite animations are licensed, each carrying meaning: (1) the `COMING` status-pill pulse (§5 Status Pills), (2) `live-pulse` — the ShippedNow LIVE dot's 2s opacity breath; it is status semantics, rendered only when the fleet data is fresh and omitted entirely when stale, and (3) `swipe-me-bob` — the home teaser's desktop swipe-hint bob; a functional affordance pointing at an interaction, not ornament. All three are `prefers-reduced-motion`-guarded to static. Anything else animating forever is a defect.
+
+**The Licensed Motion Registry (2026-08-08).** The site-wide "no animation libraries" stack rule is superseded (partner-session sidecar 2026-08-06, locks L4/L5 — recorded in CHANGELOG). The doctrine is **"Alive at rest, honest in motion":** an attract layer may run one-shot on viewport entry, then settle; payoff choreography is reader-triggered. GSAP is licensed under these terms:
+
+- **Licensed:** GSAP core + DrawSVG + MotionPath + CustomEase — and only where choreography genuinely earns a timeline engine over CSS/WAAPI. Working WAAPI/CSS motion is never rewritten into GSAP for its own sake.
+- **Banned:** ScrollTrigger scroll-jacking (any scroll-hijacked or scroll-scrubbed choreography). The reader's scroll is never an animation input. The `gsap-scrolltrigger` skill is deliberately not installed in `.claude/skills/` for this reason.
+- **Deferred:** WebGL (named v2 stretch, not licensed here). **Out:** Rive, Lottie.
+- **Inviolable floors:** `prefers-reduced-motion` and no-JS both land on a true, complete final state — never a half-drawn figure, never hidden content. Entrances stay one-shot; the Licensed-Infinite-Motion Rule above is unchanged.
+- **Generated media (Higgsfield lane):** on-thesis only — Sean's systems, Sean's character, the pencil register. Never stock, never off-thesis filler.
+
+Every licensed use gets a registry row here as it ships:
+
+| Surface | GSAP modules | Choreography | Shipped |
+|---|---|---|---|
+| About — Biesty Cutaway | core + CustomEase | cursor lens, iris dim, card peel; one-shot attract pulse on viewport entry | reposition/about-2026-08 |
 
 **The Author-with-AI, Self-Host-the-Output Rule.** Use generative tools (Claude Design, Claude Artifacts, Gemini Nano Banana, etc.) as the *authoring* path — then export and commit the code or asset so it ships on your own domain, in your own fonts and tokens, with no runtime dependency on a third party. Never embed a live third-party-hosted widget (an iframe'd artifact, a hosted gen-tool preview) as a load-bearing surface: it can't inherit your design tokens (it runs under a sandboxed CSP that blocks your fonts/colors), it stamps someone else's chrome onto your page, and a failed embed is a dead band on the screen. Once exported, the output should be indistinguishable from something you hand-built — because it is now yours. (This is how the Interactive Explainer's pencil art is made: generated, then keyed and self-hosted.)
 

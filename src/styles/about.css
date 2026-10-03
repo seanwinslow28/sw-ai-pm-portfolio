@@ -1,123 +1,80 @@
 /* ----------------------------------------------------------------------
  * src/styles/about.css — /about/ page-scoped layout polish + print
  * Loaded by src/pages/about.astro.
- * Per about-spec §3 vertical budget + §16 build-stack print row.
+ *
+ * v2 anatomy (2026-08-08, sidecar L11-L14): Hero → paragraph → NowPulse
+ * → Biesty Cutaway → ProofPoints → PullQuote.
+ * The old band classes (beats / b2 / canon / b4 / b5) died with the
+ * 10-band anatomy — see CHANGELOG under about-spec.
  * ---------------------------------------------------------------------- */
 
-/* ===== Section spacing (vertical budget per §3) ===== */
+/* ===== Section spacing ===== */
 
 .about-page {
   position: relative;
 }
 
-.about-page__band {
-  padding-top: 60px;
-}
+/* ===== The opening spread (v3, 2026-08-08 round 2) =====
+ * The lead title is retired; the page opens with the one paragraph beside
+ * the character — prose left, drawing right, one movement on the 1120 rail. */
 
-.about-page__band--hero {
-  padding-top: 60px;
-}
-
-.about-page__band--pulse {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-
-.about-page__band--beats,
-.about-page__band--b2,
-.about-page__band--canon,
-.about-page__band--b4,
-.about-page__band--b5 {
-  padding-top: 100px;
-}
-
-.about-page__band--pull-quote {
-  padding-top: 120px;
-  padding-bottom: 80px;
-}
-
-/* ===== B-2 + B-4 section heading styles (shared with Beats / CartoonCanon / ProofPoints) ===== */
-
-.about-section {
-  max-width: 680px;
+.about-page__mdx .about-open {
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: clamp(48px, 8vh, 80px) 24px clamp(40px, 6vh, 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 44%);
+  gap: 60px;
+  align-items: center;
 }
 
-.about-section__frame-prefix {
-  margin: 0 0 8px 0;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1.8px;
-  color: var(--amber-mid);
-}
-
-.about-section__heading {
-  margin: 0 0 32px 0;
+.about-page__mdx .about-paragraph {
+  max-width: 640px;
   font-family: var(--font-serif);
-  font-size: 48px;
-  font-weight: 400;
-  letter-spacing: -0.2px;
-  line-height: 1.1;
-  color: var(--teal);
-}
-
-.about-section--b2 {
-  max-width: 680px;
-}
-
-.about-section--b2 p {
-  margin: 0 0 24px 0;
-  font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: clamp(19px, 1.8vw, 23px);
   font-weight: 300;
   letter-spacing: -0.2px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--ink);
 }
 
-.about-section--b2 p:last-child {
-  margin-bottom: 0;
+.about-page__mdx .about-open__character img {
+  display: block;
+  max-height: 560px;
+  width: auto;
+  height: auto;
+  margin: 0 0 0 auto;
+  object-fit: contain;
 }
 
-.about-section--b4 .about-section__b4-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.about-section--b4 .about-section__heading {
-  margin-bottom: 0;
-}
+/* NOTE: ProofPoints / PullQuote own their vertical rhythm
+ * in their scoped component styles — their scoped `margin` declarations
+ * out-cascade rules here (same specificity, later stylesheet), so page-level
+ * margin overrides on them silently lose. Edit the components instead. */
 
 @media (max-width: 767px) {
-  .about-page__band--beats,
-  .about-page__band--b2,
-  .about-page__band--canon,
-  .about-page__band--b4,
-  .about-page__band--b5 {
-    padding-top: 60px;
+  .about-page__mdx .about-open {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 20px 40px;
   }
 
-  .about-page__band--pull-quote {
-    padding-top: 80px;
-    padding-bottom: 60px;
+  /* Character first, prose below — mirrors the retired AboutHero's mobile
+   * order so the drawing still opens the page. */
+  .about-page__mdx .about-open__character {
+    order: 1;
   }
 
-  .about-section {
-    padding: 0 20px;
+  .about-page__mdx .about-open__character img {
+    max-height: 340px;
+    margin: 0 auto;
   }
 
-  .about-section__heading {
-    font-size: 36px;
-    margin-bottom: 24px;
+  .about-page__mdx .about-open__text {
+    order: 2;
   }
 
-  .about-section--b2 p {
+  .about-page__mdx .about-paragraph {
     font-size: 18px;
   }
 }
@@ -129,25 +86,9 @@
     background: none;
   }
 
-  /* Single column — disable any grid layouts */
-  .cartoon-canon__grid {
-    display: block;
-  }
-
-  .cartoon-cel {
-    transform: none !important;
-    page-break-inside: avoid;
-    margin-bottom: 32px;
-  }
-
   /* Print the link URL after each proof-point link (handled in ProofPoints scoped CSS).
-     The dateline strip + pulse strip + recruiter callout retain their wire-service
-     styling; the editorial sections retain their type scale. */
-
-  .recruiter-callout {
-    border: 1px solid var(--ink);
-    background: none;
-  }
+     The dateline strip + pulse strip retain their wire-service styling; the
+     editorial sections retain their type scale. */
 
   .pull-quote {
     background: none;
