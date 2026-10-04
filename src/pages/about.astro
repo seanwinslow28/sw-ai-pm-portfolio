@@ -5,7 +5,6 @@
  * Composes the 10-band anatomy from about-spec §2 top to bottom:
  *   1. (BaseLayout dateline / nav / etc. — chrome is on)
  *   2. AboutHero      — lead + character PNG
- *   3. NowPulse       — daily-dated pulse strip
  *   4. Beats          — B-1 stacked beats with lane-tint rule
  *   5. (MDX body: B-2 thesis prose section)
  *   6. CartoonCanon   — B-3 Saturday morning canon (rendered from MDX body)
@@ -13,10 +12,10 @@
  *   8. ProofPoints    — B-5 four links (rendered from MDX body)
  *   9. PullQuote      — closing serif italic (rendered from MDX body)
  *
- * Pre-MDX bands (hero + pulse + beats) are assembled here so the
+ * Pre-MDX bands (hero + beats) are assembled here so the
  * <Beats /> component can read the typed beats[] array from the
  * collection entry's frontmatter without going through MDX's
- * generic <slot />. Post-pulse content (B-2 through pull quote)
+ * generic <slot />. Post-beats content (B-2 through pull quote)
  * is composed in the MDX body so prose authoring + component
  * rendering interleave naturally.
  *
@@ -28,7 +27,6 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import AboutHero from "~/components/about/AboutHero.astro";
-import NowPulse from "~/components/about/NowPulse.astro";
 import Beats from "~/components/about/Beats.astro";
 import "~/styles/about.css";
 
@@ -52,10 +50,6 @@ const pageDescription = fm.description;
         characterImage={fm.character_image}
         characterAlt={fm.character_alt}
       />
-    </div>
-
-    <div class="about-page__band about-page__band--pulse">
-      <NowPulse />
     </div>
 
     <div class="about-page__band about-page__band--beats">

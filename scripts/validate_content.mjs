@@ -27,7 +27,6 @@
  * failure class that passes `astro build` but leaves the page wrong:
  *   - F1: every <BoardArtifact> needs an excerpt OR ticketKey+ticketTitle
  *   - F6: em-dash lint over rendered prose (DESIGN.md §213 allowlist)
- *   - F2: about-pulse.json date_iso may not be after the build date
  *   - F3/F4: OG cards must be wired; no font-CDN font loads in src/
  *
  * Source: case-study-spec-v1.md §15 + transactions-spec-v1.md §11.1 +
@@ -42,7 +41,7 @@ const ROOT = process.cwd();
 
 // "Today" in Boston time, matching the wire-service datelines. Build runs
 // in UTC on Vercel; computing in America/New_York avoids a late-night-UTC
-// false positive on the dateline freshness check below.
+// false positive on the date checks below.
 function bostonTodayISO() {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
@@ -50,21 +49,6 @@ function bostonTodayISO() {
   }).format(new Date());
 }
 const TODAY_ISO = bostonTodayISO();
-
-// Vercel sets VERCEL=1 and VERCEL_ENV to "production" | "preview" | "development".
-// The stale-dateline gate must stay fatal where it guards the live site:
-// production builds, and local / Daily-Driver runs (VERCEL unset). On *preview*
-// builds (feature branches) the daily-dated layer is frozen at the branch's last
-// refresh — the Daily Driver only updates main — so a stale dateline is expected
-// and should warn, not block the preview URL.
-const IS_VERCEL_PREVIEW =
-  process.env.VERCEL === "1" && process.env.VERCEL_ENV !== "production";
-
-function daysBetween(isoA, isoB) {
-  return Math.round(
-    (Date.parse(`${isoB}T12:00:00Z`) - Date.parse(`${isoA}T12:00:00Z`)) / 86400000
-  );
-}
 
 const COLLECTIONS = [
   {
@@ -570,66 +554,6 @@ async function main() {
     process.stdout.write(`\n[${coll.name}]\n`);
     const errs = await validateCollection(coll, warnings);
     allErrors.push(...errs);
-  }
-
-  // Dateline freshness. The home hero reads public/api/dateline.json (the
-  // Daily Driver writes it ~08:30 ET). A stale date on the hero quietly
-  // undercuts the whole "real and dated" thesis, so guard it:
-  //   - stale by 1 day  → warn (normal pre-08:30 window; run the driver)
-  //   - stale by 2+ days → hard error on production + local/Daily-Driver runs
-  //     (clearly forgotten; do not ship), but a warning on Vercel *preview*
-  //     builds — feature branches freeze the daily-dated layer at branch time,
-  //     so a stale dateline there isn't the branch's fault and shouldn't block
-  //     its preview URL. See IS_VERCEL_PREVIEW above.
-  // Flip the 1-day case to an error once the deploy is wired to fire after
-  // the 08:30 write.
-  process.stdout.write(`\n[dateline freshness]\n`);
-  try {
-    const dl = JSON.parse(await fs.readFile(path.join(ROOT, "public/api/dateline.json"), "utf8"));
-    if (typeof dl.date_iso !== "string") {
-      allErrors.push(`dateline.json: missing or non-string date_iso`);
-    } else if (dl.date_iso > TODAY_ISO) {
-      allErrors.push(`dateline.json: date_iso ${dl.date_iso} is in the FUTURE (today ${TODAY_ISO}). The hero would show a fabricated-looking future date.`);
-    } else {
-      const staleDays = daysBetween(dl.date_iso, TODAY_ISO);
-      if (staleDays >= 2) {
-        const detail = `dateline.json: date_iso ${dl.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}).`;
-        if (IS_VERCEL_PREVIEW) {
-          warnings.push(`${detail} Preview build — hero dateline is frozen at this branch's last refresh; rebase on main (or run the Daily Driver) to make it current.`);
-        } else {
-          allErrors.push(`${detail} Run the Daily Driver before deploying — a stale hero date undercuts the dated-fleet thesis.`);
-        }
-      } else if (staleDays === 1) {
-        warnings.push(`dateline.json: date_iso ${dl.date_iso} is 1 day stale (today ${TODAY_ISO}). Run the Daily Driver before deploying so the hero dateline is current.`);
-      } else {
-        process.stdout.write(`  ✓ dateline.json is current (${dl.date_iso})\n`);
-      }
-    }
-  } catch (e) {
-    allErrors.push(`dateline.json: could not read/parse (${e.message})`);
-  }
-
-  // about-pulse coherence (post-mortem F2). The home About-teaser pulse strip
-  // reads public/api/about-pulse.json. A future date_iso would let the strip
-  // label not-yet-real stats with a fabricated date; stale-behind is handled
-  // by the isFresh() fallback in src/lib/dateline.ts, so only *ahead* is a bug.
-  process.stdout.write(`\n[about-pulse coherence]\n`);
-  try {
-    const ap = JSON.parse(await fs.readFile(path.join(ROOT, "public/api/about-pulse.json"), "utf8"));
-    if (typeof ap.date_iso !== "string") {
-      allErrors.push(`about-pulse.json: missing or non-string date_iso`);
-    } else if (ap.date_iso > TODAY_ISO) {
-      allErrors.push(`about-pulse.json: date_iso ${ap.date_iso} is in the FUTURE (today ${TODAY_ISO}). The pulse strip would label not-yet-real stats with a future date.`);
-    } else {
-      const staleDays = daysBetween(ap.date_iso, TODAY_ISO);
-      if (staleDays >= 2) {
-        warnings.push(`about-pulse.json: date_iso ${ap.date_iso} is ${staleDays} days stale (today ${TODAY_ISO}). The strip degrades TODAY→LATEST past 48h, but run the Daily Driver before deploying.`);
-      } else {
-        process.stdout.write(`  ✓ about-pulse.json is coherent (${ap.date_iso})\n`);
-      }
-    }
-  } catch (e) {
-    allErrors.push(`about-pulse.json: could not read/parse (${e.message})`);
   }
 
   // Render-gated asset locks (post-mortem F3/F4). An asset is only "locked"

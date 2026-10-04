@@ -13,7 +13,6 @@ export const EMAIL = "sean.winslow28@gmail.com";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/sean-winslow-204390a5";
 export const GITHUB_URL = "https://github.com/seanwinslow28";
 export const SUBSTACK_URL = "https://substack.com/@seanpwins";
-export const FLEET_DASHBOARD_URL = "https://fleet.seanwinslow.com";
 export const SITE_REPO_URL = "https://github.com/seanwinslow28/sw-ai-pm-portfolio";
 
 export const SITE_NAME = "Sean Winslow";

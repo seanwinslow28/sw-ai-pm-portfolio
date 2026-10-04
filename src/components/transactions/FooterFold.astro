@@ -1,13 +1,12 @@
 ---
 /**
- * <FooterFold /> — "subscribe via RSS" + "view the fleet ↗".
+ * <FooterFold /> — "subscribe via RSS".
  *
  * Renders below the ledger rows on /transactions/ index + per-surface
  * pages. NOT on the deep-dive — the deep-dive has Next/Prev nav instead.
  *
  * Per transactions-spec §2.1 + §10.3.
  */
-import { FLEET_DASHBOARD_URL } from "~/lib/site";
 ---
 
 <aside class="footer-fold" aria-label="Subscribe and external links">
@@ -15,9 +14,6 @@ import { FLEET_DASHBOARD_URL } from "~/lib/site";
   <ul>
     <li>
       <a href="/transactions/rss.xml" class="fold-link">&rarr; subscribe via RSS</a>
-    </li>
-    <li>
-      <a href={FLEET_DASHBOARD_URL} class="fold-link" rel="noopener external">&rarr; view the fleet &nearr;</a>
     </li>
   </ul>
 </aside>

@@ -1,23 +1,12 @@
 ---
 /**
- * Hero dateline strip — reads /api/dateline.json at build time and renders the
- * fleet_pulse / ship_log / reading_log / now_line / ledger_row pattern.
- * Source: hero-spec §8.
+ * Hero dateline strip. The BOSTON stamp carries the build date; the body is
+ * a fixed line that makes no dated claim. The daily fleet pulse that used to
+ * feed this strip was retired on 2026-10-04.
  */
-import datelineData from "../../../public/api/dateline.json";
-import { BUILD_DATE_PRETTY, isFresh } from "~/lib/dateline";
+import { BUILD_DATE_PRETTY } from "~/lib/dateline";
 
-// Date derives from the build date for cross-page coherence; the fleet
-// JSON supplies the body narrative. See src/lib/dateline.ts.
-//
-// Gate the body with isFresh(): the date stamp is always today's, so a
-// lagged fleet JSON would otherwise label yesterday's pulse with today's
-// date. When the JSON isn't fresh, fall back to an evergreen line that
-// makes no dated claim, keeping the load-bearing "real and dated" strip
-// honest on a deploy where the fleet hasn't run yet.
-const body = isFresh(datelineData.date_iso)
-  ? datelineData.body
-  : "morning fleet pulse posts after the 08:45 et run.";
+const body = "notes, builds and essays from an ai product manager.";
 ---
 
 <div class="dateline-strip">
